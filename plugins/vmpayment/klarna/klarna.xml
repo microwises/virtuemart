@@ -66,8 +66,8 @@
 
 	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_PCLASSES" description="VMPAYMENT_KLARNA_PCLASSES_DESC" />
 
-	<param name="klarna_pc_type" type="text"   default="mysl" label="VMPAYMENT_KLARNA_PC_TYPE" description="VMPAYMENT_KLARNA_PC_TYPE" />
-	<param name="klarna_pc_uri" type="text"   default="none" label="VMPAYMENT_KLARNA_PC_URI" description="VMPAYMENT_KLARNA_PC_URI" />
+	<param name="klarna_pc_type" type="text"   default="json" label="VMPAYMENT_KLARNA_PC_TYPE" description="VMPAYMENT_KLARNA_PC_TYPE" />
+	<param name="klarna_pc_uri" type="text"   size="60"  default="none" label="VMPAYMENT_KLARNA_PC_URI" description="VMPAYMENT_KLARNA_PC_URI" />
 	<param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_DEBUG" description="VMPAYMENT_KLARNA_DEBUG_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>

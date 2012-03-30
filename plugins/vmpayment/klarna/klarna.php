@@ -351,7 +351,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
     function plgVmConfirmedOrder($cart, $order) {
 
-	if (!($this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
+	if (!($method=$this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
@@ -614,14 +614,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
-	// todo
-	return;
-	if (preg_match('/%$/', $method->cost_percent_total)) {
-	    $cost_percent_total = substr($method->cost_percent_total, 0, -1);
-	} else {
-	    $cost_percent_total = $method->cost_percent_total;
-	}
-	return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
+	$country_code = $this->_getCartAddressCountryCode3($cart);
+	return KlarnaHandler::getInvoiceFee($method, $country_code);
+
+
     }
 
     /**

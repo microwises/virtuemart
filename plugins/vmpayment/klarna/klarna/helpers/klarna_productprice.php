@@ -28,14 +28,12 @@ class klarna_productPrice {
     private $path;
     private $webroot;
     private $method;
-    private $tablename;
 
-    public function __construct($method, $product, $cart_country_code_3, $tablename) {
+    public function __construct($method, $product, $cart_country_code_3) {
 
 	$this->path = JPATH_VMKLARNAPLUGIN . '/klarna/';
 	$this->webroot = JURI::Base() . VMKLARNAPLUGINWEBROOT;
 	$this->method = $method;
-	$this->tablename = $tablename;
 
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
@@ -44,9 +42,9 @@ class klarna_productPrice {
 	$this->getcData($this->pCurr, $cart_country_code_3);
 
 	try {
-	    $iMode = ($this->method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA;
+	    $iMode = ($method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA;
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, $this->method->klarna_pc_type, $method->klarna_pc_uri, false);
+	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, $method->klarna_pc_type, $method->klarna_pc_uri, false);
 	} catch (Exception $e) {
 	    unset($this->klarna);
 	}
