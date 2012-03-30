@@ -2,7 +2,7 @@
 <klarna>
   <estore id="1335">
     <pclass pid="680" type="0">
-      <description>24 mån</description>
+      <description>24 mÃ¥n</description>
       <months>24</months>
       <startfee>395</startfee>
       <invoicefee>39</invoicefee>
@@ -12,7 +12,7 @@
       <expire>1304200800</expire>
     </pclass>
     <pclass pid="679" type="0">
-      <description>12 mån</description>
+      <description>12 mÃ¥n</description>
       <months>12</months>
       <startfee>295</startfee>
       <invoicefee>39</invoicefee>
@@ -22,7 +22,7 @@
       <expire>1304200800</expire>
     </pclass>
     <pclass pid="678" type="0">
-      <description>6 mån</description>
+      <description>6 mÃ¥n</description>
       <months>6</months>
       <startfee>195</startfee>
       <invoicefee>39</invoicefee>
@@ -32,7 +32,7 @@
       <expire>1304200800</expire>
     </pclass>
     <pclass pid="677" type="0">
-      <description>3 mån</description>
+      <description>3 mÃ¥n</description>
       <months>3</months>
       <startfee>95</startfee>
       <invoicefee>39</invoicefee>
@@ -52,7 +52,7 @@
       <expire>1304200800</expire>
     </pclass>
     <pclass pid="657" type="2">
-      <description>Handla nu - Betala om 1 månader</description>
+      <description>Handla nu - Betala om 1 mÃ¥nader</description>
       <months>0</months>
       <startfee>0</startfee>
       <invoicefee>0</invoicefee>
