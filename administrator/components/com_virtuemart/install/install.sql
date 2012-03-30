@@ -412,15 +412,15 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_migration_oldtonew_ids` (
 	    `id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-	    `cats` blob,
+	    `cats` longblob,
 	    `catsxref` blob,
-	    `manus` blob,
+	    `manus` longblob,
 	    `mfcats` blob,
-	    `shoppergroups` blob,
-	    `products` blob,
+	    `shoppergroups` longblob,
+	    `products` longblob,
 	    `products_start` int(1),
 	    `orderstates` blob,
-	    `orders` blob,
+	    `orders` longblob,
 	    `orders_start` int(1),
 	    PRIMARY KEY (`id`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='xref table for vm1 ids to vm2 ids' ;
