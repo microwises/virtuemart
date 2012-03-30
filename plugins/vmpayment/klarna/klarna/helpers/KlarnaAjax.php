@@ -13,10 +13,10 @@ defined('_JEXEC') or die('Restricted access');
  */
 
 if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'class.KlarnaAPI.php');
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaAPI.php');
 if (!class_exists('KlarnaHTTPContext'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'class.KlarnaHTTPContext.php');
- 
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaHTTPContext.php');
+
 
 class KlarnaAjax {
     private $api;
