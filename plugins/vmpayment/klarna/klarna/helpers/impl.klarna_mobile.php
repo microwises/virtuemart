@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
  * @link        http://integration.klarna.com/
  * @copyright    Copyright (c) 2011 Klarna AB (http://klarna.com)
  */
-require_once (dirname(__FILE__) . "/class.KlarnaMobile.php");
+require_once (dirname(__FILE__) . "/klarnamobile.php");
 
 abstract class KlarnaMobileImpl {
     protected $oKlarna;

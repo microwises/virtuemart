@@ -5,7 +5,7 @@ if(typeof global_sum == 'undefined') {
     var global_sum = 0;
 }
 if(typeof ajax_path == 'undefined') {
-    var ajax_path = 'klarnaAjax.php';
+    var ajax_path = 'klarna_ajax.php';
 }
 
 // Workaround for old jQuery versions

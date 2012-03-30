@@ -24,7 +24,7 @@ defined('JPATH_BASE') or die();
  *
  */
 if (!class_exists('Klarna'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'Klarna.php');
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 if (!class_exists('klarna_virtuemart'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_virtuemart.php');
 if (!class_exists('KlarnaHandler'))
@@ -108,7 +108,7 @@ class JElementKlarnaPclasses extends JElement {
 	    }
 	}
 	$cid = jrequest::getvar('cid');
-	
+
 	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$cid;
 
 	if ($total == 0) {

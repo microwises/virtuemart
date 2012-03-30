@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * This is the completion script for the Klarna Mobile class (class.KlarnaMobile.php)
+ * This is the completion script for the Klarna Mobile class (klarnamobile.php)
  * This page should include the following functions
  *
  * fetchProduct ($iProductId, $oKlarna);

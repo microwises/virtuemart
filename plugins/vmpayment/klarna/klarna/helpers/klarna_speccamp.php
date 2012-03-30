@@ -229,7 +229,7 @@ class klarna_speccamp {
 	    return 0;
 	}
 	if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaAPI.php');
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 
 	$totalSum = KlarnaHandler::getTotalSum();
 	$klarna_fee = 0;
@@ -238,7 +238,7 @@ class klarna_speccamp {
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$kCheckout = new KlarnaAPI($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
-	$kCheckout->addSetupValue('ajax_path', $this->web_root . $cPath . '/helpers/klarnaAjax.php');
+	$kCheckout->addSetupValue('ajax_path', $this->web_root . $cPath . '/helpers/klarna_ajax.php');
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id = 1;

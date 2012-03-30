@@ -29,7 +29,7 @@ if (JVM_VERSION === 2) {
     define('VMKLARNAPLUGINWEBROOT', 'plugins' . DS . 'vmpayment');
 }
 if (!class_exists('Klarna'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'Klarna.php');
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 if (!class_exists('klarna_virtuemart'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_virtuemart.php');
 if (!class_exists('PCStorage'))
@@ -43,7 +43,7 @@ if (!class_exists('KlarnaCalc'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnacalc.php');
 
 if (!class_exists('KlarnaProductPrice'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaProductPrice.php');
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaproductprice.php');
 
 if (!class_exists('KlarnaHandler'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
@@ -177,7 +177,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return false;
 	    }
 	}
-	JHTML::script('klarnaGeneral.js', VMKLARNAPLUGINWEBROOT . '/klarna/assets/js/', false);
+	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . '/klarna/assets/js/', false);
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
@@ -358,7 +358,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return false;
 	}
 	if (!class_exists('KlarnaLanguagePack'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaLanguagePack.php');
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
 	$sessionKlarnaData = unserialize($sessionKlarna);
@@ -543,7 +543,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	//refresh captcha code
 	// fetches PClasses
 	$call = jrequest::getWord('call');
-	require (JPATH_VMKLARNAPLUGIN.'/klarna/selfCall.php');
+	require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/selfcall.php');
 	$SelfCall= new KlarnaSelfCall ;
 	$SelfCall->$call ();
 	jexit();
@@ -678,7 +678,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$user_country = $this->_getCartAddressCountryCode3($cart);
 
 	if (!class_exists('KlarnaLanguagePack'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaLanguagePack.php');
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
 	$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 
 	$country = KlarnaHandler::convertCountry($method, $user_country);
@@ -933,7 +933,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$logo .= 'klarna_logo.png';
 		$lang = KlarnaHandler::getLanguageForCountry($method, $country);
 		if (!class_exists('KlarnaLanguagePack'))
-		    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'class.KlarnaLanguagePack.php');
+		    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'class.klarnalanguagepack.php');
 		$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 		$method = $kLang->fetch('MODULE_SPEC_TEXT_TITLE', $lang);
 		break;

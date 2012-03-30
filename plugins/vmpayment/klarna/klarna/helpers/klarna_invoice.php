@@ -231,12 +231,12 @@ class klarna_invoice  {
 
 	$this->payment_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
 	if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaAPI.php');
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 	$kCheckout = new KlarnaAPI($this->country, null, 'invoice', 0, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, null, VMKLARNAPLUGINWEBROOT );
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('sum', $klarna_fee);
 	$kCheckout->setInvoiceFee($klarna_fee);
-	$kCheckout->addSetupValue('ajax_path', $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/helpers/klarnaAjax.php');
+	$kCheckout->addSetupValue('ajax_path', $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/helpers/klarna_ajax.php');
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id=1;

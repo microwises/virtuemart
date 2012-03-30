@@ -234,7 +234,7 @@ class MySQLStorage extends PCStorage {
      */
     public function load($uri) {
         try {
-            //$this->splitURI($uri);
+            $this->splitURI($uri);
             $this->connect();
             if(($result = mysql_query('SELECT * FROM `'.$this->dbName.'`.`'.$this->dbTable.'`', $this->link)) === false) {
                 throw new Exception('SELECT query failed! ('.mysql_error().')');

@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 if (!class_exists('KlarnaLanguagePack'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaLanguagePack.php');
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
 
 
 
@@ -178,7 +178,7 @@ class KlarnaAPI {
 	$this->aSetupSettings['sum'] = $a_iSum;
 	$this->aSetupSettings['flag'] = $a_iFlag;
 	$this->aSetupSettings['payment_id'] = "payment";
-	$this->aSetupSettings['ajax_path'] = "klarnaAjax.php";
+	$this->aSetupSettings['ajax_path'] = "klarna_ajax.php";
 	$this->aSetupSettings['invoice_name'] = 'klarna_invoice';
 	$this->aSetupSettings['part_name'] = 'klarna_partPayment';
 	$this->aSetupSettings['spec_name'] = 'klarna_SpecCamp';
