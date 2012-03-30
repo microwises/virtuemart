@@ -276,10 +276,10 @@ class klarna_partpay {
 	    $sFee = $currency->priceDisplay($cheapest, '', false);
 	    $title = str_replace('xx', $sFee, $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/'));
 	} else {
-	    $title = $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE_NOSUM', $lang, JPATH_SITE . $cPath . 'checkout/');
+	    $title = $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE_NOSUM', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/');
 	}
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="../' . $this->web_root . $cPath . '/images/logo/logo_small.png" border="0" /></div>' .
+		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT  . '/images/logo/logo_small.png" border="0" /></div>' .
 		$kCheckout->fetchFromLanguagePack('PARTPAY_TEXT_DESCRIPTION', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 

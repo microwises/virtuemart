@@ -23,10 +23,10 @@ if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 if (JVM_VERSION === 2) {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
 } else {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/');
 }
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
@@ -233,12 +233,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
-	$sessionKlarnaData = unserialize($sessionKlarna);
+	if ($sessionKlarna) {
+	    $sessionKlarnaData = unserialize($sessionKlarna);
+	}
 	if (isset($sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod_id'])) {
 	    $klarna_paymentmethod_id = $sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod_id'];
 	}
 	$virtuemart_paymentmethod_id = $method->virtuemart_paymentmethod_id;
-
+	$html_invoice ='';
 	if (in_array('klarna_invoice', (array) $method->klarna_modules)) {
 	    if (!class_exists('Klarna_invoice'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_invoice.php');
@@ -247,7 +249,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    //$html_invoice = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
 		$html_invoice = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
 	}
-
+	$html_partpay='';
 	if (in_array('klarna_partpay', (array) $method->klarna_modules) && $partpay > 0) { // Show only if partpayment is enabled and we have pclasses.
 	    if (!class_exists('Klarna_partpay'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_partpay.php');
@@ -255,7 +257,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    $klarna_pm = $partPay->partPay($method);
 	    $html_partpay = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
 	}
-
+	$html_speccamp='';
 	if (in_array('klarna_speccamp', (array) $method->klarna_modules) && $speccamp > 0) { // Show only if campaigns are enabled and we have pclasses.
 	    if (!class_exists('Klarna_speccamp'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_speccamp.php');
@@ -782,8 +784,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    'LAST_NAME' => $klarna_last_name,
 	    'PHONE' => $klarna_phone,
 	    'EMAIL' => $klarna_email,
-	    'PCLASS' => ($pmc == 'ps_klarna' ? -1 :
-		    intval(JRequest::getVar($kIndex . "paymentPlan"))),
+	    'PCLASS' => ($pmc == 'ps_klarna' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan"))),
 	    'STREET' => $klarna_street,
 	    'ZIP' => $klarna_zip,
 	    'CITY' => $klarna_city,
@@ -921,7 +922,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function displayLogos($method) {
-	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'assets/images/logo/';
+	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'klarna/assets/images/logo/';
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
 	$sessionKlarnaData = unserialize($sessionKlarna);

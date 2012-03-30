@@ -426,7 +426,7 @@ class KlarnaHandler {
 
 
 	// Fill the good list the we send to Klarna
-	$goodsList = array();
+
 	foreach ($product_rows as $product) {
 	    $klarna->addArticle($product['quantity'],
 		    utf8_decode($product['product_sku']),
@@ -504,7 +504,12 @@ class KlarnaHandler {
 	    if (isset($klarnaData['YEAR_SALARY'])) {
 		$klarna->setIncomeInfo("'yearly_salary'",  $klarnaData['YEAR_SALARY'] );
 	    }
-	    $result = $klarna->addTransaction($klarnaData['PNO'], ($klarna->getCountry() == KlarnaCountry::DE ||$klarna->getCountry() == KlarnaCountry::NL) ?$klarna_gender : null, $klarna_flags, $klarna_pclass);
+
+	    $result = $klarna->addTransaction($klarnaData['PNO'],
+                                ($klarna->getCountry() == KlarnaCountry::DE ||$klarna->getCountry() == KlarnaCountry::NL) ? $klarna_gender : null,
+                                 $klarna_flags,
+		                $klarna_pclass);
+
 
 	    $status = self::getStatusForCode($result[2]);
 
@@ -1050,15 +1055,15 @@ class KlarnaHandler {
 	$r = array();
 	$r['first_name'] = $shipTo['first_name'];
 	$r['last_name'] = $shipTo['last_name'];
-	$r['company_name'] = $shipTo['company_name'];
+	$r['company_name'] = @$shipTo['company_name'];
 	$r['phone'] = $shipTo['phone_1'];
 	$r['street'] = $shipTo['address_1'];
 	$r['city'] = $shipTo['city'];
 	$r['country'] = @ShopFunctions::getCountryByID($shipTo['virtuemart_country_id'], 'country_3_code');
 
-	$r['state'] = $shipTo['state'];
+	$r['state'] = @$shipTo['state'];
 	$r['zip'] = $shipTo['zip'];
-	$r['title'] = $shipTo['title'];
+	$r['title'] = @$shipTo['title'];
 	return $r;
     }
 

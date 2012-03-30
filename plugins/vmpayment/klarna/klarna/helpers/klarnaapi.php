@@ -583,9 +583,10 @@ class KlarnaAPI {
      */
     private function changeText($aText) {
 	// Split them
+
 	$aExplode = explode(".", $aText[1]);
 	$sType = $aExplode[0];
-	$sName = $aExplode[1];
+	$sName = @$aExplode[1];
 
 	if ($sType == "input") {
 	    if (array_key_exists($sName, $this->aInputParameters))
@@ -617,7 +618,7 @@ class KlarnaAPI {
 
 	    return @$this->aSetupSettings[$sName];
 	} else if ($sType == "value") {
-	    return ($this->aInputValues[$sName]);
+	    return (@$this->aInputValues[$sName]);
 	} else if ($sType == 'ilt') {
 	    if ($sName == 'box') {
 		$sHtml = "";

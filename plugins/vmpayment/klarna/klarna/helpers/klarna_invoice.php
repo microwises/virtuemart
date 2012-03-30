@@ -259,8 +259,8 @@ class klarna_invoice  {
 	$title = str_replace('(+XX)', '(+' . $sFee . ')', $kCheckout->fetchFromLanguagePack('INVOICE_TITLE', $lang, JPATH_VMKLARNAPLUGIN ));
 
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="' . $this->web_root . $cPath . 'checkout/images/logo/logo_small.png" border="0" /></div>' .
-		$kCheckout->fetchFromLanguagePack('INVOICE_TEXT_DESCRIPTION', $lang, $cPath_absolute . 'checkout/') . '<br/><br/>' .
+		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'assets/images/logo/logo_small.png" border="0" /></div>' .
+		$kCheckout->fetchFromLanguagePack('INVOICE_TEXT_DESCRIPTION', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	$this->klarna_phone = $this->shipTo['phone'];
@@ -281,8 +281,13 @@ class klarna_invoice  {
 	}
 
 	// Something went wrong, refill what we can.
-	if (isset($_SESSION['KLARNA_DATA'])) {
-	    $this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);
+	$session = JFactory::getSession();
+	$sessionKlarna = $session->get('Klarna', 0, 'vm');
+
+	if (isset($sessionKlarna)) {
+	    $sessionKlarnaData = unserialize($sessionKlarna);
+	    $klarnaData = $sessionKlarnaData->KLARNA_DATA;
+	    $this->setPreviouslyFilledIn($klarnaData);
 	}
 
 	$aParams = $this->getParams();

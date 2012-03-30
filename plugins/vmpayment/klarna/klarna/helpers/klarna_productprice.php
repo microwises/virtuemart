@@ -32,7 +32,7 @@ class klarna_productPrice {
     public function __construct($method, $product, $cart_country_code_3) {
 
 	$this->path = JPATH_VMKLARNAPLUGIN . '/klarna/';
-	$this->webroot = JURI::Base() . VMKLARNAPLUGINWEBROOT;
+	$this->webroot = JURI::Base() ;
 	$this->method = $method;
 
 	if (!class_exists('ShopFunctions'))
@@ -122,9 +122,9 @@ class klarna_productPrice {
 
 	$kCheckout = new KlarnaAPI($country, $lang, 'part', $price, $page, $this->klarna, $types, $this->path);
 	$kCheckout->addSetupValue('web_root', VMKLARNAPLUGINWEBROOT);
-	$kCheckout->addSetupValue('path_img', VMKLARNAPLUGINWEBROOT . 'assets/images/');
-	$kCheckout->addSetupValue('path_js', VMKLARNAPLUGINWEBROOT . 'assets/js/');
-	$kCheckout->addSetupValue('path_css', VMKLARNAPLUGINWEBROOT . 'assets/css/');
+	$kCheckout->addSetupValue('path_img', $this->webroot . VMKLARNAPLUGINWEBROOT . 'klarna/assets/images/');
+	$kCheckout->addSetupValue('path_js', VMKLARNAPLUGINWEBROOT . 'klarna/assets/js/');
+	$kCheckout->addSetupValue('path_css', VMKLARNAPLUGINWEBROOT . 'klarna/assets/css/');
 	if ($country == KlarnaCountry::DE) {
 	    $kCheckout->addSetupValue('asterisk', '*');
 	}
@@ -171,7 +171,7 @@ class klarna_productPrice {
 	$virtuemart_vendor_id = 1;
 	$model = VmModel::getModel('vendor');
 	$vendor = $model->getVendor($virtuemart_vendor_id);
-	
+
 	$vendorAdress = $model->getVendorAdressBT($virtuemart_vendor_id);
 
 	$vendor_country = ShopFunctions::getCountryByID($vendorAdress->virtuemart_country_id, 'country_code_3');

@@ -9,6 +9,7 @@
                         <input class="klarmaPaiement" id="<?php echo $params['klarna_pm']['id'] ?>"
                                     type="radio" name="virtuemart_paymentmethod_id"
                                     value="<?php echo  $params['virtuemart_paymentmethod_id'] ?>" />
+			
                         <label for="<?php echo $params['klarna_pm']['id']?>">
                                  <?php echo $params['klarna_pm']['module'] ?></label>
                        <br />
