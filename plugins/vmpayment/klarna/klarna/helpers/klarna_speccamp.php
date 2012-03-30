@@ -238,7 +238,7 @@ class klarna_speccamp {
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$kCheckout = new KlarnaAPI($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
-	$kCheckout->addSetupValue('ajax_path', $this->web_root . $cPath . '/helpers/klarna_ajax.php');
+	$kCheckout->addSetupValue('ajax_path', $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/helpers/klarna_ajax.php');
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id = 1;

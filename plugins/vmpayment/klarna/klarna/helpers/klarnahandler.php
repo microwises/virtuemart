@@ -85,7 +85,7 @@ class KlarnaHandler {
 		));
 	$lower_country = strtolower($country);
 	if (key_exists(strtoupper($country), $countryData)) {
-	    $cData = $countryData[$country];
+	    $cData = $countryData[strtoupper($country)];
 	    $eid = 'klarna_' . $lower_country . '_merchantid';
 	    $secret = 'klarna_' . $lower_country . '_sharedsecret';
 	    $invoice_fee = 'klarna_' . $lower_country . '_invoicefee';
@@ -337,7 +337,7 @@ class KlarnaHandler {
 	return $billing;
     }
 
-    public function addTransaction($method, $cart, &$order, &$estoreOrderNo, $tablename) {
+    public function addTransaction($method, $cart, $order ) {
 
 	if (!class_exists('KlarnaAddr')) require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnaaddr.php');
 
@@ -452,7 +452,6 @@ class KlarnaHandler {
 	}
 
 
-	$klarna_pno = $klarnaData['PNO'];
 	$klarna_payment_id = $klarnaData['klarna_payment_id'];
 	$klarna_payment_code = $order['virtuemart_paymentmethod_id'];
 
@@ -505,8 +504,7 @@ class KlarnaHandler {
 	    if (isset($klarnaData['YEAR_SALARY'])) {
 		$klarna->setIncomeInfo("'yearly_salary'",  $klarnaData['YEAR_SALARY'] );
 	    }
-	    $result = $klarna->addTransaction($klarna_pno, ($klarna->getCountry() == KlarnaCountry::DE ||$klarna->getCountry() == KlarnaCountry::NL) ?
-			    $klarna_gender : null, $klarna_flags, $klarna_pclass);
+	    $result = $klarna->addTransaction($klarnaData['PNO'], ($klarna->getCountry() == KlarnaCountry::DE ||$klarna->getCountry() == KlarnaCountry::NL) ?$klarna_gender : null, $klarna_flags, $klarna_pclass);
 
 	    $status = self::getStatusForCode($result[2]);
 

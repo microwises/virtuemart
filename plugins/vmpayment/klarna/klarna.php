@@ -23,10 +23,10 @@ if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 if (JVM_VERSION === 2) {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
 } else {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
 }
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
@@ -177,7 +177,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return false;
 	    }
 	}
-	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'assets/js/', false);
+	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'klarna/assets/js/', false);
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
