@@ -54,11 +54,20 @@ class JElementKlarnaPclasses extends JElement {
             <div id="pclasses">';
 
 	$total = 0;
-	$eid_array = KlarnaHandler::getEidSecretArray();
+		$handler = new KlarnaHandler ;
+		// call klarna server for pClasses
+		$methodid = jrequest::getInt('methodid');
+		if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+		$model = VmModel::getModel('paymentmethod');
+		$payment = $model->getPayment();
+		if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
+		$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
+		$data = $parameters->getParamByName('data');
+	$eid_array = KlarnaHandler::getEidSecretArray($data);
 	foreach ($eid_array as $country => $eid_data) {
 	    try {
 		$klarna = new Klarna_virtuemart();
-		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $this->mode, KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), ($this->mode == Klarna::LIVE));
+		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $data->klarna_mode, $data->klarna_pc_type, $data->klarna_pc_uri, ($data->klarna_mode=='klarna_live'));
 		$klarna->setCountry($country);
 		$pclasses = $klarna->getPClasses();
 		$total = $total + count($pclasses);
@@ -77,7 +86,6 @@ class JElementKlarnaPclasses extends JElement {
                                 </thead>
                             <tbody class="klarna_pclasses_body">';
 
-
 		    foreach ($klarna->getPClasses() as $pclass) {
 
 			$html .='  <tr>
@@ -85,10 +93,10 @@ class JElementKlarnaPclasses extends JElement {
                                     <td class="pclass_description">' . $pclass->getDescription() . '</td>
                                     <td class="pclass_number"><' . $pclass->getMonths() . '</td>
                                     <td class="pclass_number">' . $pclass->getInterestRate() . "%" . '</td>
-                                    <td class="pclass_number">' . $pclass->getInvoiceFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($klarna->getCountryCode()) . '</td>
-                                    <td class="pclass_number">' . $pclass->getStartFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($klarna->getCountryCode()) . '</td>
-                                    <td class="pclass_number">' . $pclass->getMinAmount() . " " . KlarnaHandler::getCurrencySymbolForCountry($klarna->getCountryCode()) . '</td>
-                                    <td class="pclass_flag"><img src="' . KLARNA_IMG_PATH . 'images/flags/' . $klarna->getLanguageCode() . '.png" /></td>
+                                    <td class="pclass_number">' . $pclass->getInvoiceFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) . '</td>
+                                    <td class="pclass_number">' . $pclass->getStartFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) . '</td>
+                                    <td class="pclass_number">' . $pclass->getMinAmount() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) . '</td>
+                                    <td class="pclass_flag"><img src="'. JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/share/flags/'. $klarna->getLanguageCode() . '.png" /></td>
                                 </tr>';
 		    }
 

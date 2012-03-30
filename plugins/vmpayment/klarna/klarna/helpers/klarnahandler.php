@@ -647,7 +647,7 @@ class KlarnaHandler {
 	    // country is CODE 3==> converting to 2 letter country
 	    //$country = self::convertCountryCode($method, $country);
 	    $lang = self::getLanguageForCountry($method, $country);
-	    $flag = "<img src='" . JPATH_VMKLARNAPLUGIN . "/klarna/assets/images/general/flags/". $lang . ".png' />";
+	    $flag = "<img src='" . VMKLARNAPLUGINWEBROOT . "/klarna/assets/images/general/flags/". $lang . ".png' />";
 	    try {
 		$settings = self::getCountryData($method, $country);
 
@@ -836,35 +836,34 @@ class KlarnaHandler {
      */
     public function getEidSecretArray($method) {
 	$eid_array = array();
-
-	if ($method->klarna_sweden_merchantid != "" && $method->klarna_sweden_sharedsecret != "") {
-	    $eid_array['se']['secret'] = $method->klarna_sweden_sharedsecret;
-	    $eid_array['se']['eid'] = (int) $method->klarna_sweden_merchantid;
+	if ($method->klarna_swe_merchantid != "" && $method->klarna_swe_sharedsecret != "") {
+	    $eid_array['se']['secret'] = $method->klarna_swe_sharedsecret;
+	    $eid_array['se']['eid'] = (int) $method->klarna_swe_merchantid;
 	}
 
-	if ($method->klarna_norway_merchantid != "" && $method->klarna_norway_sharedsecret != "") {
-	    $eid_array['no']['secret'] = $method->klarna_norway_sharedsecret;
-	    $eid_array['no']['eid'] = $method->klarna_norway_merchantid;
+	if ($method->klarna_nor_merchantid != "" && $method->klarna_nor_sharedsecret != "") {
+	    $eid_array['no']['secret'] = $method->klarna_nor_sharedsecret;
+	    $eid_array['no']['eid'] = $method->klarna_nor_merchantid;
 	}
 
-	if ($method->klarna_germany_merchantid != "" && $method->klarna_germany_sharedsecret != "") {
-	    $eid_array['de']['secret'] = $method->klarna_germany_sharedsecret;
-	    $eid_array['de']['eid'] = $method->klarna_germany_merchantid;
+	if ($method->klarna_deu_merchantid != "" && $method->klarna_deu_sharedsecret != "") {
+	    $eid_array['de']['secret'] = $method->klarna_deu_sharedsecret;
+	    $eid_array['de']['eid'] = $method->klarna_deu_merchantid;
 	}
 
-	if ($method->klarna_netherlands_merchantid != "" && $method->klarna_netherlands_sharedsecret != "") {
-	    $eid_array['nl']['secret'] = $method->klarna_netherlands_sharedsecret;
-	    $eid_array['nl']['eid'] = $method->klarna_netherlands_merchantid;
+	if ($method->klarna_nld_merchantid != "" && $method->klarna_nld_sharedsecret != "") {
+	    $eid_array['nl']['secret'] = $method->klarna_nld_sharedsecret;
+	    $eid_array['nl']['eid'] = $method->klarna_nld_merchantid;
 	}
 
-	if ($method->klarna_denmark_merchantid != "" && $method->klarna_denmark_sharedsecret != "") {
-	    $eid_array['dk']['secret'] = $method->klarna_denmark_sharedsecret;
-	    $eid_array['dk']['eid'] = $method->klarna_denmark_merchantid;
+	if ($method->klarna_dnk_merchantid != "" && $method->klarna_dnk_sharedsecret != "") {
+	    $eid_array['dk']['secret'] = $method->klarna_dnk_sharedsecret;
+	    $eid_array['dk']['eid'] = $method->klarna_dnk_merchantid;
 	}
 
-	if ($method->klarna_fi_merchantid != "" && $method->klarna_finland_sharedsecret != "") {
-	    $eid_array['fi']['secret'] = $method->klarna_finland_sharedsecret;
-	    $eid_array['fi']['eid'] = $method->klarna_finland_merchantid;
+	if ($method->klarna_fin_merchantid != "" && $method->klarna_fin_sharedsecret != "") {
+	    $eid_array['fi']['secret'] = $method->klarna_fin_sharedsecret;
+	    $eid_array['fi']['eid'] = $method->klarna_fin_merchantid;
 	}
 
 	return $eid_array;

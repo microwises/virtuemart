@@ -29,6 +29,7 @@ class KlarnaSelfCall {
 	 * 
 	 */
 	function getPclasses() {
+		jimport('phpxmlrpc.xmlrpc'); 
 		$handler = new KlarnaHandler ;
 		// call klarna server for pClasses
 		$methodid = jrequest::getInt('methodid');
@@ -39,7 +40,7 @@ class KlarnaSelfCall {
 		$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 		$data = $parameters->getParamByName('data');
 		// echo "<pre>";print_r($data);
-		print_r ($handler->fetchPClasses($data) );
+		echo $handler->fetchPClasses($data);
 		// echo result with tmpl ?
 	}
 }
