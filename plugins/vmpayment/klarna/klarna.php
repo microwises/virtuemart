@@ -236,8 +236,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if ($sessionKlarna) {
 	    $sessionKlarnaData = unserialize($sessionKlarna);
 	}
-	if (isset($sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod_id'])) {
-	    $klarna_paymentmethod_id = $sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod_id'];
+	$klarna_paymentmethod="";
+	if (isset($sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod'])) {
+	    $klarna_paymentmethod = $sessionKlarnaData->KLARNA_DATA['klarna_paymentmethod'];
 	}
 	$virtuemart_paymentmethod_id = $method->virtuemart_paymentmethod_id;
 	$html_invoice ='';
@@ -246,8 +247,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_invoice.php');
 	    $invoice = new klarna_invoice($method, $cart, $vendor_currency);
 	    $klarna_pm = $invoice->invoice($method);
-	    //$html_invoice = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
-		$html_invoice = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
+	    $html_invoice = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod' =>  $klarna_paymentmethod ) );
 	}
 	$html_partpay='';
 	if (in_array('klarna_partpay', (array) $method->klarna_modules) && $partpay > 0) { // Show only if partpayment is enabled and we have pclasses.
@@ -255,7 +255,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_partpay.php');
 	    $partPay = new klarna_partpay($method, $cart, $vendor_currency);
 	    $klarna_pm = $partPay->partPay($method);
-	    $html_partpay = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
+	    $html_partpay = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod' =>  $klarna_paymentmethod ) );
 	}
 	$html_speccamp='';
 	if (in_array('klarna_speccamp', (array) $method->klarna_modules) && $speccamp > 0) { // Show only if campaigns are enabled and we have pclasses.
@@ -263,12 +263,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_speccamp.php');
 	    $specCamp = new klarna_speccamp($method, $cart, $vendor_currency);
 	    $klarna_pm = $specCamp->specCamp($method);
-	    $html_speccamp = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
+	    $html_speccamp = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod' =>  $klarna_paymentmethod ) );
 	}
 
 	$html = '<script type="text/javascript">
-			// console.log( "clarna' . $klarna_paymentmethod_id . ' " );
-            setTimeout(\'jQuery(":radio[value=' . $klarna_paymentmethod_id . ']").click();\', 200);
+			// console.log( "clarna' . $klarna_paymentmethod . ' " );
+            setTimeout(\'jQuery(":radio[value=' . $klarna_paymentmethod . ']").click();\', 200);
         </script>';
 
 // TO DO add html:
@@ -549,15 +549,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$data = $parameters->getParamByName('data');
 	//print_r($data);
 	$country = jrequest::getword('country');
-	$country = klarnahandler::convertToThreeLetterCode( $country);
-	$eid = klarnahandler::getEid($data, $country);
-	
+	$country = KlarnaHandler::convertToThreeLetterCode( $country);
+	$eid = KlarnaHandler::getEid($data, $country);
+
 	if (!class_exists( 'klarna_virtuemart' )) require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_virtuemart.php');
 	//KlarnaAjax($api  , $eid, $path, $webroot)  ;
 	$klarnaVM= new  klarna_virtuemart ;
-	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN.'klarna/klarna/api/checkout',Juri::base()) ;
+	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN.'/klarna/tmpl',Juri::base()) ;
 	$action = jrequest::getWord('action');
-	
+
 	$SelfCall->$action ();
 	//echo 'klarna reponse'.$action;
 	jexit();
@@ -675,35 +675,36 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
-
+if (!class_exists('KlarnaAddr')) require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnaaddr.php');
+if (!class_exists('KlarnaLanguagePack'))
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
 	$session = JFactory::getSession();
 	$sessionKlarna = new stdClass();
-	$pmc = 'ps_klarna'; //@TODO
-	if ($pmc == 'ps_klarna') {
+	$klarna_paymentmethod=  JRequest::getVar('klarna_paymentmethod');
+	if ($klarna_paymentmethod == 'klarna_invoice') {
 	    $kIndex = "klarna_";
 	    $klarna_payment = "klarna_invoice";
 	    $sessionKlarna->klarna_option = 'invoice';
-	}
-	if ($pmc == 'ps_klarna_partpayment') {
-	    $kIndex = "klarna_part_";
+	} elseif ($klarna_paymentmethod == 'klarna_partPayment') {
+	    $kIndex = "klarna_partPayment";
 	    $klarna_payment = "klarna_partpay";
 	    $sessionKlarna->klarna_option = 'part';
-	}
-	if ($pmc == 'ps_klarna_speccamp') {
+	} elseif ($klarna_paymentmethod == 'klarna_speccamp') {
 	    $kIndex = "klarna_spec_";
 	    $klarna_payment = "klarna_speccamp";
 	    $sessionKlarna->klarna_option = 'spec';
+	} else {
+	    return;
 	}
 
 	// Store payment_method_id so we can activate the
 	// right payment in case something goes wrong.
 	$sessionKlarna->virtuemart_payment_method_id = $cart->virtuemart_paymentmethod_id;
-	$sessionKlarna->klarna_payment = $klarna_payment;
+	$sessionKlarna->klarna_paymentmethod = $klarna_paymentmethod;
 
 	$user_country = $this->_getCartAddressCountryCode3($cart);
 
-	if (!class_exists('KlarnaLanguagePack'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
+
 	$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 
 	$country = KlarnaHandler::convertCountry($method, $user_country);
@@ -711,7 +712,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	// Get the correct data
 	//Removes spaces, tabs, and other delimiters.
-	$klarna_pno = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex . 'pnum'));
+	//$klarna_pno = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex . 'pnum'));
+	$klarna_pno = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar( 'socialNumber'));
 	$klarna_phone = JRequest::getVar($kIndex . 'phone');
 	$klarna_email = JRequest::getVar($kIndex . 'email');
 	$klarna_gender = JRequest::getVar($kIndex . 'gender');
@@ -799,7 +801,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    'LAST_NAME' => $klarna_last_name,
 	    'PHONE' => $klarna_phone,
 	    'EMAIL' => $klarna_email,
-	    'PCLASS' => ($pmc == 'ps_klarna' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan"))),
+	    'PCLASS' => ($klarna_paymentmethod == 'klarna_invoice' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan"))), //???
 	    'STREET' => $klarna_street,
 	    'ZIP' => $klarna_zip,
 	    'CITY' => $klarna_city,
@@ -836,8 +838,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	}
 
 	$settings = KlarnaHandler::getCountryData($method, $user_country);
-	if (!class_exists('KlarnaAddr'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnaaddr.php');
+
 	try {
 	    $addr = new KlarnaAddr(
 			    $klarna_email,
@@ -937,6 +938,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function displayLogos($method) {
+	if (!class_exists('KlarnaLanguagePack'))
+		    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
+
 	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'klarna/assets/images/logo/';
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
@@ -950,14 +954,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$method = "";
 		break;
 	    case 'partpayment':
+	    case 'part':
 		$logo .= $country . '/klarna_account.png';
 		$method = "";
 		break;
 	    case 'speccamp':
 		$logo .= 'klarna_logo.png';
 		$lang = KlarnaHandler::getLanguageForCountry($method, $country);
-		if (!class_exists('KlarnaLanguagePack'))
-		    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'class.klarnalanguagepack.php');
+
 		$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 		$method = $kLang->fetch('MODULE_SPEC_TEXT_TITLE', $lang);
 		break;
