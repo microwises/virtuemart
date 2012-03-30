@@ -5,19 +5,19 @@ if(typeof global_sum == 'undefined') {
     var global_sum = 0;
 }
 if(typeof ajax_path == 'undefined') {
-    var ajax_path = 'klarna_ajax.php';
+    var ajax_path = 'klarnaAjax.php';
 }
 
 // Workaround for old jQuery versions
-if (typeof jQuery.prototype.focusin == "undefined") {
-    jQuery.prototype.focusin = jQuery.prototype.focus;
-}
-if (typeof jQuery.prototype.focusout == "undefined") {
-    jQuery.prototype.focusout = jQuery.prototype.blur;
-}
-if (typeof jQuery.prototype.closest == "undefined") {
-    jQuery.prototype.closest = jQuery.prototype.parents;
-}
+// if (typeof jQuery.prototype.focusin == "undefined") {
+    // jQuery.prototype.focusin = jQuery.prototype.focus;
+// }
+// if (typeof jQuery.prototype.focusout == "undefined") {
+    // jQuery.prototype.focusout = jQuery.prototype.blur;
+// }
+// if (typeof jQuery.prototype.closest == "undefined") {
+    // jQuery.prototype.closest = jQuery.prototype.parents;
+// }
 
 var klarnaGeneralLoaded = true;
 var red_baloon_busy = false;
@@ -231,9 +231,12 @@ function initPaymentSelection () {
     } else {
         showPaymentOption(jQuery('#klarna_box_spec'));
     }
-
-    jQuery(document).find('input[type=radio][name='+global_pid+']').each(function () {
-	//jQuery('input[type=radio].klarnaPayment').each(function () {
+	// jQuery(document).find('input[type=radio][name='+global_pid+']').each(function () {
+		
+		// klarna_box_container
+	// }
+    // 
+	jQuery('input.klarmaPaiement').each(function () {
         var value = jQuery(this).val();
         // If value is a number it can't be used so we fallback to id.
         if (!isNaN(value)) {
@@ -250,22 +253,19 @@ function initPaymentSelection () {
 
 //Load when document finished loading
 jQuery(document).ready(function (){
-    var baloon = jQuery('#klarna_baloon').clone();
-    jQuery(document).find('#klarna_baloon').each(function () {
-        jQuery(this).remove();
-    });
+    var baloon = jQuery('.klarna_baloon').clone();
+    jQuery('.klarna_baloon').remove();
 
-    var baloon3 = jQuery('#klarna_blue_baloon').clone();
-    jQuery(document).find('#klarna_blue_baloon').each(function () {
-        jQuery(this).remove();
-    });
+    var baloon3 = jQuery('.klarna_blue_baloon').clone();
+    jQuery('.klarna_blue_baloon').remove();
+
 
     jQuery('body').append(baloon);
     jQuery('body').append(baloon3);
 
     doDocumentIsReady();
 
-    jQuery(document).find('.klarna_box_bottom_languageInfo').remove();
+    jQuery('.klarna_box_bottom_languageInfo').remove();
 
     if (!global_unary_checkout) {
         initPaymentSelection();
@@ -380,11 +380,11 @@ function initPaymentOptions(opts) {
     }
 
     // Input field on focus
-    jQuery('.klarna_box', opts).find('input').focusin(function () {
-        setBaloonInPosition(jQuery(this), false);
-    }).focusout(function () {
-        hideBaloon();
-    });
+    // jQuery('.klarna_box', opts).find('input').focusin(function () {
+        // setBaloonInPosition(jQuery(this), false);
+    // }).focusout(function () {
+        // hideBaloon();
+    // });
 
     // Chosing the active language
     jQuery('.box_active_language', opts).click(function () {
@@ -482,49 +482,27 @@ function pnoUpdated (box, companyAllowed) {
     var pno_value = jQuery.trim(jQuery(box).val());
 
     // Set the PNO to the other fields
-    jQuery(document).find('.Klarna_pnoInputField').each(function () {
-        jQuery(this).val(pno_value);
-    });
+    jQuery('.Klarna_pnoInputField').val(pno_value);
 
     // Do check
     if (pno_value != "") {
-        jQuery(document).find('.klarna_box_bottom_content_loader').each(function () {
-            if (!jQuery(this).is(":visible"))
-                jQuery(this).fadeIn('fast');
-        });
+        jQuery('.klarna_box_bottom_content_loader').is(":hidden").fadeIn('fast');
+
 
         if (!validateSocialSecurity(pno_value)) {
-            jQuery(document).find('.klarna_box_bottom_content_loader').each(function () {
-                jQuery(this).fadeOut('fast');
-            });
-
-            if (jQuery('.klarna_box_bottom_address').is(":visible"))
-                jQuery('.klarna_box_bottom_address').slideUp('fast');
+            jQuery('.klarna_box_bottom_content_loader').fadeOut('fast');
+            jQuery('.klarna_box_bottom_address').is(":visible").slideUp('fast');
         } else {
             getAddress (jQuery(box).closest('.klarna_box'), pno_value, companyAllowed);
         }
     } else {
-        jQuery(document).find('.referenceDiv').each(function (){
-            if (jQuery(this).is(":visible"))
-            {
-                jQuery(this).slideUp('fast');
-            }
-            else {
-                jQuery(this).css({"display":"none"});
-            }
-        });
-
+        jQuery('.referenceDiv').is(":visible").slideUp('fast');
+        // jQuery('.referenceDiv').is(":hidden").css({"display":"none"}); //Ilogic !
         jQuery('.klarna_box_bottom_content_loader').fadeOut('fast');
 
-        jQuery(document).find('.klarna_box_bottom_address').each(function () {
-            if (jQuery(this).is(":visible"))
-            {
-                jQuery(this).slideUp('fast');
-            }
-            else {
-                jQuery(this).css({"display":"none"});
-            }
-        });
+        jQuery('.klarna_box_bottom_address').is(":visible").slideUp('fast');
+		//jQuery('.klarna_box_bottom_address').is(":hidden").css({"display":"none"}); // Ilogic !
+
     }
 }
 
@@ -676,11 +654,11 @@ function showRedBaloon (box) {
     var field;
     if (typeof box == 'undefined') {
         if (gChoice == "klarna_invoice") {
-            box = jQuery(document).find('#klarna_box_invoice');
+            box = jQuery('#klarna_box_invoice');
         } else if (gChoice == "klarna_partPayment") {
-            box = jQuery(document).find('#klarna_box_part');
+            box = jQuery('#klarna_box_part');
         } else if (gChoice == "klarna_SpecCamp") {
-            box = jQuery(document).find('#klarna_box_spec');
+            box = jQuery('#klarna_box_spec');
         }
     }
 

@@ -244,7 +244,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_invoice.php');
 	    $invoice = new klarna_invoice($method, $cart, $vendor_currency);
 	    $klarna_pm = $invoice->invoice($method);
-	    $html_invoice = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
+	    //$html_invoice = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
+		$html_invoice = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
 	}
 
 	if (in_array('klarna_partpay', (array) $method->klarna_modules) && $partpay > 0) { // Show only if partpayment is enabled and we have pclasses.
@@ -252,7 +253,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_partpay.php');
 	    $partPay = new klarna_partpay($method, $cart, $vendor_currency);
 	    $klarna_pm = $partPay->partPay($method);
-	    $html_partpay = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
+	    $html_partpay = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
 	}
 
 	if (in_array('klarna_speccamp', (array) $method->klarna_modules) && $speccamp > 0) { // Show only if campaigns are enabled and we have pclasses.
@@ -260,11 +261,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_speccamp.php');
 	    $specCamp = new klarna_speccamp($method, $cart, $vendor_currency);
 	    $klarna_pm = $specCamp->specCamp($method);
-	    $html_speccamp = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
+	    $html_speccamp = $this->renderByLayout('displaypayment',array('klarna_pm' => $klarna_pm,'virtuemart_paymentmethod_id' =>  $virtuemart_paymentmethod_id,'klarna_paymentmethod_id' =>  $klarna_paymentmethod_id ) );
 	}
 
 	$html = '<script type="text/javascript">
-			console.log( "clarna' . $klarna_paymentmethod_id . ' " );
+			// console.log( "clarna' . $klarna_paymentmethod_id . ' " );
             setTimeout(\'jQuery(":radio[value=' . $klarna_paymentmethod_id . ']").click();\', 200);
         </script>';
 
