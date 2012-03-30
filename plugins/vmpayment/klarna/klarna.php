@@ -555,7 +555,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!class_exists( 'klarna_virtuemart' )) require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_virtuemart.php');
 	//KlarnaAjax($api  , $eid, $path, $webroot)  ;
 	$klarnaVM= new  klarna_virtuemart ;
-	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN.'/klarna/tmpl',Juri::base()) ;
+	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN,Juri::base()) ;
 	$action = jrequest::getWord('action');
 
 	$SelfCall->$action ();
