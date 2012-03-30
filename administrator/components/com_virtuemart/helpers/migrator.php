@@ -119,11 +119,12 @@ class Migrator extends VmModel{
 
 	}
 
-	function storeMigrationProgress($group,$array){
+	function storeMigrationProgress($group,$array, $limit = ''){
 
 		// 		vmdebug('storeMigrationProgress',$array);
 		//$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.implode(',',$array).'" WHERE `id` = "1"';
-		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" WHERE `id` = "1"';
+
+		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" '.$limit.' WHERE `id` = "1"';
 
 		$this->_db->setQuery($q);
 		if(!$this->_db->query()){
@@ -182,7 +183,7 @@ class Migrator extends VmModel{
 		// 		$result = $this->portCategories();
 		// 		$result = $this->portManufacturerCategories();
 		// 		$result = $this->portManufacturers();
-		$result = $this->portProducts();
+// 		$result = $this->portProducts();
 
 		// 		$result = $this->portOrderStatus();
 		$result = $this->portOrders();
@@ -996,7 +997,7 @@ class Migrator extends VmModel{
 		//approximatly 100 products take a 1 MB
 		$maxItems = $this->_getMaxItems('Products');
 // 		$maxItems = 100;
-		$startLimit = 0;
+		$startLimit = $this->_getStartLimit('products_start');;
 		$i=0;
 		$continue = true;
 
@@ -1018,6 +1019,7 @@ class Migrator extends VmModel{
 			WHERE (`p`.product_id) IS NOT NULL
 			GROUP BY `p`.product_id ORDER BY `p`.product_parent_id LIMIT '.$startLimit.','.$maxItems;
 
+			$doneStart = $startLimit;
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Products');
 			$oldProducts = $res[0];
 
@@ -1026,18 +1028,6 @@ class Migrator extends VmModel{
 
 // 			vmdebug('in product migrate $oldProducts ',$oldProducts);
 
-			$exit = false;
-			foreach($oldProducts as $product){
-				if(empty($product['product_id'])){
-					vmdebug('$product["product_id"] is EMPTY?',$product,$q);
-					$exit = true;
-				}
-			}
-			if($exit){
-				vmdebug('portProducts $q',$q);
-// 				return false;
-			}
-			// 			vmdebug('$oldProducts '.count($oldProducts));
 			/* Not in VM1
 			slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
 
@@ -1178,6 +1168,7 @@ class Migrator extends VmModel{
 
 			}
 
+			$limitStartToStore = ', products_start = "'.($doneStart+$i).'" ';
 			$this->storeMigrationProgress('products',$alreadyKnownIds);
 			vmInfo('Migration: '.$i.' products processed ');
 		}
@@ -1225,6 +1216,9 @@ class Migrator extends VmModel{
 		if(!class_exists('VirtueMartModelOrderstatus'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
 
+		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
+
 		$oldtonewOrders = array();
 
 		//Looks like there is a problem, when the data gets tooo big,
@@ -1236,7 +1230,9 @@ class Migrator extends VmModel{
 		//approximatly 100 products take a 1 MB
 		$maxItems = $this->_getMaxItems('Orders');
 
-		$startLimit = 0;
+
+		$startLimit = $this->_getStartLimit('orders_start');
+		vmdebug('portOrders $startLimit '.$startLimit);
 		$i = 0;
 		$continue=true;
 
@@ -1250,6 +1246,7 @@ class Migrator extends VmModel{
 				LEFT JOIN `#__virtuemart_orders` as `o2` ON `o2`.`order_number` = `o`.`order_number`
 				WHERE (o2.order_number) IS NULL ORDER BY o.order_id LIMIT '.$startLimit.','.$maxItems;
 
+			$doneStart = $startLimit;
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Orders');
 			$oldOrders = $res[0];
 			$startLimit = $res[1];
@@ -1326,7 +1323,7 @@ class Migrator extends VmModel{
 					foreach($oldItems as $item){
 						$item['virtuemart_order_id'] = $newId;
 						if(!empty($newproductIds[$item['product_id']])){
-							$item['product_id'] = $newproductIds[$item['product_id']];
+							$item['virtuemart_product_id'] = $newproductIds[$item['product_id']];
 						} else {
 							vmWarn('Attention, order is pointing to deleted product (not found in the array of old products)');
 						}
@@ -1372,32 +1369,29 @@ class Migrator extends VmModel{
 					$q = 'SELECT * FROM `#__vm_order_user_info` WHERE `order_id` = "'.$order['order_id'].'" ';
 					$this->_db->setQuery($q);
 					$oldItems = $this->_db->loadAssocList();
+					if($oldItems){
+						foreach($oldItems as $item){
+							$item['virtuemart_order_id'] = $newId;
+							$item['virtuemart_user_id'] = $item['user_id'];
+							$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
+							$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
 
-					if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-					foreach($oldItems as $item){
-						$item['virtuemart_order_id'] = $newId;
-						$item['virtuemart_user_id'] = $item['user_id'];
-						$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
-						$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
-
-						$item['email'] = $item['user_email'];
-						$orderUserinfoTable = $this->getTable('order_userinfos');
-						$orderUserinfoTable->bindChecknStore($item);
-						$errors = $orderUserinfoTable->getErrors();
-						if(!empty($errors)){
-							foreach($errors as $error){
-								$this->_app->enqueueMessage('Migration orderuserinfo: ' . $error);
+							$item['email'] = $item['user_email'];
+							$orderUserinfoTable = $this->getTable('order_userinfos');
+							$orderUserinfoTable->bindChecknStore($item);
+							$errors = $orderUserinfoTable->getErrors();
+							if(!empty($errors)){
+								foreach($errors as $error){
+									$this->_app->enqueueMessage('Migration orderuserinfo: ' . $error);
+								}
+								$continue = false;
+								break;
 							}
-							$continue = false;
-							break;
 						}
 					}
-
-
 					//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
 				}
-				$this->storeMigrationProgress('orders',$alreadyKnownIds);
+// 				$this->storeMigrationProgress('orders',$alreadyKnownIds);
 				// 				 else {
 				// 					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
 				// 				}
@@ -1409,8 +1403,10 @@ class Migrator extends VmModel{
 				}
 			}
 		}
-		$this->storeMigrationProgress('orders',$alreadyKnownIds);
-		vmInfo('Migration: '.$i.' orders processed ');
+
+		$limitStartToStore = ', orders_start = "'.($doneStart+$i).'" ';
+		$this->storeMigrationProgress('orders',$alreadyKnownIds,$limitStartToStore);
+		vmInfo('Migration: '.$i.' orders processed '.($doneStart+$i).' done.');
 	}
 
 	function portOrderStatus(){
@@ -1484,13 +1480,32 @@ class Migrator extends VmModel{
 
 		$maxItems = 50;
 		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
-		$maxItems = (int)$freeRam * 90;
+		$maxItems = (int)$freeRam * 70;
 		if($maxItems<=0){
 			$maxItems = 50;
 			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true)/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
+		} else if($maxItems>1000){
+			$maxItems = 1000;
 		}
 		vmdebug('Migrating '.$name.', free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 		return $maxItems;
+	}
+
+	/**
+	 *
+	 * Enter description here ...
+	 */
+	private function _getStartLimit($name){
+
+		$this->_db = JFactory::getDBO();
+
+		$q = 'SELECT `'.$name.'` FROM `#__virtuemart_migration_oldtonew_ids` WHERE id="1" ';
+
+		$this->_db->setQuery($q);
+
+		$limit = $this->_db->loadResult();
+		vmdebug('$limit',$limit,$q);
+		if(!empty($limit)) return $limit; else return 0;
 	}
 
 	/**

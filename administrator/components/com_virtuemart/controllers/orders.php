@@ -296,7 +296,6 @@ class VirtuemartControllerOrders extends VmController {
 // 			$order['details']
 // 			$order['items']
 // 			$order['calc_rules']
-			vmdebug('hmmm',$order);
 			$attribs = get_object_vars($order['details']['BT']);
 
 // 			$csv = '"BT"';

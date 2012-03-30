@@ -231,6 +231,69 @@ class VirtuemartControllerProduct extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}
 
+	public function sentProductEmailToCustomer(){
+
+
+		$cids = JRequest::getVar('virtuemart_product_id', JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+		vmdebug('sentProductEmailToCustomer',$cids);
+		$db = JFactory::getDbo();
+		foreach($cids as $cid){
+			$q = 'SELECT `ou`.`title`,`ou`.`company`,`ou`.`last_name`,`ou`.`first_name`,`ou`.`email`
+					FROM `#__virtuemart_order_items` as `oi`
+					LEFT JOIN `#__virtuemart_orders` as `o` ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id`
+					LEFT JOIN `#__virtuemart_order_userinfos` as `ou` ON `o`.`virtuemart_order_id` = `ou`.`virtuemart_order_id`
+					WHERE `oi`.`virtuemart_product_id` = "'.(int)$cid.'" AND `address_type` = "BT" GROUP BY `ou`.email';
+
+			$db->setQuery($q);
+
+			$addresses = $db->loadAssocList();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('sentProductEmailToCustomer '.$err);
+			}
+			vmdebug('$addresses '.$q,$addresses);
+
+			$vars = array();
+			$productModel = VmModel::getModel('product');
+			$vars['product'] = $productModel->getProduct($virtuemart_product_id);
+
+			$vendorModel = VmModel::getModel('vendor');
+			$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
+			$vars['vendor'] = array('vendor_store_name' => $fromName );
+
+			foreach($addresses as $address){
+
+				$user = JFactory::getUser();
+				$fromMail = $user->email;
+				$fromName = $user->name;
+				$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
+
+				$TOMail = JRequest::getVar('email');	//is sanitized then
+				$TOMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$TOMail);
+
+				//recommend and productdetails should be changed, we need a link to the order there.
+				if (shopFunctionsF::renderMail('recommend', $TOMail, $vars,'productdetails',true)) {
+					$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
+				}
+				else {
+					$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
+				}
+				$mainframe->enqueueMessage(JText::_($string));
+
+				// vmdebug('my email vars ',$vars,$TOMail);
+				// Display it all
+// 				$view = $this->getView('recommend', 'html');
+
+// 				$view->setLayout('mail_confirmed');
+// 				$view->display();
+			}
+		}
+
+		$app = Jfactory::getApplication();
+		$app->redirect('index.php?option=com_virtuemart&view=product');
+	}
 
 }
 // pure php no closing tag

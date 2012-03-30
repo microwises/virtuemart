@@ -135,20 +135,11 @@ class VmMediaHandler {
 	 */
 	public function createMedia($table,$type='',$file_mimetype=''){
 
-		//		if(!empty($file_mimetypee)){
-		//			$isImage = self::isImage($file_mimetypee);
-		//		}
-		//		else if(!empty($table)){
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		//			$extension = $this->file_extension = strtolower(JFile::getExt($table->file_url));
+
 		$extension = strtolower(JFile::getExt($table->file_url));
 
 		$isImage = self::isImage($extension);
-		//		} else {
-		//			$isImage = true;
-		//			$app = JFactory::getApplication();
-		//			$app->enqueueMessage('create media of unknown mimetype, a programmers error');
-		//		}
 
 		if($isImage){
 			if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
@@ -170,7 +161,7 @@ class VmMediaHandler {
 		}
 
 		$media->setFileInfo($type);
-		vmdebug('createMedia',$type,$media);
+
 		return $media;
 	}
 
@@ -194,7 +185,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
-		vmdebug();
+
 		return $data;
 	}
 
