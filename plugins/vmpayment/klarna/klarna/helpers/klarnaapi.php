@@ -178,7 +178,7 @@ class KlarnaAPI {
 	$this->aSetupSettings['sum'] = $a_iSum;
 	$this->aSetupSettings['flag'] = $a_iFlag;
 	$this->aSetupSettings['payment_id'] = "payment";
-	$this->aSetupSettings['ajax_path'] = "klarna_ajax.php";
+	$this->aSetupSettings['ajax_path'] = juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
 	$this->aSetupSettings['invoice_name'] = 'klarna_invoice';
 	$this->aSetupSettings['part_name'] = 'klarna_partPayment';
 	$this->aSetupSettings['spec_name'] = 'klarna_SpecCamp';

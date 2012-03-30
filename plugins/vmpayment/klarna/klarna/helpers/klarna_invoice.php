@@ -236,7 +236,7 @@ class klarna_invoice  {
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('sum', $klarna_fee);
 	$kCheckout->setInvoiceFee($klarna_fee);
-	$kCheckout->addSetupValue('ajax_path', $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/helpers/klarna_ajax.php');
+	$kCheckout->addSetupValue('ajax_path', juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna" );
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id=1;

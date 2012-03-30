@@ -264,7 +264,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	}
 
 	$html = '<script type="text/javascript">
-            setTimeout(\'jQuery(":radio[value=\'' . $klarna_paymentmethod_id . '\']").click();\', 200);
+			console.log( "clarna' . $klarna_paymentmethod_id . ' " );
+            setTimeout(\'jQuery(":radio[value=' . $klarna_paymentmethod_id . ']").click();\', 200);
         </script>';
 
 // TO DO add html:
@@ -535,6 +536,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	//refresh captcha code
 	//Klarna Ajax
+	require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_ajax.php');
 	jexit();
     }
 

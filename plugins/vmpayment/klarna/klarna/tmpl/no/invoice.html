@@ -34,7 +34,7 @@
                 if (red_baloon_paymentBox == "")
                     red_baloon_paymentBox = '{{setup.red_baloon_paymentBox}}';
             }
-
+console.log('{{setup}}');
             // Mapping to the real field names which may be prefixed
             var params_invoice = {
                 companyName: '{{input.companyName}}',
@@ -59,11 +59,11 @@
 
              var invoice_ITId        = '{{input.invoiceType}}';
 
-             /*
+
 	     if(typeof klarnaGeneralLoaded == 'undefined') {
                  document.write('<scr'+'ipt src="{{setup.path_js}}klarna_general.js" type="text/javascript"></scr'+'ipt>');
              }
-	     */
+
 
              if(typeof klarnaAgreementLoaded == 'undefined') {
                  document.write('<scr'+'ipt src="http://static.klarna.com/external/js/klarnaConsentNew.js" type="text/javascript"></scr'+'ipt>');
