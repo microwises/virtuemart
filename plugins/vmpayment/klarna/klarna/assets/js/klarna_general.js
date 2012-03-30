@@ -232,11 +232,11 @@ function initPaymentSelection () {
         showPaymentOption(jQuery('#klarna_box_spec'));
     }
 	// jQuery(document).find('input[type=radio][name='+global_pid+']').each(function () {
-		
+
 		// klarna_box_container
 	// }
-    // 
-	jQuery('input.klarmaPaiement').each(function () {
+    //
+	jQuery('input.klarnaPayment').each(function () {
         var value = jQuery(this).val();
         // If value is a number it can't be used so we fallback to id.
         if (!isNaN(value)) {
