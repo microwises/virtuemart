@@ -538,6 +538,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	//refresh captcha code
 	//Klarna Ajax
 	require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_ajax.php');
+	// $SelfCall= new KlarnaAjax ;
+	$action = jrequest::getWord('action');
+	
+	// $SelfCall->$action ();
+	echo 'klarna reponse'.$action;
 	jexit();
     }
 

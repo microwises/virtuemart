@@ -242,9 +242,9 @@ function initPaymentSelection () {
         if (!isNaN(value)) {
              var value = jQuery(this).attr('id');
         }
-        jQuery(this).parent().parent().click(function (){
-            choosePaymentOption(value);
-        });
+        // jQuery(this).parent().parent().click(function (){
+            // choosePaymentOption(value);
+        // });
         jQuery(this).click(function (){
             choosePaymentOption(value);
         });
@@ -419,23 +419,25 @@ function initPaymentOptions(opts) {
             var params;
             var values;
             var type;
+            var boxType = box.find('.klarna_box').attr("id");
 
-            if (box.find('.klarna_box').attr("id") == "klarna_box_invoice")
+            if (boxType == "klarna_box_invoice")
             {
                 params = params_invoice;
                 type = "invoice";
             }
-            else if (box.find('.klarna_box').attr("id") == "klarna_box_part")
+            else if (boxType == "klarna_box_part")
             {
                 params = params_part;
                 type = "part";
             }
-            else if (box.find('.klarna_box').attr("id") == "klarna_box_spec")
+            else if (boxType == "klarna_box_spec")
             {
                 params = params_spec;
                 type = "spec";
             }
             else {
+				console.log(boxType);
                 return ;
             }
 
@@ -839,6 +841,7 @@ function changeLanguage (replaceBox, params, newIso, country, type)
         url: ajax_path,
         data: data,
         success: function(response){
+			console.log(response);
             if (jQuery(response).find('.klarna_box'))
             {
                 replaceBox.find('.klarna_box').remove();
