@@ -171,19 +171,10 @@ class klarna_productPrice {
 	$virtuemart_vendor_id = 1;
 	$model = VmModel::getModel('vendor');
 	$vendor = $model->getVendor($virtuemart_vendor_id);
-	$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
-	$usermodel = VmModel::getModel('user');
-	$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-	$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
-	foreach ($userFields as $userfields) {
-	    foreach ($userfields['fields'] as $item) {
-		if ($item['name'] === 'country') {
-		    $vendor_country_id = $item['value'];
-		    break;
-		}
-	    }
-	}
-	$vendor_country = ShopFunctions::getCountryByID($vendor_country_id, 'country_code_3');
+	
+	$vendorAdress = $model->getVendorAdressBT($virtuemart_vendor_id);
+
+	$vendor_country = ShopFunctions::getCountryByID($vendorAdress->virtuemart_country_id, 'country_code_3');
 
 	return $vendor_country;
     }
