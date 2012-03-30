@@ -291,6 +291,11 @@ class VirtuemartControllerOrders extends VmController {
 		$csv = '';
 
 		$head = array('virtuemart_order_userinfo_id','virtuemart_vendor_id','order_number','order_total','order_subtotal','order_tax','order_status','user_currency_rate','customer_note');
+
+		foreach($head as $item){
+			$csv .= '"'.$item.'";"';
+		}
+
 		foreach($orders as $order){
 // 			$order = (array) $order;7
 // 			$order['details']

@@ -190,7 +190,7 @@ class VirtuemartViewOrders extends VmView {
 
 			 /* Toolbar */
 			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
-// 			JToolBarHelper::custom( 'exportOrdersAsCSV', 'exportCSV','','COM_VIRTUEMART_ITEM_EXPORT',false);
+			JToolBarHelper::custom( 'exportOrdersAsCSV', 'exportCSV','','COM_VIRTUEMART_ITEM_EXPORT',false);
 
 			JToolBarHelper::deleteListX();
 
