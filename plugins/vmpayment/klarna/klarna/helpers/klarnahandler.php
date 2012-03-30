@@ -862,23 +862,20 @@ class KlarnaHandler {
     }
 
     public function getLocalTemplates() {
-	$kLoc = JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'tmpl' . DS . 'campaigns' . DS;
+	$kLoc = JPATH_VMKLARNAPLUGIN .  '/klarna/tmpl/'; //spec
 	$aTemplates = scandir($kLoc);
 
 	$aResult = array();
 
 	foreach ($aTemplates as $sDir) {
-	    if (($sDir != "." || $sDir != "..") &&
-		    file_exists($kLoc . "/" . $sDir . "/campaign.xml")) {
-		$oXml = simplexml_load_file($kLoc . "/" . $sDir .
-			"/campaign.xml", 'SimpleXMLElement', LIBXML_NOCDATA);
+	    if ( file_exists($kLoc ."/campaign.xml")) {
+		$oXml = simplexml_load_file($kLoc  ."/campaign.xml", 'SimpleXMLElement', LIBXML_NOCDATA);
 		$aXml = self::xmlToArray($oXml, 0);
 
 		$aResult[$aXml['name']] = $aXml;
 		$aResult[$aXml['name']]['shown'] = false;
 		$aResult[$aXml['name']]['name'] = $sDir;
-		$aResult[$aXml['name']]['active'] =
-			(KLARNA_SPEC_ACTIVE_TEMPLATE == $aXml['name']);
+		$aResult[$aXml['name']]['active'] = (KLARNA_SPEC_ACTIVE_TEMPLATE == $aXml['name']);
 	    }
 	}
 
@@ -887,21 +884,18 @@ class KlarnaHandler {
 
     public function getLocalTemplate($sTemplateName) {
 
-	$kLoc = JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'tmpl' . DS . 'campaigns' . DS;
+	$kLoc = JPATH_VMKLARNAPLUGIN . DS . 'klarna/tmpl/' ; // spec
 	$aTemplates = scandir($kLoc);
 
 	$aResult = array();
 
 	foreach ($aTemplates as $sDir) {
 	    if ($sDir == $sTemplateName) {
-		$oXml = simplexml_load_file($kLoc . "/" . $sDir .
-			"/campaign.xml", 'SimpleXMLElement', LIBXML_NOCDATA);
-
+		$oXml = simplexml_load_file($kLoc  ."/campaign.xml", 'SimpleXMLElement', LIBXML_NOCDATA);
 		$aResult = self::xmlToArray($oXml, 0);
 		$aResult['shown'] = false;
 		$aResult['name'] = $sDir;
-		$aResult['active'] =
-			(KLARNA_SPEC_ACTIVE_TEMPLATE == $oXml['name']);
+		$aResult['active'] = (KLARNA_SPEC_ACTIVE_TEMPLATE == $oXml['name']);
 	    }
 	}
 

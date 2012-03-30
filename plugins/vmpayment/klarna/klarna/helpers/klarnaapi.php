@@ -320,11 +320,10 @@ class KlarnaAPI {
 	    $sFilename = $a_sHTMLFile;
 	} else {
 	    if ($this->sType != "spec") {
-		$sFilename = ($this->sPath != null ? $this->sPath : "") . '/klarna/tmpl/' . strtolower($this->sCountryCode) . "/" . $this->sType . ".html";
+		$sFilename = ($this->sPath != null ? $this->sPath : "") . "/klarna/tmpl/" . $this->sType ."_". strtolower($this->sCountryCode). ".html";
 	    } else {
 		$this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
-
-		$sFilename = ($this->sPath != null ? $this->sPath : "") . '/klarna/tmpl/campaigns/' . $aTemplateData['name'] . "/" . strtolower($this->sCountryCode) . "/" . $this->sType . ".html";
+		$sFilename = ($this->sPath != null ? $this->sPath : "") . '/klarna/tmpl/' .   $this->sType ."_".strtolower($this->sCountryCode). ".html";
 	    }
 	}
 

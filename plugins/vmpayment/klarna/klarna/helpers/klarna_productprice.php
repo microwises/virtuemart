@@ -161,7 +161,7 @@ class klarna_productPrice {
 	    $aInputValues['country'] = KlarnaCountry::getCode($country);
 	    $aInputValues['nlBanner'] = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="' . $this->webroot . 'images/account/' . $notice . '" /></div>' : "");
 
-	    return $kCheckout->retrieveHTML($aInputValues, null, JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/productPrice/default/layout.html');
+	    return $kCheckout->retrieveHTML($aInputValues, null, JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/productprice_layout.html');
 	}
     }
 
