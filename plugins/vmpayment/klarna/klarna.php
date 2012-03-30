@@ -23,10 +23,10 @@ if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 if (JVM_VERSION === 2) {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/klarna/');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
 } else {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/');
 }
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
@@ -364,7 +364,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$sessionKlarnaData = unserialize($sessionKlarna);
 
 	try {
-	    $result = KlarnaHandler::addTransaction($method, $cart, $order, $order_number);
+	    $result = KlarnaHandler::addTransaction($method, $cart, $order );
 	    $invoiceno = $result[1];
 	} catch (Exception $e) {
 	    KlarnaHandler::redirectPaymentMethod('error', $e->getMessage() . ' #' . $e->getCode());
