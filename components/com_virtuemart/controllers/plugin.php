@@ -37,8 +37,8 @@ class VirtuemartControllerPlugin extends JController
 	{
 
 
-
-		$type = JRequest::getWord('type', 'vmcustom');
+		if (!$type =JRequest::getWord('vmtype',null) )
+			$type = JRequest::getWord('type', 'vmcustom');
 		$typeWhiteList = array('vmcustom','vmcalculation','vmuserfield', 'vmpayment', 'vmshipment');
 		if(!in_array($type,$typeWhiteList)) return false;
 
