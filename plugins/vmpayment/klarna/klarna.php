@@ -540,11 +540,26 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	//refresh captcha code
 	//Klarna Ajax
 	require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_ajax.php');
-	// $SelfCall= new KlarnaAjax ;
+
+	if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+	$model = VmModel::getModel('paymentmethod');
+	$payment = $model->getPayment();
+	if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
+	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
+	$data = $parameters->getParamByName('data');
+	//print_r($data);
+	$country = jrequest::getword('country');
+	$country = klarnahandler::convertToThreeLetterCode( $country);
+	$eid = klarnahandler::getEid($data, $country);
+	
+	if (!class_exists( 'klarna_virtuemart' )) require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_virtuemart.php');
+	//KlarnaAjax($api  , $eid, $path, $webroot)  ;
+	$klarnaVM= new  klarna_virtuemart ;
+	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN.'klarna/klarna/api/checkout',Juri::base()) ;
 	$action = jrequest::getWord('action');
 	
-	// $SelfCall->$action ();
-	echo 'klarna reponse'.$action;
+	$SelfCall->$action ();
+	//echo 'klarna reponse'.$action;
 	jexit();
     }
 
