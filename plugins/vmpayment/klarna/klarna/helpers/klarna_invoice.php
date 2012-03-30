@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * a special type of Klarna
- * @author Valérie Isaksen
+ * @author Val√©rie Isaksen
  * @version $Id:
  * @package VirtueMart
  * @subpackage payment
@@ -65,7 +65,7 @@ class klarna_invoice  {
     private $splitAddress;
     private $klarna_bday;
 
-    function __construct($method, $cart, $vendor_currency, $tablename) {
+    function __construct($method, $cart, $vendor_currency ) {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
 	// Set country and currency set in the store.
 	$this->country = $this->shipTo['country'];
@@ -84,7 +84,7 @@ class klarna_invoice  {
 	$this->web_root = JURI::base();
 	try {
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->eid, $this->secret, $this->country, null, $this->currency, $this->mode, $method->klarna_pc_type, KlarnaHandler::getPCUri($method, $tablename), $this->ssl);
+	    $this->klarna->config($this->eid, $this->secret, $this->country, null, $this->currency, $this->mode, $method->klarna_pc_type, $method->klarna_pc_uri, $this->ssl);
 	} catch (Exception $e) {
 	    unset($this->klarna);
 	}

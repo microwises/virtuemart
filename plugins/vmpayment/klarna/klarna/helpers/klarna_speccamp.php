@@ -87,7 +87,7 @@ class klarna_speccamp {
 
 	try {
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->eid, $this->secret, $this->country, null, $this->currency, $this->mode, $method->klarna_pc_type, KlarnaHandler::getPCUri($method,  $tablename), $this->ssl);
+	    $this->klarna->config($this->eid, $this->secret, $this->country, null, $this->currency, $this->mode, $method->klarna_pc_type, $method->klarna_pc_uri, $this->ssl);
 	} catch (Exception $e) {
 	    unset($this->klarna);
 	}

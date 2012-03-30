@@ -5,7 +5,7 @@ defined('_JEXEC') or die();
 /**
  *
  * a special type of Klarna
- * @author Valérie Isaksen
+ * @author Val√©rie Isaksen
  * @version $Id:
  * @package VirtueMart
  * @subpackage payment
@@ -58,6 +58,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     var $_vendor_currency = '';
     var $klarna_image_path = '';
 
+
     function __construct(& $subject, $config) {
 
 	parent::__construct($subject, $config);
@@ -71,7 +72,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$this->klarna_image_path = JURI::root() . VMKLARNAPLUGINWEBROOT . DS . 'klarna' . DS . 'assets' . DS . 'images';
 // Get vendor currency ???
 	$this->_vendor_currency = $this->_getVendorCurrency();
-	$this->_PCtablename = $this->_tablename . '_pclasses';
+
 
 	//self::$_this = $this;
     }
@@ -108,6 +109,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function plgVmSetOnTablePluginParamsPayment($name, $id, &$table) {
+
 	return $this->setOnTablePluginParams($name, $id, $table);
     }
 
@@ -123,8 +125,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$cart_country_code_3 = $this->_getCartAddressCountryCode3();
 	$html = array();
 	foreach ($this->methods as $method) {
-	    $productPrice = new klarna_productPrice($method, $product, $cart_country_code_3, $this->_PCtablename);
-	    $productDisplay [] = $productPrice->showProductPrice($method, $html, $product->prices['basePriceWithTax']);
+	    if (in_array('klarna_partpay', $method->klarna_modules)) {
+		$productPrice = new klarna_productPrice($method, $product, $cart_country_code_3 );
+		$productDisplay [] = $productPrice->showProductPrice($method, $html, $product->prices['basePriceWithTax']);
+	    }
 	}
 	return true;
     }
@@ -224,7 +228,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return null;
 	}
 
-	$pclasses = KlarnaHandler::getPClasses(null, $country_code, $method, $countrySettings, $this->_PCtablename);
+	$pclasses = KlarnaHandler::getPClasses(null, $country_code, $method, $countrySettings );
 	$this->getNbPClasses($pclasses, $speccamp, $partpay);
 
 	$session = JFactory::getSession();
@@ -238,7 +242,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (in_array('klarna_invoice', (array) $method->klarna_modules)) {
 	    if (!class_exists('Klarna_invoice'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_invoice.php');
-	    $invoice = new klarna_invoice($method, $cart, $vendor_currency, $this->_PCtablename);
+	    $invoice = new klarna_invoice($method, $cart, $vendor_currency);
 	    $klarna_pm = $invoice->invoice($method);
 	    $html_invoice = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
 	}
@@ -246,7 +250,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (in_array('klarna_partpay', (array) $method->klarna_modules) && $partpay > 0) { // Show only if partpayment is enabled and we have pclasses.
 	    if (!class_exists('Klarna_partpay'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_partpay.php');
-	    $partPay = new klarna_partpay($method, $cart, $vendor_currency, $this->_PCtablename);
+	    $partPay = new klarna_partpay($method, $cart, $vendor_currency);
 	    $klarna_pm = $partPay->partPay($method);
 	    $html_partpay = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
 	}
@@ -254,7 +258,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (in_array('klarna_speccamp', (array) $method->klarna_modules) && $speccamp > 0) { // Show only if campaigns are enabled and we have pclasses.
 	    if (!class_exists('Klarna_speccamp'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_speccamp.php');
-	    $specCamp = new klarna_speccamp($method, $cart, $vendor_currency, $this->_PCtablename);
+	    $specCamp = new klarna_speccamp($method, $cart, $vendor_currency);
 	    $klarna_pm = $specCamp->specCamp($method);
 	    $html_speccamp = KlarnaHandler::displayPayment($klarna_pm, $virtuemart_paymentmethod_id, $klarna_paymentmethod_id);
 	}
@@ -347,7 +351,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
     function plgVmConfirmedOrder($cart, $order) {
 
-	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
+	if (!($this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
@@ -624,7 +628,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * Create the table for this plugin if it does not yet exist.
      * This functions checks if the called plugin is active one.
      * When yes it is calling the standard method to create the tables
-     * @author Valérie Isaksen
+     * @author Val√©rie Isaksen
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
@@ -636,7 +640,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * This event is fired after the payment method has been selected. It can be used to store
      * additional payment info in the cart.
 
-     * @author Valérie isaksen
+     * @author Val√©rie isaksen
      *
      * @param VirtueMartCart $cart: the actual cart
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
@@ -1002,7 +1006,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	return $vendor_currency->currency_code_3;
     }
 
-	
+
 }
 
 // No closing tag

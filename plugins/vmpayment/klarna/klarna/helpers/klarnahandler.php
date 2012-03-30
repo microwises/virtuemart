@@ -647,7 +647,7 @@ class KlarnaHandler {
 	    // country is CODE 3==> converting to 2 letter country
 	    //$country = self::convertCountryCode($method, $country);
 	    $lang = self::getLanguageForCountry($method, $country);
-	    $flag = "<img src='" . VMKLARNAPLUGINWEBROOT . "/klarna/assets/images/general/flags/". $lang . ".png' />";
+	    $flag = "<img src='". JURI::root() . VMKLARNAPLUGINWEBROOT . "/klarna/assets/images/share/flags/". $lang . ".png' />";
 	    try {
 		$settings = self::getCountryData($method, $country);
 

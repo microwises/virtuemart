@@ -34,9 +34,9 @@ $cData = "NOR"; //KlarnaHandler::getCountryData($_SESSION['auth']['country']);
 $iMode=Klarna::BETA;
 $oKlarna = new Klarna_virtuemart();
 //$oKlarna->config($cData['eid'], $cData['secret'], $cData['country'], $cData['language'], $cData['currency'], $iMode, KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), false);
-$oKlarna->config($cData['eid'], $cData['secret'], $cData['country'], $cData['language'], $cData['currency'], $iMode, 'mysql', KlarnaHandler::getPCUri(), false);
+$oKlarna->config($cData['eid'], $cData['secret'], $cData['country'], $cData['language'], $cData['currency'], $iMode, 'mysql', $method->klarna_pc_uri, false);
 // TODO
-$web_root    = JUri::base() . 'plugins/vmpayment/klarana/klarna/klarna_api/checkout/';
+$web_root    = JUri::base() . 'plugins/vmpayment/klarna/klarna/klarna_api/checkout/';
 define ('KLARNA_SPEC_ACTIVE_TEMPLATE', 'default'); // TODO ADDED by vlc
 $kAjax = new KlarnaAjax ($oKlarna, $cData['eid'], dirname(__FILE__) . '/checkout/', $web_root);
 $kAjax->__setTemplate(KlarnaHandler::getLocalTemplate(KLARNA_SPEC_ACTIVE_TEMPLATE));

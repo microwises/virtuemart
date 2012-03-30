@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * a special type of Klarna
- * @author Valérie Isaksen
+ * @author Val√©rie Isaksen
  * @version $Id:
  * @package VirtueMart
  * @subpackage payment
@@ -28,18 +28,14 @@ class klarna_productPrice {
     private $path;
     private $webroot;
     private $method;
+    private $tablename;
 
     public function __construct($method, $product, $cart_country_code_3, $tablename) {
-	//global $vendor_country, $product_currency;
-	// $this->path = JPATH_BASE . '/components/com_klarna/checkout/';
+
 	$this->path = JPATH_VMKLARNAPLUGIN . '/klarna/';
 	$this->webroot = JURI::Base() . VMKLARNAPLUGINWEBROOT;
 	$this->method = $method;
-
-	//vmdebug('klarna_productPrice', $method);
-	if (!in_array('klarna_partpay', (array) $this->method->klarna_modules)) {
-	    return false;
-	}
+	$this->tablename = $tablename;
 
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
@@ -50,16 +46,13 @@ class klarna_productPrice {
 	try {
 	    $iMode = ($this->method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA;
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, $this->method->klarna_pc_type, KlarnaHandler::getPCUri($this->method, $tablename), false);
+	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, $this->method->klarna_pc_type, $method->klarna_pc_uri, false);
 	} catch (Exception $e) {
 	    unset($this->klarna);
 	}
     }
 
     private function showPP($price) {
-	if (!in_array('klarna_partpay', (array) $this->method->klarna_modules)) {
-	    return false;
-	}
 
 	if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 	    return false;
@@ -80,7 +73,7 @@ class klarna_productPrice {
 
     public function showProductPrice($method, $html, $price, $page = KlarnaFlags::PRODUCT_PAGE) {
 	if (!$this->showPP($method, $price)) {
-	    return $html;
+	    return false;
 	}
 
 	$js = '<script type="text/javascript">jQuery(document).find(".product_price").width("25%");</script>';
@@ -101,7 +94,11 @@ class klarna_productPrice {
     }
 
     private function getHTML($price, $currency, $country, $lang = null, $page = null) {
-	//$country= $this->cData['country']; // numeric code
+	if (!class_exists('KlarnaAPI'))
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaAPI.php');
+	if (!class_exists('VirtueMartModelCurrency'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+//$country= $this->cData['country']; // numeric code
 	/*
 	  if (!is_numeric($country)) {
 	  $country = KlarnaCountry::fromCode($country);
@@ -112,34 +109,30 @@ class klarna_productPrice {
 
 	// we will always use the language for the country to get the correct
 	// terms and conditions aswell as the correct name for 'Klarna Konto'
-	    $lang = KlarnaLanguage::getCode($this->klarna->getLanguageForCountry($country));
+	$lang = KlarnaLanguage::getCode($this->klarna->getLanguageForCountry($country));
 
 
 	if ($page === null || ($page != KlarnaFlags::PRODUCT_PAGE && $page != KlarnaFlags::CHECKOUT_PAGE)) {
 	    $page = KlarnaFlags::PRODUCT_PAGE;
 	}
-/*
-	if (!$this->klarna->checkCountryCurrency($country, $currency)) {
-	    return false;
-	}
-*/
-	$types = array(KlarnaPClass::CAMPAIGN,
-	    KlarnaPClass::ACCOUNT,
-	    KlarnaPClass::FIXED);
-	if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'KlarnaAPI.php');
+	/*
+	  if (!$this->klarna->checkCountryCurrency($country, $currency)) {
+	  return false;
+	  }
+	 */
+	$types = array(KlarnaPClass::CAMPAIGN, KlarnaPClass::ACCOUNT, KlarnaPClass::FIXED);
+
 	$kCheckout = new KlarnaAPI($country, $lang, 'part', $price, $page, $this->klarna, $types, $this->path);
 	$kCheckout->addSetupValue('web_root', VMKLARNAPLUGINWEBROOT);
 	$kCheckout->addSetupValue('path_img', VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/');
 	$kCheckout->addSetupValue('path_js', VMKLARNAPLUGINWEBROOT . '/klarna/assets/js/');
-	$kCheckout->addSetupValue('path_css',VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/');
+	$kCheckout->addSetupValue('path_css', VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/');
 	if ($country == KlarnaCountry::DE) {
 	    $kCheckout->addSetupValue('asterisk', '*');
 	}
 
 	if ($price > 0 && count($kCheckout->aPClasses) > 0) {
-	    if (!class_exists('VirtueMartModelCurrency'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+
 	    $currencydisplay = CurrencyDisplay::getInstance();
 	    $monthlyCost = array();
 	    $minRequired = array();
@@ -158,7 +151,7 @@ class klarna_productPrice {
 		    $pp_title = $pclass['pclass']->getMonths() . " " . $kCheckout->fetchFromLanguagePack('PPBOX_th_month', $lang);
 		}
 		$pp_price = $currencydisplay->priceDisplay($pclass['monthlyCost'], '', false);
-		$sTableHtml .= $kCheckout->retrieveHTML(null, array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price), JPATH_VMKLARNAPLUGIN  . '/klarna/tmpl/pp_box_template.html');
+		$sTableHtml .= $kCheckout->retrieveHTML(null, array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price), JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/pp_box_template.html');
 	    }
 
 	    $notice = "notice_nl.jpg";
@@ -196,6 +189,11 @@ class klarna_productPrice {
 
 	return $vendor_country;
     }
+
+    /*
+     * if client has not given address then get cdata depending on the currency
+     * otherwise get info depending on the country
+     */
 
     function getcData($product_currency, $cart_country_code_3 = '') {
 	$product_currency = strtoupper($product_currency);
