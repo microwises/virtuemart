@@ -61,7 +61,14 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div class="addtocart-bar">
 
-<?php // Display the quantity box  ?>
+<?php // Display the quantity box 
+
+    $stockhandle = VmConfig::get('stockhandle', 'none');
+    if (($stockhandle == 'disableit' or $stockhandle == 'disableadd') and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
+ ?>
+		<a href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id='.$this->product->virtuemart_product_id); ?>"><?php echo JText::_('COM_VIRTUEMART_CART_NOTIFY') ?></a>
+
+<?php } else { ?>
 						<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id; ?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 	    <span class="quantity-box">
 		<input type="text" class="quantity-input js-recalculate" name="quantity[]" value="<?php if (isset($this->product->min_order_level) && (int) $this->product->min_order_level > 0) {
@@ -77,22 +84,12 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php // Display the quantity box END ?>
 
 	    <?php
-	    // Add the button
-	    $button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
-	    $button_cls = 'addtocart-button'; //$button_cls = 'addtocart_button';
-	    $button_name = 'addtocart'; //$button_cls = 'addtocart_button';
 	    // Display the add to cart button
-	    $stockhandle = VmConfig::get('stockhandle', 'none');
-	    if (($stockhandle == 'disableit' or $stockhandle == 'disableadd') and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
-		$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
-		$button_cls = 'notify-button';
-		$button_name = 'notifycustomer';
-	    }
-	    //vmdebug('$stockhandle '.$stockhandle.' and stock '.$this->product->product_in_stock.' ordered '.$this->product->product_ordered);
 	    ?>
-	    <span class="addtocart-button">
-		<input type="submit" name="<?php echo $button_name ?>"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-	    </span>
+		<span class="addtocart-button">
+		<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo JText::_('COM_VIRTUEMART_CART_ADD_TO') ?>" title="<?php echo JText::_('COM_VIRTUEMART_CART_ADD_TO') ?>" />
+		</span>
+<?php } ?>
 
 	    <div class="clear"></div>
 	</div>

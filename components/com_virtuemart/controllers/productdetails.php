@@ -273,5 +273,30 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$view->display(null);
 	}
+	
+	/**
+	 * Notify customer
+	 *
+	 * @author Seyi Awofadeju
+	 *
+	 */
+	public function notifycustomer(){
+		$data = JRequest::get('post');
+
+		$model = VmModel::getModel('waitinglist');
+		if(!$model->adduser($data)) {
+			$errors = $model->getErrors();
+			foreach($errors as $error){
+				$msg = ($error).'<br />';
+			}
+			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id='.$data['virtuemart_product_id']), $msg);
+		} else {
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('COM_VIRTUEMART_CART_NOTIFY') );
+			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id']), $msg);
+		}
+	
+
+	}
+
 }
 // pure php no closing tag

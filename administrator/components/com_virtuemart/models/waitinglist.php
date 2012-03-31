@@ -88,6 +88,40 @@ class VirtueMartModelWaitingList extends JModel {
 		}
 		return true;
 	}
+	
+	/**
+	 * Add customer to the waiting list for specific product
+	 *
+	 * @author Seyi Awofadeju
+	 * @return insert_id if the save was successful, false otherwise.
+	 */
+	public function adduser($data) {
+		JRequest::checkToken() or jexit( 'Invalid Token, in notify customer');
+
+		
+		$field = $this->getTable('waitingusers');
+
+		if (!$field->bind($data)) { // Bind data
+			vmError($field->getError());
+			return false;
+		}
+
+		if (!$field->check()) { // Perform data checks
+			vmError($field->getError());
+			return false;
+		}
+
+		$_id = $field->store();
+		if ($_id === false) { // Write data to the DB
+			vmError($field->getError());
+			return false;
+		}
+
+
+		//jexit();
+		return $_id ;
+	}
+
 
 }
 // pure php no closing tag
