@@ -50,7 +50,7 @@ class JElementKlarnaPclasses extends JElement {
 
 
 	$html = '  <fieldset id="klarna_pclasses" class="klarna">
-            <legend id="pclass_field">PClasses <span id="arrow"><img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT . DS . 'klarna' . DS . 'assets' . DS . 'images' . DS. 'expand_arrow.png" /></span></legend>
+            <legend id="pclass_field">PClasses <span id="arrow"><img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT .'klarna/assets/images/expand_arrow.png" /></span></legend>
             <div id="pclasses">';
 
 	$total = 0;

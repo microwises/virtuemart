@@ -367,45 +367,8 @@ class KlarnaHandler {
 	 */
 	// Get information stored in session and unset the session variable.
 
-
-	// Get settings for the selected payment method
-	$product_rows = array();
-	$total_price_incl_vat = 0;
-	$total_price_excl_vat = 0;
-	$invoice_fee_vat = 0;
-
 	$shipping_tax = $order['details']['BT']->order_shipment_tax;
 
-	$i = 0;
-	// Fetch all items from the cart
-	foreach ($order['items'] as $item) {
-
-	    // Get SKU
-	    $product_rows[$i]['product_sku'] = $item->order_item_sku;
-	    $product_rows[$i]['product_name'] = $item->order_item_name;
-
-	    // Get product parent id if exists
-	    $product_parent_id = $item->virtuemart_product_id;
-
-	    // TODO Get product attributes if available
-	    $weight_subtotal = $cart->products[$item->virtuemart_product_id]->product_weight * $item->product_quantity;
-
-	    /*
-	      // TODO
-	     * Get product tax rate
-	      $product_rows[$i]['taxrate'] = "19.6"; // TODO
-	      $total_price_excl_vat += $product_rows[$i]['product_price'];
-	      $total_price_incl_vat += $product_rows[$i]['product_price'] *
-	      $product_rows[$i]['taxrate'];
-	     */
-	    // Get quantity
-	    $product_rows[$i]['quantity'] = $item->product_quantity;
-	    $product_rows[$i]['taxrate'] = $item->product_tax;
-	    $product_rows[$i]['product_price'] = $item->product_final_price;
-	    $product_rows[$i]['product_attributes'] = ''; // TODO
-	}
-
-	$invoice_fee_vat = $order['details']['BT']->order_tax;
 	$total_price_excl_vat = $order['details']['BT']->order_subtotal;
 	$total_price_incl_vat = $order['details']['BT']->order_subtotal + $order['details']['BT']->order_tax;
 	// Instantiate klarna object.
@@ -426,12 +389,11 @@ class KlarnaHandler {
 
 
 	// Fill the good list the we send to Klarna
-
-	foreach ($product_rows as $product) {
-	    $klarna->addArticle($product['quantity'],
-		    utf8_decode($product['product_sku']),
-		    utf8_decode(strip_tags($product['product_name'] .(strlen($product['product_attributes']) > 0 ?' - ' . utf8_decode($product['product_attributes']) : ''))), ((double) (round($product['product_price'] *($product['taxrate'] ), 2))),
-		    (double) $product['taxrate'],
+	foreach ($order['items'] as $item) {
+	    $klarna->addArticle($item->product_quantity,
+		    utf8_decode($item->order_item_sku),
+		    utf8_decode(strip_tags($item->order_item_name  , ((double) (round($item->product_final_price , 2)))) ),
+		    (double) $item->product_tax,
 		    0,
 		    KlarnaFlags::INC_VAT
 	    );
@@ -440,21 +402,20 @@ class KlarnaHandler {
 	$klarna->addArticle(1, "shippingfee", JText::_('VMPAYMENT_KLARNA_SHIPMENT'), ((double) (round(($order['details']['BT']->order_shipment +$order['details']['BT']->order_shipment_tax), 2))), (double) $order['details']['BT']->order_shipment_tax, 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
 
 	// Add invoice fee
-	if ($klarna_pclass === -1) { //Only for invoices!
-	    $invoice_fee = (double) (round(abs(self::getInvoiceFee($method, $country['country_code'])), 2));
+	if ($sessionKlarnaData->klarna_option === 'invoice' ) { //Only for invoices!
+	    //$invoice_fee = (double) (round(abs(self::getInvoiceFee($method, $country['country_code'])), 2));
+	    $invoice_fee = (double) (round( $order['details']['BT']->order_payment));
 	    if ($invoice_fee > 0) {
-		$klarna->addArticle(1, "invoicefee", $kLang->fetch('INVOICE_FEE_TITLE', $country['language_code']), $invoice_fee, (double) round($invoice_fee_vat, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
+		$klarna->addArticle(1, "invoicefee", $kLang->fetch('INVOICE_FEE_TITLE', $country['language_code']), $invoice_fee, (double) round( $order['details']['BT']->order_payment_tax, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 	    }
+	    $klarna_pclass=-1;
+	} else {
+	     $klarna_pclass=$sessionKlarnaData->klarna_option;
 	}
 	// Add coupon if there is any
 	if ($order['details']['BT']->coupon_discount > 0) {
-	    $klarna->addArticle( 1, 'discount', JText::_('Discount') . ' ' . $order['details']['BT']->coupon_code, ((int) (round($order['details']['BT']->coupon_discount, 2) * -1)), (double) round($invoice_fee_vat, 2), 0, KlarnaFlags::INC_VAT);
+	    $klarna->addArticle( 1, 'discount', JText::_('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int) (round($order['details']['BT']->coupon_discount, 2) * -1)), (double) round($invoice_fee_vat, 2), 0, KlarnaFlags::INC_VAT);
 	}
-
-
-	$klarna_payment_id = $klarnaData['klarna_payment_id'];
-	$klarna_payment_code = $order['virtuemart_paymentmethod_id'];
-
 
 	$klarna_shipping = new KlarnaAddr(
 			$klarnaData['EMAIL'],
@@ -514,9 +475,8 @@ class KlarnaHandler {
 	    $status = self::getStatusForCode($result[2]);
 
 	    $result['eid'] = $country['eid'];
-	    $result['order_status'] = $status['code'];
-	    $result['order_title'] = $status['text'];
-
+	    $result['status_code'] = $status['code'];
+	    $result['status_text'] = $status['text'];
 
 	    return $result; //return $result;
 	} catch (Exception $e) {
@@ -739,7 +699,7 @@ class KlarnaHandler {
      * @return <type>
      */
     public function getCustomerCountry($ship_to_info_id) {
-	 
+
 	$db->query("SELECT country from #__{vm}_user_info WHERE  user_info_id=
                     '" . $db->getEscaped($ship_to_info_id) . '\'');
 	$db->next_record();

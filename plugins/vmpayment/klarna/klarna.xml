@@ -22,6 +22,8 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_PAYMENT_TITLE" level="level1" />
+	<param type="klarnalogo"   level="level1"  />
+
 	<param name="module version" type="klarnamoduleversion"  />
 	<param type="spacer" default="VMPAYMENT_KLARNA_SERVER_SETTINGS" level="level1" />
 	<param name="klarna_mode" type="radio"   label="VMPAYMENT_KLARNA_MODE" description="VMPAYMENT_KLARNA_MODE_DESC" >
@@ -34,32 +36,32 @@
 	    <option value="klarna_speccamp">VMPAYMENT_KLARNA_MODULE_SPECCAMP</option>
 	</param>
 	<param name="klarna_countries" type="klarnacountries"   label="VMPAYMENT_KLARNA_COUNTRIES" description="VMPAYMENT_KLARNA_COUNTRIES_DESC" />
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_SWEDEN" level="level1" />
+	<param   type="klarnacountrylogo" default="SV" level="level1" />
 	<param name="klarna_swe_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_swe_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_swe_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
 
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_NORWAY" level="level1" />
+	<param   type="klarnacountrylogo" default="NB" level="level1" />
 	<param name="klarna_nor_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_nor_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_nor_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
 
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_DENMARK" level="level1" />
+	<param   type="klarnacountrylogo" default="DA" level="level1" />
 	<param name="klarna_dnk_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_dnk_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_dnk_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
 
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_FINLAND" level="level1" />
-	<param name="klarna_fin_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+<param   type="klarnacountrylogo" default="FI" level="level1" />
+<param name="klarna_fin_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_fin_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_fin_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
 
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_GERMANY" level="level1" />
-	<param name="klarna_deu_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+<param   type="klarnacountrylogo" default="DE" level="level1" />
+<param name="klarna_deu_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_deu_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_deu_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
 
-	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_NETHERLANDS" level="level1" />
+	<param   type="klarnacountrylogo" default="NL" level="level1" />
 	<param name="klarna_nld_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
 	<param name="klarna_nld_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
 	<param name="klarna_nld_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
