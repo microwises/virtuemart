@@ -120,7 +120,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!class_exists('klarna_productPrice'))
 	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_productprice.php');
 
-	$cart_country_code_3 = $this->_getCartAddressCountryCode3();
+	$cart_country_code_3 = $this->_getCartAddressCountryCode();
 	$html = array();
 	foreach ($this->methods as $method) {
 	    if (in_array('klarna_partpay', $method->klarna_modules)) {
@@ -712,7 +712,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 
-	$country = KlarnaHandler::convertCountry($method, $user_country);
+	$country = KlarnaHandler::convertCountry($method, $cart_country2);
 	$lang = KlarnaHandler::getLanguageForCountry($method, $country);
 
 	// Get the correct data
@@ -962,7 +962,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		break;
 	    case 'partpayment':
 	    case 'part':
-		$logo .= $country . '/klarna_account_'.$country .'.png';
+		$logo .= '/klarna_account_'.$country .'.png';
 		$method = "";
 		break;
 	    case 'speccamp':
