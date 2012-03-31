@@ -1235,7 +1235,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				WHERE `virtuemart_order_id`=".$id;
 			$this->_db->setQuery($q);
 			$item_ids = $this->_db->loadResultArray();
-			foreach( $item_ids as $item_id ) $this->removeOrderLineItem($item_id);
+			foreach( $item_ids as $item_id ) {
+			    $this->removeOrderLineItem($item_id);
+			}
 
 			if (!$table->delete((int)$id)) {
 				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());

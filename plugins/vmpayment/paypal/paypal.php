@@ -335,7 +335,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 	    return null;
 	}
-
+	if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
+		return null;
+	}
 	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
 	    return null;
 	}
@@ -344,7 +346,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
 	if (strcmp($paymentTable->paypal_custom, $return_context) === 0) {
-	    $this->handlePaymentUserCancel($result->virtuemart_order_id);
+	    $this->handlePaymentUserCancel($virtuemart_order_id);
 	}
 	return true;
     }
