@@ -69,13 +69,17 @@ class VirtueMartControllerPluginresponse extends JController {
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html));
+	$paymentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html,&$paymentResponse));
 
-	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
-	JRequest::setVar('paymentResponseHtml', $html);
+// 	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
+// 	JRequest::setVar('paymentResponseHtml', $html);
 	$view = $this->getView('pluginresponse', 'html');
 	$layoutName = JRequest::getVar('layout', 'default');
 	$view->setLayout($layoutName);
+
+	$view->assignRef('paymentResponse', $paymentResponse);
+   $view->assignRef('paymentResponseHtml', $html);
 
 	// Display it all
 	$view->display();

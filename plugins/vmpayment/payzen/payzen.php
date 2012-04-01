@@ -320,7 +320,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    vmdebug('plgVmOnPaymentResponseReceived PAYZEN', $data, $resp->get('order_id'));
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- payment check attempted on non existing order : ' . $resp->get('order_id'), 'error');
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_PAYZEN_ERROR_MSG', false);
-	    JRequest::setVar('paymentResponseHtml', $html, 'post');
+// 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
 	    return null;
 	}
 
@@ -336,7 +336,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    $new_status = $method->order_success_status;
 	} else {
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_PAYZEN_FAILURE_MSG', false);
-	    JRequest::setVar('paymentResponseHtml', $html, 'post');
+// 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
 	    $new_status = $method->order_failure_status;
 	}
 

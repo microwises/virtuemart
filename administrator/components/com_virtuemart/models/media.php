@@ -167,7 +167,14 @@ class VirtueMartModelMedia extends VmModel {
 			$selectFields[] = ' `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id ';
 			$joinTables[] = ' LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_product_medias`.`virtuemart_media_id` and `virtuemart_product_id` = "'.$virtuemart_product_id.'"';
 			$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
-			$orderByTable = '`#__virtuemart_product_medias`.';
+
+			if($this->_selectedOrdering=='ordering'){
+				$orderByTable = '`#__virtuemart_product_medias`.';
+			} else{
+				$orderByTable = '`#__virtuemart_medias`.';
+			}
+
+
 		}
 
 		else if(!empty($cat_id)){
@@ -175,7 +182,11 @@ class VirtueMartModelMedia extends VmModel {
 			$selectFields[] = ' `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id';
 			$joinTables[] = ' LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_category_medias`.`virtuemart_media_id` and `virtuemart_category_id` = "'.$cat_id.'"';
 			$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
-			$orderByTable = '`#__virtuemart_category_medias`.';
+			if($this->_selectedOrdering=='ordering'){
+				$orderByTable = '`#__virtuemart_category_medias`.';
+			} else{
+				$orderByTable = '`#__virtuemart_medias`.';
+			}
 		}
 
 		else {

@@ -91,7 +91,7 @@ abstract class vmCustomPlugin extends vmPlugin {
     	//$field->custom_param = $custom_param;
     	foreach($custom_param as $k => $v){
     		if(!empty($v)){
-				
+
     			$field->$k = $v;
     		}
     	}
@@ -108,7 +108,7 @@ abstract class vmCustomPlugin extends vmPlugin {
     	foreach($this->_varsToPushParam as $k => $v){
     		if(!isset($this->params->$k)){
     			$this->params->$k = $field->$k;
-    		} 
+    		}
 		// vmdebug('fields org '.$this->_name,$this->params);
     	}
 		$this->virtuemart_custom_id = $field->virtuemart_custom_id ;
@@ -120,7 +120,7 @@ abstract class vmCustomPlugin extends vmPlugin {
     	foreach($this->_varsToPushParam as $k => $v){
     		if(!isset($this->params->$k)){
     			$this->params->$k = $field->$k;
-    		} 
+    		}
 
     	}
 
@@ -195,7 +195,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 			$db->setQuery($_qry);
 			$id = $db->loadResult();
 				}
-		$values['id'] = $id ;
+		$values['id'] = $id ? $id : 0;
 		// vmdebug('$value',$values, $id);
 		$this->storePluginInternalData($values) ;
 
