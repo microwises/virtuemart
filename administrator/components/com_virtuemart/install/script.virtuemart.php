@@ -227,7 +227,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-			$this->portOverwritePrices();
+// 			$this->portOverwritePrices();
 /*			$table = '#__virtuemart_customs';
 			$fieldname = 'field_type';
 			$fieldvalue = 'G';

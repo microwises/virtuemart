@@ -102,8 +102,8 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->assignRef('DATaxRules', $DATax);
 
-// 				$this->assignRef('override', $calculator->override);
-// 				$this->assignRef('product_override_price', $calculator->product_override_price);
+				$this->assignRef('override', $calculator->override);
+				$this->assignRef('product_override_price', $calculator->product_override_price);
 
 				if(!isset($product->product_tax_id)){
 					$product->product_tax_id=0;

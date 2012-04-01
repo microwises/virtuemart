@@ -328,10 +328,9 @@ class calculationHelper {
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
-		//overwrite is now deprecated
-// 		if ($this->override) {
-// 			$prices['salesPrice'] = $this->product_override_price;
-// 		}
+		if ($this->override) {
+			$prices['salesPrice'] = $this->product_override_price;
+		}
 
 		//The whole discount Amount
 		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
@@ -379,6 +378,8 @@ class calculationHelper {
 		$prices['priceBeforeTax'] = null;
 		if (!isset($prices['taxAmount']))
 		$prices['taxAmount'] = null;
+		if (!isset($prices['salesPriceWithDiscount']))
+		$prices['salesPriceWithDiscount'] = null;
 		if (!isset($prices['salesPrice']))
 		$prices['salesPrice'] = null;
 		if (!isset($prices['discountAmount']))
@@ -428,6 +429,7 @@ class calculationHelper {
 		$this->_cartPrices['discountedPriceWithoutTax'] = 0;
 		$this->_cartPrices['salesPrice'] = 0;
 		$this->_cartPrices['taxAmount'] = 0;
+		$this->_cartPrices['salesPriceWithDiscount'] = 0;
 		$this->_cartPrices['discountAmount'] = 0;
 		$this->_cartPrices['priceWithoutTax'] = 0;
 		$this->_cartPrices['subTotalProducts'] = 0;
@@ -461,6 +463,7 @@ class calculationHelper {
 			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax'] * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice'] * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount'] * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - $product->prices['discountAmount'] * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax'] * $product->quantity;
 

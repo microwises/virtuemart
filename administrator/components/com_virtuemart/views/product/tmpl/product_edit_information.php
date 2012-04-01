@@ -216,6 +216,24 @@ $i=0;
 							</span>
 						</td>
 					</tr>
+					<tr class="row0">
+						<td  >
+							<div style="text-align: right; font-weight: bold;">
+								<span
+									class="hasTip"
+									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
+								</span>
+							</div>
+						</td>
+						<td>
+							<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
+						<?php
+							$checked = '';
+							if ($this->override) $checked = 'checked="checked"' ?>
+							<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
+						</td>
+					</tr>
 				</table>
 			</fieldset> <!-- Product rules overrides -->
 			<fieldset>
