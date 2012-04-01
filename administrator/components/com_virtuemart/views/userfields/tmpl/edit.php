@@ -265,10 +265,12 @@ function prep4SQL(o){
 		o.value=o.value.replace(/[^0-9a-zA-Z\_]+/g,'');
 	}
 }
-<?php if($this->userField->virtuemart_userfield_id > 0) : ?>
+<?php if($this->userField->virtuemart_userfield_id > 0) { ?>
 document.adminForm.name.readOnly = true;
-<?php endif; ?>
+toggleType(jQuery('#type').val()) ;
+<?php } else { ?>
 	toggleType(jQuery('#type').find( 'option:selected').val()) ;
+<?php } ?>
 //toggleType('<?php echo $this->userField->type;?>');
 
 //<?php if ($this->userField->type !== "E") { ?>jQuery('#userField_plg').hide();<?php } ?>

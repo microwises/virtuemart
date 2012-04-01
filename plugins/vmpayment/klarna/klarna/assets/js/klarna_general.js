@@ -775,7 +775,7 @@ var klarna = {
 		});
 	},
 
-	function invoiceReady ()
+	invoiceReady : function  ()
 	{
 		var foundBox = false;
 		var currentMinHeight_invoice = jQuery('#klarna_box_invoice').height();
@@ -836,7 +836,7 @@ var klarna = {
 		}
 	},
 
-	function specReady ()
+	specReady : function  ()
 	{
 		var foundBox = false;
 		var currentMinHeight_spec = jQuery('#klarna_box_spec').height();
@@ -877,7 +877,7 @@ var klarna = {
 		});
 	},
 
-	function partReady() {
+	partReady : function () {
 		var foundBox = false;
 		var currentMinHeight_part = jQuery('#klarna_box_part').height();
 		// Select birthdate and fill years box

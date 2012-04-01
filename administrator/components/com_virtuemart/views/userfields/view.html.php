@@ -74,7 +74,7 @@ class VirtuemartViewUserfields extends VmView {
 				$userFieldValues = $model->getUserfieldValues();
 
 				$lists['type'] = $this->_getTypes($userField->type)
-					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
+					. '<input id="type" type="hidden" name="type" value="'.$userField->type.'" />';
 				if (strpos($userField->type, 'plugin') !==false) 
 					$userFieldPlugin = self::renderUserfieldPlugin(substr($userField->type, 6),$userField);
 			}
