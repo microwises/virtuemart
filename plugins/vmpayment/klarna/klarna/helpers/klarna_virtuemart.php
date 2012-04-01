@@ -20,7 +20,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  */
 
 define('KLARNA_MODULE_VERSION', '5.0.3');
-
+if (!class_exists('Klarna'))
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 class Klarna_virtuemart extends Klarna {
 
     public function __construct() {

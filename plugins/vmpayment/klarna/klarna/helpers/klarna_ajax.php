@@ -14,8 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists('KlarnaAPI'))
 	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
-if (!class_exists('KlarnaHTTPContext'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahttpcontext.php');
 
 
 class KlarnaAjax {
@@ -50,20 +48,20 @@ class KlarnaAjax {
     }
 
     public function languagepack () {
-        $sSubAction    = KlarnaHTTPContext::toString ('subAction');
+        $sSubAction    = JRequest::getWord ('subAction');
         if (!isset($this->template['name']) || $this->template['name'] == '') {
             $this->template['name'] = "default";
         }
         if ($sSubAction == "klarna_box")
         {
-            $sNewISO = KlarnaHTTPContext::toString('newIso');
-            $sCountry = KlarnaHTTPContext::toString('country');
-            $iSum = KlarnaHTTPContext::toFloat('sum', 0);
-            $iInvoiceFee = KlarnaHTTPContext::toFloat('fee', 0);
-            $iFlag = KlarnaHTTPContext::toInteger('flag');
-            $sType = KlarnaHTTPContext::toString('type');
-            $aParams = KlarnaHTTPContext::toArray('params');
-            $aValues = KlarnaHTTPContext::toArray('values');
+            $sNewISO = JRequest::getWord('newIso');
+            $sCountry = JRequest::getWord('country');
+            $iSum = JRequest::getFloat('sum', 0);
+            $iInvoiceFee = JRequest::getFloat('fee', 0);
+            $iFlag = JRequest::getInt('flag');
+            $sType = JRequest::getWord('type');
+	     $aParams = JRequest::getVar('params');
+            $aValues = JRequest::getVar('values');
 
             foreach($aValues as $key => $value) {
                 $aValues[$key] = utf8_decode($value);
@@ -105,7 +103,7 @@ class KlarnaAjax {
         }
         else if ($sSubAction == 'jsLanguagePack')
         {
-            $sNewISO = KlarnaHTTPContext::toString ('newIso');
+            $sNewISO = JRequest::getWord ('newIso');
             $sFetch = "";
         }
         else {
@@ -123,8 +121,8 @@ class KlarnaAjax {
             $aSessionCalls = unserialize ($sSessionCalls);
         }
 
-        $sPNO    = KlarnaHTTPContext::toString ('pno');
-        $sCountry = strtolower(KlarnaHTTPContext::toString ('country'));
+        $sPNO    = JRequest::getWord('pno');
+        $sCountry = strtolower(JRequest::getWord('country'));
 
         if (array_key_exists ($sPNO, $aSessionCalls))
         {

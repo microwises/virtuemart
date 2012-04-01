@@ -96,97 +96,7 @@ class KlarnaHandler {
 	} else {
 	    return null;
 	}
-	/*
-	  switch (strtoupper($country)) {
-	  case 'NOR':
-	  return array(
-	  'pno_encoding' => 3,
-	  'language' => 97,
-	  'language_code' => 'nb',
-	  'country' => 164,
-	  'currency' => 1,
-	  'currency_code' => 'NOK',
-	  'currency_symbol' => 'kr',
-	  'country_code' => 'no',
-	  'eid' => $method->klarna_norway_merchantid,
-	  'secret' => $method->klarna_norway_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_norway_invoicefee
-	  );
-	  case 'SWE':
-	  return array(
-	  'pno_encoding' => 2,
-	  'language' => 138,
-	  'language_code' => 'sv',
-	  'country' => 209,
-	  'country_code' => 'se',
-	  'currency' => 0,
-	  'currency_code' => 'SEK',
-	  'currency_symbol' => 'kr',
-	  'eid' => $method->klarna_sweden_merchantid,
-	  'secret' => $method->klarna_sweden_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_sweden_invoicefee
-	  );
-	  case 'DNK':
-	  return array(
-	  'pno_encoding' => 5,
-	  'language' => 27,
-	  'language_code' => 'da',
-	  'country' => 59,
-	  'country_code' => 'dk',
-	  'currency' => 3,
-	  'currency_code' => 'DKK',
-	  'currency_symbol' => 'kr',
-	  'country_code' => 'dk',
-	  'eid' => $method->klarna_denmark_merchantid,
-	  'secret' => $method->klarna_denmark_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_denmark_invoicefee
-	  );
-	  case 'FIN':
-	  return array(
-	  'pno_encoding' => 4,
-	  'language' => 37,
-	  'language_code' => 'fi',
-	  'country' => 73,
-	  'country_code' => 'fi',
-	  'currency' => 2,
-	  'currency_code' => 'EUR',
-	  'currency_symbol' => '&#8364;',
-	  'eid' => $method->klarna_finland_merchantid,
-	  'secret' => $method->klarna_finland_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_finland_invoicefee
-	  );
-	  case 'NLD':
-	  return array(
-	  'pno_encoding' => 7,
-	  'language' => 101,
-	  'language_code' => 'nl',
-	  'country' => 154,
-	  'country_code' => 'nl',
-	  'currency' => 2,
-	  'currency_code' => 'EUR',
-	  'currency_symbol' => '&#8364;',
-	  'eid' => $method->klarna_netherlands_merchantid,
-	  'secret' => $method->klarna_netherlands_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_netherlands_invoicefee
-	  );
-	  case 'DEU':
-	  return array(
-	  'pno_encoding' => 6,
-	  'language' => 28,
-	  'language_code' => 'de',
-	  'country' => 81,
-	  'country_code' => 'de',
-	  'currency' => 2,
-	  'currency_code' => 'EUR',
-	  'currency_symbol' => '&#8364;',
-	  'eid' => $method->klarna_germany_merchantid,
-	  'secret' => $method->klarna_germany_sharedsecret,
-	  'invoice_fee' => (double) $method->klarna_germany_invoicefee
-	  );
-	  default:
-	  return null; // Not supported by klarna yet.
-	  }
-	 * */
+
     }
 
     public function getCountryData($method, $country) {
@@ -231,7 +141,10 @@ class KlarnaHandler {
 	$invoice_fee = 'klarna_' . strtolower($country) . '_invoicefee';
 	return $method->$invoice_fee;
     }
-
+   public function getInvoiceFeeTaxId($method, $country) {
+	$invoice_fee_tax = 'klarna_' . strtolower($country) . '_invoice_tax_id';
+	return $method->$invoice_fee;
+    }
     public function getSettingsForCountry($method, $country) {
 	$settings = array();
 	$settings['eid'] = self::getEid($method, $country);
@@ -323,7 +236,7 @@ class KlarnaHandler {
 	$billing = new KlarnaAddr(
 			$bt['email'],
 			$bt['phone_1'],
-			$bt['phone_2'],
+			@$bt['phone_2'],
 			utf8_decode($bt['first_name']),
 			utf8_decode($bt['last_name']), '',
 			utf8_decode($bill_street),
@@ -385,9 +298,6 @@ class KlarnaHandler {
 	    }
 	}
 
-	$kLang = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
-
-
 	// Fill the good list the we send to Klarna
 	foreach ($order['items'] as $item) {
 	    $klarna->addArticle($item->product_quantity,
@@ -406,7 +316,7 @@ class KlarnaHandler {
 	    //$invoice_fee = (double) (round(abs(self::getInvoiceFee($method, $country['country_code'])), 2));
 	    $invoice_fee = (double) (round( $order['details']['BT']->order_payment));
 	    if ($invoice_fee > 0) {
-		$klarna->addArticle(1, "invoicefee", $kLang->fetch('INVOICE_FEE_TITLE', $country['language_code']), $invoice_fee, (double) round( $order['details']['BT']->order_payment_tax, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
+		$klarna->addArticle(1, "invoicefee", JText::_('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE')  , $invoice_fee, (double) round( $order['details']['BT']->order_payment_tax, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 	    }
 	    $klarna_pclass=-1;
 	} else {
@@ -431,7 +341,7 @@ class KlarnaHandler {
 			isset($klarnaData['HOUSE_EXT'])?$klarnaData['HOUSE_EXT']:''
 	);
 
-	if ($klarna_invoice_type == 'company') {
+	if ($klarnaData['INVOICE_TYPE'] == 'company') {
 	    $klarna_shipping->isCompany = true;
 	    $klarna_shipping->setCompanyName($klarna_company_name);
 	    $klarna_comment = $klarnaData['REFERENCE'];
@@ -544,22 +454,6 @@ class KlarnaHandler {
 	return $aReturn;
     }
 
-    /*
-     * @deprecated
-     */
-
-    public function addOrderDB() {
-	$db = JFactory::getDbo();
-	$q = "CREATE TABLE IF NOT EXISTS `klarna_orderstatus` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `eid` int(10) NOT NULL,
-                `order_id` text NOT NULL,
-                `order_status` tinyint(4) NOT NULL,
-                `order_title` varchar(255) NOT NULL,
-                `invoice_number` text NOT NULL,
-                 KEY `id` (`id`))";
-	$db->query($q);
-    }
 
     public function fetchPClasses($method) {
 	$message = '';
@@ -730,32 +624,32 @@ class KlarnaHandler {
      */
     public function getEidSecretArray($method) {
 	$eid_array = array();
-	if ($method->klarna_swe_merchantid != "" && $method->klarna_swe_sharedsecret != "") {
+	if (isset($method->klarna_swe_merchantid ) && $method->klarna_swe_merchantid != "" && $method->klarna_swe_sharedsecret != "") {
 	    $eid_array['se']['secret'] = $method->klarna_swe_sharedsecret;
 	    $eid_array['se']['eid'] = (int) $method->klarna_swe_merchantid;
 	}
 
-	if ($method->klarna_nor_merchantid != "" && $method->klarna_nor_sharedsecret != "") {
+	if (isset($method->klarna_nor_merchantid ) && $method->klarna_nor_merchantid != "" && $method->klarna_nor_sharedsecret != "") {
 	    $eid_array['no']['secret'] = $method->klarna_nor_sharedsecret;
 	    $eid_array['no']['eid'] = $method->klarna_nor_merchantid;
 	}
 
-	if ($method->klarna_deu_merchantid != "" && $method->klarna_deu_sharedsecret != "") {
+	if (isset($method->klarna_deu_merchantid ) && $method->klarna_deu_merchantid != "" && $method->klarna_deu_sharedsecret != "") {
 	    $eid_array['de']['secret'] = $method->klarna_deu_sharedsecret;
 	    $eid_array['de']['eid'] = $method->klarna_deu_merchantid;
 	}
 
-	if ($method->klarna_nld_merchantid != "" && $method->klarna_nld_sharedsecret != "") {
+	if (isset($method->klarna_nld_merchantid ) && $method->klarna_nld_merchantid != "" && $method->klarna_nld_sharedsecret != "") {
 	    $eid_array['nl']['secret'] = $method->klarna_nld_sharedsecret;
 	    $eid_array['nl']['eid'] = $method->klarna_nld_merchantid;
 	}
 
-	if ($method->klarna_dnk_merchantid != "" && $method->klarna_dnk_sharedsecret != "") {
+	if (isset($method->klarna_dnk_merchantid ) && $method->klarna_dnk_merchantid != "" && $method->klarna_dnk_sharedsecret != "") {
 	    $eid_array['dk']['secret'] = $method->klarna_dnk_sharedsecret;
 	    $eid_array['dk']['eid'] = $method->klarna_dnk_merchantid;
 	}
 
-	if ($method->klarna_fin_merchantid != "" && $method->klarna_fin_sharedsecret != "") {
+	if (isset($method->klarna_fin_merchantid ) && $method->klarna_fin_merchantid != "" && $method->klarna_fin_sharedsecret != "") {
 	    $eid_array['fi']['secret'] = $method->klarna_fin_sharedsecret;
 	    $eid_array['fi']['eid'] = $method->klarna_fin_merchantid;
 	}
@@ -889,41 +783,6 @@ class KlarnaHandler {
 	return $aResult;
     }
 
-    public function checkVersion() {
-	$kURL = 'http://static.klarna.com/external/msbo/virtuemart.latest.txt';
-	$kLatest = file_get_contents($kURL);
-
-	if ($kLatest != "") {
-	    if (version_compare($kLatest, KLARNA_MODULE_VERSION, '>')) {
-		$html = '
-                <div class="klarna_update_box">
-                    <span class="klarna_update_logo">
-                        <img src="' . JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'images' . DS . 'logo' . DS . 'klarna_logo.png" border="0" />
-                    </span>
-                    <span class="klarna_update_icon">
-                        <img src="src="' . JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'images' . DS . 'share' . 'klarna_update_available.png" border="0" />
-                    </span>
-                    <div class="klarna_update_info">
-                        <span class="klarna_update_header">A newer version of your current module is available.</span>
-                        <div class="clear"></div>
-                        <span class="klarna_update_text">Please visit <a href="http://integration.klarna.com/" target="_blank" style="text-decoration: underline; font-weight: bold">http://integration.klarna.com/</a> for more details.</span>
-                    </div>
-                    <div class="klarna_version_box">
-                        <span class="klarna_update_version_text">Your version: <span class="klarna_version_number"><?php echo KLARNA_MODULE_VERSION;?> </span></span>
-                        <div class="clear"></div>
-                        <span class="klarna_update_version_text">Latest version: <span class="klarna_version_number"><?php echo $kLatest; ?></span></span>
-                    </div>
-                    <div class="clear"></div>
-                </div>';
-
-		return $html;
-	    } else {
-		return null;
-	    }
-	} else {
-	    return null;
-	}
-    }
 
     private function getStatusForCode($code) {
 	$status = array();

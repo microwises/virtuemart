@@ -32,7 +32,7 @@ class JElementKlarnaModuleVersion extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 	if (!class_exists('Klarna_virtuemart'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'Klarna_virtuemart.php');
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_virtuemart.php');
 
 	return  KLARNA_MODULE_VERSION;
     }

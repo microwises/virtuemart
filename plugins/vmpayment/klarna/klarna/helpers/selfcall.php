@@ -20,16 +20,17 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  */
 
 class KlarnaSelfCall {
-	
+
 	/*
 	 * Ajax call to get Pclasses
 	 * and create table if not exist
 	 * only called from BE when adding a new country/code ...
 	 * Click on update/Fetch PClasses
-	 * 
+	 * @author Patrick Kohl
+	 *
 	 */
 	function getPclasses() {
-		jimport('phpxmlrpc.xmlrpc'); 
+		jimport('phpxmlrpc.xmlrpc');
 		$handler = new KlarnaHandler ;
 		// call klarna server for pClasses
 		$methodid = jrequest::getInt('methodid');

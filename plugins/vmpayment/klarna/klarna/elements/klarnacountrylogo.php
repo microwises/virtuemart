@@ -19,7 +19,7 @@ class JElementKlarnaCountryLogo extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 
-		return '<img style="margin-right: 5px;margin-top: 15px;" src="'. JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/share/flags/'.  strtolower($value).'.png" />'. JText::_('VMPAYMENT_KLARNA_SETTINGS_'.$value);
+		return '<img style="margin-right: 5px;margin-top: 15px;" src="'. JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/share/flags/'.  strtolower($value).'.png" />'. JText::_('VMPAYMENT_KLARNA_CONF_SETTINGS_'.$value);
 
 	}
 }
