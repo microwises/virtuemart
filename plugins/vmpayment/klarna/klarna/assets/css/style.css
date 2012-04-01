@@ -122,3 +122,6 @@
 .nlBanner {
     z-index: 400;
 }
+.klarna_PPBox_bottomMid td,.klarna_PPBox_bottomMid tr{
+	border:none;
+}
