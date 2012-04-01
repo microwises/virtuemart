@@ -42,6 +42,7 @@ class KlarnaSelfCall {
 		$data = $parameters->getParamByName('data');
 		// echo "<pre>";print_r($data);
 		echo $handler->fetchPClasses($data);
+		jexit();
 		// echo result with tmpl ?
 	}
 }

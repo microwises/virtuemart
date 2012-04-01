@@ -458,6 +458,7 @@ class KlarnaHandler {
     public function fetchPClasses($method) {
 	$message = '';
 	$success = '';
+
 	foreach ($method->klarna_countries as $country) {
 	    // country is CODE 3==> converting to 2 letter country
 	    //$country = self::convertCountryCode($method, $country);
@@ -483,7 +484,7 @@ class KlarnaHandler {
 	    echo $message;
 	}
 	if (strlen($success) > 2) {
-	    $notice = '<br><span style="font-size: 15px;">' .
+	    $notice = '<br><span id="PClassesSuccessResult" style="font-size: 15px;">' .
 		    'PClasses fetched for : ' . $success . '</span>';
 	    echo $notice;
 	}

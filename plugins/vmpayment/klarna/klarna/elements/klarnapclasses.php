@@ -107,9 +107,10 @@ class JElementKlarnaPclasses extends JElement {
 		echo $e;
 	    }
 	}
-	$cid = jrequest::getvar('cid');
-
-	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$cid;
+	$cid = jrequest::getvar('cid',null,'array');
+	if (is_Array($cid)) $vmMethoId = $cid[0];
+	else $vmMethoId = $cid;
+	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$vmMethoId;
 
 	if ($total == 0) {
 
@@ -120,8 +121,29 @@ class JElementKlarnaPclasses extends JElement {
                   </fieldset>
         <span class="update_pclasses">
             <a class="button_klarna" href="' . $pclassesLink . '">Update PClasses</a>
-        </span>
+        </span><span id="pclasses_update_msg"></span>
         <div class="clear"></div>';
+	$document = &JFactory::getDocument();
+	$document->addScriptDeclaration('
+		jQuery(function($) {
+			$(".update_pclasses a").click( function(e){
+				e.preventDefault();
+				form = $(this).parents("form") ;
+
+				var datas = $(this).parents("form").serializeArray();
+				
+				datas.push({"name":"view","value":"plugin"});
+				datas.push({"name":"name","value":"klarna"});
+				datas.push({"name":"task","value":"plugin"});
+				var link = $(this).attr("href");
+				$("#pclasses_update_msg").load(link+" #PClassesSuccessResult",datas,function() {
+					
+				});
+				return false;
+			});
+		});
+	');
+	
 	return $html;
     }
 
