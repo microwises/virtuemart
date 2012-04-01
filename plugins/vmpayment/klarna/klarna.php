@@ -42,8 +42,8 @@ if (!class_exists('KlarnaPClass'))
 if (!class_exists('KlarnaCalc'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnacalc.php');
 
-if (!class_exists('KlarnaProductPrice'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaproductprice.php');
+// if (!class_exists('KlarnaProductPrice'))
+    // require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaproductprice.php');
 
 if (!class_exists('KlarnaHandler'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');

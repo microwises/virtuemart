@@ -223,7 +223,11 @@ class KlarnaAPI {
 	    $this->aSetupSettings[$sName] = $sValue;
 	}
     }
-
+	
+	
+    public function getSetupValues() {
+	return $this->aSetupSettings;
+    }
     /**
      * Add/Overwrite input values.
      *
@@ -282,7 +286,7 @@ class KlarnaAPI {
 	if ($a_aParams != null)
 	    $this->aInputParameters = array_merge(
 		    $this->aInputParameters, $a_aParams);
-
+// print_r($this->aInputValues);
 	// Backwards compability
 	// using input values for red baloon is DEPRECATED
 	if (array_key_exists('red_baloon_content', $this->aInputValues)) {
@@ -726,9 +730,15 @@ class KlarnaAPI {
 	    case KlarnaCurrency::NOK:
 	    case KlarnaCurrency::DKK:
 		$this->addSetupValue('currency_suffix', ' kr');
+		$this->addSetupValue('currency_prefix', '');
 		break;
 	    case KlarnaCurrency::EUR:
 		$this->addSetupValue('currency_prefix', '&#8364;');
+		$this->addSetupValue('currency_suffix', '');
+		break;
+		default:
+		$this->addSetupValue('currency_suffix', '');
+		$this->addSetupValue('currency_prefix', '');
 		break;
 	}
     }

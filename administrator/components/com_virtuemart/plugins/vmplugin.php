@@ -431,8 +431,12 @@ abstract class vmPlugin extends JPlugin {
      * @since   11.1
      * @author Patrick Kohl, Valérie Isaksen
      */
-    protected function renderByLayout($layout = 'default', $params = null) {
-	$layout = $this->_getLayoutPath($this->_name, 'vm' . $this->_psType, $layout);
+    public function renderByLayout($layout = 'default', $params = null,$name = null,$psType =null) {
+	if ($name===null) $name= $this->_name;
+	
+	if ($psType===null) $psType= $this->_psType;
+	$layout = vmPlugin::_getLayoutPath($name, 'vm' . $psType, $layout);
+	
 	ob_start();
 	include ( $layout );
 	return ob_get_clean();
@@ -443,7 +447,7 @@ abstract class vmPlugin extends JPlugin {
      *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
      *  @author Patrick Kohl, Valérie Isaksen
      */
-    function _getLayoutPath($pluginName, $group, $layout = 'default') {
+    private function _getLayoutPath($pluginName, $group, $layout = 'default') {
 	$app = JFactory::getApplication();
 	// get the template and default paths for the layout
 	if (JVM_VERSION === 2) {
