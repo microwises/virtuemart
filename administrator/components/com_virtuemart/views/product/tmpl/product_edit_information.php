@@ -279,10 +279,14 @@ $i=0;
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
 				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-					<button>
-						<a href="<?php echo $link ?>">
-            			<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD'); ?></a>
-					</button>
+					
+						<div class="button2-left">
+							<div class="blank">
+								<a href="<?php echo $link ?>">
+								<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD'); ?>
+								</a>
+							</div>
+						</div>
 				</td>
 
 				<td width="29%"><div style="text-align:right; font-weight: bold;">
@@ -305,7 +309,7 @@ $i=0;
 			<tr class="row<?php echo $i?>" >
 				<td width="79%" colspan = "3"><?php
                 	if (count($this->product_childs)>0 and !empty($this->product->customfields)) {
-
+						$customs = array();
                 		foreach($this->product->customfields as $custom){
                 			// vmdebug('my custom',$custom);
                 			if($custom->field_type=='A'){
