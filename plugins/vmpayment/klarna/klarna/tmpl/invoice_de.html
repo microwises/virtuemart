@@ -68,7 +68,11 @@
     </div>
     <div class="klarna_blue_baloon_bottom"></div>
 </div>
-<script src="{{setup.path_js}}klarna_invoice.js" type="text/javascript"></script>
+<script type="text/javascript">
+jQuery( function (){
+    klarna.invoiceReady();
+});
+</script>
 <div class="klarna_box_container">
     <div class="klarna_box" id="klarna_box_invoice">
         <script type="text/javascript">
