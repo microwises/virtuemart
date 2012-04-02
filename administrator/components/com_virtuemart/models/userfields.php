@@ -912,30 +912,19 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function getUserfieldsList()
 	{
-		if (!$this->_data) {
-			$query = $this->_getListQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_total = $this->_getListCount($query);
-		}
-		return $this->_data;
+		// if (!$this->_data) {
+			// $query = $this->_getListQuery();
+			// $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			// $this->_total = $this->_getListCount($query);
+		// }
+		$whereString = $this->_getFilter();
+		$ordering = $this->_getOrdering();
+		//return $this->_data;
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_userfields`',$whereString,'',$ordering);
+
 	}
 
 	/**
-	 * Gets the total number of userfields
-	 *
-	 * @return int Total number of userfields in the database
-	 * @deprecated
-	 *
-	 function _getTotal()
-	 {
-		if (empty($this->_total)) {
-		$query = $this->_getListQuery();
-		$this->_total = $this->_getListCount($query);
-		}
-		return $this->_total;
-		}
-
-		/**
 	 * If a filter was set, get the SQL WHERE clase
 	 *
 	 *@deprecated
@@ -952,20 +941,6 @@ class VirtueMartModelUserfields extends VmModel {
 		return ('');
 	}
 
-	/**
-	 * Build the query to list all Userfields
-	 *
-	 *@deprecated
-	 * @return string SQL query statement
-	 */
-	function _getListQuery ()
-	{
-		$query = 'SELECT * FROM `#__virtuemart_userfields` ';
-		$query .= $this->_getFilter();
-		$query .= $this->_getOrdering();
-		return ($query);
-	}
-	//*/
 }
 
 // No closing tag

@@ -144,15 +144,13 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		if ($group->custom_element != $this->_name) return '';
 
 		$this->_tableChecked = true;
-		// $this->tableFields = array ( 'id', 'virtuemart_custom_id', 'custom_specification_default1', 'custom_specification_default2' );
-
 		$this->getCustomParams($group);
 		$this->getPluginCustomData($group, $product->virtuemart_product_id);
 
 		// Here the plugin values
 		//$html =JTEXT::_($group->custom_title) ;
 
-		$group->display .= $group->display .= $this->renderByLayout('default',array($field,&$idx,&$group ) );
+		$group->display .=  $this->renderByLayout('default',array($this->params,&$idx,&$group ) );
 
 		return true;
 	}
