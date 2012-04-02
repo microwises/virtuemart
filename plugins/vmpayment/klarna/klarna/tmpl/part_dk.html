@@ -54,16 +54,7 @@
                 shipmentAddressInput: '{{input.shipmentAddressInput}}'
              }
 
-             if(typeof klarnaGeneralLoaded == 'undefined') {
-                document.write('<scr'+'ipt src="{{setup.path_js}}klarna_general.js" type="text/javascript"></scr'+'ipt>');
-             }
 
-            if(typeof klarnaAgreementLoaded == 'undefined') {
-                document.write('<scr'+'ipt src="http://static.klarna.com/external/js/klarnaConsentNew.js" type="text/javascript"></scr'+'ipt>');
-                klarnaAgreementLoaded = true;
-            }
-
-            jQuery('head').append('<link type="text/css" rel="stylesheet" href="{{setup.path_css}}klarna.css" />');
          //-->
          </script>
 <script src="{{setup.path_js}}klarna_part.js" type="text/javascript"></script>

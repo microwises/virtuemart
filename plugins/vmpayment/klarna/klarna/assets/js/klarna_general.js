@@ -351,9 +351,9 @@ var klarna = {
 
 	doDocumentIsReady : function  ()
 	{
-		currentMinHeight_invoice = jQuery('#klarna_box_invoice').height();
-		currentMinHeight_part = jQuery('#klarna_box_part').height();
-		currentMinHeight_spec = jQuery('#klarna_box_spec').height();
+		klarna.currentMinHeight_invoice = jQuery('#klarna_box_invoice').height();
+		klarna.currentMinHeight_part = jQuery('#klarna_box_part').height();
+		klarna.currentMinHeight_spec = jQuery('#klarna_box_spec').height();
 
 
 
@@ -722,7 +722,7 @@ var klarna = {
 			url: ajax_path,
 			data: data,
 			success: function(response){
-				console.log(response);
+				//console.log(response);
 				if (jQuery(response).find('.klarna_box'))
 				{
 					replaceBox.find('.klarna_box').remove();
@@ -751,7 +751,7 @@ var klarna = {
 								klarna.changeLanguage_busy = false;
 							});
 
-						klarna_partReady();
+						klarna.partReady();
 					}
 
 					if (type == "spec")
@@ -839,7 +839,7 @@ var klarna = {
 	specReady : function  ()
 	{
 		var foundBox = false;
-		var currentMinHeight_spec = jQuery('#klarna_box_spec').height();
+		klarna.currentMinHeight_spec = jQuery('#klarna_box_spec').height();
 
 		// Select birthdate and fill years box
 		if (global_countryCode == "de" || global_countryCode == "nl")
@@ -879,7 +879,7 @@ var klarna = {
 
 	partReady : function () {
 		var foundBox = false;
-		var currentMinHeight_part = jQuery('#klarna_box_part').height();
+		klarna.currentMinHeight_part = jQuery('#klarna_box_part').height();
 		// Select birthdate and fill years box
 		if (global_countryCode == "de" || global_countryCode == "nl")
 		{

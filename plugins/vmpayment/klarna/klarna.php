@@ -128,6 +128,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$productDisplay [] = $productPrice->showProductPrice($method, $html, $product->prices['basePriceWithTax']);
 	    }
 	}
+	JHTML::stylesheet('style.css', VMKLARNAPLUGINWEBROOT.'klarna/assets/css/', false);
 	return true;
     }
 
@@ -171,7 +172,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return false;
 	    }
 	}
-	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'klarna/assets/js/', false);
+	$this->loadScriptAndCss();
+	//JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'klarna/assets/js/', false);
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
@@ -267,7 +269,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 // TO DO add html:
 	$pluginHtml = $html_invoice . $html_partpay . $html_speccamp . $html;
-
+	
 
 	return $pluginHtml;
     }
@@ -556,7 +558,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$currency_code_3 = $db->loadResult();
 	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
-	$html .= $this->getHtmlRowBE('KLARNA_PAYMENT_NAME', $paymentTable->payment_name);
+	$html .= $this->getHtmlRowBE('VMPAYMENT_KLARNA_PAYMENT_NAME', $paymentTable->payment_name);
 	//$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$currency_code_3);
 	$code = "klarna_";
 	foreach ($paymentTable as $key => $value) {
@@ -968,7 +970,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
 	return $vendor_currency->currency_code_3;
     }
-
+	function loadScriptAndCss(){
+		$assetsPath = VMKLARNAPLUGINWEBROOT.'klarna/assets/';
+		JHTML::stylesheet('style.css', $assetsPath.'css/', false);
+		JHTML::stylesheet('klarna.css', $assetsPath.'css/', false);
+		JHTML::script('klarna_general.js', $assetsPath.'js/', false);
+		JHTML::script('klarnaConsentNew.js', 'http://static.klarna.com/external/js/', false);
+	}
 }
 
 // No closing tag

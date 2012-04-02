@@ -146,9 +146,9 @@ class klarna_productPrice {
 		}
 
 		if ($pclass['pclass']->getType() == KlarnaPClass::ACCOUNT) {
-		    $pp_title = JText::_('KLARNA_PPBOX_ACCOUNT');
+		    $pp_title = JText::_('VMPAYMENT_KLARNA_PPBOX_ACCOUNT');
 		} else {
-		    $pp_title = $pclass['pclass']->getMonths() . " " . JText::_('KLARNA_PPBOX_TH_MONTH');
+		    $pp_title = $pclass['pclass']->getMonths() . " " . JText::_('VMPAYMENT_KLARNA_PPBOX_TH_MONTH');
 		}
 		// if ($pclass['pclass']->getType() == KlarnaPClass::ACCOUNT) {
 		    // $pp_title = $kCheckout->fetchFromLanguagePack('PPBOX_account', $lang, '/');
