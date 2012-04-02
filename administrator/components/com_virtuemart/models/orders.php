@@ -999,11 +999,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$data['order_status'] = $orderDetails['order_status'];
 
-			$data['virtuemart_vendor_id'] = $orderDetails['virtuemart_order_id'];
+			$data['virtuemart_vendor_id'] = $orderDetails['virtuemart_vendor_id'];
 
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
-			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',$orderDetails,$data);
+			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',array($orderDetails,$data));
 			foreach($plg_datas as $plg_data){
 // 				$data = array_merge($plg_data,$data);
 			}
