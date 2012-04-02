@@ -129,7 +129,7 @@ class klarna_productPrice {
 	    $kCheckout->addSetupValue('asterisk', '*');
 	} else $kCheckout->addSetupValue('asterisk', '');
 	$kCheckout->setCurrency($this->cData['currency']);
-	// TODO : Not top to get setup  values here! 
+	// TODO : Not top to get setup  values here!
 	$this->settings = $kCheckout->getSetupValues();
 	if ($price > 0 && count($kCheckout->aPClasses) > 0) {
 
@@ -150,11 +150,7 @@ class klarna_productPrice {
 		} else {
 		    $pp_title = $pclass['pclass']->getMonths() . " " . JText::_('VMPAYMENT_KLARNA_PPBOX_TH_MONTH');
 		}
-		// if ($pclass['pclass']->getType() == KlarnaPClass::ACCOUNT) {
-		    // $pp_title = $kCheckout->fetchFromLanguagePack('PPBOX_account', $lang, '/');
-		// } else {
-		    // $pp_title = $pclass['pclass']->getMonths() . " " . $kCheckout->fetchFromLanguagePack('PPBOX_th_month', $lang);
-		// }
+
 		$pp_price = $currencydisplay->priceDisplay($pclass['monthlyCost'], '', false);
 		$sTableHtml .=vmPlugin::renderByLayout('pp_box_template',array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price),$this->method->payment_element,'payment');
 		// $sTableHtml .= $kCheckout->retrieveHTML(null, array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price), JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/pp_box_template.html');

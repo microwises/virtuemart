@@ -235,7 +235,7 @@ class klarna_speccamp {
 	$klarna_fee = 0;
 	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
 
-	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
+
 	$kCheckout = new KlarnaAPI($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('ajax_path', juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna");
@@ -247,11 +247,11 @@ class klarna_speccamp {
 	}
 	$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
 	$kCheckout->addMultipleSetupValues(array("web_root" => $this->web_root, "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/", "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/', "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
-	$title = $kCheckout->fetchFromLanguagePack('SPEC_TITLE', $lang, JPATH_SITE . $cPath . 'checkout/');
+	$title = JTextx::_('VMPAYMENT_KLARNA_SPEC_TITLE'); //$kCheckout->fetchFromLanguagePack('SPEC_TITLE', $lang, JPATH_SITE . $cPath . 'checkout/');
 
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
 		'<img src="../' . $this->web_root . $cPath . '/images/logo/logo_small.png" border="0" /></div>' .
-		$kCheckout->fetchFromLanguagePack('SPEC_TEXT_DESCRIPTION', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/') . '<br/><br/>' .
+		JTextx::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	$this->klarna_phone = $this->shipTo['phone'];

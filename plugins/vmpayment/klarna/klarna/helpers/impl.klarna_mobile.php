@@ -133,7 +133,7 @@ abstract class KlarnaMobileImpl {
         }
         else if($sType == "lang")
         {
-            return $this->fetchFromLanguagePack($sName);
+            return JText::_($sName); //$this->fetchFromLanguagePack($sName);
         }
         else if($sType == "setup")
         {

@@ -4,7 +4,6 @@
         <?php echo $params['pp_title'] ?>
     </td>
     <td class='klarna_PPBox_pricetag'>
-        <?php echo $this->settings['currency_prefix'] . $params['pp_price'] . $this->settings['currency_suffix'] ?>
+        <?php echo   $params['pp_price']   ?>
     </td>
 </tr>
-<?php

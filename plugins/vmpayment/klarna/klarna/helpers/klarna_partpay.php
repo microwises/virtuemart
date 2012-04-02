@@ -274,13 +274,16 @@ class klarna_partpay {
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 	    $currency = CurrencyDisplay::getInstance();
 	    $sFee = $currency->priceDisplay($cheapest, '', false);
-	    $title = str_replace('xx', $sFee, $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/'));
+	    //$title = str_replace('xx', $sFee, $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/'));
+	    $title=JText::sprintf('VMPAYMENT_KLARNA_PARTPAY_TITLE', $sFee);
+
 	} else {
-	    $title = $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE_NOSUM', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/');
+	    //$title = $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE_NOSUM', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/');
+	    $title=JText::_('VMPAYMENT_KLARNA_PARTPAY_TITLE_NOSUM');
 	}
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
 		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT  . '/images/logo/logo_small.png" border="0" /></div>' .
-		$kCheckout->fetchFromLanguagePack('PARTPAY_TEXT_DESCRIPTION', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/') . '<br/><br/>' .
+		JText::_('VMPAYMENT_KLARNA_PARTPAY_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	$this->klarna_phone = $this->shipTo['phone'];

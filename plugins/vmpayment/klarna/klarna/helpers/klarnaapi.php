@@ -223,8 +223,8 @@ class KlarnaAPI {
 	    $this->aSetupSettings[$sName] = $sValue;
 	}
     }
-	
-	
+
+
     public function getSetupValues() {
 	return $this->aSetupSettings;
     }
@@ -599,7 +599,7 @@ class KlarnaAPI {
 		return false;
 	    }
 	} else if ($sType == "lang") {
-	    return $this->fetchFromLanguagePack($sName);
+	    return JText::_('VMPAYMENT_KLARNA_'.strtoupper($sName)); //$this->fetchFromLanguagePack($sName);
 	} else if ($sType == "setup") {
 	    if ($sName == "pclasses") {
 		return $this->renderPClasses();
@@ -615,8 +615,14 @@ class KlarnaAPI {
 
 	    if ($sName == 'additional_information') {
 		$key = @$this->aSetupSettings['additional_information'];
-		$frmt = @$this->fetchFromLanguagePack($key);
+		$key ='VMPAYMENT_KLARNA_'.strtoupper($key);
+		$lang = JFactory::getLanguage();
+		if ($lang->hasKey($key)) {
+		$frmt = @JText::_( $key); //$this->fetchFromLanguagePack($key);
 		return @$this->translateInputFields($frmt);
+		} else {
+		    return '';
+		}
 	    }
 
 	    return @$this->aSetupSettings[$sName];
@@ -677,7 +683,7 @@ class KlarnaAPI {
 
 	foreach ($this->aPClasses as $sPClassId => $aPClassData) {
 	    $value = $this->getPresentableValuta($aPClassData['monthlyCost']);
-	    $pm = $this->fetchFromLanguagePack('per_month');
+	    $pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH') ;//$this->fetchFromLanguagePack('per_month');
 	    $sString .= '<li ' . ($aPClassData['default'] ? 'id="click"' : "") . '>
                 <div>' . $aPClassData['pclass']->getDescription() .
 		    ($aPClassData['monthlyCost'] > 0 ?
@@ -748,6 +754,7 @@ class KlarnaAPI {
      *
      * @param    string    $sText    The text to fech
      * @return    string
+     * @depredecated
      */
     public function fetchFromLanguagePack($sText, $sISO = null, $sPath = null) {
 	if ($sISO == null) {

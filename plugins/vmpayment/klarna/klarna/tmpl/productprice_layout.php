@@ -1,14 +1,14 @@
-<?php defined('_JEXEC') or die('Restricted access'); 
+<?php defined('_JEXEC') or die('Restricted access');
 $assetsPath = VMKLARNAPLUGINWEBROOT.'klarna/assets/';
 JHTML::script('klarna_pp.js', $assetsPath.'js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	addKlarnaPartPaymentEvent(function() {
-		InitKlarnaPartPaymentElements('klarna_partpayment', '". $params['eid'] ."', '". $params['country'] ."'); 
-		
+		InitKlarnaPartPaymentElements('klarna_partpayment', '". $params['eid'] ."', '". $params['country'] ."');
+
 	});
-jQuery(function(){ 
+jQuery(function(){
 	jQuery('klarna_PPBox_bottomMid_readMore a').click( function(){
 		ShowKlarnaPartPaymentPopup();
 		return false;
@@ -17,7 +17,7 @@ jQuery(function(){
 ");
 ?>
 
-   
+
 </script>
 <div class="klarna_PPBox">
     <div id="klarna_partpayment" style="display: none"></div>
@@ -25,7 +25,7 @@ jQuery(function(){
         <div class="klarna_PPBox_top">
             <span class="klarna_PPBox_topRight"></span>
             <span class="klarna_PPBox_topMid">
-                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label><?php echo $this->settings['currency_prefix'] ?><?php echo $params['defaultMonth'] ?><?php echo $this->settings['currency_suffix'] ?></label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $this->settings['asterisk'] ?></p>
+                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label> <?php echo $params['defaultMonth'] ?> </label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $this->settings['asterisk'] ?></p>
             </span>
             <span class="klarna_PPBox_topLeft"></span>
         </div>
@@ -57,4 +57,3 @@ jQuery(function(){
     </div>
 </div>
 <div style="clear: both; height: 80px;"></div>
-<?php

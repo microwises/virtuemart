@@ -36,7 +36,7 @@
 	    <option value="klarna_speccamp">VMPAYMENT_KLARNA_CONF_MODULE_SPECCAMP</option>
 	</param>
 	<param name="klarna_countries" type="klarnacountries"   label="VMPAYMENT_KLARNA_CONF_COUNTRIES" description="VMPAYMENT_KLARNA_CONF_COUNTRIES_DESC" />
-	<param   type="klarnacountrylogo" default="SV" level="level1" />
+	<param type="klarnacountrylogo" default="SV" level="level1" />
 	<param name="klarna_swe_merchantid" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_swe_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_swe_invoicefee" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
@@ -72,20 +72,19 @@
 	<param name="klarna_nld_invoicefee" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_nld_invoice_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
 	<param type="spacer" default="" level="level1" />
-
+	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_PAGE" level="level1" />
-	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
-	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_FAILED" description="VMPAYMENT_KLARNA_CONF_STATUS_FAILED_DESC" />
 
-	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES" description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
+	<!--param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_FAILED" description="VMPAYMENT_KLARNA_CONF_STATUS_FAILED_DESC" /-->
+	<param name="status_shipped" type="vmorderstate" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED" description="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED_DESC" />
+
 
 	<param name="klarna_pc_type" type="text"   default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
 	<param name="klarna_pc_uri" type="text"   size="60"  default="none" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" />
+	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES" description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" />
 
-	<param type="spacer" default="" level="level1" />
-	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_PAGE" level="level1" />
-	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_EXPLAIN" />
-	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_FAILED" description="VMPAYMENT_KLARNA_CONF_STATUS_FAILED_EXPLAIN" />
+
 
 
 	<param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_DEBUG" description="VMPAYMENT_KLARNA_CONF_DEBUG_DESC" >

@@ -79,9 +79,9 @@ class KlarnaProductPrice {
                 }
 
                 if ($pclass['pclass']->getType() == KlarnaPClass::ACCOUNT) {
-                    $pp_title = $this->checkout->fetchFromLanguagePack('PPBOX_account', $lang, '/');
+                    $pp_title = JText::_('VMPAYMENT_KLARNA_PPBOX_ACCOUNT');
                 } else {
-                    $pp_title = $pclass['pclass']->getMonths() . " " . $this->checkout->fetchFromLanguagePack('PPBOX_th_month', $lang, '/');
+                    $pp_title = $pclass['pclass']->getMonths() . " " . JText::_('VMPAYMENT_KLARNA_PPBOX_TH_MONTH') ;
                 }
                 $pp_price = $pclass['monthlyCost'];
                 $sTableHtml .= $this->checkout->retrieveHTML(null, array('pp_title' => html_entity_decode ($pp_title), 'pp_price' => $pp_price), $this->path . '/klarna/html/pp_box_template.html');
