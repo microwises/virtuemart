@@ -239,7 +239,7 @@ class CurrencyDisplay {
 		$priceFields = array('basePrice','variantModification','basePriceVariant',
 											'basePriceWithTax','discountedPriceWithoutTax',
 											'salesPrice','priceWithoutTax',
-											'discountAmount','taxAmount');
+											'salesPriceWithDiscount','discountAmount','taxAmount');
 
 		if($show_prices==1){
 			foreach($priceFields as $name){
@@ -359,7 +359,7 @@ class CurrencyDisplay {
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
-// 			echo 'Use override '.$name.'<br />';
+			echo 'createPriceDiv empty($this->_priceConfig[$name] '.$name.'<br />';
 			//This is a fallback because we remove the "salesPriceWithDiscount" ;
 			$name = "salesPrice";
 			if(is_array($product_price)){
@@ -370,12 +370,12 @@ class CurrencyDisplay {
 		} else {
 			$price = $product_price[$name] ;
 		}
-		if(!is_double($price)){
+/*		if(!is_double($price)){
 // 			vmdebug('Price is not double? ',$price);
 			$price =  'Price is not double? '.$name.'<pre>'.print_r($price,1).'</pre>';
 		} else {
 			$price = $price * (float)$quantity;
-		}
+		}*/
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){

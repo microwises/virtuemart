@@ -205,7 +205,7 @@ $i=0;
 							type="text"
 							name="salesPrice"
 							size="10"
-							value="<?php echo $this->product->prices['salesPrice']; ?>" />
+							value="<?php echo $this->product->prices['salesPriceTemp']; ?>" />
 
 							<?php echo $this->vendor_currency;   ?>
 							<input type="checkbox" name="use_desired_price" value="1" />
@@ -279,7 +279,7 @@ $i=0;
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
 				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-					
+
 						<div class="button2-left">
 							<div class="blank">
 								<a href="<?php echo $link ?>">
@@ -309,7 +309,7 @@ $i=0;
 			<tr class="row<?php echo $i?>" >
 				<td width="79%" colspan = "3"><?php
                 if (count($this->product_childs)>0 ) {
-						$customs = array();
+
                 	$customs = array();
                 	if(!empty($this->product->customfields)){
                 		foreach($this->product->customfields as $custom){
@@ -339,14 +339,7 @@ $i=0;
 
 
 						foreach ($this->product_childs as $child  ) {
-// 							vmdebug('my child',$child);
-/*							$customs = array();
-							foreach($child->customfields as $custom){
-// 								vmdebug('my custom',$custom);
-								if($custom->field_type=='A'){
-									$customs[] = $custom;
-								}
-							}*/
+
 						     $i = 1 - $i;
 							echo '<tr class="row'.$i.'">';
 								echo '<td>'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).'</td>';

@@ -320,18 +320,21 @@ class calculationHelper {
 		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true));
 
 		$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $priceBeforeTax;
-		$prices['salesPriceTemp'] = $salesPrice;
+
 		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
 
 		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
+		$prices['salesPriceTemp'] = $prices['salesPrice'];
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
 		if ($this->override) {
 			$prices['salesPrice'] = $this->product_override_price;
+// 			$prices['discountedPriceWithoutTax'] = $this->product_override_price;
+// 			$prices['salesPriceWithDiscount'] = $this->product_override_price;
 		}
-
+// 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
 		//The whole discount Amount
 		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
 		$basePriceWithTax = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
@@ -361,6 +364,7 @@ class calculationHelper {
 			$prices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published']);
 		}
 
+// 		vmdebug('getProductPrices',$prices);
 		return $prices;
 	}
 
