@@ -217,12 +217,12 @@ $i=0;
 						</td>
 					</tr>
 					<tr class="row0">
-						<td  >
+						<td>
 							<div style="text-align: right; font-weight: bold;">
 								<span
 									class="hasTip"
-									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
-									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
+									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE_TIP'); ?>">
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE') ?>
 								</span>
 							</div>
 						</td>
@@ -308,14 +308,19 @@ $i=0;
 
 			<tr class="row<?php echo $i?>" >
 				<td width="79%" colspan = "3"><?php
-                	if (count($this->product_childs)>0 and !empty($this->product->customfields)) {
+                if (count($this->product_childs)>0 ) {
 						$customs = array();
+                	$customs = array();
+                	if(!empty($this->product->customfields)){
                 		foreach($this->product->customfields as $custom){
                 			// vmdebug('my custom',$custom);
                 			if($custom->field_type=='A'){
                 				$customs[] = $custom;
                 			}
                 		}
+                	}
+
+
 
 //                 		vmdebug('ma $customs',$customs);
 						echo '<table>';
