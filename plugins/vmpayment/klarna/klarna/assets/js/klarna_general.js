@@ -12,6 +12,7 @@ var klarna_js_loaded = true;
 if (typeof klarna == "undefined") {
 var klarna = {
 	klarnaGeneralLoaded : true,
+	selected_method : null,
 	invoice_active : false,
 	invoice_different_language : false,
 	spec_active : false,
@@ -205,7 +206,10 @@ var klarna = {
 				});
 			}
 		}
+		
 		chosen = choice;
+		klarna.selected_method = choice;
+		console.log(chosen);
 	},
 
 	setGender : function  (context, gender) {
@@ -235,17 +239,19 @@ var klarna = {
 
 		// P-Classes box actions
 		jQuery('.klarna_box', opts).find('ol').find('li').mouseover(function (){
-			if (jQuery(this).attr("id") != "click")
-				jQuery(this).attr("id", "over");
+			jQuery(this).not('.klarna_box_click').addClass('klarna_box_over');
+			// if (jQuery(this).attr("class") != "klarna_box_click")
+				// jQuery(this).attr("class", "klarna_box_over");
 		}).mouseout(function (){
-			if (jQuery(this).attr("id") != "click")
-				jQuery(this).attr("id", "");
+			jQuery(this).not('.klarna_box_click').removeClass('klarna_box_over')
+			// if (jQuery(this).attr("class") != "klarna_box_click")
+				// jQuery(this).attr("class", "");
 		}).click(function (){
 			// Reset list and move chosen icon to newly selected pclass
 			chosen = jQuery(this).parent("ol").find('img')
 			klarna.resetListBox(jQuery(this).parent("ol"));
 			chosen.appendTo(jQuery(this).find('div'));
-			jQuery(this).attr("id", "click");
+			jQuery(this).attr("class", "klarna_box_click");
 
 			// Update input field with pclass id
 			var value = jQuery(this).find('span').html();
@@ -1009,24 +1015,61 @@ AddressCollection.prototype.render = function (to, inputName) {
 }
 
 	//Load when document finished loading
-	jQuery(document).ready(function (){
-		var baloon = jQuery('.klarna_baloon').clone();
-		jQuery('.klarna_baloon').remove();
+	jQuery(document).ready(function ($){
+		var baloon = $('.klarna_baloon').clone();
+		$('.klarna_baloon').remove();
 
-		var baloon3 = jQuery('.klarna_blue_baloon').clone();
-		jQuery('.klarna_blue_baloon').remove();
+		var baloon3 = $('.klarna_blue_baloon').clone();
+		$('.klarna_blue_baloon').remove();
 
 
-		jQuery('body').append(baloon);
-		jQuery('body').append(baloon3);
+		$('body').append(baloon);
+		$('body').append(baloon3);
 
 		klarna.doDocumentIsReady();
 
-		jQuery('.klarna_box_bottom_languageInfo').remove();
+		$('.klarna_box_bottom_languageInfo').remove();
 
 		if (!global_unary_checkout) {
 			klarna.initPaymentSelection();
 		}
+		$('.klarnaPayment').parents('form').submit( function(){
+			var vmmethod = $(this).find('input:radio[name=virtuemart_paymentmethod_id]:checked');
+			//var vmclass = vmmethod.attr('class').val();
+			//if (vmmethod.not('.klarnaPayment')) return;
+			if (!vmmethod.hasClass('klarnaPayment')) return ;
+			// if (klarna.selected_method == vmmethod
+			// klarna.selected_method
+			var action = vmmethod.parents('form').attr('action');
 
+			//$.post(action,fields);
+			var selectedTable= vmmethod.parents('table');
+			var fields = selectedTable.find('input').serializeArray();
+			fields.push({"name":"task","value":"setpayment"});
+			fields.push({"name":"view","value":"cart"});
+			fields.push({"name":"klarna_paymentmethod","value":klarna.selected_method});
+			var form = $('<form></form>');
+
+			form.attr("method", "post");
+			form.attr("action", action);
+			fields
+			$.each(fields, function(key, value) {
+				var field = $('<input></input>');
+				
+				field.attr("type", "hidden");
+				field.attr("name", value["name"]);
+				field.attr("value", value["value"]);
+
+				form.append(field);
+			});
+
+			// The form needs to be apart of the document in
+			// order for us to be able to submit it.
+			$(document.body).append(form);
+			form.submit();
+
+			console.log(fields);
+			return false;
+		});
 		klarna.baloons_moved = true;
 	});

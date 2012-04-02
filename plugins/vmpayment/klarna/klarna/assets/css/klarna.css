@@ -296,12 +296,12 @@
     cursor: pointer;
 }
 
-.klarna_box_bottom ol li#over
+.klarna_box_bottom ol li.klarna_box_over
 {
     background-color: #F1F1F1;
 }
 
-.klarna_box_bottom ol li#click
+.klarna_box_bottom ol li.klarna_box_click
 {
     background-color: #FFFFFF;
 }
