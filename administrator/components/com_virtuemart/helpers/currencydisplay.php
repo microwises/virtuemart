@@ -359,7 +359,7 @@ class CurrencyDisplay {
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
-			echo 'createPriceDiv empty($this->_priceConfig[$name] '.$name.'<br />';
+// 			echo 'createPriceDiv empty($this->_priceConfig[$name] '.$name.'<br />';
 			//This is a fallback because we remove the "salesPriceWithDiscount" ;
 			$name = "salesPrice";
 			if(is_array($product_price)){
