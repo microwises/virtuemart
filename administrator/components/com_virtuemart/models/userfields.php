@@ -144,7 +144,7 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable('userfields');
-			
+
 			$this->_data->load((int)$this->_id);
 		}
 		if(strpos($this->_data->type,'plugin')!==false){
@@ -228,8 +228,8 @@ class VirtueMartModelUserfields extends VmModel {
 
 		// Store the fieldvalues, if any, in a correct array
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id']);
-		
-		
+
+
 		if(strpos($data['type'],'plugin')!==false){
 
 			JPluginHelper::importPlugin('vmuserfield');
@@ -597,9 +597,9 @@ class VirtueMartModelUserfields extends VmModel {
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 		$_userData=(array)($_userData);
 		if (is_array($_selection)) {
-	
+
 			foreach ($_selection as $_fld) {
-							
+
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
@@ -651,7 +651,7 @@ class VirtueMartModelUserfields extends VmModel {
 						// It's not a predefined field, so handle it by it's fieldtype
 					default:
 						if(strpos($_fld->type,'plugin')!==false){
-			
+
 						JPluginHelper::importPlugin('vmuserfield');
 						$dispatcher = JDispatcher::getInstance();
 						$dispatcher->trigger('plgVmOnUserfieldDisplay',array($_prefix, $_fld, &$_return) );
@@ -905,29 +905,28 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
-	 * Retrieve a list of userfields from the database.
+	 * Get the userfields for the BE list
 	 *
-	 * @deprecated
-	 * @return object List of userfield objects
+	 * @author Max Milbers
+	 * @return NULL
 	 */
-	function getUserfieldsList()
-	{
-		// if (!$this->_data) {
-			// $query = $this->_getListQuery();
-			// $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			// $this->_total = $this->_getListCount($query);
-		// }
-		$whereString = $this->_getFilter();
-		$ordering = $this->_getOrdering();
-		//return $this->_data;
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_userfields`',$whereString,'',$ordering);
+	function getUserfieldsList(){
 
+		if (!$this->_data) {
+
+			$whereString = $this->_getFilter();
+
+			$ordering = $this->_getOrdering();
+			$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_userfields`',$whereString,'',$ordering);
+
+		}
+
+		return $this->_data;
 	}
 
 	/**
 	 * If a filter was set, get the SQL WHERE clase
 	 *
-	 *@deprecated
 	 * @return string text to add to the SQL statement
 	 */
 	function _getFilter()
@@ -941,6 +940,20 @@ class VirtueMartModelUserfields extends VmModel {
 		return ('');
 	}
 
+	/**
+	 * Build the query to list all Userfields
+	 *
+	 *@deprecated
+	 * @return string SQL query statement
+	 */
+	function _getListQuery ()
+	{
+		$query = 'SELECT * FROM `#__virtuemart_userfields` ';
+		$query .= $this->_getFilter();
+		$query .= $this->_getOrdering();
+		return ($query);
+	}
+	//*/
 }
 
 // No closing tag

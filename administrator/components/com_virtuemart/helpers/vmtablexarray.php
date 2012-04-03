@@ -94,7 +94,8 @@ class VmTableXarray extends VmTable {
 	}
     /**
      * Records in this table are arrays. Therefore we need to overload the load() function.
-     *
+     * TODO, this function is giving back the array, not the table, it is not working like the other table, so we should change that
+     * for the 2.2. at least.
 	 * @author Max Milbers
      * @param int $id
      */
@@ -117,7 +118,7 @@ class VmTableXarray extends VmTable {
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();
-
+// 		vmdebug('my q ',$q,$result);
 		$error = $this->_db->getErrorMsg();
 		if(!empty($error)){
 			vmError(get_class( $this ).':: load'.$error  );
