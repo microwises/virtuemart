@@ -260,7 +260,8 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (244, 1, 'Canary Islands', 'XCA', 'XC'),
 (245, 1, 'Serbia', 'SRB', 'RS'),
 (246, 1, 'Sint Maarten (French Antilles)', 'MAF', 'MF'),
-(247, 1, 'Sint Maarten (Netherlands Antilles)', 'SXM', 'SX')
+(247, 1, 'Sint Maarten (Netherlands Antilles)', 'SXM', 'SX'),
+(248, 1, 'Palestinian Territory, occupied','PSE','PS')
 ;
 
 
