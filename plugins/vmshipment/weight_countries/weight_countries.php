@@ -207,6 +207,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	if (!isset($address['virtuemart_country_id']))
 	    $address['virtuemart_country_id'] = 0;
+
 	if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
 	    if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
 		return true;
@@ -217,8 +218,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     }
 
     function convert(&$method) {
-	$method->weight_start = (float) $method->weight_start;
-	$method->weight_stop = (float) $method->weight_stop;
+	//$method->weight_start = (float) $method->weight_start;
+	//$method->weight_stop = (float) $method->weight_stop;
 	$method->orderamount_start = (float) $method->orderamount_start;
 	$method->orderamount_stop = (float) $method->orderamount_stop;
 	$method->zip_start = (int) $method->zip_start;
