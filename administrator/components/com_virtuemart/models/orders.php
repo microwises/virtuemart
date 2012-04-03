@@ -689,9 +689,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
 
 		if($newState == $oldState) return;
-		$StatutWhiteList = array('P','C','X','R','S','N');
-
-		if(!in_array($oldState,$StatutWhiteList) or !in_array($newState,$StatutWhiteList)) {
+		// $StatutWhiteList = array('P','C','X','R','S','N');
+		$db = JFactory::getDBO();
+		$db->setQuery('SELECT * FROM `#__vm_order_status` ');
+		$StatutWhiteList = $db->loadAssocList('order_status_code');
+		// new product is statut N
+		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handel' => 'A');
+		if(!array_key_exists($oldState,$StatutWhiteList) or !array_key_exists($newState,$StatutWhiteList)) {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
 			return ;
 			}
@@ -705,20 +709,31 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//  TO have no product setted as ordered when added to cart simply delete 'P' FROM array Reserved
 		// don't set same values in the 2 arrays !!!
 		// stockOut is in normal case shipped product
-
+		//order_stock_handel
+		// 'A' : sotck Available
+		// 'O' : stock Out
+		// 'R' : stock reserved
 		// the status decreasing real stock ?
-		$stockOut = array('S');
-		$isOut = in_array($newState, $stockOut);
-		$wasOut= in_array($oldState, $stockOut);
+		// $stockOut = array('S');
+		if ($StatutWhiteList[$oldState]['order_stock_handel'] == 'O') $isOut = 1;
+		else $isOut = 0;
+		if ($StatutWhiteList[$newState]['order_stock_handel'] == 'O') $wasOut = 1;
+		else $wasOut = 0;
+		// $isOut = in_array($newState, $stockOut);
+		// $wasOut= in_array($oldState, $stockOut);
 		// Stock change ?
 		if ($isOut && !$wasOut)     $product_in_stock = '-';
 		else if ($wasOut && !$isOut ) $product_in_stock = '+';
 		else $product_in_stock = '=';
 
 		// the status increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
-		$Reserved =  array('P','C');
-		$isReserved = in_array($newState, $Reserved);
-		$wasReserved = in_array($oldState, $Reserved);
+		// $Reserved =  array('P','C');
+		if ($StatutWhiteList[$oldState]['order_stock_handel'] == 'R') $isReserved = 1;
+		else $isOut = 0;
+		if ($StatutWhiteList[$newState]['order_stock_handel'] == 'R') $wasReserved = 1;
+		else $wasOut = 0;
+		// $isReserved = in_array($newState, $Reserved);
+		// $wasReserved = in_array($oldState, $Reserved);
 		// reserved stock must be change(all ordered product)
 		if ($isReserved && !$wasReserved )     $product_ordered = '+';
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';

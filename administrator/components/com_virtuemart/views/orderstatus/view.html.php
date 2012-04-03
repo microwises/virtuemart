@@ -62,7 +62,15 @@ class VirtuemartViewOrderstatus extends VmView {
 
 			}
 			$lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
-
+		// 'A' : sotck Available
+		// 'O' : stock Out
+		// 'R' : stock reserved
+			$stockHandelList = array(
+				'A' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_AVAILABLE',
+				'R' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_RESERVED',
+				'O' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_OUT'
+			);
+			$this->assignRef('stockHandelList', $stockHandelList);
 			// Vendor selection
 			$vendor_model = VmModel::getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();

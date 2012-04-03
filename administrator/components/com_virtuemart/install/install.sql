@@ -582,6 +582,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `order_status_code` char(1) NOT NULL DEFAULT '',
   `order_status_name` char(64),
   `order_status_description` text,
+  `order_stock_handel` char(1) NOT NULL DEFAULT 'A',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',

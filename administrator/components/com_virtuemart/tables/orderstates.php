@@ -42,6 +42,10 @@ class TableOrderstates extends VmTable {
 	var $order_status_name			= null;
 	/** @var string Order status description */
 	var $order_status_description	= null;
+	/** @var string Order status description 
+	 *  Default ='A' : available
+	 **/
+	var $order_stock_handel = 'A';
 	/** @var int Order in which the order status is listed */
 	var $ordering					= 0;
 	 /** @var int published or unpublished */
@@ -57,6 +61,7 @@ class TableOrderstates extends VmTable {
 
 		$this->setObligatoryKeys('order_status_code');
 		$this->setObligatoryKeys('order_status_name');
+		$this->setObligatoryKeys('order_stock_handel');
 		$this->setLoggable();
 
 	}

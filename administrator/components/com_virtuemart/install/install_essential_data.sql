@@ -62,11 +62,11 @@ INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_descrip
 --
 
 INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `virtuemart_vendor_id`) VALUES
-(null, 'P', 'Pending', '', 1, 1),
-(null, 'C', 'Confirmed', '', 2, 1),
-(null, 'X', 'Cancelled', '', 3, 1),
-(null, 'R', 'Refunded', '', 4, 1),
-(null, 'S', 'Shipped', '', 5, 1);
+(null, 'P', 'Pending', '', 'R',1, 1),
+(null, 'C', 'Confirmed', '', 'R', 2, 1),
+(null, 'X', 'Cancelled', '', 'A',3, 1),
+(null, 'R', 'Refunded', '', 'A',4, 1),
+(null, 'S', 'Shipped', '', 'O',5, 1);
 
 
 --
