@@ -203,7 +203,7 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (186, 1, 'Seychelles', 'SYC', 'SC'),
 (187, 1, 'Sierra Leone', 'SLE', 'SL'),
 (188, 1, 'Singapore', 'SGP', 'SG'),
-(189, 1, 'Slovakia (Slovak Republic)', 'SVK', 'SK'),
+(189, 1, 'Slovakia', 'SVK', 'SK'),
 (190, 1, 'Slovenia', 'SVN', 'SI'),
 (191, 1, 'Solomon Islands', 'SLB', 'SB'),
 (192, 1, 'Somalia', 'SOM', 'SO'),
