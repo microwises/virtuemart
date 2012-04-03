@@ -17,15 +17,14 @@
 }
 </style>
     <div class="klarna_info">
-        <span class="sectiontableheader klarna_info"><img class="klarna_tulip" src="<?php $params['klarna_logo'] ?>" /> <?php echo JText::_('VMPAYMENT_KLARNA_PAYMENT_INFO') ?></span>
+        <span class="sectiontableheader klarna_info">
+	   <?php echo $params['payment_name']; ?>
+	</span>
         <span id="klarna_invno_wrapper">
             <span id="klarna_invno_text"><?php echo $params['invoice_number_text']; ?></span>
-            <span id="klarna_invno"><?php echo $params['invoice_number']; ?></span>
+            <span id="klarna_invno"><?php echo $params['klarna_invoiceno']; ?></span>
         </span>
-        <span style="float: right;">
-            <a href="http://www.klarna.com/"><?php echo $params['klarna_payment_logo'];?></a><br>
-            <?php echo $params['method'];?>
-        </span>
+        
     </div>
 
     <div class="clear"></div>

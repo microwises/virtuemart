@@ -68,7 +68,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$this->klarna_image_path = JURI::root() . VMKLARNAPLUGINWEBROOT . 'assets/images';
 // Get vendor currency ???
 	$this->_vendor_currency = $this->_getVendorCurrency();
-
+	$jlang = JFactory::getLanguage();
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 
 	//self::$_this = $this;
     }
@@ -418,7 +420,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 // Prepare data that should be stored in the database
 	    $dbValues['order_number'] = $order['details']['BT']->order_number;
 	    $dbValues['payment_name'] = $this->renderPluginName($method, $order);
-	    $dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
+	    $dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 	    $dbValues['order_payment'] = $order['details']['BT']->order_payment;
 	    $dbValues['order_payment_tax'] = $order['details']['BT']->order_payment_tax;
 	    $dbValues['klarna_invoice_no'] = $invoiceno;
@@ -476,7 +478,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return '';
 	}
 	if (!empty($payments[0]->klarna_invoice_no)) {
-	    $data['invoice_number']=$payments[0]->klarna_invoice_no;
+	    $data['invoice_number'] = $payments[0]->klarna_invoice_no;
 	}
     }
 
