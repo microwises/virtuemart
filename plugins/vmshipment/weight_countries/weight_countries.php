@@ -365,7 +365,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelectedShipment(VirtueMartCart $cart, array $cart_prices = array()) {
+    function plgVmOnCheckAutomaticSelectedShipment(VirtueMartCart $cart, array $cart_prices = array() ,   &$shipCounter) {
 	return $this->onCheckAutomaticSelected($cart, $cart_prices);
     }
 
