@@ -624,22 +624,24 @@ class GenericTableUpdater extends JModel{
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);
 
-		//Attention user_infos is not in here, because it an contain customised fields.
-		if(VmConfig::get('upDelCols',1) or $tablename!='#__virtuemart_userinfos' or $tablename!='#__virtuemart_userfields' or $tablename!='#__virtuemart_userorders'){
-			foreach($columns as $fieldname){
+		//Attention user_infos is not in here, because it an contain customised fields. #__virtuemart_order_userinfos #__virtuemart_userinfos
+		if(VmConfig::get('upDelCols',1) and !($tablename==$this->_prefix.'virtuemart_userfields' or $tablename==$this->_prefix.'virtuemart_userinfos' or $tablename==$this->_prefix.'virtuemart_order_userinfos')){
 
-				if(!in_array($fieldname, $demandFieldNames)){
-					$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
-					$action = 'DROP';
-					$dropped++;
+				foreach($columns as $fieldname){
 
-					$this->_db->setQuery($query);
-					if(!$this->_db->query()){
-						$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+					if(!in_array($fieldname, $demandFieldNames)){
+						$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
+						$action = 'DROP';
+						$dropped++;
+
+						$this->_db->setQuery($query);
+						if(!$this->_db->query()){
+							$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+						}
 					}
 				}
 			}
-		}
+
 
 
 // 		vmdebug('$$columns ',$columns);

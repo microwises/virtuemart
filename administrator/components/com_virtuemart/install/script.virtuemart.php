@@ -248,42 +248,38 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
-
+			$this->adjustDefaultOrderStates();
 
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
 		}
 
-		private function portOverwritePrices(){
+		private function adjustDefaultOrderStates(){
 
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_product_prices` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
+			if(empty($this->_db)){
+				$this->_db = JFactory::getDBO();
+			}
 
-			if(!in_array('override',$columns)){
-				$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `override`="1" ';
-				$overwrites = $this->_db->loadAssocList();
+			$order_stock_handles = array('P'=>'R', 'C'=>'R', 'X'=>'A', 'R'=>'A', 'S'=>'O');
 
-				if(!$overwrites){
-					$err = $this->_db->getErrorMsg();
-					vmError('portOverwritePrices ',$err);
-				} else {
-					$productModel = VmModel::getModel('products');
-					foreach($overwrites as $overwrite){
+			foreach($order_stock_handles as $k=>$v){
+				$q = 'UPDATE `#__virtuemart_orderstates` SET `order_stock_handel`="'.$v.'" WHERE  `order_status_code`="'.$k.'" ;';
+				$this->_db->setQuery($q);
 
-// 						$product = $productModel->getProduct($overwrite['virtuemart_product_id']);
-						$overwrite['salesPrice'] = $overwrite['product_override_price'];
-						if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-						$calculator = calculationHelper::getInstance();
-						$data['product_price'] = $calculator->calculateCostprice($overwrite['virtuemart_product_id'],$overwrite);
-						// 			vmdebug('product_price '.$data['product_price']);
-					}
-					$data = $this->updateXrefAndChildTables($overwrite, 'product_prices');
-
+				if(!$this->_db->query()){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Error: Install alterTable '.$this->_db->getErrorMsg() );
+					$ok = false;
 				}
 			}
+
+
+
+
 		}
+
+
 
 
 

@@ -61,6 +61,7 @@ class VirtuemartViewCategory extends VmView {
 		$vendorId = 1;
 
 		$category = $categoryModel->getCategory($categoryId);
+		$categoryModel->addImages($category,1);
 		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
 // 		$categoryModel->setPerRow($perRow);
 		$this->assignRef('perRow', $perRow);

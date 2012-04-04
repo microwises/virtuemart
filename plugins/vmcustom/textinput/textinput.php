@@ -79,9 +79,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		 if ($field->custom_element != $this->_name) return '';
 		$this->getCustomParams($field);
 			// ob_start();
-			// require($this->getLayoutPath('default')); 
+			// require($this->getLayoutPath('default'));
 			// $html = ob_get_clean();
-		
+
 		$group->display .= $this->renderByLayout('default',array($field,&$idx,&$group ) );
 
 
@@ -167,6 +167,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
+		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected);
 		if (!empty($productCustomsPrice->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp

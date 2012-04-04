@@ -873,6 +873,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$userinfo   = $this->getTable('userinfos');
 		$orderinfo  = $this->getTable('order_userinfos');
 
+		$ok = true;
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
 			$field->load($fieldId);
@@ -881,27 +882,27 @@ class VirtueMartModelUserfields extends VmModel {
 				// Alter the user_info table
 				if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
 					vmError($userinfo->getError());
-					return false;
+					$ok = false;
 				}
 
 				// Alter the order_userinfo table
 				if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
 					vmError($orderinfo->getError());
-					return false;
+					$ok = false;
 				}
 			}
 
 			if (!$field->delete($fieldId)) {
 				vmError($field->getError());
-				return false;
+				$ok = false;
 			}
 			if (!$value->delete($fieldId)) {
 				vmError($field->getError());
-				return false;
+				$ok = false;
 			}
 		}
 
-		return true;
+		return $ok;
 	}
 
 	/**
