@@ -22,6 +22,7 @@ var Virtuemart = {
 	},
 	productUpdate : function(mod) {
 		var $ = jQuery ;
+		$.ajaxSetup({ cache: false })
 		$.getJSON(window.vmSiteurl+"index.php?option=com_virtuemart&nosef=1&view=cart&task=viewJS&format=json"+window.vmLang,
 			function(datas, textStatus) {
 				if (datas.totalProduct >0) {
