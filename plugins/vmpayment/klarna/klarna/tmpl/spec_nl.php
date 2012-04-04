@@ -3,18 +3,18 @@
 <?php echo $params['checkout']; ?>
 <script type="text/javascript">
      <!--
-            klarna.global_countryCode = '<?php echo $params['setup']['countryCode'] ; ?>';
-            klarna.global_language_spec = '<?php echo $params['setup']['langISO'] ; ?>';
-            klarna.global_sum = '<?php echo $params['setup']['sum'] ; ?>';
-            klarna.global_eid = '<?php echo $params['setup']['eid'] ; ?>';
-            klarna.global_flag = '<?php echo $params['setup']['flag'] ; ?>';
-            klarna.global_unary_checkout = '<?php echo $params['setup']['unary_checkout'] ; ?>';
-            klarna.global_type = 'spec';
+            klarna.countryCode = '<?php echo $params['setup']['countryCode'] ; ?>';
+            klarna.language_spec = '<?php echo $params['setup']['langISO'] ; ?>';
+            klarna.sum = '<?php echo $params['setup']['sum'] ; ?>';
+            klarna.eid = '<?php echo $params['setup']['eid'] ; ?>';
+            klarna.flag = '<?php echo $params['setup']['flag'] ; ?>';
+            klarna.unary_checkout = '<?php echo @$params['setup']['unary_checkout'] ; ?>';
+            klarna.type = 'spec';
             klarna.lang_companyNotAllowed = '<?php echo JText::_('VMPAYMENT_KLARNA_COMPANY_NOT_ALLOWED'); ?>';
-            klarna.global_pid = '<?php echo $params['setup']['payment_id'] ; ?>';
+            klarna.pid = '<?php echo $params['setup']['payment_id'] ; ?>';
             if (typeof klarna.red_baloon_content == "undefined" || klarna.red_baloon_content == "") {
-                klarna.red_baloon_content = '<?php echo $params['setup']['red_baloon_content'] ; ?>';
-                klarna.red_baloon_box = '<?php echo $params['setup']['red_baloon_paymentBox'] ; ?>';
+                klarna.red_baloon_content = '<?php echo @$params['setup']['red_baloon_content'] ; ?>';
+                klarna.red_baloon_box = '<?php echo @$params['setup']['red_baloon_paymentBox'] ; ?>';
             }
 
             klarna.lang_personNum    = '<?php echo JText::_('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?>';

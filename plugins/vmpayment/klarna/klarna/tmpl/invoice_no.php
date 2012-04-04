@@ -3,17 +3,17 @@
 <?php echo $params['checkout']; ?>
 <script type="text/javascript">
      <!--
-            klarna.global_countryCode = '<?php echo $params['setup']['countryCode'] ; ?>';
-            klarna.global_language_invoice = '<?php echo $params['setup']['langISO'] ; ?>';
+            klarna.countryCode = '<?php echo $params['setup']['countryCode'] ; ?>';
+            klarna.language_invoice = '<?php echo $params['setup']['langISO'] ; ?>';
             klarna.klarna_invoice_fee = '<?php echo $params['setup']['fee'] ; ?>';
-            klarna.global_flag = '<?php echo $params['setup']['flag'] ; ?>';
-            klarna.global_type = 'invoice';
-            klarna.global_sum = '<?php echo $params['setup']['sum'] ; ?>';
-            klarna.global_pid = '<?php echo $params['setup']['payment_id'] ; ?>';
-            klarna.global_unary_checkout = '<?php echo $params['setup']['unary_checkout'] ; ?>';
+            klarna.flag = '<?php echo $params['setup']['flag'] ; ?>';
+            klarna.type = 'invoice';
+            klarna.sum = '<?php echo $params['setup']['sum'] ; ?>';
+            klarna.pid = '<?php echo $params['setup']['payment_id'] ; ?>';
+            klarna.unary_checkout = '<?php echo @$params['setup']['unary_checkout'] ; ?>';
             if (typeof klarna.red_baloon_content == "undefined" || klarna.red_baloon_content == "") {
-                klarna.red_baloon_content = '<?php echo $params['setup']['red_baloon_content'] ; ?>';
-                klarna.red_baloon_box = '<?php echo $params['setup']['red_baloon_paymentBox'] ; ?>';
+                klarna.red_baloon_content = '<?php echo @$params['setup']['red_baloon_content'] ; ?>';
+                klarna.red_baloon_box = '<?php echo @$params['setup']['red_baloon_paymentBox'] ; ?>';
             }
 
             klarna.select_bday        = '<?php echo @$params['value']['birth_day'] ; ?>';
@@ -27,13 +27,13 @@
 
             if (typeof klarna.red_baloon_paymentBox == "undefined")
             {
-                klarna.red_baloon_paymentBox = '<?php echo $params['setup']['red_baloon_paymentBox'] ; ?>';
+                klarna.red_baloon_paymentBox = '<?php echo @$params['setup']['red_baloon_paymentBox'] ; ?>';
             }
             else {
                 if (klarna.red_baloon_paymentBox == "")
-                    klarna.red_baloon_paymentBox = '<?php echo $params['setup']['red_baloon_paymentBox'] ; ?>';
+                    klarna.red_baloon_paymentBox = '<?php echo @$params['setup']['red_baloon_paymentBox'] ; ?>';
             }
-console.log('<?php echo $params['setup'][''] ; ?>');
+
             // Mapping to the real field names which may be prefixed
             klarna.params_invoice = {
                 companyName: '<?php echo $params['input']['companyName'] ; ?>',

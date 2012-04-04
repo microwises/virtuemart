@@ -235,8 +235,9 @@ class klarna_speccamp {
 	$klarna_fee = 0;
 	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
 
-
-	$kCheckout = new KlarnaAPI($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
+	if (!class_exists('KlarnaVm2API'))
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
+	$kCheckout = new KlarnaVm2API($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
@@ -288,7 +289,8 @@ class klarna_speccamp {
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveHTML($aParams, $aValues, null, KlarnaHandler::getLocalTemplate(KLARNA_SPEC_ACTIVE_TEMPLATE)));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
+	// $fields[] = array('title' => "", 'field' => $kCheckout->retrieveHTML($aParams, $aValues, null, KlarnaHandler::getLocalTemplate(KLARNA_SPEC_ACTIVE_TEMPLATE)));
 	return array('id' => $this->code, 'module' => $title, 'fields' => $fields);
     }
 

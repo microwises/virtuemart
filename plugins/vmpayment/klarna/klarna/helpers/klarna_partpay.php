@@ -239,7 +239,9 @@ class klarna_partpay {
 	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
 
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
-	$kCheckout = new KlarnaAPI($this->country, null, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
+	if (!class_exists('KlarnaVm2API'))
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
+	$kCheckout = new KlarnaVm2API($this->country, null, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	$kCheckout->addSetupValue('eid', $this->eid);
 	if (strtolower($this->country) == 'de') {
@@ -316,7 +318,7 @@ class klarna_partpay {
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveHTML($aParams, $aValues));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 
 	// If module isn't enabled, don't show it.
 	if ($this->enabled == false) {
