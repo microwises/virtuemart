@@ -694,7 +694,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$db->setQuery('SELECT * FROM `#__virtuemart_orderstates` ');
 		$StatutWhiteList = $db->loadAssocList('order_status_code');
 		// new product is statut N
-		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handel' => 'A');
+		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handle' => 'A');
 		if(!array_key_exists($oldState,$StatutWhiteList) or !array_key_exists($newState,$StatutWhiteList)) {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
 			return ;
@@ -709,15 +709,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//  TO have no product setted as ordered when added to cart simply delete 'P' FROM array Reserved
 		// don't set same values in the 2 arrays !!!
 		// stockOut is in normal case shipped product
-		//order_stock_handel
+		//order_stock_handle
 		// 'A' : sotck Available
 		// 'O' : stock Out
 		// 'R' : stock reserved
 		// the status decreasing real stock ?
 		// $stockOut = array('S');
-		if ($StatutWhiteList[$oldState]['order_stock_handel'] == 'O') $isOut = 1;
+		if ($StatutWhiteList[$oldState]['order_stock_handle'] == 'O') $isOut = 1;
 		else $isOut = 0;
-		if ($StatutWhiteList[$newState]['order_stock_handel'] == 'O') $wasOut = 1;
+		if ($StatutWhiteList[$newState]['order_stock_handle'] == 'O') $wasOut = 1;
 		else $wasOut = 0;
 		// $isOut = in_array($newState, $stockOut);
 		// $wasOut= in_array($oldState, $stockOut);
@@ -728,9 +728,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		// the status increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
 		// $Reserved =  array('P','C');
-		if ($StatutWhiteList[$oldState]['order_stock_handel'] == 'R') $isReserved = 1;
+		if ($StatutWhiteList[$oldState]['order_stock_handle'] == 'R') $isReserved = 1;
 		else $isOut = 0;
-		if ($StatutWhiteList[$newState]['order_stock_handel'] == 'R') $wasReserved = 1;
+		if ($StatutWhiteList[$newState]['order_stock_handle'] == 'R') $wasReserved = 1;
 		else $wasOut = 0;
 		// $isReserved = in_array($newState, $Reserved);
 		// $wasReserved = in_array($oldState, $Reserved);

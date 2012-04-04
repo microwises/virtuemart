@@ -264,7 +264,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$order_stock_handles = array('P'=>'R', 'C'=>'R', 'X'=>'A', 'R'=>'A', 'S'=>'O');
 
 			foreach($order_stock_handles as $k=>$v){
-				$q = 'UPDATE `#__virtuemart_orderstates` SET `order_stock_handel`="'.$v.'" WHERE  `order_status_code`="'.$k.'" ;';
+				$q = 'UPDATE `#__virtuemart_orderstates` SET `order_stock_handle`="'.$v.'" WHERE  `order_status_code`="'.$k.'" ;';
 				$this->_db->setQuery($q);
 
 				if(!$this->_db->query()){
