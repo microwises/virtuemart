@@ -61,8 +61,8 @@ INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_descrip
 -- Dumping data for table `#__virtuemart_orderstates`
 --
 
-INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `virtuemart_vendor_id`) VALUES
-(null, 'P', 'Pending', '', 'R',1, 1),
+INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_stock_handel`, `ordering`, `virtuemart_vendor_id`) VALUES
+(null, 'P', 'Pending', '', 'R',1, 1),`order_status_description`,
 (null, 'C', 'Confirmed', '', 'R', 2, 1),
 (null, 'X', 'Cancelled', '', 'A',3, 1),
 (null, 'R', 'Refunded', '', 'A',4, 1),
