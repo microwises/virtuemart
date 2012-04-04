@@ -4,12 +4,13 @@ JHTML::script('klarna_pp.js', $assetsPath.'js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
-	addKlarnaPartPaymentEvent(function() {
-		InitKlarnaPartPaymentElements('klarna_partpayment', '". $params['eid'] ."', '". $params['country'] ."');
 
-	});
 jQuery(function(){
-	jQuery('klarna_PPBox_bottomMid_readMore a').click( function(){
+
+		
+	
+	jQuery('.klarna_PPBox_bottomMid_readMore a').click( function(){
+		InitKlarnaPartPaymentElements('klarna_partpayment', '". $params['eid'] ."', '". $params['country'] ."');
 		ShowKlarnaPartPaymentPopup();
 		return false;
 	});

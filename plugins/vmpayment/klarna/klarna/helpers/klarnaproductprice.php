@@ -20,7 +20,7 @@ class KlarnaProductPrice {
         $this->api = $api;
         $this->path = $path;
         $this->eid = $eid;
-        $this->webroot = $webroot;
+        // $this->webroot = $webroot;
         if ($checkout !== null) {
             $this->checkout = $checkout;
         }
@@ -56,10 +56,6 @@ class KlarnaProductPrice {
                     KlarnaPClass::FIXED);
         if ($this->checkout === null) {
             $this->checkout = new KlarnaAPI ($country, $lang, 'part', $price, $page, $this->api, $types, $this->path);
-            $this->checkout->addSetupValue ('web_root', $this->webroot);
-            $this->checkout->addSetupValue ('path_img', $this->webroot . VMKLARNAPLUGINWEBROOT.'/klarna/assets/images/');
-            $this->checkout->addSetupValue ('path_js', $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/");
-            $this->checkout->addSetupValue ('path_css', $this->webroot . VMKLARNAPLUGINWEBROOT.  '/klarna/assets/css/');
             if ($country  == KlarnaCountry::DE) {
                 $this->checkout->addSetupValue ('asterisk', '*');
             }
@@ -100,7 +96,7 @@ class KlarnaProductPrice {
             $aInputValues['monthTable']     = $sTableHtml;
             $aInputValues['eid']            = $this->eid;
             $aInputValues['country']        = KlarnaCountry::getCode ($country);
-            $aInputValues['nlBanner']       = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="'.$this->webroot.'images/account/'.$notice.'" /></div>' : "");
+            $aInputValues['nlBanner']       = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="'. VMKLARNAPLUGINWEBASSETS.'images/account/'.$notice.'" /></div>' : "");
 
             return $this->checkout->retrieveHTML($aInputValues, null, $this->path . '/klarna/tmpl/productprice_layout.html');
         }

@@ -24,9 +24,12 @@ if (!class_exists('vmPSPlugin'))
 if (JVM_VERSION === 2) {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
     define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
+    define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . 'klarna/assets/');
+	
 } else {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
     define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/');
+	define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . 'klarna/assets/');
 }
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
@@ -1081,6 +1084,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	JHTML::stylesheet('klarna.css', $assetsPath . 'css/', false);
 	JHTML::script('klarna_general.js', $assetsPath . 'js/', false);
 	JHTML::script('klarnaConsentNew.js', 'http://static.klarna.com/external/js/', false);
+	$document = JFactory::getDocument();
+	$document->addScriptDeclaration('
+
+		 klarna.ajaxPath = "'.juri::root().'/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
+
+	');
     }
 
 }

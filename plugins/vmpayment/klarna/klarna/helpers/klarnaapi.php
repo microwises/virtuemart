@@ -22,42 +22,42 @@ class KlarnaAPI {
      *
      * @var array
      */
-    private $aInputParameters = array();
+    protected $aInputParameters = array();
 
     /**
      * Array with different input value values
      *
      * @var array
      */
-    private $aInputValues = array();
+    protected $aInputValues = array();
 
     /**
      * The county code
      *
      * @var string
      */
-    private $sCountryCode;
+    protected $sCountryCode;
 
     /**
      * The type of class loaded. Either part or invoice or spec
      *
      * @var string
      */
-    private $sType;
+    protected $sType;
 
     /**
      * The ISO for language (e.g. sv, da, nb, en, de)
      *
      * @var string
      */
-    private $sLangISO;
+    protected $sLangISO;
 
     /**
      * The setup values.
      *
      * @var array
      */
-    private $aSetupSettings = array();
+    protected $aSetupSettings = array();
 
     /**
      * The PClasses
@@ -71,45 +71,45 @@ class KlarnaAPI {
      *
      * @var Klarna
      */
-    private $oKlarna;
+    protected $oKlarna;
 
     /**
      * The klarna language, set from KlarnaLanguage object
      *
      * @var integer
      */
-    private $iKlarnaLanguage;
+    protected $iKlarnaLanguage;
 
     /**
      * The klarna currency, set from KlarnaCurrency object
      *
      * @var integer
      */
-    private $iKlarnaCurrency;
+    protected $iKlarnaCurrency;
 
     /**
      * The klarna country, set from KlarnaCountry object
      *
      * @var integer
      */
-    private $iKlarnaCountry;
+    protected $iKlarnaCountry;
 
     /**
      * The path where the API and Standard register is located
      *
      * @var string
      */
-    private $sPath;
+    protected $sPath;
 
     /**
      * The ILT questions
      */
-    private $aIltQuestions = array();
+    protected $aIltQuestions = array();
 
     /**
      * Klarna language pack
      */
-    private $languagePack;
+    protected $languagePack;
 
     /**
      * The class constructor. Initiates the Klarna Api class
@@ -178,14 +178,13 @@ class KlarnaAPI {
 	$this->aSetupSettings['sum'] = $a_iSum;
 	$this->aSetupSettings['flag'] = $a_iFlag;
 	$this->aSetupSettings['payment_id'] = "payment";
-	$this->aSetupSettings['ajax_path'] = juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
 	$this->aSetupSettings['invoice_name'] = 'klarna_invoice';
 	$this->aSetupSettings['part_name'] = 'klarna_partPayment';
 	$this->aSetupSettings['spec_name'] = 'klarna_SpecCamp';
 
-	$this->aSetupSettings['web_root'] = "/";
+	// $this->aSetupSettings['web_root'] = "/";
 
-	$this->setPaths();
+	//$this->setPaths();
 
 	// Fetch PClasses in case type is invoice
 	if (($this->sType == 'part' || $this->sType == 'spec') && $this->oKlarna != null) {
@@ -194,12 +193,12 @@ class KlarnaAPI {
 	}
     }
 
-    public function setPaths() {
+    // public function setPaths() {
 
-	$this->aSetupSettings['path_css'] = $this->aSetupSettings['web_root'].VMKLARNAPLUGINWEBROOT. '/klarna/assets/css/';
-	$this->aSetupSettings['path_js'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/js/';
-	$this->aSetupSettings['path_img'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/images/';
-    }
+	// $this->aSetupSettings['path_css'] = $this->aSetupSettings['web_root'].VMKLARNAPLUGINWEBROOT. '/klarna/assets/css/';
+	// $this->aSetupSettings['path_js'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/js/';
+	// $this->aSetupSettings['path_img'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/images/';
+    // }
 
     /**
      * Add/Overwrite extra setup values.
@@ -677,9 +676,8 @@ class KlarnaAPI {
      *
      * @return string
      */
-    private function renderPClasses() {
+    public function renderPClasses() {
 	$sString = "";
-	$path_img = $this->aSetupSettings['path_img'];
 
 	foreach ($this->aPClasses as $sPClassId => $aPClassData) {
 	    $value = $this->getPresentableValuta($aPClassData['monthlyCost']);
@@ -689,7 +687,7 @@ class KlarnaAPI {
 		    ($aPClassData['monthlyCost'] > 0 ?
 			    " - $value $pm" : '') .
 		    ($aPClassData['default'] ?
-			    '<img src="' . $path_img . 'share/ok.gif" border="0" alt="Chosen" />' :
+			    '<img src="' . VMKLARNAPLUGINWEBASSETS.'images/share/ok.gif" border="0" alt="Chosen" />' :
 			    '') .
 		    '</div>
                 <span style="display: none">' . $sPClassId . '</span>

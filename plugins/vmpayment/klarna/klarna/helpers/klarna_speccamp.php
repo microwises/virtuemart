@@ -238,7 +238,6 @@ class klarna_speccamp {
 
 	$kCheckout = new KlarnaAPI($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
-	$kCheckout->addSetupValue('ajax_path', juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna");
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id = 1;
@@ -246,11 +245,11 @@ class klarna_speccamp {
 	    $kCheckout->addSetupValue('agb_link', $link);
 	}
 	$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
-	$kCheckout->addMultipleSetupValues(array("web_root" => $this->web_root, "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/", "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/', "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
+	// $kCheckout->addMultipleSetupValues(array("web_root" => $this->web_root, "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/", "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/', "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
 	$title = JTextx::_('VMPAYMENT_KLARNA_SPEC_TITLE'); //$kCheckout->fetchFromLanguagePack('SPEC_TITLE', $lang, JPATH_SITE . $cPath . 'checkout/');
 
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="../' . $this->web_root . $cPath . '/images/logo/logo_small.png" border="0" /></div>' .
+		'<img src="' . VMKLARNAPLUGINWEBASSETS.'images/logo/logo_small.png" border="0" /></div>' .
 		JTextx::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 

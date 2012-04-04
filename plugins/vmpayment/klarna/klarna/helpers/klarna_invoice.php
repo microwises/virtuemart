@@ -230,13 +230,12 @@ class klarna_invoice  {
 	$klarna_fee = KlarnaHandler::getInvoiceFee($method, $this->country);
 
 	$this->payment_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
-	if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
-	$kCheckout = new KlarnaAPI($this->country, null, 'invoice', 0, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, null, VMKLARNAPLUGINWEBROOT );
+	if (!class_exists('KlarnaVm2API'))
+	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
+	$kCheckout = new KlarnaVm2API($this->country, null, 'invoice', 0, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, null, VMKLARNAPLUGINWEBROOT );
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('sum', $klarna_fee);
 	$kCheckout->setInvoiceFee($klarna_fee);
-	$kCheckout->addSetupValue('ajax_path', juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna" );
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id=1;
@@ -260,7 +259,7 @@ class klarna_invoice  {
 	$title=JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE', $sFee);
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
 		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'assets/images/logo/logo_small.png" border="0" /></div>' .
-		$kCheckout->fetchFromLanguagePack('INVOICE_TEXT_DESCRIPTION', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/') . '<br/><br/>' .
+		JText::_('VMPAYMENT_KLARNA_INVOICE_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	$this->klarna_phone = $this->shipTo['phone'];
@@ -299,7 +298,8 @@ class klarna_invoice  {
 	}
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveHTML($aParams, $aValues));
+	//$fields[] = array('title' => "", 'field' => $kCheckout->retrieveHTML($aParams, $aValues));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 
 	return array('id' => $this->code, 'module' => $title, 'fields' => $fields);
     }

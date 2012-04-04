@@ -241,7 +241,6 @@ class klarna_partpay {
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$kCheckout = new KlarnaAPI($this->country, null, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
-	$kCheckout->addSetupValue('ajax_path', juri::root()."/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna");
 	$kCheckout->addSetupValue('eid', $this->eid);
 	if (strtolower($this->country) == 'de') {
 	    $vendor_id = 1;

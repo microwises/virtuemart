@@ -29,7 +29,7 @@ class KlarnaAjax {
         $this->api = $api;
         $this->eid = $eid;
         $this->path = $path;
-        $this->webroot = $webroot;
+        // $this->webroot = $webroot;
         $this->coSetup = array();
     }
 
@@ -63,12 +63,12 @@ class KlarnaAjax {
 	     $aParams = JRequest::getVar('params');
             $aValues = JRequest::getVar('values');
 
-            foreach($aValues as $key => $value) {
-                $aValues[$key] = utf8_decode($value);
-            }
-            foreach($aParams as $key => $value) {
-                $aParams[$key] = utf8_decode($value);
-            }
+            // foreach($aValues as $key => $value) {
+                // $aValues[$key] = utf8_encode($value);
+            // }
+            // foreach($aParams as $key => $value) {
+                // $aParams[$key] = utf8_decode($value);
+            // }
 
             if ($sType != "part" && $sType != "invoice" && $sType != "spec")
             {
@@ -82,11 +82,13 @@ class KlarnaAjax {
             } else {
                 $types = array(KlarnaPClass::CAMPAIGN,  KlarnaPClass::ACCOUNT, KlarnaPClass::FIXED);
             }
+			if (!class_exists('KlarnaVm2API'))
+			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
+			$oApi = new KlarnaVm2API ($sCountry, $sNewISO, $sType, $iSum, $iFlag, $this->api, $types, VMKLARNAPLUGINWEBROOT);
+            //$oApi = new KlarnaAPI ($sCountry, $sNewISO, $sType, $iSum, $iFlag, $this->api, $types, $this->path);
 
-            $oApi = new KlarnaAPI ($sCountry, $sNewISO, $sType, $iSum, $iFlag, $this->api, $types, $this->path);
-
-            $oApi->addSetupValue ('web_root', $this->webroot);
-            $oApi->setPaths ();
+            // $oApi->addSetupValue ('web_root', $this->webroot);
+            // $oApi->setPaths ();
             $oApi->addSetupValue ('eid', $this->eid);
             if ($sType == 'invoice') {
                 $oApi->setInvoiceFee($iInvoiceFee);
@@ -95,11 +97,13 @@ class KlarnaAjax {
             if (count($this->coSetup) > 0) {
                 $oApi->addMultipleSetupValues($this->coSetup);
             }
-            if ($sType == 'spec') {
-                return $oApi->retrieveHTML($aParams, $aValues, null, $this->template);
-            } else {
-                return $oApi->retrieveHTML ($aParams, $aValues);
-            }
+			return $oApi->retrieveLayout($aParams, $aValues);
+            // if ($sType == 'spec') {
+				
+                // return $oApi->retrieveHTML($aParams, $aValues, null, $this->template);
+            // } else {
+                // return $oApi->retrieveHTML ($aParams, $aValues);
+            // }
         }
         else if ($sSubAction == 'jsLanguagePack')
         {

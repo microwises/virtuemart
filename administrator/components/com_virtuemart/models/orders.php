@@ -691,7 +691,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if($newState == $oldState) return;
 		// $StatutWhiteList = array('P','C','X','R','S','N');
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT * FROM `#__vm_order_status` ');
+		$db->setQuery('SELECT * FROM `#__virtuemart_orderstates` ');
 		$StatutWhiteList = $db->loadAssocList('order_status_code');
 		// new product is statut N
 		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handel' => 'A');

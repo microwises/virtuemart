@@ -4,9 +4,6 @@ if(typeof klarna_invoice_fee == 'undefined') {
 if(typeof global_sum == 'undefined') {
     var global_sum = 0;
 }
-if(typeof ajax_path == 'undefined') {
-    var ajax_path = 'klarnaAjax.php';
-}
 
 var klarna_js_loaded = true;
 if (typeof klarna == "undefined") {
@@ -725,7 +722,7 @@ var klarna = {
 		klarna.saveDates(replaceBox);
 		jQuery.ajax({
 			type: "GET",
-			url: ajax_path,
+			url: klarna.ajaxPath,
 			data: data,
 			success: function(response){
 				//console.log(response);
