@@ -498,7 +498,29 @@ class Migrator extends VmModel{
 			$this->_stop = true;
 			return false;
 		}
+		//declaration _vm_userfield >> _virtuemart_userfields`
 
+		// vendor_id >> virtuemart_vendor_id
+		$this->_db->setQuery('select `name` FROM `#__virtuemart_userfields`');
+		$vm2Fields = $this->_db->loadResultArray ();
+		$this->_db->setQuery('select * FROM `#__vm_userfield`');
+		$oldfields = $this->_db->loadObjectList();
+		$migratedfields ='';
+		foreach ($oldfields as $field ) {
+			if ($field->name =='country' or $field->name =='state') continue;
+			if ( !in_array( $field->name, $vm2Fields ) ) {
+				$q = 'INSERT INTO `#__virtuemart_userfields` ( `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipment`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`) 
+					VALUES ( "'.$field->name.'"," '.$field->title .'"," '.$field->description .'"," '.$field->type .'"," '.$field->maxlength .'"," '.$field->size .'"," '.$field->required .'"," '.$field->ordering .'"," '.$field->cols .'"," '.$field->rows .'"," '.$field->value .'"," '.$field->default .'"," '.$field->published .'"," '.$field->registration .'"," '.$field->shipment .'"," '.$field->account .'"," '.$field->readonly .'"," '.$field->calculated .'"," '.$field->sys .'"," '.$field->vendor_id .'"," '.$field->params .'" )';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+				if ($this->_db->getErrorNum()) {
+					vmError ($this->_db->getErrorMsg() );
+				}
+				$migratedfields .= '['.$field->name.'] ';
+				
+			}
+		}
+		if ($migratedfields) vminfo('Userfield declaration '.$migratedfields.' Migrated');
 		$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
 		if(empty($oldToNewShoppergroups)){
 			vmInfo('portUsers getMigrationProgress shoppergroups ' . $this->_db->getErrorMsg());
@@ -716,7 +738,7 @@ class Migrator extends VmModel{
 				$category = array();
 				//$category['virtuemart_category_id'] = $oldcategory['category_id'];
 				$category['virtuemart_vendor_id'] = $oldcategory['vendor_id'];
-				$category['category_name'] = $oldcategory['category_name'];
+				$category['category_name'] = stripslashes($oldcategory['category_name']);
 
 				$category['category_description'] = $oldcategory['category_description'];
 				$category['published'] = $oldcategory['category_publish'] == 'Y' ? 1 : 0;
@@ -1217,8 +1239,25 @@ class Migrator extends VmModel{
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
 
 		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-
+		$this->_db->setQuery('select `order_status_code` FROM `#__virtuemart_orderstates` `');
+		$vm2Fields = $this->_db->loadResultArray ();
+		$this->_db->setQuery('select * FROM `#__vm_order_status`');
+		$oldfields = $this->_db->loadObjectList();
+		$migratedfields ='';
+		foreach ($oldfields as $field ) {
+			if ( !in_array( $field->order_status_code, $vm2Fields ) ) {
+				$q = 'INSERT INTO `#__virtuemart_orderstates` ( `virtuemart_vendor_id`, `order_status_code`, `order_status_name`, `order_status_description`, `order_stock_handel`, `ordering`, `published`) 
+					VALUES ( "'.$field->vendor_id.'","'.$field->order_status_code .'","'.$field->order_status_name .'","'.$field->order_status_description .'","A","'.$field->list_order .'", 1 )';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+				if ($this->_db->getErrorNum()) {
+					vmError ($this->_db->getErrorMsg() );
+				}
+				$migratedfields .= '['.$field->order_status_code.'-'.$field->order_status_name.'] ';
+				
+			}
+		}
+		if ($migratedfields) vminfo('order states declaration '.$migratedfields.' Migrated');
 		$oldtonewOrders = array();
 
 		//Looks like there is a problem, when the data gets tooo big,
