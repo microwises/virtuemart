@@ -315,7 +315,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				formProduct.find(\'input[name*="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][child_id]"]\').val(found_id);
 
 				//(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
-				$.setproducttype(formProduct,virtuemart_product_id);
+				Virtuemart.setproducttype(formProduct,virtuemart_product_id);
 			}
 		});
 		');

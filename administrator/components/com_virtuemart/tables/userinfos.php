@@ -128,6 +128,7 @@ class TableUserinfos extends VmTableData {
 	public function check(){
 
 		if (!empty($this->virtuemart_userinfo_id)) {
+			$this->virtuemart_userinfo_id = (int)$this->virtuemart_userinfo_id;
 			return parent::check();
 		}
 

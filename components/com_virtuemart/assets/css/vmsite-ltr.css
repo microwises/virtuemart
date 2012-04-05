@@ -202,7 +202,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 /* Custom Field Images */
 .product-fields .product-field,.product-related-categories .product-field {width:100%;float:left;display:inline-block;}
 .product-fields .product-field label {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
-.product-fields .product-field input {float:left;position:relative;left:33px;}
+.product-fields .product-field input {position:relative;left:33px;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
 /* some more styles */
 .priceColor2{color:gray;}

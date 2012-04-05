@@ -354,6 +354,7 @@ class VirtueMartModelProduct extends VmModel {
 					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
 					$dateSql = $date->toMySQL();
 					$where[] = 'p.`modified_on` > "'.$dateSql.'" ';
+					$orderBy = 'ORDER BY p.`modified_on`';
 					$this->filter_order_Dir = 'DESC';
 					break;
 				case 'random':
