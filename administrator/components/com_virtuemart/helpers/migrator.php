@@ -506,6 +506,9 @@ class Migrator extends VmModel{
 		$this->_db->setQuery('select * FROM `#__vm_userfield`');
 		$oldfields = $this->_db->loadObjectList();
 		$migratedfields ='';
+		$userfields      = $this->getTable('userfields');
+		$userinfo   = $this->getTable('userinfos');
+		$orderinfo  = $this->getTable('order_userinfos');
 		foreach ($oldfields as $field ) {
 			if ($field->name =='country' or $field->name =='state') continue;
 			if ( !in_array( $field->name, $vm2Fields ) ) {
@@ -515,6 +518,18 @@ class Migrator extends VmModel{
 				$this->_db->query();
 				if ($this->_db->getErrorNum()) {
 					vmError ($this->_db->getErrorMsg() );
+				}
+				$userfields->type = $field->type;
+				$type = $userfields->formatFieldType($data);
+				if (!$userinfo->_modifyColumn ('ADD', $field->name, $type)) {
+					vmError($userinfo->getError());
+					return false;
+				}
+
+				// Alter the order_userinfo table
+				if (!$orderinfo->_modifyColumn ('ADD',$field->name, $type)) {
+					vmError($orderinfo->getError());
+					return false;
 				}
 				$migratedfields .= '['.$field->name.'] ';
 				
