@@ -114,6 +114,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	return $this->setOnTablePluginParams($name, $id, $table);
     }
 
+
     function plgVmOnProductDisplayPayment($product, &$productDisplay) {
 
 	$vendorId = 1;
@@ -706,7 +707,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
 
-	return $this->onStoreInstallPluginTable($jplugin_id);
+	$result = $this->onStoreInstallPluginTable($jplugin_id);
+	
+		if (jrequest::getvar('redirect') =="no" and $result) {
+			echo ('ok');
+			jexit();
+		}
+	return $result ;
     }
 
     /**

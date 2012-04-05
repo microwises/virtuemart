@@ -52,15 +52,11 @@ class KlarnaVm2API extends KlarnaAPI {
 	}
 	$tmplLayout = $this->sType ."_". strtolower($this->sCountryCode) ;
 	return vmPlugin::renderByLayout($tmplLayout,array('checkout' => $this->oKlarna->checkoutHTML(),
-		'setting'=>$this->aSetupSettings,
 		'input'=>$this->aInputParameters,
 		'value'=>$this->aInputValues,
 		'setup'=>$this->aSetupSettings
 		),'klarna','payment');
-	Klarna::printDebug(__METHOD__ . ' setup settings', $this->aSetupSettings);
-	Klarna::printDebug(__METHOD__ . ' input values', $this->aInputValues);
 
-	return $this->translateInputFields($sTemplate);
 	}
 }
 
