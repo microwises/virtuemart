@@ -161,9 +161,9 @@ class VirtueMartModelManufacturer extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' `m`.*,`#__virtuemart_manufacturers_'.VMLANG.'`.*, mc.`mf_category_name` ';
+		$select = ' `m`.*,ml.*, mc.`mf_category_name` ';
 
-		$joinedTables = 'FROM `#__virtuemart_manufacturers_'.VMLANG.'` JOIN `#__virtuemart_manufacturers` as m USING (`virtuemart_manufacturer_id`) ';
+		$joinedTables = 'FROM `#__virtuemart_manufacturers_'.VMLANG.'` as ml JOIN `#__virtuemart_manufacturers` as m USING (`virtuemart_manufacturer_id`) ';
 		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `m`.`virtuemart_manufacturercategories_id` ';
 		$groupBy=' ';
 		if($getMedia){
@@ -176,7 +176,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
 
 
-		$ordering = $this->_getOrdering('`m`.');
+		$ordering = $this->_getOrdering('ml.');
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
 
 	}
