@@ -116,15 +116,15 @@ foreach ($this->userfields['fields'] as $_field) {
     			</td>
     			<td align="right"><?php
 			    //echo $item->product_item_price.' price '.$this->currency->priceDisplay($item->product_item_price,'',false);
-			    echo $this->currency->priceDisplay($item->product_item_price, '', false);
+			    echo $this->currency->priceDisplay($item->product_item_price);
     ?>
     			</td>
-    			<td align="right"><?php echo $this->currency->priceDisplay($item->product_final_price, '', false); ?>
+    			<td align="right"><?php echo $this->currency->priceDisplay($item->product_final_price); ?>
     			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->currency->priceDisplay($item->product_quantity * $item->product_tax, '', false) ."</span>" ?></td>
+				<td align="right"><?php echo "<span  style='color:gray'>".$this->currency->priceDisplay($item->product_quantity * $item->product_tax) ."</span>" ?></td>
                                 <?php } ?>
-    			<td align="right"><?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price, '', false); ?>
+    			<td align="right"><?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price); ?>
     			</td>
     		    </tr>
 
@@ -139,9 +139,9 @@ foreach ($this->userfields['fields'] as $_field) {
 				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax,'',false); ?></td>
+				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax); ?></td>
 				<td width="15%" align="right" style="padding-right: 5px;">&nbsp;</td>
 			</tr>
 			<?php
@@ -155,32 +155,32 @@ foreach ($this->userfields['fields'] as $_field) {
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php
-				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount,'',false);  ?></td>
+				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount);  ?></td>
 			</tr>
 			<?php
 				}
 			?>
 			<tr>
 				<td align="right" colspan="4"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax,'',false); ?></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax); ?></td>
 
 			</tr>
 			 <tr>
 				<td align="right" colspan="4"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax); ?></td>
 
 			 </tr>
 			<tr>
 				<td align="right" colspan="4"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax+$this->orderbt->order_payment_tax+$this->orderbt->order_shipment_tax,'',false); ?></td>
+				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax+$this->orderbt->order_payment_tax+$this->orderbt->order_shipment_tax); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 			</tr>
 			<tr>
@@ -188,7 +188,7 @@ foreach ($this->userfields['fields'] as $_field) {
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
+				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
 

@@ -61,11 +61,11 @@ class VirtuemartViewReport extends VmView {
 
 				$totalReport['revenueTotal'] += $j['order_subtotal'];
 				$totalReport['number_of_ordersTotal'] += $j['count_order_id'];
-				$j['order_subtotal'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal'],'',false);
+				$j['order_subtotal'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal']);
 				$j['product_quantity'] = $model->getItemsByRevenue($j);
 				$totalReport['itemsSoldTotal'] +=$j['product_quantity'];
 			}
-			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal'],'',false);
+			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal']);
 
 			// if ( 'product_quantity'==JRequest::getWord('filter_order')) {
 				// foreach ($revenueBasic as $key => $row) {

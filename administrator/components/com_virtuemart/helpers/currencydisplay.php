@@ -301,7 +301,7 @@ class CurrencyDisplay {
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = -1){
+	public function priceDisplay($price, $currencyId=0,$quantity = 1,$inToShopCurrency = false,$nb = -1){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipment)
 		/*
 		 if(empty($currencyId)){
@@ -381,7 +381,7 @@ class CurrencyDisplay {
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($price)){
 				$vis = "block";
-				$priceFormatted = $this->priceDisplay($price,0,false,$this->_priceConfig[$name][1] );
+				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1] );
 			} else {
 				$priceFormatted = '';
 				$vis = "none";

@@ -63,7 +63,7 @@ class VirtuemartViewVirtuemart extends VmView {
 				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
 					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
 				}
-				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
+				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
 			}
 		$this->assignRef('recentOrders', $recentOrders);
 		$recentCustomers = $model->getRecentCustomers();

@@ -274,7 +274,7 @@ class klarna_partpay {
 	    if (!class_exists('VirtueMartModelCurrency'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 	    $currency = CurrencyDisplay::getInstance();
-	    $sFee = $currency->priceDisplay($cheapest, '', false);
+	    $sFee = $currency->priceDisplay($cheapest);
 	    //$title = str_replace('xx', $sFee, $kCheckout->fetchFromLanguagePack('PARTPAY_TITLE', $lang, JPATH_VMKLARNAPLUGIN . '/klarna/'));
 	    $title=JText::sprintf('VMPAYMENT_KLARNA_PARTPAY_TITLE', $sFee);
 

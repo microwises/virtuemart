@@ -253,7 +253,7 @@ class klarna_invoice  {
 	if (!class_exists('CurrencyDisplay')
 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 	$currency = CurrencyDisplay::getInstance();
-	$sFee = $currency->priceDisplay($klarna_fee, '', false);
+	$sFee = $currency->priceDisplay($klarna_fee);
 
 	//$title = str_replace('(+XX)', '(+' . $sFee . ')', $kCheckout->fetchFromLanguagePack('INVOICE_TITLE', $lang, JPATH_VMKLARNAPLUGIN ));
 	$title=JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE', $sFee);

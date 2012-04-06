@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
-					<?php echo $this->currency->priceDisplay($row->order_total,'',false); ?>
+					<?php echo $this->currency->priceDisplay($row->order_total); ?>
 				</td>
 			</tr>
 	<?php

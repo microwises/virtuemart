@@ -290,7 +290,7 @@ class VirtuemartViewProduct extends VmView {
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
 				if(!empty($product->product_price) && !empty($product->product_currency) ){
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,true);
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,1,true);
 				}
 
 				/* Write the first 5 categories in the list */

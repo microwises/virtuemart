@@ -69,10 +69,10 @@ if($this->format == 'pdf'){
 			<td align="right"   class="priceCol" >
 			    <?php
 			    if (VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
-						echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax) .'</span><br />' ;
+						echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax,0,$item->product_quantity) .'</span><br />' ;
 					}
 					?>
-				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($item->product_final_price,0,$item->product_quantity); ?>
 			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>

@@ -246,19 +246,19 @@ $tt=$this;
 
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_item_price); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_basePriceWithTax,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_basePriceWithTax); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_final_price,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay( $item->product_tax,'',false); ?>
+					<?php echo $this->currency->priceDisplay( $item->product_tax); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax); ?>
 				</td>
 			</tr>
 			<!-- TODO updating all correctly on do a new Cart<tr>
@@ -290,7 +290,7 @@ $tt=$this;
 					<input type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_final_price]" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
-					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price); ?>
 				</td>
 			</tr> -->
 		<?php } ?>
@@ -325,11 +325,11 @@ $tt=$this;
 				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax,'',false); ?></td>
-				<td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice,'',false); ?></td>
+				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax); ?></td>
+				<td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice); ?></td>
 			</tr>
 			<?php
 			/* COUPON DISCOUNT */
@@ -344,7 +344,7 @@ $tt=$this;
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php
-				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount,'',false);  ?></td>
+				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount);  ?></td>
 			</tr>
 			<?php
 				//}
@@ -393,20 +393,20 @@ $tt=$this;
 
 			<tr>
 				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax,'',false); ?></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax); ?></td>
 
 			</tr>
 			 <tr>
 				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax); ?></td>
 
 			 </tr>
 
@@ -416,8 +416,8 @@ $tt=$this;
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_billTaxAmount,'',false); ?></td>
-				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_billTaxAmount); ?></td>
+				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
 
@@ -507,52 +507,4 @@ jQuery('.orderStatFormSubmit').click(function() {
 
 var editingItem = 0;
 
-// function submitForm(formTask) {
-	// document.orderItemForm.task.value = formTask;
-	// document.orderItemForm.submit();
-// }
-
-// function resetForm(id) {
-	// document.orderItemForm.reset();
-	// if (id > 0) { // Resetting the Edit Item form
-		// document.getElementById('updateOrderItemStatus').style['display'] = '';
-		// document.getElementById('showItem_'+id).style['display'] = '';
-		// document.getElementById('editItem_'+id).style['display'] = 'none';
-		// checkCkeckBoxes(id, false);
-		// editingItem = 0;
-		// document.orderItemForm.virtuemart_order_item_id.value = 0;
-	// }
-// }
-
-// function enableItemEdit(id) {
-	// if (editingItem > 0) {
-		// return; // Editing another item already
-	// }
-	// document.getElementById('updateOrderItemStatus').style['display'] = 'none';
-	// document.getElementById('showItem_'+id).style['display'] = 'none';
-	// document.getElementById('editItem_'+id).style['display'] = '';
-	// checkCkeckBoxes(id, true);
-	// editingItem = id;
-	// document.orderItemForm.virtuemart_order_item_id.value = id;
-// }
-
-// function checkCkeckBoxes(id, chk) {
-	// var inputElements = document.orderItemForm.elements;
-	// for (var Idx = 0; Idx < inputElements.length; Idx++) {
-		// if (inputElements[Idx].type == 'checkbox') {
-			// if (chk) {
-				// if (inputElements[Idx].value == id) {
-					// inputElements[Idx].checked = true;
-				// } else {
-					// inputElements[Idx].checked = false;
-				// }
-				// inputElements[Idx].disabled = true;
-			// } else {
-				// inputElements[Idx].checked = false;
-				// inputElements[Idx].disabled = false;
-			// }
-		// }
-	// }
-// }
-//-->
 </script>

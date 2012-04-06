@@ -142,7 +142,7 @@ class klarna_productPrice {
 	    $sTableHtml = "";
 	    foreach ($kCheckout->aPClasses as $pclass) {
 		if ($sMonthDefault === null || $pclass['monthlyCost'] < $sMonthDefault) {
-		    $sMonthDefault = $currencydisplay->priceDisplay($pclass['monthlyCost'], '', false);
+		    $sMonthDefault = $currencydisplay->priceDisplay($pclass['monthlyCost']);
 		}
 
 		if ($pclass['pclass']->getType() == KlarnaPClass::ACCOUNT) {
@@ -151,7 +151,7 @@ class klarna_productPrice {
 		    $pp_title = $pclass['pclass']->getMonths() . " " . JText::_('VMPAYMENT_KLARNA_PPBOX_TH_MONTH');
 		}
 
-		$pp_price = $currencydisplay->priceDisplay($pclass['monthlyCost'], '', false);
+		$pp_price = $currencydisplay->priceDisplay($pclass['monthlyCost']);
 		$sTableHtml .=vmPlugin::renderByLayout('pp_box_template',array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price),$this->method->payment_element,'payment');
 		// $sTableHtml .= $kCheckout->retrieveHTML(null, array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price), JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/pp_box_template.html');
 	    }
