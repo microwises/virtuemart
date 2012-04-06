@@ -66,11 +66,12 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td align="right"   class="priceCol" >
 			    <?php
+			    $item->product_basePriceWithTax = (float) $item->product_basePriceWithTax;
 			    if (VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
 						echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax) .'</span><br />' ;
 					}
 					?>
-				<?php echo $this->currency->priceDisplay($item->discountedPriceWithoutTax); ?>
+				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
 			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>

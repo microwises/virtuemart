@@ -511,8 +511,9 @@ class Migrator extends VmModel{
 		$orderinfo  = $this->getTable('order_userinfos');
 		foreach ($oldfields as $field ) {
 			if ($field->name =='country' or $field->name =='state') continue;
+			if (!isset($field->shipment)) $field->shipment = 0 ;
 			if ( !in_array( $field->name, $vm2Fields ) ) {
-				$q = 'INSERT INTO `#__virtuemart_userfields` ( `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipment`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`) 
+				$q = 'INSERT INTO `#__virtuemart_userfields` ( `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipment`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`)
 					VALUES ( "'.$field->name.'"," '.$field->title .'"," '.$field->description .'"," '.$field->type .'"," '.$field->maxlength .'"," '.$field->size .'"," '.$field->required .'"," '.$field->ordering .'"," '.$field->cols .'"," '.$field->rows .'"," '.$field->value .'"," '.$field->default .'"," '.$field->published .'"," '.$field->registration .'"," '.$field->shipment .'"," '.$field->account .'"," '.$field->readonly .'"," '.$field->calculated .'"," '.$field->sys .'"," '.$field->vendor_id .'"," '.$field->params .'" )';
 				$this->_db->setQuery($q);
 				$this->_db->query();
@@ -532,7 +533,7 @@ class Migrator extends VmModel{
 					return false;
 				}
 				$migratedfields .= '['.$field->name.'] ';
-				
+
 			}
 		}
 		if ($migratedfields) vminfo('Userfield declaration '.$migratedfields.' Migrated');
@@ -1261,7 +1262,7 @@ class Migrator extends VmModel{
 		$migratedfields ='';
 		foreach ($oldfields as $field ) {
 			if ( !in_array( $field->order_status_code, $vm2Fields ) ) {
-				$q = 'INSERT INTO `#__virtuemart_orderstates` ( `virtuemart_vendor_id`, `order_status_code`, `order_status_name`, `order_status_description`, `order_stock_handel`, `ordering`, `published`) 
+				$q = 'INSERT INTO `#__virtuemart_orderstates` ( `virtuemart_vendor_id`, `order_status_code`, `order_status_name`, `order_status_description`, `order_stock_handle`, `ordering`, `published`)
 					VALUES ( "'.$field->vendor_id.'","'.$field->order_status_code .'","'.$field->order_status_name .'","'.$field->order_status_description .'","A","'.$field->list_order .'", 1 )';
 				$this->_db->setQuery($q);
 				$this->_db->query();
@@ -1269,7 +1270,7 @@ class Migrator extends VmModel{
 					vmError ($this->_db->getErrorMsg() );
 				}
 				$migratedfields .= '['.$field->order_status_code.'-'.$field->order_status_name.'] ';
-				
+
 			}
 		}
 		if ($migratedfields) vminfo('order states declaration '.$migratedfields.' Migrated');
@@ -1330,10 +1331,10 @@ class Migrator extends VmModel{
 					//		$orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 					$orderData->order_total = $order['order_total'];
 					$orderData->order_subtotal = $order['order_subtotal'];
-					$orderData->order_tax = $order['order_tax'];
-					$orderData->order_shipment = $order['order_shipment'];
-					$orderData->order_shipment_tax = $order['order_shipment_tax'];
-					if(!empty($_cart->couponCode)){
+					$orderData->order_tax = empty($order['order_tax'])? 0:$order['order_tax'];
+					$orderData->order_shipment = empty($order['order_shipment'])? 0:$order['order_shipment'];
+					$orderData->order_shipment_tax = empty($order['order_shipment_tax'])? 0:$order['order_shipment_tax'];
+					if(!empty($order['coupon_code'])){
 						$orderData->coupon_code = $order['coupon_code'];
 						$orderData->coupon_discount = $order['coupon_discount'];
 					}
@@ -1341,7 +1342,7 @@ class Migrator extends VmModel{
 
 					$orderData->order_status = $order['order_status'];
 
-					if(isset($_cart->virtuemart_currency_id)){
+					if(isset($order['order_currency'])){
 						$orderData->user_currency_id = $this->getCurrencyIdByCode($order['order_currency']);
 						//$orderData->user_currency_rate = $order['order_status'];
 					}

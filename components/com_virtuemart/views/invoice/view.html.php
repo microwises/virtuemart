@@ -74,22 +74,22 @@ class VirtuemartViewInvoice extends VmView {
 		$orderDetails = $this->orderDetails;
 
 		if($orderDetails==0){
-			$_currentUser = JFactory::getUser();
-			$cuid = $_currentUser->get('id');
 
-			if(empty($cuid)){
-				// If the user is not logged in, we will check the order number and order pass
-				if ($orderPass = JRequest::getString('order_pass',false)){
-					$orderNumber = JRequest::getString('order_number',false);
-					$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-					if(empty($orderId)){
-						echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-						return 0;
-					}
-					$orderDetails = $orderModel->getOrder($orderId);
+			// If the user is not logged in, we will check the order number and order pass
+			if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
+				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
+				if(empty($orderId)){
+					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+					return 0;
 				}
+				$orderDetails = $orderModel->getOrder($orderId);
 			}
-			else {
+
+			if($orderDetails==0){
+
+				$_currentUser = JFactory::getUser();
+				$cuid = $_currentUser->get('id');
+
 				// If the user is logged in, we will check if the order belongs to him
 				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
 				if (!$virtuemart_order_id) {
@@ -107,6 +107,7 @@ class VirtuemartViewInvoice extends VmView {
 					}
 				}
 			}
+
 		}
 
 		if(empty($orderDetails['details'])){
