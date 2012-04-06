@@ -143,7 +143,7 @@ class TableUserinfos extends VmTableData {
 		$total = $this->_db->loadResultArray();
 
 		if (count($total) > 0) {
-			$this->virtuemart_userinfo_id = $total[0];
+			$this->virtuemart_userinfo_id = (int)$total[0];
 		} else {
 			$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
 		}

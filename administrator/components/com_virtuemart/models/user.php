@@ -837,6 +837,8 @@ class VirtueMartModelUser extends VmModel {
 		$userinfo   = $this->getTable('userinfos');
 
 		if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
+
+			$data['virtuemart_userinfo_id'] = (int)$data['virtuemart_userinfo_id'];
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			if(!Permissions::getInstance()->check('admin')){
 
@@ -847,6 +849,7 @@ class VirtueMartModelUser extends VmModel {
 					return false;
 				}
 			}
+
 		}
 
 		if($data['address_type'] == 'BT'){
@@ -871,6 +874,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$userinfo   = $this->getTable('userinfos');
 			if(isset($dataST['virtuemart_userinfo_id']) and $dataST['virtuemart_userinfo_id']!=0){
+				$dataST['virtuemart_userinfo_id'] = (int)$dataST['virtuemart_userinfo_id'];
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 				if(!Permissions::getInstance()->check('admin')){
 
@@ -886,7 +890,7 @@ class VirtueMartModelUser extends VmModel {
 
 			if(empty($userinfo->virtuemart_user_id)){
 				if(isset($data['virtuemart_user_id'])){
-					$dataST['virtuemart_user_id'] = $data['virtuemart_user_id'];
+					$dataST['virtuemart_user_id'] = (int)$data['virtuemart_user_id'];
 				} else {
 					//Disadvantage is that admins should not change the ST address in the FE (what should never happen anyway.)
 					$dataST['virtuemart_user_id'] = $user->id;
