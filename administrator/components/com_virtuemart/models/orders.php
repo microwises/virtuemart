@@ -729,9 +729,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// the status increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
 		// $Reserved =  array('P','C');
 		if ($StatutWhiteList[$oldState]['order_stock_handle'] == 'R') $isReserved = 1;
-		else $isOut = 0;
+		else $isReserved = 0;
 		if ($StatutWhiteList[$newState]['order_stock_handle'] == 'R') $wasReserved = 1;
-		else $wasOut = 0;
+		else $wasReserved = 0;
 		// $isReserved = in_array($newState, $Reserved);
 		// $wasReserved = in_array($oldState, $Reserved);
 		// reserved stock must be change(all ordered product)
