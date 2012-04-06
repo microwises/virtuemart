@@ -90,6 +90,8 @@ class VirtueMartModelUserfields extends VmModel {
 				break;
 			case 'email':
 				$value = str_replace(array('mailto:','http://','https://'),'', $value);
+				$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
+
 				break;
 			case 'multiselect':
 			case 'multicheckbox':
@@ -126,8 +128,8 @@ class VirtueMartModelUserfields extends VmModel {
 					return $value;
 				}
 
-				// no HTML TAGS but permit all alphabet
-				$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
+			// no HTML TAGS but permit all alphabet
+			$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
 			$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 			$value = trim(str_replace('"', ' ', $value),"'") ;
 			$value =	(string)preg_replace('#^\'#si','',$value);//replace ' at start

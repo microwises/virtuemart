@@ -731,6 +731,12 @@ class VirtueMartCart {
 
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
+		// no HTML TAGS but permit all alphabet
+		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
+		$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+		$value = trim(str_replace('"', ' ', $value),"'") ;
+		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
+
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');

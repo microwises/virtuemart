@@ -270,6 +270,8 @@ class VirtueMartModelRatings extends VmModel {
 
 			$data['lastip'] = $_SERVER['REMOTE_ADDR'];
 
+			$data['vote'] = (int) $data['vote'];
+
 			$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
 			vmdebug('$rating',$rating);
 			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
@@ -314,6 +316,13 @@ class VirtueMartModelRatings extends VmModel {
 
 			if(!empty($data['comment'])){
 				$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+
+				// no HTML TAGS but permit all alphabet
+				$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$data['comment']);//remove all html tags
+				$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+				$value = trim(str_replace('"', ' ', $value),"'") ;
+				$data['comment'] =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
+
 				//set to defaut value not used (prevent hack)
 				$data['review_ok'] = 0;
 				$data['review_rating'] = 0;
