@@ -656,9 +656,16 @@ class VmPagination extends JPagination {
 				$limits[] = JHTML::_('select.option', $this->_perRow * 10);
 				$limits[] = JHTML::_('select.option', $this->_perRow * 20);
 				$limits[] = JHTML::_('select.option', $this->_perRow * 40);
+				$limits[] = JHTML::_('select.option', $this->_perRow * 80);
 	// 			vmdebug('getLimitBox',$this->_perRow);
 			}
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
+
+			$namespace = '';
+			if (JVM_VERSION!==1) {
+				$namespace = 'Joomla.';
+			}
+
+			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 
 			$getArray = (JRequest::get( 'get' ));
