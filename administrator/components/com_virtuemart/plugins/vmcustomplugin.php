@@ -212,16 +212,14 @@ abstract class vmCustomPlugin extends vmPlugin {
     */
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
     public function getCustomVariant($product, &$productCustomsPrice,$selected){
-		if ($productCustomsPrice->custom_element !==$this->_name) return false;
+		//if ($productCustomsPrice->custom_element !==$this->_name) return false;
 
 		vmPlugin::declarePluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id,$productCustomsPrice);
 // 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
 
-		static $pluginFields;
-		if (!isset($pluginFields)) {
-				 $pluginFields = JRequest::getVar('customPlugin',null );
-				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
-		}
+		$pluginFields = JRequest::getVar('customPlugin',null );
+		if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
+
 		return $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
 
     }
