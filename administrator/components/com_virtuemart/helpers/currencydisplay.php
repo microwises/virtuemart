@@ -301,7 +301,7 @@ class CurrencyDisplay {
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	public function priceDisplay($price, $currencyId=0,$quantity = 1,$inToShopCurrency = false,$nb = -1){
+	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb = -1){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipment)
 		/*
 		 if(empty($currencyId)){
@@ -312,6 +312,7 @@ class CurrencyDisplay {
 		}
 		*/
 		$currencyId = $this->getCurrencyForDisplay($currencyId);
+		$price = (float)$price * (float)$quantity;
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
 	}
