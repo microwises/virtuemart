@@ -471,19 +471,19 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function plgVmOnUserInvoice($orderDetails, &$data) {
-	if (!($method = $this->getVmPluginMethod($orderDetails['details']['BT']->virtuemart_paymentmethod_id))) {
-	    return null; // Another method was selected, do nothing
-	}
-	if (!$this->selectedThisElement($method->payment_element)) {
-	    return false;
-	}
+		if (!($method = $this->getVmPluginMethod($orderDetails['virtuemart_paymentmethod_id']))) {
+			return null; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($method->payment_element)) {
+			return false;
+		}
 
-	if (!($payments = $this->_getKlarnaInternalData($orderDetails['details']['BT']->virtuemart_order_id) )) {
-	    return '';
-	}
-	if (!empty($payments[0]->klarna_invoice_no)) {
-	    $data['invoice_number'] = $payments[0]->klarna_invoice_no;
-	}
+		if (!($payments = $this->_getKlarnaInternalData($orderDetails['virtuemart_order_id']) )) {
+			return '';
+		}
+		if (!empty($payments[0]->klarna_invoice_no)) {
+			$data['invoice_number'] = $payments[0]->klarna_invoice_no;
+		}
     }
 
     function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
