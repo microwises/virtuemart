@@ -30,7 +30,7 @@ class GenericTableUpdater extends JModel{
 
 	public function __construct(){
 
-		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+// 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		$this->_app = JFactory::getApplication();
 		$this->_db = JFactory::getDBO();

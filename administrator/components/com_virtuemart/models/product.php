@@ -24,7 +24,7 @@ jimport( 'joomla.application.component.model');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
-JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+// JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 /**
  * Model for VirtueMart Products
  *

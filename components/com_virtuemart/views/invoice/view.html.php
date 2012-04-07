@@ -79,7 +79,7 @@ class VirtuemartViewInvoice extends VmView {
 			if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
 				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
 				if(empty($orderId)){
-					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+					echo 'Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return 0;
 				}
 				$orderDetails = $orderModel->getOrder($orderId);
@@ -101,7 +101,7 @@ class VirtuemartViewInvoice extends VmView {
 				if(!Permissions::getInstance()->check("admin")) {
 					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
 						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+							echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return 0;
 						}
 					}

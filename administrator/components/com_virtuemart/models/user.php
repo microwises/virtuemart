@@ -983,6 +983,19 @@ class VirtueMartModelUser extends VmModel {
 			$data = $this->getTable('userinfos');
 			$data->load($uid);
 
+			vmdebug('$data',$data);
+
+			if($data->virtuemart_user_id!==0){
+
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if(!Permissions::getInstance()->check("admin")) {
+					if($data->virtuemart_user_id!=$this->_id){
+						echo 'Hacking attempt, you got logged';
+						return false;
+					}
+				}
+			}
+
 			if ($data->address_type != 'ST' ) {
 				$BTuid = $uid;
 

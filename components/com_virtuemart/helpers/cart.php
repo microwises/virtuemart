@@ -81,7 +81,7 @@ class VirtueMartCart {
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
 		)require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
-		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+// 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		if(empty(self::$_cart)){
 			$session = JFactory::getSession($options);

@@ -45,6 +45,8 @@ define('VM_ORDER_OFFSET',3);
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
+JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+
 if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 // if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 

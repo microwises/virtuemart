@@ -138,7 +138,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			if($view ===0){
 			$view = new stdClass();
 			jimport( 'joomla.database.table' );
-			JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+// 			JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 			$virtuemart_vendor_id=1;
 

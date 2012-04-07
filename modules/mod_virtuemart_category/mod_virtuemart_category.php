@@ -22,7 +22,6 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 */
 /* Load  VM fonction */
 require('helper.php');
-JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 vmJsApi::jQuery();
