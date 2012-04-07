@@ -95,5 +95,7 @@ if (!empty($this->vendors)) { ?>
 
 </div>
 <?php
+} else {
+	echo 'Serious configuration problem, no vendor found.';
 }
 ?>

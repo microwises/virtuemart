@@ -75,7 +75,7 @@ class VirtuemartViewVendor extends VmView {
 			$usermodel = VmModel::getModel('user');
 
 			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
+			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id,true,true);
 			$this->assignRef('userFields', $userFields);
 
 			if ($layoutName=='tos') {

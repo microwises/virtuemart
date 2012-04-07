@@ -957,7 +957,7 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	function getUserInfoInUserFields($layoutName, $type,$uid,$cart=true){
+	function getUserInfoInUserFields($layoutName, $type,$uid,$cart=true,$isVendor=false){
 
 		// 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		// 		$userFieldsModel = new VirtuemartModelUserfields();
@@ -983,13 +983,14 @@ class VirtueMartModelUser extends VmModel {
 			$data = $this->getTable('userinfos');
 			$data->load($uid);
 
-			vmdebug('$data',$data);
+// 			vmdebug('$data',$data);
 
-			if($data->virtuemart_user_id!==0){
+			if($data->virtuemart_user_id!==0 and !$isVendor){
 
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
 					if($data->virtuemart_user_id!=$this->_id){
+						vmError('Hacking attempt, you got logged');
 						echo 'Hacking attempt, you got logged';
 						return false;
 					}

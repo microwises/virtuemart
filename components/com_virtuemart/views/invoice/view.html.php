@@ -206,7 +206,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$usermodel = VmModel::getModel('user');
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false);
+		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false,true);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
 		$vendorAddress='';
 		 foreach ($vendorFields['fields'] as $field) {
