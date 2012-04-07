@@ -40,6 +40,7 @@ AdminUIHelper::startAdminArea();
 		<td>
 		    <fieldset>
 			<?php echo $this->pluginList ?>
+			<div class="clear"></div>
     			<div id="plugin-Container">
 			<?php
 			if (!empty($this->customPlugin)) {
