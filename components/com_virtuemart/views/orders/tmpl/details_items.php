@@ -31,10 +31,10 @@ if($this->format == 'pdf'){
 <table width="<?php echo $widthTable ?>%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
 		<th align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 		<th align="center" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></th>
 		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
+		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
 		  <?php } ?>
@@ -43,14 +43,12 @@ if($this->format == 'pdf'){
 	</tr>
 <?php
 	foreach($this->orderdetails['items'] as $item) {
+		$qtt = $item->product_quantity ;
 		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
 			<td align="left">
 				<?php echo $item->order_item_sku; ?>
-			</td>
-			<td align="left">
-				<?php echo $item->product_quantity; ?>
 			</td>
 			<td align="left" colspan="2" >
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
@@ -74,14 +72,17 @@ if($this->format == 'pdf'){
 					?>
 				<?php echo $this->currency->priceDisplay($item->product_final_price,0,$item->product_quantity); ?>
 			</td>
+			<td align="left">
+				<?php echo $qtt; ?>
+			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>
+				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax ,0, $qtt)."</span>" ?></td>
                                 <?php } ?>
 			<td align="right" class="priceCol" >
-				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount);?>
+				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount ,0, $qtt);?>
 			</td>
 			<td align="right"  class="priceCol">
-				<?php echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax); ?>
+				<?php echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,0, $qtt); ?>
 			</td>
 		</tr>
 

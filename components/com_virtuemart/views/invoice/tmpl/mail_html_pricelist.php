@@ -30,9 +30,9 @@ $root = $u->toString(array('scheme', 'host'));
 <table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr align="left" class="sectiontableheader">
 	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
 	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 	<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
+	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
 	<?php if (VmConfig::get('show_tax')) { ?>
     	<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
 	<?php } ?>
@@ -42,15 +42,14 @@ $root = $u->toString(array('scheme', 'host'));
     <?php
     $i=1;
     foreach ($this->orderDetails['items'] as $item) {
+	$qtt = $item->product_quantity ;
 	$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $item->virtuemart_product_id);
 	?>
         <tr valign="top" class="sectiontableentry<?php echo $i ?>">
     	<td align="left" >
 		<?php echo $item->order_item_sku; ?>
     	</td>
-    	<td align="left" >
-		<?php echo $item->product_quantity; ?>
-    	</td>
+
     	<td align="left" >
     	    <a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
 
@@ -66,20 +65,25 @@ $root = $u->toString(array('scheme', 'host'));
 
     	<td align="right" >
 	    <?php
+		$item->product_basePriceWithTax = (float) $item->product_basePriceWithTax;
 	    if ( VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax ) && $item->product_basePriceWithTax != $item->product_final_price  ) {
-			echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax ) .'</span><br />' ;
+			echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax,$qtt ) .'</span><br />' ;
 		}
 		?>
 		<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
     	</td>
-	    <?php if (VmConfig::get('show_tax')) { ?>
-		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay( $item->product_tax  ) . "</span>" ?></td>
-	    <?php } ?>
-    	<td align="right" >
-		<?php echo $this->currency->priceDisplay(  $item->product_subtotal_discount); ?>
+		<td align="left" >
+		<?php echo $qtt; ?>
     	</td>
-	<td align="right" >
-		<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax  ); ?>
+	    <?php if (VmConfig::get('show_tax')) { ?>
+		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay( $item->product_tax ,0, $qtt  ) . "</span>" ?></td>
+	    <?php } ?> 
+
+    	<td align="right" >
+		<?php echo $this->currency->priceDisplay(  $item->product_subtotal_discount ,0, $qtt); ?>
+    	</td>
+		<td align="right" >
+		<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax ,0, $qtt ); ?>
     	</td>
 
         </tr>

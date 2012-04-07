@@ -28,10 +28,10 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></strong></td>
-		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
 		<td align="left" colspan="2" width="40%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></td>
 		<td align="center" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></strong></td>
 		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></strong></td>
+		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></strong></td>
 		  <?php } ?>
@@ -41,14 +41,12 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 	foreach($this->orderDetails['items'] as $item) {
+		$qtt = $item->product_quantity ;
 		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
 			<td align="left">
 				<?php echo $item->order_item_sku; ?>
-			</td>
-			<td align="left">
-				<?php echo $item->product_quantity; ?>
 			</td>
 			<td align="left" colspan="2" >
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
@@ -73,14 +71,17 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
 			</td>
+			<td align="left">
+				<?php echo $qtt; ?>
+			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>
+				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax ,0, $qtt)."</span>" ?></td>
                                 <?php } ?>
 			<td align="right" class="priceCol" >
-				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount);?>
+				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount ,0, $qtt);?>
 			</td>
 			<td align="right"  class="priceCol">
-				<?php echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax); ?>
+				<?php echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,0, $qtt); ?>
 			</td>
 		</tr>
 
