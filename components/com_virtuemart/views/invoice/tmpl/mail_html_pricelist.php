@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
 
+require(__DIR__.'/invoice_items.php');
+/*
 $u = & JURI::getInstance();
 $root = $u->toString(array('scheme', 'host'));
 ?>
@@ -66,18 +68,23 @@ $root = $u->toString(array('scheme', 'host'));
     	<td align="right" >
 	    <?php
 		$item->product_basePriceWithTax = (float) $item->product_basePriceWithTax;
-	    if ( VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax ) && $item->product_basePriceWithTax != $item->product_final_price  ) {
-			echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax,$qtt ) .'</span><br />' ;
-		}
+// 	    if ( VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax ) && $item->product_basePriceWithTax != $item->product_final_price  ) {
+// 			echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax,$qtt ) .'</span><br />' ;
+// 		}
+		$class = '';
+        if(!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
+			   	$class = 'class="line-through"';
+		   }
+			echo '<span '.$class.'>'.$this->currency->priceDisplay($item->product_basePriceWithTax ) .'</span><br />' ;
 		?>
-		<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
+		<?php // echo $this->currency->priceDisplay($item->product_final_price); ?>
     	</td>
 		<td align="left" >
 		<?php echo $qtt; ?>
     	</td>
 	    <?php if (VmConfig::get('show_tax')) { ?>
 		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay( $item->product_tax ,0, $qtt  ) . "</span>" ?></td>
-	    <?php } ?> 
+	    <?php } ?>
 
     	<td align="right" >
 		<?php echo $this->currency->priceDisplay(  $item->product_subtotal_discount ,0, $qtt); ?>
@@ -207,4 +214,4 @@ $i = 1 ? 2 : 1;
     </tr>
 
 </table>
-
+*/

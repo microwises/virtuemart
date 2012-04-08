@@ -78,7 +78,7 @@ div.liveupdate-noupdates h3 {
 }
 
 div.liveupdate-infotable {
-	width: 620px;
+	width: 1020px;
 	margin: auto auto;
 	padding: 2px;
 	border: thin solid #333;
@@ -115,4 +115,4 @@ p.liveupdate-error-needsauth {
 
 p.liveupdate-poweredby { font-size: 8pt; color: silver; margin: 1em 0 0.5em 0 }
 p.liveupdate-poweredby a { color: silver; }
-div.liveupdate-ftp p { margin: 1em 2em; line-height: 140%; border: thin solid #00c; padding: 0.5em; color: #006; background-color: #f0f0ff; font-size: 12pt; text-shadow: 1px 1px 3px silver }
+div.liveupdate-ftp p { margin: 1em 2em; line-height: 140%; border: thin solid #00c; padding: 0.5em; color: #006; background-color: #f0f0ff; font-size: 14pt; text-shadow: 1px 1px 3px silver }

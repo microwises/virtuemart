@@ -27,11 +27,51 @@ $document->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->
 //$document->setDescription( JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderDetails['details']['BT']->order_number);
 }
 
+if($this->headFooter){ ?>
+<div class="vendor-details-view">
+<h1><?php echo $this->vendor->vendor_store_name;
+if (!empty($this->vendor->images[0])) { ?>
+		<div class="vendor-image">
+		<?php echo $this->vendor->images[0]->displayMediaThumb('',false); ?>
+		</div>
+	<?php
+	}
+?>	</h1></div>
+
+<div class="vendor-description">
+<?php //echo $this->vendor->vendor_store_desc.'<br>';
+
+echo $this->vendorAddress;
+/*	foreach($this->vendorAddress as $userfields){
+
+		foreach($userfields['fields'] as $item){
+			if(!empty($item['value'])){
+				if($item['name']==='agreed'){
+					$item['value'] =  ($item['value']===0) ? JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_NO'):JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_YES');
+				}
+			?><!-- span class="titles"><?php echo $item['title'] ?></span -->
+						<span class="values vm2<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
+					<?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
+						<br class="clear" />
+					<?php
+				}
+			}
+		}
+	}*/
+}
+	?></div> <?php
+
+
 if($this->print){
 	?>
 
 		<body onload="javascript:print();">
 
+		<div class ='spaceStyle' >
+		<?php
+// 			echo require(__DIR__.'/mail_html_shopper.php');
+			?>
+		</div>
 		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');
@@ -43,7 +83,7 @@ if($this->print){
 		echo $this->loadTemplate('items');
 		?>
 		</div>
-		<?php	echo $this->vendor->vendor_legal_info; ?>
+		<?php	//echo $this->vendor->vendor_legal_info; ?>
 		</body>
 		<?php
 } else {
@@ -68,9 +108,10 @@ if($this->print){
 	shopFunctionsF::buildTabs ($tabarray);
 	echo '</div>
 	    <br clear="all"/><br/>';
+}
 
-
-
+if($this->headFooter){
+	echo $this->vendor->vendor_legal_info;
 }
 
 ?>

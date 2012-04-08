@@ -5,13 +5,13 @@
 
 	<name>VIRTUEMART</name>
 
-	<creationDate>February 2012</creationDate>
+	<creationDate>April 2012</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>max|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
 	<copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version status="Final">2.0.3</version>
+	<version status="Final">2.0.4</version>
 
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>install/script.virtuemart.php</scriptfile>

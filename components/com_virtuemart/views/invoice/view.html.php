@@ -202,6 +202,14 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('vendor', $vendor);
 
 // 		vmdebug('vendor', $vendor);
+		$task = JRequest::getWord('task',0);
+		if($task == 'checkStoreInvoice'){
+			$headFooter = false;
+		} else {
+			$headFooter = true;
+		}
+		$this->assignRef('headFooter', $headFooter);
+
 		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
 
 		$usermodel = VmModel::getModel('user');
@@ -213,7 +221,12 @@ class VirtuemartViewInvoice extends VmView {
 		    if (!empty($field['value'])) {
 			     $vendorAddress.= $field['value'];
 			    if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-			       $vendorAddress.= "\n";
+			    	if($headFooter){
+			    		$vendorAddress.= "<br />";
+			    	} else {
+			    		$vendorAddress.= "\n";
+			    	}
+
 			    } else {
 				$vendorAddress.=' ';
 			    }

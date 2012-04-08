@@ -598,11 +598,10 @@ class calculationHelper {
 
 		$basePriceP = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
 		$basePriceP = !empty($basePriceP) ? $basePriceP : $withTax;
-// 		$basePriceP = $basePrice;
-		$basePrice = $this->gatherEffectingRulesForProductPrice('Marge', $basePriceP);
+
+		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceP));
 		$basePrice = !empty($basePrice) ? $basePrice : $basePriceP;
 
-		vmdebug('Desired $$basePrice '.$basePrice);
 		$productCurrency = CurrencyDisplay::getInstance();
 		$costprice = $productCurrency->convertCurrencyTo( $this->productCurrency, $basePrice,false);
 // 		$productCurrency = CurrencyDisplay::getInstance();

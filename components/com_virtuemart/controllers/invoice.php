@@ -39,7 +39,7 @@ class VirtueMartControllerInvoice extends JController
 		else $viewName= 'Invoice';
 
 		$view = $this->getView($viewName, $format);
-
+		$view->headFooter = true;
 		$view->display();
 	}
 
@@ -102,6 +102,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$view->orderDetails = $orderDetails;
 		$view->uselayout = 'invoice';
+// 		$view->headFooter = false;
 
 		ob_start();
 		$view->display();
