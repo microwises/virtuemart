@@ -1002,7 +1002,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$orderDetails = (array)$orderDetails;
 		$db = JFactory::getDBO();
-		if(!isset($orderDetails['virtuemart_order_id'])) vmWarn('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
+		if(!isset($orderDetails['virtuemart_order_id'])){
+			vmWarn('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
+			vmdebug('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
+		}
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails['virtuemart_order_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 
 		$db->setQuery($q);
