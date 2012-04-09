@@ -1511,7 +1511,6 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 
 		$this->_db->setQuery($q);
 		$this->_db->query();
-		vmdebug('query',$q);
 
 		if ($signInStoc == '-') {
 			$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '

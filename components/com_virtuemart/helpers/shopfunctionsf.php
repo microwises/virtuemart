@@ -206,7 +206,7 @@ class shopFunctionsF {
 			if($err) vmError('renderMail get Template failed: '.$err);
 		}
 
-		vmdebug('renderMail my $view for the view',$view);
+		//vmdebug('renderMail my $view for the view',$view);
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}

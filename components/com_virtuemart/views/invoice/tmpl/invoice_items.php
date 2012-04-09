@@ -66,13 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
 			<td align="right"   class="priceCol" >
-			    <?php
-
-// 			    if (VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
-						echo '<span >'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />' ;
-// 					}
-					?>
-				<?php // echo $this->currency->priceDisplay($item->product_final_price); ?>
+			    <?php echo '<span >'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />'; ?>
 			</td>
 			<td align="right" >
 				<?php echo $qtt; ?>

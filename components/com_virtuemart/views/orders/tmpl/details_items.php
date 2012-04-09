@@ -65,24 +65,26 @@ if($this->format == 'pdf'){
 				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
 			<td align="right"   class="priceCol" >
-			    <?php
-			    if (VmConfig::get('checkout_show_origprice',1) && !empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
-						echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax,0,$item->product_quantity) .'</span><br />' ;
-					}
-					?>
-				<?php echo $this->currency->priceDisplay($item->product_final_price,0,$item->product_quantity); ?>
+			    <?php echo '<span >'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />'; ?>
 			</td>
-			<td align="left">
+			<td align="right" >
 				<?php echo $qtt; ?>
 			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax ,0, $qtt)."</span>" ?></td>
                                 <?php } ?>
 			<td align="right" class="priceCol" >
-				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount ,0, $qtt);?>
+				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount );  //No quantity is already stored with it ?>
 			</td>
 			<td align="right"  class="priceCol">
-				<?php echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,0, $qtt); ?>
+				<?php
+				$item->product_basePriceWithTax = (float) $item->product_basePriceWithTax;
+				$class = '';
+				if(!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
+					echo '<span class="line-through" >'.$this->currency->priceDisplay($item->product_basePriceWithTax,0,$qtt) .'</span><br />' ;
+				}
+
+				echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,0); //No quantity or you must use product_final_price ?>
 			</td>
 		</tr>
 

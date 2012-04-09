@@ -143,7 +143,7 @@
 				<td align="center" >
 				<?php
 // 					vmdebug('$this->cart->pricesUnformatted[$pkey]',$this->cart->pricesUnformatted[$pkey]['priceBeforeTax']);
-					echo $this->currencyDisplay->createPriceDiv('basePriceWithTax','', $this->cart->pricesUnformatted[$pkey],false);
+					echo $this->currencyDisplay->createPriceDiv('basePrice','', $this->cart->pricesUnformatted[$pkey],false);
 // 					echo $prow->salesPrice ;
 					?>
 				</td>
