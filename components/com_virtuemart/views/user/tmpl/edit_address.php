@@ -144,7 +144,9 @@ if ($this->userDetails->JUser->get('id')) {
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?   ?>" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-<input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo (int)$this->virtuemart_userinfo_id; ?>" />
-<?php echo JHTML::_('form.token');
+<?php if(!empty($this->virtuemart_userinfo_id)){
+	echo '<input type="hidden" name="shipto_virtuemart_userinfo_id" value="'.(int)$this->virtuemart_userinfo_id.'" />';
+}
+echo JHTML::_('form.token');
 ?>
 </form>

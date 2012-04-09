@@ -849,7 +849,8 @@ class VirtueMartModelUser extends VmModel {
 					return false;
 				}
 			}
-
+		} else {
+			unset($data['virtuemart_userinfo_id']);
 		}
 
 		if($data['address_type'] == 'BT'){

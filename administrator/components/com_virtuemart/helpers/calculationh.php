@@ -40,7 +40,7 @@ class calculationHelper {
 
 	public $_amount;
 
-	public $override = 0;
+// 	public $override = 0;
 	public $productVendorId;
 	public $productCurrency;
 	public $product_tax_id = 0;
@@ -226,8 +226,8 @@ class calculationHelper {
 		if (is_object($productId)) {
 			$costPrice = isset($productId->product_price)? $productId->product_price:0;
 			$this->productCurrency = isset($productId->product_currency)? $productId->product_currency:0;
-			$this->override = isset($productId->override)? $productId->override:0;
-			$this->product_override_price = isset($productId->product_override_price)? $productId->product_override_price:0;
+			$override = isset($productId->override)? $productId->override:0;
+			$product_override_price = isset($productId->product_override_price)? $productId->product_override_price:0;
 			$this->product_tax_id = isset($productId->product_tax_id)? $productId->product_tax_id:0;
 			$this->product_discount_id = isset($productId->product_discount_id)? $productId->product_discount_id:0;
 			$this->productVendorId = isset($productId->virtuemart_vendor_id)? $productId->virtuemart_vendor_id:1;
@@ -244,8 +244,8 @@ class calculationHelper {
 				if (!empty($row['product_price'])) {
 					$costPrice = $row['product_price'];
 					$this->productCurrency = $row['product_currency'];
-					$this->override = $row['override'];
-					$this->product_override_price = $row['product_override_price'];
+					$override = $row['override'];
+					$product_override_price = $row['product_override_price'];
 					$this->product_tax_id = $row['product_tax_id'];
 					$this->product_discount_id = $row['product_discount_id'];
 				} else {
@@ -329,8 +329,8 @@ class calculationHelper {
 
 		$prices['salesPriceTemp'] = $prices['salesPrice'];
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
-		if ($this->override) {
-			$prices['salesPrice'] = $this->product_override_price;
+		if ($override) {
+			$prices['salesPrice'] = $product_override_price;
 // 			$prices['discountedPriceWithoutTax'] = $this->product_override_price;
 // 			$prices['salesPriceWithDiscount'] = $this->product_override_price;
 		}

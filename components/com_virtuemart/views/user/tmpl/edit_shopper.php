@@ -31,16 +31,16 @@ defined('_JEXEC') or die('Restricted access');
     echo $this->loadTemplate('vmshopper');
     } ?>
 <?php echo $this->loadTemplate('address_userfields'); ?>
- 
+
 
 
 <?php if ($this->userDetails->JUser->get('id') ) {
   echo $this->loadTemplate('address_addshipto');
   }
   ?>
-
-
-
-<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id; ?>" />
+<?php if(!empty($this->virtuemart_userinfo_id)){
+	echo '<input type="hidden" name="virtuemart_userinfo_id" value="'.(int)$this->virtuemart_userinfo_id.'" />';
+}
+?>
 <input type="hidden" name="address_type" value="BT" />
 

@@ -227,10 +227,10 @@ $i=0;
 							</div>
 						</td>
 						<td>
-							<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
+							<input type="text" size="10" name="product_override_price" value="<?php echo $this->product->product_override_price ?>"/>
 						<?php
 							$checked = '';
-							if ($this->override) $checked = 'checked="checked"' ?>
+							if ($this->product->override) $checked = 'checked="checked"' ?>
 							<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
 						</td>
 					</tr>

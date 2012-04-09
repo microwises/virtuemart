@@ -91,8 +91,11 @@ AdminUIHelper::startAdminArea();
 		echo '</fieldset>'."\n";
 	}
 	echo $_hiddenFields;
+
+if(!empty($this->virtuemart_userinfo_id)){
+	echo '<input type="hidden" name="shipto_virtuemart_userinfo_id" value="'.$this->shipToId.'" />';
+}
 ?>
-<input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo $this->shipToId; ?>" />
 
 </fieldset>
 
