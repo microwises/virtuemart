@@ -188,7 +188,7 @@ class VirtueMartCart {
 
 				//Important DO NOT UNSET product_price
 				//unset($product->product_price);
-
+// 				vmdebug('$product',$product);
 				unset($product->prices);
 				unset($product->pricesUnformatted);
 				unset($product->mf_name);
@@ -334,8 +334,8 @@ class VirtueMartCart {
 			$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
 			$product -> virtuemart_shoppergroup_id = $tmpProduct -> virtuemart_shoppergroup_id;
 			$product -> product_price = $tmpProduct -> product_price;
-// 			$product -> override = $tmpProduct -> override;
-// 			$product -> product_override_price = $tmpProduct -> product_override_price;
+			$product -> override = $tmpProduct -> override;
+			$product -> product_override_price = $tmpProduct -> product_override_price;
 
 			$product -> product_tax_id = $tmpProduct -> product_tax_id;
 			$product -> product_discount_id = $tmpProduct -> product_discount_id;
@@ -1010,7 +1010,6 @@ class VirtueMartCart {
 	 */
 	public function emptyCart(){
 
-
 		//We delete the old stuff
 		$this->products = array();
 		$this->_inCheckOut = false;
@@ -1036,28 +1035,12 @@ class VirtueMartCart {
 	public function prepareCartData($checkAutomaticSelected=true){
 
 		// Get the products for the cart
-		$prices = array();
+// 		$prices = array();
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-
-		if(!empty($product_prices)){
-			foreach($product_prices as $k=>$price){
-
-				if(is_array($price)){
-					foreach($price as $sk=>$sprice){
-						$prices[$k][$sk] = $currency->priceDisplay($sprice);
-					}
-
-				} else {
-					$prices[$k] = $currency->priceDisplay($price);
-				}
-			}
-		} else {
-			$prices = array();
-		}
 
 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -1270,13 +1253,13 @@ class VirtueMartCart {
 			} else {
 				$product->customfields ='';
 			}
-			$product->salesPrice = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['salesPrice'];
-			$product->basePriceWithTax = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['basePriceWithTax'];
-//			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
-			$product->subtotal = $prices[$cart_item_id]['subtotal'];
-			$product->subtotal_tax_amount = $prices[$cart_item_id]['subtotal_tax_amount'];
-			$product->subtotal_discount = $prices[$cart_item_id]['subtotal_discount'];
-			$product->subtotal_with_tax = $prices[$cart_item_id]['subtotal_with_tax'];
+// 			$product->salesPrice = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['salesPrice'];
+// 			$product->basePriceWithTax = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['basePriceWithTax'];
+// 			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
+// 			$product->subtotal = $prices[$cart_item_id]['subtotal'];
+// 			$product->subtotal_tax_amount = $prices[$cart_item_id]['subtotal_tax_amount'];
+// 			$product->subtotal_discount = $prices[$cart_item_id]['subtotal_discount'];
+// 			$product->subtotal_with_tax = $prices[$cart_item_id]['subtotal_with_tax'];
 			$product->cart_item_id = $cart_item_id ;
 		}
 	}

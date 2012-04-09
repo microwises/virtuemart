@@ -459,6 +459,7 @@ class calculationHelper {
 
 			$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, 0, $variantmod, $product->quantity, true, false);
+// 			vmdebug('getCheckoutPrices',$product->prices);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
 			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cartPrices['basePrice'] += $product->prices['basePrice'] * $product->quantity;
