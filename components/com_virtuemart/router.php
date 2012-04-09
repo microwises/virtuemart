@@ -298,16 +298,6 @@ function virtuemartParseRoute($segments) {
 			return $vars;
 	}
 
-	if (  $helper->compareKey(end($segments),'orderDesc') ){
-		$vars['order'] ='DESC' ;
-		array_pop($segments);
-		if (empty($segments)) {
-			$vars['view'] = 'category';
-			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-			return $vars;
-		}
-	}
-
 	// $orderby = explode(',',$segments[0],2);
 	$orderby = explode(',',end($segments),2);
 	if (  $helper->compareKey($orderby[0] , 'by') ) {
@@ -321,7 +311,15 @@ function virtuemartParseRoute($segments) {
 			return $vars;
 		}
 	}
-
+	if (  $helper->compareKey(end($segments),'orderDesc') ){
+		$vars['order'] ='DESC' ;
+		array_pop($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
+		}
+	}
 
 	if ( $segments[0] == 'product') {
 		$vars['view'] = 'product';
@@ -370,7 +368,7 @@ function virtuemartParseRoute($segments) {
 	}
 
 	if (empty($segments)) return $vars ;
-	
+
 	// View is first segment now
 	$view = $segments[0]; 
 	if ( $helper->compareKey($view,'orders') || $helper->activeMenu->view == 'orders') {
@@ -495,6 +493,7 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'category';
 
 	} elseif ($id = $helper->getCategoryId (end($segments) ,$helper->activeMenu->virtuemart_category_id )) {
+		
 		// find corresponding category . If not, segment 0 must be a view
 		$vars['virtuemart_category_id'] = $id;
 		$vars['view'] = 'category' ;
@@ -543,7 +542,7 @@ class vmrouterHelper {
 	private static $_catRoute = array ();
 
 	public $CategoryName = array();
-	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer');
+	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer','user'=>'user');
 
 	private function __construct($instanceKey,$query) {
 
@@ -600,6 +599,7 @@ class vmrouterHelper {
 			}
 		} else $this->vmlang = $this->langTag = VMLANG ;
 		$this->setLang($instanceKey);
+		$this->Jlang =& JFactory::getLanguage();
 	}
 
 	public function getCategoryRoute($virtuemart_category_id){
@@ -937,12 +937,9 @@ class vmrouterHelper {
 	public function lang($key) {
 		if ($this->seo_translate ) {
 			$jtext = (strtoupper( $key ) );
-			if (jText::_('COM_VIRTUEMART_SEF_'.$jtext) != 'COM_VIRTUEMART_SEF_'.$jtext )
+			if ($this->Jlang->hasKey('COM_VIRTUEMART_SEF_'.$jtext) )
 				return JText::_('COM_VIRTUEMART_SEF_'.$jtext);
 		}
-		// if (isset($this->lang[$key])) {
-			// return $this->lang[$key];
-		// }
 		//falldown
 		return $key;
 	}
