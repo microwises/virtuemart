@@ -554,9 +554,9 @@ class ShopFunctions {
 
 		// Shipment address(es)
 		$_addressList = $userModel->getUserAddressList($userModel->getId() , 'ST');
-// 		if (($_c = count($_addressList)) == 0) {
-// 			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
-// 		} else {
+		if (count($_addressList) == 1 && empty($_addressList[0]->address_type_name )) {
+			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+		} else {
 			$_shipTo = array();
 			for ($_i = 0; $_i < count($_addressList); $_i++) {
 				if(empty($_addressList[$_i]->virtuemart_user_id)) $_addressList[$_i]->virtuemart_user_id = JFactory::getUser()->id;
@@ -580,7 +580,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$addLink .= JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL').' </a>';
 
 			return $addLink.'<ul>' . join('', $_shipTo) . '</ul>';
-// 		}
+		}
 	}
 
 	public static $counter = 0;
