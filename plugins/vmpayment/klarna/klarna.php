@@ -56,7 +56,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     // instance of class
     public static $_this = false;
     var $_vendor_currency = '';
-    var $klarna_image_path = '';
 
     function __construct(& $subject, $config) {
 
@@ -68,7 +67,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$this->_tableId = 'id';
 	$varsToPush = $this->getVarsToPush();
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-	$this->klarna_image_path = JURI::root() . VMKLARNAPLUGINWEBROOT . 'assets/images';
 // Get vendor currency ???
 	$this->_vendor_currency = $this->_getVendorCurrency();
 	$jlang = JFactory::getLanguage();
@@ -202,7 +200,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    }
 	}
 	$this->loadScriptAndCss();
-	//JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'klarna/assets/js/', false);
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
@@ -220,15 +217,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      */
 
     protected function displayListFEPayment(VirtueMartCart $cart, $method) {
-	$return = '';
-	$plugin_name = $this->_psType . '_name';
-	$plugin_desc = $this->_psType . '_desc';
-	$description = '';
-	//vmdebug('$this->methods',$method);
-	if (!empty($plugin->$plugin_desc)) {
-	    $description = '<span class = "' . $this->_type . '_description">' . $method->$plugin_desc . '</span>';
-	}
-	$pluginName = $return . '<span class = "' . $this->_type . '_name">' . $method->$plugin_name . '</span>' . $description;
 
 	// accepted by Klarna
 	$currency_code = ShopFunctions::getCurrencyByID($cart->pricesCurrency, 'currency_code_3');

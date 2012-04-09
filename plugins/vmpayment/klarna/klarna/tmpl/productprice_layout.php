@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access');
-$assetsPath = VMKLARNAPLUGINWEBROOT.'klarna/assets/';
-JHTML::script('klarna_pp.js', $assetsPath.'js/', false);
+
+JHTML::script('klarna_pp.js', VMKLARNAPLUGINWEBASSETS.'js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
@@ -47,12 +47,12 @@ jQuery(function(){
                     <a href="#"><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_READMORE'); ?></a>
                 </div>
                 <div class="klarna_PPBox_pull" id="klarna_PPBox_pullUp">
-                    <img src="<?php echo $assetsPath ?>images/productPrice/default/pullUp.png" alt="More info" />
+                    <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>images/productPrice/default/pullUp.png" alt="More info" />
                 </div>
             </div>
         </div>
         <div class="klarna_PPBox_pull" id="klarna_PPBox_pullDown">
-            <img src="<?php echo $assetsPath ?>images/productPrice/default/pullDown.png" alt="More info" />
+            <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>images/productPrice/default/pullDown.png" alt="More info" />
         </div>
         <?php echo $params['nlBanner'] ?>
     </div>

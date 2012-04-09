@@ -614,7 +614,7 @@ var klarna = {
 	},
 
 	saveDates : function (replaceBox, Type) {
-		if (Type = invoice) Type='';
+		if (Type = 'invoice') Type='';
 		else Type = Type+'_';
 		klarna['select_'+Type+'bday']= jQuery(replaceBox).find('#selectBox_'+Type+'bday').val();
 		klarna['select_'+Type+'bmonth'] = jQuery(replaceBox).find('#selectBox_'+Type+'bmonth').val();
