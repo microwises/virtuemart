@@ -698,8 +698,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
-	return $this->onCheckAutomaticSelected($cart, $cart_prices);
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(),   &$paymentCounter) {
+	return $this->onCheckAutomaticSelected($cart, $cart_prices ,   $paymentCounter);
     }
 
     /**
