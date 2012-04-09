@@ -41,8 +41,13 @@ class KlarnaSelfCall {
 		$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 		$data = $parameters->getParamByName('data');
 		// echo "<pre>";print_r($data);
-		echo $handler->fetchPClasses($data);
+		$json = $handler->fetchPClasses($data);
+		ob_start();
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
+		$json['pclasses']= ob_get_clean();
+		$document =JFactory::getDocument();
+		$document->setMimeEncoding('application/json');
+		echo json_encode($json,true);
 		jexit();
 		// echo result with tmpl ?
 	}

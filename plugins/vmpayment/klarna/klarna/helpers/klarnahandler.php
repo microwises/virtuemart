@@ -115,15 +115,15 @@ class KlarnaHandler {
 
     public function getEid($method, $country) {
 	$eid = 'klarna_' . strtolower($country) . '_merchantid';
-	return $method->$eid;
+	return isset($method->$eid) ? $method->$eid : 0;
 	//$country = self::convertToThreeLetterCode($country);
 	//$country_data = self::countryData($method, $country);
 	//return $country_data['eid'];
     }
-
+//TODO Is this the right method ???
     public function getSecret($method, $country) {
 	$secret = 'klarna_' . strtolower($country) . '_sharedsecret';
-	return $method->$secret;
+	return isset($method->$secret) ? $method->$secret : 0;
     }
 
     public function getLanguageForCountry($method, $country) {
@@ -194,6 +194,7 @@ class KlarnaHandler {
 	    case "de":
 		return "Germany";
 	    case "dk":
+	    case "da":
 		return "Denmark";
 	    case "nl":
 		return "the Netherlands";
@@ -202,7 +203,7 @@ class KlarnaHandler {
 	    case "no":
 		return "Norway";
 	    default:
-		return null;
+		return "";
 	}
     }
 
@@ -453,7 +454,7 @@ class KlarnaHandler {
     public function fetchPClasses($method) {
 	$message = '';
 	$success = '';
-
+	$results= array();
 	foreach ($method->klarna_countries as $country) {
 	    // country is CODE 3==> converting to 2 letter country
 	    //$country = self::convertCountryCode($method, $country);
@@ -464,10 +465,10 @@ class KlarnaHandler {
 
 		$klarna = new Klarna_virtuemart();
 		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], (($method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
-
+// fetch pclass from file
 		$klarna->fetchPClasses($country);
 		$success .= '<span style="padding: 5px;">' . $flag . " " .
-			self::getCountryName($country) . '</span>';
+			self::getCountryName($lang) . '</span>';
 	    } catch (Exception $e) {
 		$message .= '<br><span style="font-size: 15px;">' .
 			$flag . " " . self::getCountryName($country) .
@@ -475,14 +476,10 @@ class KlarnaHandler {
 			$e->getCode() . '</span></br>';
 	    }
 	}
-	if (strlen($message) > 2) {
-	    echo $message;
-	}
-	if (strlen($success) > 2) {
-	    $notice = '<br><span id="PClassesSuccessResult" style="font-size: 15px;">' .
-		    'PClasses fetched for : ' . $success . '</span>';
-	    echo $notice;
-	}
+	$results['msg']= $message;
+	$results['notice'] =  'PClasses fetched for : ' . $success ;
+	return $results ;
+	//echo $notice;
     }
 
     /**

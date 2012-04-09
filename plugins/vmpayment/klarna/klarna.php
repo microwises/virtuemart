@@ -287,18 +287,17 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    if (!class_exists('Klarna_speccamp'))
 		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_speccamp.php');
 	    $specCamp = new klarna_speccamp($method, $cart, $vendor_currency);
-	    $klarna_pm = $specCamp->specCamp($method);
-	    $html_speccamp = $this->renderByLayout('displaypayment', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
+	    if ($klarna_pm = $specCamp->specCamp($method) ) {
+			$html_speccamp = $this->renderByLayout('displaypayment', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
+		} else vmError( 'No special campain') ;
 	}
 
 	$html = '<script type="text/javascript">
-			// console.log( "clarna' . $klarna_paymentmethod . ' " );
             setTimeout(\'jQuery(":radio[value=' . $klarna_paymentmethod . ']").click();\', 200);
         </script>';
 
 // TO DO add html:
 	$pluginHtml = $html_invoice . $html_partpay . $html_speccamp . $html;
-
 
 	return $pluginHtml;
     }

@@ -48,7 +48,7 @@
 <script src="https://static.klarna.com/external/js/klarnaspecial.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function (){
-    klarna_specReady();
+    klarna.methodReady('spec');
 });
 </script>
 <div class="klarna_baloon" id="klarna_baloon" style="display: none">

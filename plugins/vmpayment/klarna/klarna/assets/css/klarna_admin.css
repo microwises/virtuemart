@@ -110,7 +110,23 @@ div#pclasses  {
 legend#pclass_field {
     cursor: pointer;
 }
-
+#pclass_field .expand_arrow {
+  background: url("../images/expand_arrow.png") no-repeat scroll 0 4px transparent;
+  float: left;
+  height: 16px;
+  margin-right: 4px;
+  width: 16px;
+}
+#pclass_field .collapse_arrow {
+  background: url("../images/collapse_arrow.png") no-repeat scroll 0 4px transparent;
+  float: left;
+  height: 16px;
+  margin-right: 4px;
+  width: 16px;
+}
+#PClassesSuccessResult img{
+	float:none;
+}
 .button_klarna {
     background-color: #EEEEEE;
     border-color: #CCCCCC #333333 #333333 #CCCCCC;

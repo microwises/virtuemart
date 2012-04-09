@@ -65,7 +65,7 @@
          </script>
 <script type="text/javascript">
 jQuery( function (){
-    klarna.invoiceReady();
+    klarna.methodReady('invoice');
 });
 </script>
 <div class="klarna_baloon" id="klarna_baloon" style="display: none">

@@ -47,40 +47,34 @@ class JElementKlarnaPclasses extends JElement {
 //TODO SELFCALL AJAX
 	// Base name of the HTML control.
 	$ctrl = $control_name . '[' . $name . ']';
-	
-	$document = &JFactory::getDocument();
-	$document->addScriptDeclaration('
-		jQuery(function($) {
-			$(".update_pclasses a").click( function(e){
-				e.preventDefault();
-				form = $(this).parents("form") ;
+	JHTML::script('klarna_admin.js', VMKLARNAPLUGINWEBASSETS . 'js/', false);
+	JHTML::stylesheet('klarna_admin.css', VMKLARNAPLUGINWEBASSETS. 'css/', false);
+	$cid = jrequest::getvar('cid',null,'array');
+	if (is_Array($cid)) $vmMethoId = $cid[0];
+	else $vmMethoId = $cid;
+	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$vmMethoId;
 
-				var link = $(this).attr("href");
-				var datas = $(this).parents("form").serializeArray();
-					datas.push({"name":"redirect","value":"no"});
-					datas.push({"name":"task","value":"save"});
-				$.post(link,datas,function(data) {
-					if (data = "ok") {
-						console.log("update table");
-						datas.push({"name":"view","value":"plugin"});
-						datas.push({"name":"name","value":"klarna"});
-						datas.push({"name":"task","value":"plugin"});
-						$("#pclasses").load(link+" #pclasses",datas,function() {
-							console.log("update pclasse");
-						});
-					}
-				});
+	$html = '
+		<fieldset id="klarna_pclasses" class="klarna">
+		<legend id="pclass_field"><span class="expand_arrow"></span>PClasses </legend>
+		<span id="PClassesSuccessResult" style="font-size: 15px;"></span>
+		<div id="pclasses">';
 
-
-
-				return false;
-			});
-		});
-	');
 	ob_start();
 	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
-	return ob_get_clean();
+	$html .= ob_get_clean();
+	if ($total == 0) { 
+		$html .= '
+		<span class="no_pclasses">No pclasses in database. <a href="'.$pclassesLink.'">Fetch PClasses</a></span></br>';
+	}
+	$html .='
+		</div>
+	</fieldset>
+	<span class="update_pclasses">
+		<a class="button_klarna" href="'.$pclassesLink.'">Update PClasses</a>
+	</span><span id="pclasses_update_msg"></span>
+	<div class="clear"></div>';
+	return $html;
 
-    }
-
+  }
 }

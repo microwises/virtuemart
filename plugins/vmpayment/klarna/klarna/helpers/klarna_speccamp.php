@@ -66,7 +66,7 @@ class klarna_speccamp {
     private $splitAddress;
     private $klarna_bday;
 
-    function __construct($method, $cart, $vendor_currency, $tablename) {
+    function __construct($method, $cart, $vendor_currency) {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
 
 	// Set country and currency set in the store.

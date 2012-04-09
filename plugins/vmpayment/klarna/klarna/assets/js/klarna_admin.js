@@ -1,8 +1,35 @@
-jQuery(document).ready(function() {
-        setTimeout('showCountries()', 10);
-        flagListener();
-        setTimeout('setExtraInfo()', 10);
-        setTimeout('showPclasses()', 10);
+jQuery(function($){
+	setTimeout('showCountries()', 10);
+	flagListener();
+	//setTimeout('setExtraInfo()', 10);
+	setTimeout('showPclasses()', 10);
+
+	$(".update_pclasses a").click( function(e){
+		e.preventDefault();
+		form = $(this).parents("form") ;
+
+		var link = $(this).attr("href");
+		var datas = $(this).parents("form").serializeArray();
+			datas.push({"name":"redirect","value":"no"});
+			datas.push({"name":"task","value":"save"});
+		$.post(link,datas,function(data) {
+			if (data = "ok") {
+				console.log("update table");
+				datas.push({"name":"view","value":"plugin"});
+				datas.push({"name":"name","value":"klarna"});
+				datas.push({"name":"task","value":"plugin"});
+				$.getJSON(link , datas,function(update) {
+					// update json array msg,notice,pclasses
+					
+					$('#PClassesSuccessResult').hide().html(update.msg+'</br>'+update.notice).slideToggle(1000).delay(2000).slideToggle(500);
+					//console.log("update pclasse");
+					$('#pclasses').html(update.pclasses);
+				});
+			}
+		});
+		return false;
+	});
+
 });
 
 function showCountries() {
@@ -26,18 +53,15 @@ function setExtraInfo() {
 }
 
 function showPclasses() {
-    jQuery('fieldset#klarna_pclasses legend').click(function(){
-        var field = jQuery(this).parent().find('#pclasses');
-        var img_path = '../components/com_klarna/images/';
-        if (jQuery(field).is(':visible')) {
-            jQuery(this).parent().find('#pclasses').slideToggle("fast", function() {
-                jQuery(this).parent().find('#arrow').html('<img src="'+img_path+'expand_arrow.png" />');
+    jQuery('#pclass_field').click(function(){
+		var pclass_field=jQuery(this);
+        jQuery('#pclasses').slideToggle("fast", function() {
+			if (pclass_field.find('span').hasClass('expand_arrow'))
+				pclass_field.find('span').addClass('collapse_arrow').removeClass('expand_arrow')
+			else 
+				pclass_field.find('span').addClass('expand_arrow').removeClass('collapse_arrow')
+               // jQuery(this).parent().find('#arrow').html('<img src="'+img_path+'expand_arrow.png" />');
             });
-        } else {
-            jQuery(this).parent().find('#pclasses').slideToggle("fast", function() {
-                jQuery(this).parent().find('#arrow').html('<img src="'+img_path+'collapse_arrow.png" />');
-            });
-        }
     });
 }
 

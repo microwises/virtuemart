@@ -29,11 +29,6 @@ defined('JPATH_BASE') or die();
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 	$data = $parameters->getParamByName('data');
 	$eid_array = KlarnaHandler::getEidSecretArray($data);
- ?>
-	<fieldset id="klarna_pclasses" class="klarna">
-		<legend id="pclass_field">PClasses <span id="arrow"><img src="<?php echo JURI::root() . VMKLARNAPLUGINWEBROOT ?>klarna/assets/images/expand_arrow.png" /></span></legend>
-		<div id="pclasses">
-<?php 
 	foreach ($eid_array as $country => $eid_data) {
 	    try {
 		$klarna = new Klarna_virtuemart();
@@ -78,10 +73,6 @@ defined('JPATH_BASE') or die();
 		echo $e;
 	    }
 	}
-	$cid = jrequest::getvar('cid',null,'array');
-	if (is_Array($cid)) $vmMethoId = $cid[0];
-	else $vmMethoId = $cid;
-	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$vmMethoId;
 
 	if ($total == 0) { ?>
 		<span class="no_pclasses">No pclasses in database. <a href="<?php echo $pclassesLink ?>>Fetch PClasses</a></span>

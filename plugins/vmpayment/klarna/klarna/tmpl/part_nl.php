@@ -57,7 +57,7 @@
          </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    klarna.partReady();
+    klarna.methodReady('part');
 });
 </script>
 <div class="klarna_baloon" id="klarna_baloon" style="display: none">
