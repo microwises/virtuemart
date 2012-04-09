@@ -173,13 +173,15 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
 			if ($productCustomsPrice->custom_price_by_letter ==1) {
-				if ($textinput = $customVariant['comment']) {
-
-					$productCustomsPrice->custom_price = strlen ($textinput) *  $productCustomsPrice->custom_price ;
+				if (!empty($customVariant['comment'])) {
+					$charcount = strlen ($customVariant['comment']);
+					$productCustomsPrice->custom_price = $charcount * $productCustomsPrice->custom_price ;
+				} else {
+					$productCustomsPrice->custom_price = 0.0;
 				}
 			}
-// 			return $field->custom_price;
 		}
+		return true;
 	}
 
 	public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){

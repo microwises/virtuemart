@@ -275,14 +275,8 @@ class VirtueMartModelCategory extends VmModel {
 			$whereString = 'WHERE 1 ';
 		}
 
-		//Important, yes, this construction is most time not need and outdated, BUT NOT HERE ! dont remove it! note by Max Milbers
-// 		if ( JRequest::getCmd('view') == 'category') {
-			$ordering = $this->_getOrdering();
-// 		} else {
-// 			$ordering = $this->_getOrdering('category_name','ASC');
-// 		}
+		$ordering = $this->_getOrdering();
 
-// 			vmdebug('category '.$ordering);
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
 		return $this->_category_tree;

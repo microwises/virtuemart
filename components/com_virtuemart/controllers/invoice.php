@@ -46,7 +46,6 @@ class VirtueMartControllerInvoice extends JController
 	function checkStoreInvoice($orderDetails = 0){
 
 		JRequest::setVar('task','checkStoreInvoice');
-		vmdebug('checkStoreInvoice start');
 
 		$force = true;
 
@@ -103,7 +102,6 @@ class VirtueMartControllerInvoice extends JController
 
 		$view->orderDetails = $orderDetails;
 		$view->uselayout = 'invoice';
-// 		$view->headFooter = false;
 
 		ob_start();
 		$view->display();

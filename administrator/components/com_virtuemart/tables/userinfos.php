@@ -129,6 +129,26 @@ class TableUserinfos extends VmTableData {
 
 		if (!empty($this->virtuemart_userinfo_id)) {
 			$this->virtuemart_userinfo_id = (int)$this->virtuemart_userinfo_id;
+
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			if(!Permissions::getInstance()->check("admin")) {
+				$q = "SELECT virtuemart_user_id
+										FROM #__virtuemart_userinfos
+										WHERE virtuemart_userinfo_id = ".$this->virtuemart_userinfo_id;
+				$this->_db->setQuery($q);
+				$total = $this->_db->loadResultArray();
+
+				if (count($total) > 0) {
+
+					$userId = JFactory::getUser()->id;
+					if($total[0]!=$userId){
+						vmError('Hacking attempt, you got logged');
+						echo 'Hacking attempt, you got logged';
+						return false;
+					}
+				}
+			}
+
 			return parent::check();
 		}
 
@@ -137,8 +157,11 @@ class TableUserinfos extends VmTableData {
 		$q = "SELECT virtuemart_userinfo_id
 			FROM #__virtuemart_userinfos
 			WHERE virtuemart_user_id = ".$this->virtuemart_user_id."
-			AND address_type = ".$this->_db->Quote($this->address_type)."
-			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
+			AND address_type = ".$this->_db->Quote($this->address_type);
+			if($this->address_type!='BT'){
+				$q .= " AND address_type_name = ".$this->_db->Quote($this->address_type_name);
+			}
+
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
 

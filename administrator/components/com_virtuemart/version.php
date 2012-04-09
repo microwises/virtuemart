@@ -33,11 +33,11 @@ class vmVersion {
 	/** @var int Release Number */
 	static $RELEASE = '2.0.4';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'RC';
+	static $DEV_STATUS = 'Final';
 	/** @var string Codename */
-	static $CODENAME = 'stecurity';
+	static $CODENAME = 'easteregg';
 	/** @var string Date */
-	static $RELDATE = 'April 6, 2012';
+	static $RELDATE = 'April 8, 2012';
 	/** @var string Time */
 	static $RELTIME = '15:30';
 	/** @var string Timezone */

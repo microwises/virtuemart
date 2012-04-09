@@ -42,8 +42,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 	foreach($this->orderDetails['items'] as $item) {
 		$qtt = $item->product_quantity ;
-		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id);
-?>
+//		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id,true);
+		$_link =JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id;
+
+
+		?>
 		<tr valign="top">
 			<td align="left">
 				<?php echo $item->order_item_sku; ?>

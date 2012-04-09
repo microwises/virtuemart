@@ -856,7 +856,6 @@ class VirtueMartCart {
 
 
 		if (empty($this->tosAccepted)) {
-			vmdebug('checkoutData');
 
 			$userFieldsModel = VmModel::getModel('Userfields');
 

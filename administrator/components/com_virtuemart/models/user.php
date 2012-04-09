@@ -845,7 +845,7 @@ class VirtueMartModelUser extends VmModel {
 				$userinfo->load($data['virtuemart_userinfo_id']);
 
 				if($userinfo->virtuemart_user_id!=$user->id){
-					vmError('Hacking attempt as admin?','Hacking attempt');
+					vmError('Hacking attempt as admin?','Hacking attempt storeAddress');
 					return false;
 				}
 			}
@@ -882,18 +882,23 @@ class VirtueMartModelUser extends VmModel {
 
 					$user = JFactory::getUser();
 					if($userinfo->virtuemart_user_id!=$user->id){
-						vmError('Hacking attempt as admin?','Hacking attempt');
+						vmError('Hacking attempt as admin?','Hacking attempt store address');
 						return false;
 					}
 				}
 			}
 
 			if(empty($userinfo->virtuemart_user_id)){
-				if(isset($data['virtuemart_user_id'])){
-					$dataST['virtuemart_user_id'] = (int)$data['virtuemart_user_id'];
-				} else {
-					//Disadvantage is that admins should not change the ST address in the FE (what should never happen anyway.)
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+				if(!Permissions::getInstance()->check('admin')){
 					$dataST['virtuemart_user_id'] = $user->id;
+				} else {
+					if(isset($data['virtuemart_user_id'])){
+						$dataST['virtuemart_user_id'] = (int)$data['virtuemart_user_id'];
+					} else {
+						//Disadvantage is that admins should not change the ST address in the FE (what should never happen anyway.)
+						$dataST['virtuemart_user_id'] = $user->id;
+					}
 				}
 			}
 
@@ -990,7 +995,7 @@ class VirtueMartModelUser extends VmModel {
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
 					if($data->virtuemart_user_id!=$this->_id){
-						vmError('Hacking attempt, you got logged');
+						vmError('Hacking attempt loading userinfo, you got logged');
 						echo 'Hacking attempt, you got logged';
 						return false;
 					}

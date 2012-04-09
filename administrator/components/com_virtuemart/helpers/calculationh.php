@@ -1195,7 +1195,7 @@ class calculationHelper {
 			$modificatorSum = 0.0;
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
-					//TODO ask Patrick why there is a filter for product_id, when virtuemart_customfield_id is already unique
+
 					$query = 'SELECT  C.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
@@ -1209,6 +1209,7 @@ class calculationHelper {
 						$dispatcher = JDispatcher::getInstance();
 						$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected));
 					}
+
 					//$app = JFactory::getApplication();
 					if (!empty($productCustomsPrice->custom_price)) {
 						//TODO adding % and more We should use here $this->interpreteMathOp
@@ -1216,6 +1217,7 @@ class calculationHelper {
 					}
 				}
 			}
+// 			echo ' $modificatorSum ',$modificatorSum;
 			return $modificatorSum;
 		}
 

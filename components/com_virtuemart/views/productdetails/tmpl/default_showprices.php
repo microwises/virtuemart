@@ -18,7 +18,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-vmdebug('mu$this->product->prices',$this->product->prices);
+
 ?>
 <div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
     <?php

@@ -102,13 +102,7 @@ class VirtueMartModelCountry extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-// 		if($this->_noLimit){
-			$ordering = $this->_getOrdering();
-// 		} else {
-// 			$ordering = $this->_getOrdering();
-// 		}
-
-		vmdebug('$ordering',$ordering);
+		$ordering = $this->_getOrdering();
 
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
 
