@@ -1148,6 +1148,7 @@ class VirtueMartCart {
 
 		JPluginHelper::importPlugin('vmshipment');
 		if (VmConfig::get('automatic_shipment',1) && $checkAutomaticSelected) {
+		    $shipCounter=0;
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
 			foreach ($returnValues as $returnValue) {
@@ -1187,7 +1188,8 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmpayment');
 		if (VmConfig::get('automatic_payment',1) && $checkAutomaticSelected ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices));
+			$paymentCounter=0;
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices, &$paymentCounter));
 			    foreach ($returnValues as $returnValue) {
 				     if ( !is_null($returnValue )) {
 					 $nbPayment++;
