@@ -52,7 +52,7 @@ class VirtueMartModelConfig extends JModel {
 		//This method does not work, we get the Template of the backend
 		//$app = JFactory::getApplication('site');
 		//$tplpath = $app->getTemplate();vmdebug('template',$tplpath);
-		if(version_compare(JVERSION,'1.6.0','ge')) {
+		if (JVM_VERSION === 2) {
 			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 		} else {
 			$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id` ="0" ';
