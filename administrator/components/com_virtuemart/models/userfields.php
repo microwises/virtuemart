@@ -28,6 +28,7 @@ if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
+
 /**
  * Model class for user fields
  *
@@ -75,9 +76,10 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function prepareFieldDataSave($fieldType, $fieldName, $value, &$post,$params) {
 		//		$post = JRequest::get('post');
-
+		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		switch(strtolower($fieldType)) {
 			case 'webaddress':
+				
 				if (isset($post[$fieldName."Text"]) && ($post[$fieldName."Text"])) {
 					$oValuesArr = array();
 					$oValuesArr[0] = str_replace(array('mailto:','http://','https://'),'', $value);
@@ -85,14 +87,20 @@ class VirtueMartModelUserfields extends VmModel {
 					$value = implode("|*|",$oValuesArr);
 				}
 				else {
-					$value = str_replace(array('mailto:','http://','https://'),'', $value);
+					if ($value = vmFilter::urlcheck($value) )
+						$value = str_replace(array('mailto:','http://','https://'),'', $value);
 				}
 				break;
 			case 'email':
-				$value = str_replace(array('mailto:','http://','https://'),'', $value);
+			case 'emailaddress':
+				$value = vmFilter::mail( $value );
+				$value = str_replace('mailto:','', $value);
 				$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
-
+			//vmdebug('mail',$value);
 				break;
+			// case 'phone':
+				// $value = vmFilter::phone( $value );
+				// break;
 			case 'multiselect':
 			case 'multicheckbox':
 			case 'select':
@@ -102,6 +110,11 @@ class VirtueMartModelUserfields extends VmModel {
 				$value = JRequest::getInt('birthday_selector_year')
 				.'-'.JRequest::getInt('birthday_selector_month')
 				.'-'.JRequest::getInt('birthday_selector_day');
+				break;
+			case 'textarea':
+
+				$value = JRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+				$value = vmFilter::hl( $value,'text' );
 				break;
 			default:
 
@@ -129,16 +142,18 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 
 			// no HTML TAGS but permit all alphabet
-			$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
-			$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+
+			$value = vmFilter::hl( $value,array('deny_attribute'=>'*'));
+			$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
+			$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 			$value = trim(str_replace('"', ' ', $value),"'") ;
-			$value =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
-			//vmdebug( "my filter" , $value);
+			$value = (string)preg_replace('#^\'#si','',$value);//replace ' at start
+
 			break;
 		}
 		return $value;
 	}
-
+ 
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
@@ -703,8 +718,8 @@ class VirtueMartModelUserfields extends VmModel {
 							$_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
 							. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
 							. '" rows="'.$_fld->rows . '" class="inputbox" '
-							. ($_fld->readonly ? ' readonly="readonly"' : '')
-							. $_return['fields'][$_fld->name]['value'] .'></textarea>';
+							. ($_fld->readonly ? ' readonly="readonly"' : '').'>'
+							. $_return['fields'][$_fld->name]['value'] .'</textarea>';
 							break;
 						case 'editorta':
 							jimport( 'joomla.html.editor' );
