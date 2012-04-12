@@ -124,7 +124,7 @@ class VirtueMartViewProductdetails extends VmView {
 	   JPluginHelper::importPlugin('content');
 	   $product->text = $product->product_desc;
 		jimport( 'joomla.html.parameter' );
-		$params = new JParameter();
+		$params = new JParameter('');
 
  		if(JVM_VERSION === 2 ) {
 			$results = $dispatcher->trigger('onContentPrepare', array('com_virtuemart.productdetails', &$product, &$params, 0));
