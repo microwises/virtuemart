@@ -155,7 +155,8 @@ class VmModel extends JModel {
 	}
 
 	function removevalidOrderingFieldName($name){
-		unset($this->_validOrderingFieldName[$name]) ;
+		$key=array_search($name, $this->_validOrderingFieldName);
+		unset($this->_validOrderingFieldName[$key]) ;
 	}
 
 	var $_tablePreFix = '';

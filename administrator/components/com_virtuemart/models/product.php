@@ -215,8 +215,9 @@ class VirtueMartModelProduct extends VmModel {
 					$joinMf = true;
 				}else if($searchField == 'product_price'){
 					$joinPrice = true;
-				}else if(strpos($searchField, '.')== 1){
-					$searchField = 'p`.`'.substr($searchField, 2, (strlen($searchField))).'`' ;
+				}
+				else if(strpos($searchField, '.')== 1){
+					$searchField = 'p`.`'.substr($searchField, 2, (strlen($searchField))) ;
 				}
 				$filter_search[] = '`'.$searchField.'` LIKE '.$keyword;
 

@@ -240,7 +240,7 @@ $tt=$this;
 				<td>
 					<?php echo $item->order_item_sku; ?>
 				</td>
-				<td align="right" align="center">
+				<td align="center">
 					<?php echo $this->orderstatuslist[$item->order_status]; ?><br />
 					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
 
