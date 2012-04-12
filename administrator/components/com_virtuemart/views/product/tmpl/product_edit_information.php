@@ -133,7 +133,7 @@ $i=0;
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
 					<td width="21%" ><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
 
 					</td>
 					<td width="79%" >
