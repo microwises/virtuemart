@@ -28,6 +28,18 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key"><span
 				class="hasTip"
+				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP_EXPLAIN'); ?>">
+					<label for="addtocart_popup"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP') ?>
+
+			</span> </span>
+			</td>
+			<td>
+			<?php echo VmHTML::checkbox('addtocart_popup', $this->config->get('addtocart_popup')); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key"><span
+				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
 					<label for="automatic_shipment"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT') ?>
 

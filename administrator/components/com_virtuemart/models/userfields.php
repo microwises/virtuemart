@@ -117,6 +117,12 @@ class VirtueMartModelUserfields extends VmModel {
 				$value = vmFilter::hl( $value,'text' );
 				break;
 			default:
+			case 'editorta':
+
+				$value = JRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+				$value = vmFilter::hl( $value,'no_js_flash' );
+				break;
+			default:
 
 
 				// //*** code for htmlpurifier ***

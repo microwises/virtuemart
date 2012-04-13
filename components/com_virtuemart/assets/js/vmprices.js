@@ -41,36 +41,41 @@ var Virtuemart = {
 		);
 	},
 	sendtocart : function (form){
-			var $ = jQuery ;
+		var $ = jQuery ;
+		if (Virtuemart.addtocart_popup ==1) {
 			$.ajaxSetup({ cache: false })
 			var datas = form.serialize();
 			$.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang,encodeURIComponent(datas),
-				function(datas, textStatus) {
-					if(datas.stat ==1){
-						//var value = form.find('.quantity-input').val() ;
-						var txt = form.find(".pname").val()+' '+vmCartText;
-                                                $.facebox.settings.closeImage = closeImage;
-                                                $.facebox.settings.loadingImage = loadingImage;
-                                                $.facebox.settings.faceboxHtml = faceboxHtml;
-						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
-					} else if(datas.stat ==2){
-						var value = form.find('.quantity-input').val() ;
-						var txt = form.find(".pname").val();
-                                                $.facebox.settings.closeImage = closeImage;
-                                                $.facebox.settings.loadingImage = loadingImage;
-                                                $.facebox.settings.faceboxHtml = faceboxHtml;
-						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
-					} else {
-                                                $.facebox.settings.closeImage = closeImage;
-                                                $.facebox.settings.loadingImage = loadingImage;
-                                                $.facebox.settings.faceboxHtml = faceboxHtml;
-						$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg }, 'my-groovy-style');
-					}
-					if ($(".vmCartModule")[0]) {
-						Virtuemart.productUpdate($(".vmCartModule"));
-					}
-				});
-				$.ajaxSetup({ cache: true });
+			function(datas, textStatus) {
+				if(datas.stat ==1){
+					//var value = form.find('.quantity-input').val() ;
+					var txt = form.find(".pname").val()+' '+vmCartText;
+											$.facebox.settings.closeImage = closeImage;
+											$.facebox.settings.loadingImage = loadingImage;
+											$.facebox.settings.faceboxHtml = faceboxHtml;
+					$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
+				} else if(datas.stat ==2){
+					var value = form.find('.quantity-input').val() ;
+					var txt = form.find(".pname").val();
+											$.facebox.settings.closeImage = closeImage;
+											$.facebox.settings.loadingImage = loadingImage;
+											$.facebox.settings.faceboxHtml = faceboxHtml;
+					$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
+				} else {
+											$.facebox.settings.closeImage = closeImage;
+											$.facebox.settings.loadingImage = loadingImage;
+											$.facebox.settings.faceboxHtml = faceboxHtml;
+					$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg }, 'my-groovy-style');
+				}
+				if ($(".vmCartModule")[0]) {
+					Virtuemart.productUpdate($(".vmCartModule"));
+				}
+			});
+			$.ajaxSetup({ cache: true });
+		} else {
+			form.append('<input type="hidden" name="task" value="add" />');
+			form.submit();
+		}
 	},
 	product : function(carts) {
 		carts.each(function(){
