@@ -873,7 +873,8 @@ class vmJsApi{
 
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
-		$jsVars  .= "vmLang = '&lang=". substr(VMLANG,0,2) ."' ;\n" ;
+		if  (VmConfig::get('vmlang_js',1) )  $jsVars .= "vmLang = '&lang=". substr(VMLANG,0,2) ."' ;\n" ;
+		else $jsVars .= "vmLang = ""' ;\n" ;
 		$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
 		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
