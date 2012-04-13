@@ -77,6 +77,28 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<td class="key"><span
 							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH_EXPLAIN'); ?>">
+								<label for="ask_question"><?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH') ?>
+							</label> </span>
+						</td>
+						<td>
+							<input type="text" value="<?php echo $this->config->get('asks_minimum_comment_length',50); ?>" class="inputbox" size="4" name="asks_minimum_comment_length">
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH_EXPLAIN'); ?>">
+								<label for="ask_question"><?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH') ?>
+							</label> </span>
+						</td>
+						<td>
+							<input type="text" value="<?php echo $this->config->get('asks_maximum_comment_length',2000); ?>" class="inputbox" size="4" name="asks_maximum_comment_length">
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
 							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW_EXPLAIN'); ?>">
 								<label for="product_navigation"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW') ?>
 							</label> </span>
