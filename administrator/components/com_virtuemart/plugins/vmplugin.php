@@ -431,14 +431,12 @@ abstract class vmPlugin extends JPlugin {
      * @since   11.1
      * @author Patrick Kohl, Valérie Isaksen
      */
-    public function renderByLayout($layout = 'default', $params = null,$name = null,$psType =null) {
+    public function renderByLayout($layout = 'default', $viewData = null,$name = null,$psType =null) {
 	if ($name===null) $name= $this->_name;
 
 	if ($psType===null) $psType= $this->_psType;
 	$layout = vmPlugin::_getLayoutPath($name, 'vm' . $psType, $layout);
 
-// 	vmdebug('renderByLayout ',$params);
-	$this->layoutParams = $params;
 	ob_start();
 	include ( $layout );
 	return ob_get_clean();

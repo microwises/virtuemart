@@ -43,9 +43,13 @@ $tt=$this;
 				<th colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></th>
 			</tr>
 
-                        <tr>
+         <tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
 				<td><?php echo  $this->orderbt->order_number;?></td>
+			</tr>
+         <tr>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_PASS') ?></strong></td>
+				<td><?php echo  $this->orderbt->order_pass;?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></strong></td>
