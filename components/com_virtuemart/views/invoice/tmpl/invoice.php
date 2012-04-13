@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Orders
-* @author Oscar van Eijk, Valerie Isaksen
+* @author Max Milbers, Valerie Isaksen
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php

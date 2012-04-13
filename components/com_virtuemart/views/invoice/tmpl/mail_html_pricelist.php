@@ -20,7 +20,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 //require(__DIR__.'/invoice_items.php');
+
 $oldlayout=$this->getLayout();
 $this->setLayout('invoice');
-$this->loadTemplate('items');
+echo $this->loadTemplate('items');
 $this->setLayout($oldlayout);
+
