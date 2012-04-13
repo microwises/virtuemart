@@ -745,7 +745,7 @@ class VirtueMartModelUser extends VmModel {
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
 			//Todo to adjust to new pattern, using &
-			$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
+			$plg_datas = $dispatcher->trigger('plgVmOnUserStore',array($data));
 			foreach($plg_datas as $plg_data){
 				// 			$data = array_merge($plg_data,$data);
 			}
@@ -783,7 +783,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($trigger){
-			$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
+			$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',array($data));
 			foreach($plg_datas as $plg_data){
 				$data = array_merge($plg_data);
 			}

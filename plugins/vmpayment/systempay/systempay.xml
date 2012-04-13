@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VM - Payment, Systempay</name>
-    <creationDate>November 2011</creationDate>
+    <creationDate>April 2012</creationDate>
     <author>Lyra Network</author>
     <authorEmail>supportvad@lyra-network.com</authorEmail>
     <authorUrl>http://www.lyra-network.com</authorUrl>
     <copyright>Copyright Lyra Network.</copyright>
     <license></license>
-    <version>1.2</version>
+    <version>2.0.6</version>
     <description>
     	<![CDATA[<a href="http://www.lyra-network.com" target="_blank">Systempay</a> is a multi bank payment provider. ]]>
     </description>

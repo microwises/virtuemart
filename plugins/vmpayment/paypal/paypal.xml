@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
     <name>VMPAYMENT_PAYPAL</name>
-    <creationDate>June 2011</creationDate>
+    <creationDate>April 2012</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.0.1</version>
+    <version>2.0.6</version>
     <description><![CDATA[<a href="http://paypal.com" target="_blank">PayPal</a> is a popular
 	payment provider and available in many countries. ]]>
     </description>
