@@ -199,7 +199,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return false;
 	    }
 	}
-	$this->loadScriptAndCss();
+	
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
@@ -208,7 +208,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    if (!empty($temp)) {
 		$html[] = $temp;
 	    }
+		
 	}
+	if (count($html))
+		$this->loadScriptAndCss();
 	$htmlIn[] = $html;
     }
 
