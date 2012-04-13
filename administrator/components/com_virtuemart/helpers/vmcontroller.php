@@ -172,9 +172,13 @@ class VmController extends JController{
 		}
 
 		$redir = $this->redirectPath;
+		vmInfo($msg);
 		if(JRequest::getCmd('task') == 'apply'){
+			// jRequest::setVar($this->_cidName ,array($id) );
+			// $model->setId($id);
+			// $this->edit();
 			$redir .= '&task=edit&'.$this->_cidName.'[]='.$id;
-		}
+		} //else $this->display();
 
 		$this->setRedirect($redir, $msg,$type);
 	}

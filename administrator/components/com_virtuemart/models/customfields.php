@@ -882,8 +882,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->custom_value);
 						$html .= '<br/ >'.$child->product_name;
-					} elseif (($productCustom->field_type == "M")) {
+					} elseif ($productCustom->field_type == "M") {
 						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+					} elseif (($productCustom->field_type == "S")) {
+						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.JText::_($productCustom->custom_value);
 					}else {
 
 						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -932,9 +934,11 @@ class VirtueMartModelCustomfields extends VmModel {
 						$html .= $productCustom->custom_title.' '.$child->product_name.'</span>';
 					} elseif (($productCustom->field_type == "M")) {
 						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value).'</span>';
+					}elseif (($productCustom->field_type == "S")) {
+						$html .= $productCustom->custom_title.':'.JText::_($productCustom->custom_value).'</span>';
 					} else {
 
-						$html .= $productCustom->custom_title.' '.$productCustom->custom_value.'</span>';
+						$html .= $productCustom->custom_title.':'.$productCustom->custom_value.'</span>';
 					}
 				} else {
 					vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
