@@ -74,16 +74,4 @@ defined('JPATH_BASE') or die();
 	    }
 	}
 
-	if ($total == 0) { ?>
-		<span class="no_pclasses">No pclasses in database. <a href="<?php echo $pclassesLink ?>>Fetch PClasses</a></span>
-		<?php 
-	} 
-?>
-		</div>
-	</fieldset>
-	<span class="update_pclasses">
-		<a class="button_klarna" href="<?php echo $pclassesLink ?>">Update PClasses</a>
-	</span><span id="pclasses_update_msg"></span>
-	<div class="clear"></div>
-<?php
 
