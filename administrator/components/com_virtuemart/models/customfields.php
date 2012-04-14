@@ -927,19 +927,27 @@ class VirtueMartModelCustomfields extends VmModel {
 				$productCustom = self::getProductCustomFieldCart ($selected );
 				if(!empty($productCustom)){
 					$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
+					$value ='';
 					if ($productCustom->field_type == "E") {
 
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->custom_value);
-						$html .= $productCustom->custom_title.' '.$child->product_name.'</span>';
+// 						$html .= $productCustom->custom_title.' '.$child->product_name;
+						$value = $child->product_name;
 					} elseif (($productCustom->field_type == "M")) {
-						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value).'</span>';
+// 						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value);
+						$value = self::displayCustomMedia($productCustom->custom_value);
 					}elseif (($productCustom->field_type == "S")) {
-						$html .= $productCustom->custom_title.':'.JText::_($productCustom->custom_value).'</span>';
+// 					q	$html .= $productCustom->custom_title.' '.JText::_($productCustom->custom_value);
+						$value = $productCustom->custom_value;
 					} else {
-
-						$html .= $productCustom->custom_title.':'.$productCustom->custom_value.'</span>';
+// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
+						$value = $productCustom->custom_value;
 					}
+					if(class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+					ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
+
+					$html .= '</span>';
 				} else {
 					vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
 				}
@@ -954,7 +962,6 @@ class VirtueMartModelCustomfields extends VmModel {
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmOnViewCart',array($product, $row,&$html));
 
-			$html .= '</span>';
 		}
 		return $html.'</div>';
 	}
@@ -991,8 +998,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					    } else {
 						    // falldown method if customfield are deleted
 						    foreach((array)$param as $key => $value) {
-							$html .= '<br/ >'.($key?'<span>'.$key.' </span>':'').$value;
+								$html .= '<br/ >'.($key?'<span>'.$key.' </span>':'').$value;
 						    }
+						    vmdebug('CustomsFieldOrderDisplay, $item->productCustom empty? '.$virtuemart_customfield_id);
 					    }
 				    }
 				    $row++;
@@ -1003,6 +1011,8 @@ class VirtueMartModelCustomfields extends VmModel {
 			    JPluginHelper::importPlugin('vmcustom');
 			    $dispatcher = JDispatcher::getInstance();
 			    $dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $row, &$html));
+			} else {
+				vmdebug('CustomsFieldOrderDisplay $item->param empty? ');
 			}
 			return $html.'</div> ';
 		} else {

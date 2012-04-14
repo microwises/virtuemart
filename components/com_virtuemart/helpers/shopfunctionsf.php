@@ -441,6 +441,33 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Checks if language keys exist and combines it according to existing keys.
+	 *
+	 * @author Max Milbers
+	 * @author Patrick Kohl
+	 */
+	function translateTwoLangKeys($pkey,$skey){
+
+		$translated = '';
+		if(JLanguage::hasKey($pkey)){
+			if(JLanguage::hasKey($skey)){
+				$translated .= JText::sprintf($pkey,JText::_($skey));
+			} else {
+				$translated .= JText::sprintf($pkey,$skey);
+			}
+
+		} else {
+			if(JLanguage::hasKey($skey)){
+				$translated .= $pkey.' '.JText::_($skey);
+			} else {
+				$translated .= $pkey.' '.$skey;
+			}
+		}
+
+		return $translated;
+	}
+
+	/**
 	* Writes a PDF icon
 	* @author RolandD, Christopher Roussel
 	* @param string $link

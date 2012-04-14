@@ -188,7 +188,12 @@ class TableMedias extends VmTable {
 				$app = JFactory::getApplication();
 //				set_error_handler(array($this, 'handleError'));
 //				try{
+				if(!$this->file_is_forSale){
 					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
+				} else {
+					$this->file_mimetype = mime_content_type($rel_path);
+				}
+
 					if(!empty($this->file_mimetype)){
 						if($this->file_mimetype == 'directory'){
 							vmError('cant store this media, is a directory '.$rel_path);

@@ -79,7 +79,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		switch(strtolower($fieldType)) {
 			case 'webaddress':
-				
+
 				if (isset($post[$fieldName."Text"]) && ($post[$fieldName."Text"])) {
 					$oValuesArr = array();
 					$oValuesArr[0] = str_replace(array('mailto:','http://','https://'),'', $value);
@@ -159,7 +159,7 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 		return $value;
 	}
- 
+
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
@@ -903,13 +903,13 @@ class VirtueMartModelUserfields extends VmModel {
 
 			if ($field->type != 'delimiter') {
 				// Alter the user_info table
-				if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
+				if ($userinfo->_modifyColumn ('DROP', $_fieldName) === false) {
 					vmError($userinfo->getError());
 					$ok = false;
 				}
 
 				// Alter the order_userinfo table
-				if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
+				if ($orderinfo->_modifyColumn ('DROP', $_fieldName) === false) {
 					vmError($orderinfo->getError());
 					$ok = false;
 				}
