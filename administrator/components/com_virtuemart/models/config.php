@@ -244,7 +244,7 @@ class VirtueMartModelConfig extends JModel {
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
-			$searchFields->checkbox .= '<li><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /></li>';
+			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}
 		$searchFields->checkbox .='</ul></div>';
 		return $searchFields;
