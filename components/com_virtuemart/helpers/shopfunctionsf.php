@@ -441,8 +441,10 @@ class shopFunctionsF {
 	}
 
 	/**
-	 * Checks if language keys exist and combines it according to existing keys.
-	 *
+	 * Checks if Joomla language keys exist and combines it according to existing keys.
+	 * @string $pkey : primary string to search for Language key
+	 * @string $skey : secondary string to search for Language key
+	 * @return string
 	 * @author Max Milbers
 	 * @author Patrick Kohl
 	 */
@@ -469,45 +471,28 @@ class shopFunctionsF {
 
 	/**
 	* Writes a PDF icon
-	* @author RolandD, Christopher Roussel
+	* @author Patrick Kohl
 	* @param string $link
 	* @param boolean $use_icon
 	* @deprecated
 	*/
-	function PdfIcon( $link, $use_icon=true ) {
-		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+	function PdfIcon( $link, $use_icon=true,$modal=true ) {
 
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
-			//$link .= '&amp;pop=1';
-			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
-			} else {
-				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
-			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
-		}
+		return VmView::linkIcon($link,'COM_VIRTUEMART_PDF','pdf_button','pdf_button_enable',$modal,$use_icon);
+
 	}
 
 	/**
 	 * Writes an Email icon
-	 * @author RolandD, Christopher Roussel
+	 * @author Patrick Kohl
 	 * @param string $link
 	 * @param boolean $use_icon
 	 * @deprecated
 	 */
-	function EmailIcon( $virtuemart_product_id, $use_icon=true ) {
-		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $virtuemart_product_id > 0  ) {
-
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
-
-			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&pop=1');
-			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
-			} else {
-				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_EMAIL');
-			}
-			return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" href="'.$link.'">'.$text.'</a>';
+	function EmailIcon( $virtuemart_product_id, $use_icon,$modal ) {
+		if ($virtuemart_product_id > 0  ) {
+			$link = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$virtuemart_product_id.'&tmpl=component' ;
+			return VmView::linkIcon($link,'COM_VIRTUEMART_EMAIL','emailButton','show_emailfriend',$modal ,$use_icon);
 		}
 	}
 

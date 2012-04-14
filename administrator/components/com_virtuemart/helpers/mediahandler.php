@@ -888,6 +888,20 @@ class VmMediaHandler {
 				searchMedia.autocomplete( 'option' , 'source' , medialink+'&start='+media.start );
 				searchMedia.autocomplete( 'search');
 			});
+			$('#ImagesContainer').sortable({
+				update: function(event, ui) {
+					$(this).find('.ordering').each(function(index,element) {
+						$(element).val(index);
+						//console.log(index+' ');
+
+					});
+					
+				}
+			});
+			$('#upload').change( function (){
+					if ($('#media_action0').is(':checked') ) $('#media_actionupload').attr('checked', true);
+				});
+			
 
 		}); ";
 
