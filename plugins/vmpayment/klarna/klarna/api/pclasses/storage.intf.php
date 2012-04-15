@@ -130,7 +130,6 @@ abstract class PCStorage {
      */
     public function getPClasses($eid, $country, $type = null) {
         if(!is_int($country)) {
-	    return;
             throw new Exception('You need to specify a country! country='.$country.' Country must be int');
         }
 

@@ -536,3 +536,7 @@
     font-weight: bold;
     float: right;
 }
+ol#paymentPlan{
+    margin:0 !important;
+    padding:0 !important;
+}

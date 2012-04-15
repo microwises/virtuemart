@@ -169,19 +169,8 @@ class klarna_productPrice {
 	}
     }
 
-    function _getVendorCountry() {
-	if (!class_exists('VirtueMartModelVendor'))
-	    JLoader::import('vendor', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models');
-	$virtuemart_vendor_id = 1;
-	$model = VmModel::getModel('vendor');
-	$vendor = $model->getVendor($virtuemart_vendor_id);
 
-	$vendorAdress = $model->getVendorAdressBT($virtuemart_vendor_id);
 
-	$vendor_country = ShopFunctions::getCountryByID($vendorAdress->virtuemart_country_id, 'country_code_3');
-
-	return $vendor_country;
-    }
 
     /*
      * if client has not given address then get cdata depending on the currency
@@ -198,7 +187,7 @@ class klarna_productPrice {
 	    } else if ($product_currency == 'DKK') {
 		$this->cData = KlarnaHandler::countryData($this->method, 'DNK');
 	    } else {
-		$vendor_country = $this->_getVendorCountry();
+		$vendor_country = KlarnaHandler::getVendorCountry();
 		$this->cData = KlarnaHandler::countryData($this->method, $vendor_country);
 	    }
 	} else {

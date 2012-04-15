@@ -14,20 +14,28 @@
  * other free or open source software licenses.
  * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://virtuemart.net
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+
+    $jlang =JFactory::getLanguage();
+    $jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
+    $jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+    $jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
+
 	$total = 0;
-	$handler = new KlarnaHandler ;
-	// call klarna server for pClasses
-	$methodid = jrequest::getInt('methodid');
+	$handler = new KlarnaHandler() ;
+
 	if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 	$model = VmModel::getModel('paymentmethod');
 	$payment = $model->getPayment();
 	if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 	$data = $parameters->getParamByName('data');
+	if (empty($data->klarna_pc_uri)) {
+	    echo '<span class="no_pclasses">'.JText::_('VMPAYMENT_KLARNA_CONF_NO_PC_URI').'</span>';
+	}
 	$eid_array = KlarnaHandler::getEidSecretArray($data);
 	foreach ($eid_array as $country => $eid_data) {
 	    try {
@@ -40,14 +48,14 @@ defined('JPATH_BASE') or die();
 	?>
 				<table class="klarna_pclasses">
 					<thead class="klarna_pclasses_header">
-						<td class="pclass_id">id</td>
-						<td class="pclass_description">description</td>
-						<td class="pclass_number">months</td>
-						<td class="pclass_number">interest</td>
-						<td class="pclass_number">handling fee</td>
-						<td class="pclass_number">start fee</td>
-						<td class="pclass_number">min amount</td>
-						<td class="pclass_flag">country</td>
+						<td class="pclass_id"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_ID') ?></td>
+						<td class="pclass_description"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_DESCRIPTION') ?></td>
+						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_MONTHS') ?></td>
+						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_INTEREST') ?></td>
+						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_HANDLING_FEE') ?></td>
+						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_START_FEE') ?></td>
+						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_MIN_AMOUNT') ?></td>
+						<td class="pclass_flag"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_COUNTRY') ?></td>
 					</thead>
 					<tbody class="klarna_pclasses_body">
 	<?php
@@ -61,7 +69,7 @@ defined('JPATH_BASE') or die();
 							<td class="pclass_number"><?php echo $pclass->getInvoiceFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
 							<td class="pclass_number"><?php echo $pclass->getStartFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
 							<td class="pclass_number"><?php echo $pclass->getMinAmount() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
-							<td class="pclass_flag"><img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>images/share/flags/<?php echo $klarna->getLanguageCode() ?>.png" /></td>
+							<td class="pclass_flag"><img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>/images/share/flags/<?php echo $klarna->getLanguageCode() ?>.png" /></td>
 						</tr>
 	<?php
 				} ?>
@@ -73,5 +81,4 @@ defined('JPATH_BASE') or die();
 		echo $e;
 	    }
 	}
-
 

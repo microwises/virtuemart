@@ -23,6 +23,16 @@ defined('JPATH_BASE') or die();
  * Fetches pclasses
  *
  */
+if (JVM_VERSION === 2) {
+     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
+     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
+     if (!defined ('VMKLARNAPLUGINWEBASSETS')) define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
+
+} else {
+     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
+     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
+     if (!defined ('VMKLARNAPLUGINWEBASSETS')) define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
+}
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 if (!class_exists('klarna_virtuemart'))
@@ -47,11 +57,14 @@ class JElementKlarnaPclasses extends JElement {
 //TODO SELFCALL AJAX
 	// Base name of the HTML control.
 	$ctrl = $control_name . '[' . $name . ']';
-	JHTML::script('klarna_admin.js', VMKLARNAPLUGINWEBASSETS . 'js/', false);
-	JHTML::stylesheet('klarna_admin.css', VMKLARNAPLUGINWEBASSETS. 'css/', false);
+	JHTML::script('klarna_admin.js', VMKLARNAPLUGINWEBASSETS . '/js/', false);
+	JHTML::stylesheet('klarna_admin.css', VMKLARNAPLUGINWEBASSETS. '/css/', false);
 	$cid = jrequest::getvar('cid',null,'array');
-	if (is_Array($cid)) $vmMethoId = $cid[0];
-	else $vmMethoId = $cid;
+	if (is_Array($cid)) {
+	    $vmMethoId = $cid[0];
+	} else {
+	    $vmMethoId = $cid;
+	}
 	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$vmMethoId;
 
 	$html = '
@@ -63,15 +76,15 @@ class JElementKlarnaPclasses extends JElement {
 	ob_start();
 	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
 	$html .= ob_get_clean();
-	if ($total == 0) { 
+	if ($total == 0) {
 		$html .= '
-		<span class="no_pclasses">No pclasses in database. <a href="'.$pclassesLink.'">Fetch PClasses</a></span></br>';
+		<span class="no_pclasses">'.JText::_('VMPAYMENT_KLARNA_CONF_NO_PCLASSES').'<a href="'.$pclassesLink.'">'.JText::_('VMPAYMENT_KLARNA_CONF_FETCH_PCLASSES').'</a></span></br>';
 	}
 	$html .='
 		</div>
 	</fieldset>
 	<span class="update_pclasses">
-		<a class="button_klarna" href="'.$pclassesLink.'">Update PClasses</a>
+		<a class="button_klarna" href="'.$pclassesLink.'">'.JText::_('VMPAYMENT_KLARNA_CONF_UPDATE_PCLASSES').'</a>
 	</span><span id="pclasses_update_msg"></span>
 	<div class="clear"></div>';
 	return $html;

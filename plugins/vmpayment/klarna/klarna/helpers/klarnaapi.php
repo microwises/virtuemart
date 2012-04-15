@@ -1,8 +1,6 @@
 <?php
 
 defined('_JEXEC') or die('Restricted access');
-if (!class_exists('KlarnaLanguagePack'))
-    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnalanguagepack.php');
 
 
 
@@ -185,12 +183,14 @@ class KlarnaAPI {
 	// $this->aSetupSettings['web_root'] = "/";
 
 	//$this->setPaths();
-
+//$this->country=$this->getCountry(); //??????
 	// Fetch PClasses in case type is invoice
+
 	if (($this->sType == 'part' || $this->sType == 'spec') && $this->oKlarna != null) {
-	    $this->country=
 	    $this->fetchPClasses($a_iSum, $a_iFlag, $aTypes);
 	}
+
+
     }
 
     // public function setPaths() {
@@ -490,8 +490,7 @@ class KlarnaAPI {
 	}
 
 	if ($this->oKlarna == null) {
-	    throw new KlarnaApiException('Error in ' . __METHOD__ .
-		    ': Klarna instance not set');
+	    throw new KlarnaApiException('Error in ' . __METHOD__ .  ': Klarna instance not set');
 	}
 	$this->iKlarnaCountry = $country;
 	$this->iKlarnaCurrency = $this->oKlarna->getCurrencyForCountry($country);
@@ -681,13 +680,13 @@ class KlarnaAPI {
 
 	foreach ($this->aPClasses as $sPClassId => $aPClassData) {
 	    $value = $this->getPresentableValuta($aPClassData['monthlyCost']);
-	    $pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH') ;//$this->fetchFromLanguagePack('per_month');
+	    $pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH') ;
 	    $sString .= '<li ' . ($aPClassData['default'] ? 'id="click"' : "") . '>
                 <div>' . $aPClassData['pclass']->getDescription() .
 		    ($aPClassData['monthlyCost'] > 0 ?
 			    " - $value $pm" : '') .
 		    ($aPClassData['default'] ?
-			    '<img src="' . VMKLARNAPLUGINWEBASSETS.'images/share/ok.gif" border="0" alt="Chosen" />' :
+			    '<img src="' . VMKLARNAPLUGINWEBASSETS.'/images/share/ok.gif" border="0" alt="Chosen" />' :
 			    '') .
 		    '</div>
                 <span style="display: none">' . $sPClassId . '</span>

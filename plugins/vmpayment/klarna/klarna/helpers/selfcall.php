@@ -1,4 +1,5 @@
 <?php
+
 defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
@@ -18,38 +19,58 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  *
  * http://virtuemart.net
  */
-
 class KlarnaSelfCall {
+    /*
+     * Ajax call to get Pclasses
+     * and create table if not exist
+     * only called from BE when adding a new country/code ...
+     * Click on update/Fetch PClasses
+     * @author Patrick Kohl
+     *
+     */
 
-	/*
-	 * Ajax call to get Pclasses
-	 * and create table if not exist
-	 * only called from BE when adding a new country/code ...
-	 * Click on update/Fetch PClasses
-	 * @author Patrick Kohl
-	 *
-	 */
-	function getPclasses() {
-		jimport('phpxmlrpc.xmlrpc');
-		$handler = new KlarnaHandler ;
-		// call klarna server for pClasses
-		$methodid = jrequest::getInt('methodid');
-		if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-		$model = VmModel::getModel('paymentmethod');
-		$payment = $model->getPayment();
-		if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
-		$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
-		$data = $parameters->getParamByName('data');
-		// echo "<pre>";print_r($data);
-		$json = $handler->fetchPClasses($data);
-		ob_start();
-		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
-		$json['pclasses']= ob_get_clean();
-		$document =JFactory::getDocument();
-		$document->setMimeEncoding('application/json');
-		echo json_encode($json,true);
-		jexit();
-		// echo result with tmpl ?
-	}
+    function getPclasses() {
+	jimport('phpxmlrpc.xmlrpc');
+	$jlang = JFactory::getLanguage();
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
+	$handler = new KlarnaHandler();
+	// call klarna server for pClasses
+	//$methodid = jrequest::getInt('methodid');
+	if (!class_exists('VmModel'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+	$model = VmModel::getModel('paymentmethod');
+	$payment = $model->getPayment();
+	if (!class_exists('vmParameters'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+	$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
+	$data = $parameters->getParamByName('data');
+	// echo "<pre>";print_r($data);
+	$json = $handler->fetchPClasses($data);
+	ob_start();
+	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
+	$json['pclasses'] = ob_get_clean();
+	$document = JFactory::getDocument();
+	$document->setMimeEncoding('application/json');
+	echo json_encode($json, true);
+	jexit();
+	// echo result with tmpl ?
+    }
+
+    /*
+     * @author Valérie Isaksen
+     *
+     */
+
+    function checkOrderStatus() {
+	$checkOrderStatus = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=checkOrderStatus&payment_methodid=' . (int) $payment_method_id . '&order_id=' . $virtuemart_order_id . '&country=' . $country . '&invNo=' . $invNo;
+	$payment_methodid = JRequest::getInt('payment_methodid');
+	$invNo = JRequest::getInt('invNo');
+
+	jexit();
+	// echo result with tmpl ?
+    }
+
 }
 

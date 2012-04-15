@@ -96,7 +96,7 @@ class KlarnaProductPrice {
             $aInputValues['monthTable']     = $sTableHtml;
             $aInputValues['eid']            = $this->eid;
             $aInputValues['country']        = KlarnaCountry::getCode ($country);
-            $aInputValues['nlBanner']       = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="'. VMKLARNAPLUGINWEBASSETS.'images/account/'.$notice.'" /></div>' : "");
+            $aInputValues['nlBanner']       = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="'. VMKLARNAPLUGINWEBASSETS.'/images/account/'.$notice.'" /></div>' : "");
 
             return $this->checkout->retrieveHTML($aInputValues, null, $this->path . '/klarna/tmpl/productprice_layout.html');
         }

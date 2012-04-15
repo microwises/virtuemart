@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 
 /**
  *
- * a special type of Klarna
+ * Klarna
  * @author Valérie Isaksen
  * @version $Id:
  * @package VirtueMart
@@ -22,20 +22,22 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 	if (!class_exists('KlarnaAPI'))
 	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 class KlarnaVm2API extends KlarnaAPI {
-
+/*
+ * $a_sCountry: 3 letters country code
+ * $a_sLangISO: if null, retricves from 3 letlers country code
+ */
     public function __construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, &$a_oKlarna = null, $aTypes = null, $sPath = null) {
 		parent::__construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, $a_oKlarna, $aTypes , $sPath ) ;
-		
+
 	}
 
 	function retrieveLayout($a_aParams, $a_aValues, $aTemplateData =null) {
 	if ($a_aValues != null)
 	    $this->aInputValues = array_merge($this->aInputValues, $a_aValues);
-		
+
 
 	if ($a_aParams != null)
-	    $this->aInputParameters = array_merge(
-		    $this->aInputParameters, $a_aParams);
+	    $this->aInputParameters = array_merge($this->aInputParameters, $a_aParams);
 
 	if (is_array($this->aPClasses)) {
 		 $this->aInputValues['paymentPlan'] = '';

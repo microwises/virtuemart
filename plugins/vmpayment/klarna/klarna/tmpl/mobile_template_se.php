@@ -3,16 +3,16 @@
          <script type="text/javascript">
          <!--
              var placeHolderText = new Array;
-             placeHolderText['mobile_no'] = '<?php echo $params['input']['placeholder'] ; ?>';
+             placeHolderText['mobile_no'] = '<?php echo $viewData['input']['placeholder'] ; ?>';
              placeHolderText['mobile_code'] = '<?php echo JText::_('VMPAYMENT_KLARNA_MOBILE_MOBILE_CODE'); ?>';
 
-             var pId = '<?php echo $params['input']['pId'] ; ?>';
+             var pId = '<?php echo $viewData['input']['pId'] ; ?>';
 
              $('head').append('<link type="text/css" rel="stylesheet" href="klarna/mobile/default/style.css" />');
 
          //-->
          </script>
-         <script src="<?php echo $params['setup']['path_js'] ; ?>klarna_mobile.js" type="text/javascript"></script>
+         <script src="<?php echo $viewData['setup']['path_js'] ; ?>klarna_mobile.js" type="text/javascript"></script>
          <div class="klarnaMobile_box">
              <div class="klarnaMobile_boxLogo">
              </div>
@@ -23,7 +23,7 @@
                  <h1>1. <?php echo JText::_('VMPAYMENT_KLARNA_MOBILE_MOBILEPHONENO'); ?></h1>
                  <div class="klarnaMobile_boxInputField">
                      <div class="klarnaMobile_boxInputField_left_inputPlaceholder">
-                         <input type="text" value="<?php echo $params['input']['placeholder'] ; ?>" name="mobile_no" />
+                         <input type="text" value="<?php echo $viewData['input']['placeholder'] ; ?>" name="mobile_no" />
                      </div>
                      <div class="klarnaMobile_boxInputField_right" id="getCode">
                          <input type="button" value="Få kod" name="submit_mobile_no" />

@@ -1,16 +1,16 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-JHTML::script('klarna_pp.js', VMKLARNAPLUGINWEBASSETS.'js/', false);
+JHTML::script('klarna_pp.js', VMKLARNAPLUGINWEBASSETS.'/js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 
 jQuery(function(){
 
-		
-	
+
+
 	jQuery('.klarna_PPBox_bottomMid_readMore a').click( function(){
-		InitKlarnaPartPaymentElements('klarna_partpayment', '". $params['eid'] ."', '". $params['country'] ."');
+		InitKlarnaPartPaymentElements('klarna_partpayment', '". $viewData['eid'] ."', '". $viewData['country'] ."');
 		ShowKlarnaPartPaymentPopup();
 		return false;
 	});
@@ -26,7 +26,7 @@ jQuery(function(){
         <div class="klarna_PPBox_top">
             <span class="klarna_PPBox_topRight"></span>
             <span class="klarna_PPBox_topMid">
-                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label> <?php echo $params['defaultMonth'] ?> </label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $this->settings['asterisk'] ?></p>
+                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label> <?php echo $viewData['defaultMonth'] ?> </label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $this->settings['asterisk'] ?></p>
             </span>
             <span class="klarna_PPBox_topLeft"></span>
         </div>
@@ -40,21 +40,21 @@ jQuery(function(){
                         </tr>
                     </thead>
                     <tbody>
-                        <?php echo $params['monthTable'] ?>
+                        <?php echo $viewData['monthTable'] ?>
                     </tbody>
                 </table>
                 <div class="klarna_PPBox_bottomMid_readMore">
                     <a href="#"><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_READMORE'); ?></a>
                 </div>
                 <div class="klarna_PPBox_pull" id="klarna_PPBox_pullUp">
-                    <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>images/productPrice/default/pullUp.png" alt="More info" />
+                    <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>/images/productPrice/default/pullUp.png" alt="More info" />
                 </div>
             </div>
         </div>
         <div class="klarna_PPBox_pull" id="klarna_PPBox_pullDown">
-            <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>images/productPrice/default/pullDown.png" alt="More info" />
+            <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>/images/productPrice/default/pullDown.png" alt="More info" />
         </div>
-        <?php echo $params['nlBanner'] ?>
+        <?php echo $viewData['nlBanner'] ?>
     </div>
 </div>
 <div style="clear: both; height: 80px;"></div>

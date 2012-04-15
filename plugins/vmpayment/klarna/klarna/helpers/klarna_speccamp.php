@@ -70,7 +70,9 @@ class klarna_speccamp {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
 
 	// Set country and currency set in the store.
-	$this->country = KlarnaHandler::convertCountry($method, $this->shipTo['country']);
+	$this->country = $this->shipTo['country'];
+	 //$this->country = KlarnaHandler::convertCountryInt($this->shipTo['country']);
+	$country2 = KlarnaHandler::convertCountry($method, $this->shipTo['country']);
 	$this->currency = $vendor_currency; // TODO$_SESSION['vendor_currency'];
 	// Get EID and Secret
 	$this->eid = KlarnaHandler::getEid($method, $this->country);
@@ -87,7 +89,7 @@ class klarna_speccamp {
 
 	try {
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->eid, $this->secret, $this->country, null, $this->currency, $this->mode, $method->klarna_pc_type, $method->klarna_pc_uri, $this->ssl);
+	    $this->klarna->config($this->eid, $this->secret, $country2, null, $this->currency, $this->mode, $method->klarna_pc_type, $method->klarna_pc_uri, $this->ssl);
 	} catch (Exception $e) {
 	    unset($this->klarna);
 	}
@@ -98,11 +100,11 @@ class klarna_speccamp {
 	// Params specific for:
 	// ---- Sweden, Denmark, Norway, Finland
 	$c = strtolower($this->country);
-	if ($c == "se" || $c == "dk" || $c == "no" || $c == "fi") {
+	if ($c == "swe" || $c == "dnk" || $c == "nor" || $c == "fin") {
 	    $aParams["socialNumber"] = "klarna_spec_pnum";
 	}
 	// Params needed for non-swedish customers
-	if ($c != "se") {
+	if ($c != "swe") {
 	    $aParams["firstName"] = "klarna_spec_first_name";
 	    $aParams["lastName"] = "klarna_spec_last_name";
 	    $aParams["street"] = "klarna_spec_street";
@@ -111,17 +113,17 @@ class klarna_speccamp {
 	    $aParams["companyName"] = "klarna_spec_company_name";
 
 	    // Specific for Germany and Netherlands
-	    if ($c == "de" || $c == "nl") {    // Germany && Netherlands
+	    if ($c == "deu" || $c == "nld") {    // Germany && Netherlands
 		$aParams["gender"] = "klarna_spec_gender";
 		$aParams["homenumber"] = "klarna_spec_house";
 		$aParams["birth_year"] = "klarna_spec_birth_year";
 		$aParams["birth_month"] = "klarna_spec_birth_month";
 		$aParams["birth_day"] = "klarna_spec_birth_day";
 	    }
-	    if ($c == "nl") {    // Netherlands only
+	    if ($c == "nld") {    // Netherlands only
 		$aParams["house_extension"] = "klarna_spec_house_extension";
 	    }
-	    if ($c == "dk") {    // Denmark only
+	    if ($c == "dnk") {    // Denmark only
 		$aParams["year_salary"] = "klarna_spec_ysalary";
 	    }
 	}
@@ -141,7 +143,7 @@ class klarna_speccamp {
 	$aValues = array();
 	$c = strtolower($this->country);
 	// Values for non-swedish customers.
-	if ($c != "se") {
+	if ($c != "swe") {
 	    $aValues["firstName"] = $this->shipTo['first_name'];
 	    $aValues["lastName"] = $this->shipTo['last_name'];
 	    $aValues["street"] = $this->klarna_addr;
@@ -149,17 +151,17 @@ class klarna_speccamp {
 	    $aValues["zipcode"] = $this->shipTo['zip'];
 	    $aValues["companyName"] = $this->shipTo['company_name'];
 
-	    if ($c == "de" || $c == "nl") {    // Germany && Netherlands
+	    if ($c == "deu" || $c == "nld") {    // Germany && Netherlands
 		$aValues["gender"] = $this->klarna_gender;
 		$aValues["homenumber"] = $this->klarna_houseNr;
 		$aValues["birth_year"] = $this->klarna_bday['year'];
 		$aValues["birth_month"] = $this->klarna_bday['month'];
 		$aValues["birth_day"] = $this->klarna_bday['day'];
 	    }
-	    if ($c == "nl") {    // Netherlands only
+	    if ($c == "nld") {    // Netherlands only
 		$aValues["house_extension"] = $this->klarna_houseExt;
 	    }
-	    if ($c == "dk") {
+	    if ($c == "dnk") {
 		$aValues["year_salary"] = $this->klarna_year_salary;
 	    }
 	}
@@ -194,7 +196,7 @@ class klarna_speccamp {
 		$this->klarna_gender = null;
 		break;
 	}
-	if ($this->country == "nl") {
+	if ($this->country == "nld") {
 	    $this->klarna_houseExt = $splitAddress[2];
 	}
     }
@@ -204,7 +206,7 @@ class klarna_speccamp {
      * come back after failing a purchase.
      */
     private function setPreviouslyFilledIn($klarna_data) {
-	if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['PNO'])) {
+	if (($this->country == "nld" || $this->country == "deu") && isset($klarna_data['PNO'])) {
 	    $pno = $klarna_data['PNO'];
 	    $this->klarna_bday['year'] = substr($pno, 4, 4);
 	    $this->klarna_bday['month'] = substr($pno, 2, 2);
@@ -220,7 +222,7 @@ class klarna_speccamp {
     /**
      * Build the Special Campaign module.
      */
-    public function specCamp($method) {
+    public function specCamp($method, $cart) {
 	// If module isn't enabled, don't do anything.
 	if ($this->enabled == false) {
 	    return 0;
@@ -231,27 +233,25 @@ class klarna_speccamp {
 	if (!class_exists('KlarnaAPI'))
 	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 
-	$totalSum = KlarnaHandler::getTotalSum();
-	$klarna_fee = 0;
-	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=$klarna_fee";
+	$totalSum = $cart->pricesUnformatted['salesPrice'] ;
+	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=0";
 
 	if (!class_exists('KlarnaVm2API'))
 	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
 	$kCheckout = new KlarnaVm2API($this->country, null, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('eid', $this->eid);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
-	if (strtolower($this->country) == 'de') {
+	if (strtolower($this->country) == 'deu') {
 	    $vendor_id = 1;
-	    $link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
+	    $link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
 	    $kCheckout->addSetupValue('agb_link', $link);
 	}
 	$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
-	// $kCheckout->addMultipleSetupValues(array("web_root" => $this->web_root, "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/", "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/', "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
-	$title = JTextx::_('VMPAYMENT_KLARNA_SPEC_TITLE'); //$kCheckout->fetchFromLanguagePack('SPEC_TITLE', $lang, JPATH_SITE . $cPath . 'checkout/');
+ 	$title = JText::_('VMPAYMENT_KLARNA_SPEC_TITLE');
 
 	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="' . VMKLARNAPLUGINWEBASSETS.'images/logo/logo_small.png" border="0" /></div>' .
-		JTextx::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
+		'<img src="' . VMKLARNAPLUGINWEBASSETS.'/images/logo/logo_small.png" border="0" /></div>' .
+		JText::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	$this->klarna_phone = $this->shipTo['phone'];
@@ -259,18 +259,18 @@ class klarna_speccamp {
 	$this->klarna_reference = $this->shipTo['first_name'] . ' ' . $this->shipTo['last_name'];
 
 	// Get some extra info for Germany and The Netherlands
-	if (strtolower($this->country) == "nl" || strtolower($this->country) == "de") {
+	if (strtolower($this->country) == "nld" || strtolower($this->country) == "deu") {
 	    $this->setGermanDutchData();
 	} else {
 	    $this->klarna_addr = $this->shipTo['street'];
 	}
 
-	if (isset($_SESSION['klarna_error'])) {
-	    $kCheckout->addSetupValue('red_baloon_content', $_SESSION['klarna_error']);
-	    $kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $_SESSION['klarna_option']);
-	    unset($_SESSION['klarna_error']);
-	}
 
+if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption) ) {
+	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
+	    $kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $klarnaOption);
+	   KlarnaHandler::clearKlarnaError();
+	}
 	// Something went wrong, refill what we can.
 	if (isset($_SESSION['KLARNA_DATA'])) {
 	    $this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);

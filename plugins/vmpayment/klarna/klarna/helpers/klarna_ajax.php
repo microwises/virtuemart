@@ -99,7 +99,7 @@ class KlarnaAjax {
             }
 			return $oApi->retrieveLayout($aParams, $aValues);
             // if ($sType == 'spec') {
-				
+
                 // return $oApi->retrieveHTML($aParams, $aValues, null, $this->template);
             // } else {
                 // return $oApi->retrieveHTML ($aParams, $aValues);
@@ -125,7 +125,7 @@ class KlarnaAjax {
             $aSessionCalls = unserialize ($sSessionCalls);
         }
 
-        $sPNO    = JRequest::getWord('pno');
+        $sPNO    = JRequest::getWord('socialNumber'); //JRequest::getWord('pno');
         $sCountry = strtolower(JRequest::getWord('country'));
 
         if (array_key_exists ($sPNO, $aSessionCalls))
