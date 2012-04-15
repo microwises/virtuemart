@@ -372,14 +372,15 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number)) {
 	    return null;
 	}
-	if (!( $this->getDataByOrderId($virtuemart_order_id) )) {
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
 	    return null;
 	}
 
+
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
-	$field = $this->name . '_custom';
-	if (strcmp($result->$field, $return_context) === 0) {
+	$field = $this->_name . '_custom';
+	if (strcmp($paymentTable->$field, $return_context) === 0) {
 	    $this->handlePaymentUserCancel($virtuemart_order_id);
 	}
 	//JRequest::setVar('paymentResponse', $returnValue);
