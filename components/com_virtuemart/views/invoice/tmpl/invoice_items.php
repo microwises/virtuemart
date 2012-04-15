@@ -160,7 +160,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 
 
 	<tr>
-		<td align="right" class="pricePad" colspan="6"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
+		<td align="right" class="pricePad" colspan="6"><?php echo $this->orderDetails['shipmentName'] ?></td>
 
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
@@ -172,7 +172,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	</tr>
 
 <tr>
-		<td align="right" class="pricePad" colspan="6"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>
+		<td align="right" class="pricePad" colspan="6<?php echo $this->orderDetails['paymentName']  ?><td>
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment_tax)."</span>" ?></td>
