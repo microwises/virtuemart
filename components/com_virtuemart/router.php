@@ -916,19 +916,21 @@ class vmrouterHelper {
 	}
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
 	private function setActiveMenu(){
-
+		if ($this->activeMenu === null ) {
 		$menu = &JSite::getMenu();
 		if ($Itemid = JRequest::getInt('Itemid',0) ) {
 			$menuItem = &$menu->getItem($Itemid);
 		} else {
 			$menuItem = &$menu->getActive();
 		}
-
-		$this->activeMenu->view			= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-		$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
-		$this->activeMenu->virtuemart_product_id	= (empty($menuItem->query['virtuemart_product_id'])) ? null : $menuItem->query['virtuemart_product_id'];
-		$this->activeMenu->virtuemart_manufacturer_id	= (empty($menuItem->query['virtuemart_manufacturer_id'])) ? null : $menuItem->query['virtuemart_manufacturer_id'];
-		$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
+		
+			$this->activeMenu = new stdClass();
+			$this->activeMenu->view			= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+			$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
+			$this->activeMenu->virtuemart_product_id	= (empty($menuItem->query['virtuemart_product_id'])) ? null : $menuItem->query['virtuemart_product_id'];
+			$this->activeMenu->virtuemart_manufacturer_id	= (empty($menuItem->query['virtuemart_manufacturer_id'])) ? null : $menuItem->query['virtuemart_manufacturer_id'];
+			$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
+		}
 
 	}
 	/*

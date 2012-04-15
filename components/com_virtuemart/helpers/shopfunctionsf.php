@@ -442,31 +442,19 @@ class shopFunctionsF {
 
 	/**
 	 * Checks if Joomla language keys exist and combines it according to existing keys.
-	 * @string $pkey : primary string to search for Language key
+	 * @string $pkey : primary string to search for Language key (must have %s in the string to work)
 	 * @string $skey : secondary string to search for Language key
 	 * @return string
 	 * @author Max Milbers
 	 * @author Patrick Kohl
 	 */
 	function translateTwoLangKeys($pkey,$skey){
-
-		$translated = '';
-		if(JLanguage::hasKey($pkey)){
-			if(JLanguage::hasKey($skey)){
-				$translated .= JText::sprintf($pkey,JText::_($skey));
-			} else {
-				$translated .= JText::sprintf($pkey,$skey);
-			}
-
+		$upper = strtoupper($pkey).'_2STRINGS';
+		if( JText::_($upper) !== $upper ) {
+			return JText::sprintf($upper,JText::_($skey));
 		} else {
-			if(JLanguage::hasKey($skey)){
-				$translated .= $pkey.' '.JText::_($skey);
-			} else {
-				$translated .= $pkey.' '.$skey;
-			}
+			return JText::_($pkey).' '.JText::_($skey);
 		}
-
-		return $translated;
 	}
 
 	/**
