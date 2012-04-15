@@ -336,7 +336,7 @@
 					    <td align="right">  </td>
 					    <?php } ?>
 					    <td align="right">  </td>
-					    <td align="right"><strong><?php echo $this->currencyDisplay->createPriceDiv('totalInPaymentCurrency','', $this->totalInPaymentCurrency,false); ?></strong></td>
+					    <td align="right"><strong><?php echo $this->totalInPaymentCurrency;   ?></strong></td>
 				      </tr>
 				      <?php
 		    }
