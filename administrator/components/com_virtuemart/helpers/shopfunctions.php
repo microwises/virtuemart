@@ -893,7 +893,6 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$db->setQuery($_q);
 		$_r = $db->loadObject();
 		if(empty($_r->order_status_name)){
-
 			vmError('getOrderStatusName: couldnt find order_status_name for '.$_code);
 			return 'current order status broken';
 		} else {
