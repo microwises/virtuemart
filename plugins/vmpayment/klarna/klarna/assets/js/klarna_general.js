@@ -864,15 +864,14 @@ AddressCollection.prototype.render = function (to, inputName) {
 
 			//$.post(action,fields);
 			var selectedTable= vmmethod.parents('table');
-			var fields = selectedTable.find('input').serializeArray();
+			var fields = selectedTable.find('*').serializeArray();
 			fields.push({"name":"task","value":"setpayment"});
 			fields.push({"name":"view","value":"cart"});
 			fields.push({"name":"klarna_paymentmethod","value":klarna.selected_method});
 			var form = $('<form></form>');
-
 			form.attr("method", "post");
 			form.attr("action", action);
-			fields
+			//fields
 			$.each(fields, function(key, value) {
 				var field = $('<input></input>');
 				
