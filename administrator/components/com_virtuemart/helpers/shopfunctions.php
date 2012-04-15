@@ -447,7 +447,7 @@ class ShopFunctions {
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * Convert Metric Unit
 	 *
@@ -457,7 +457,7 @@ class ShopFunctions {
 
 		$value = (float)str_replace(',', '.', $value);
 		$meter = 1 ;
-		
+
 		// transform $value in meters
 		switch ($from) {
 			case 'CM': $meter = 0.01*$value;
@@ -892,7 +892,14 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "'.$db->getEscaped($_code) . '"';
 		$db->setQuery($_q);
 		$_r = $db->loadObject();
-		return $_r->order_status_name;
+		if(empty($_r->order_status_name)){
+
+			vmError('getOrderStatusName: couldnt find order_status_name for '.$_code);
+			return 'current order status broken';
+		} else {
+			return $_r->order_status_name;
+		}
+
 	}
 
 	/**
