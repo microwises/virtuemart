@@ -4,6 +4,7 @@ if (typeof klarna == "undefined") {
 var klarna = {
 	invoice_fee: 0,
 	sum : 0,
+	gender : '',
 	klarnaGeneralLoaded : true,
 	selected_method : null,
 	invoice_active : false,
@@ -210,7 +211,7 @@ var klarna = {
 
 		if (klarna.countryCode == "de" || klarna.countryCode == "nl")
 		{
-			klarna.setGender(opts, gender);
+			klarna.setGender(opts, klarna.gender);
 		}
 
 		// Input field on focus
@@ -273,8 +274,8 @@ var klarna = {
 			klarna.hideBlueBaloon();
 		});
 
-		jQuery('input.gender.Klarna_radio', opts).bind('change', function () {
-			gender = jQuery(this).val();
+		jQuery('input.Klarna_radio', opts).bind('change', function () {
+			klarna.gender = jQuery(this).val();
 		});
 
 		jQuery('.Klarna_pnoInputField', opts).each(function (){
@@ -684,6 +685,7 @@ var klarna = {
 		if (Type == 'invoice') var name='';
 		else var name = Type+'_' ;
 		// Select birthdate and fill years box
+		// console.log(Type, klarna.countryCode);
 		if (klarna.countryCode == "de" || klarna.countryCode == "nl")
 		{
 			// Years box
