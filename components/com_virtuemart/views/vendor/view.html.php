@@ -61,6 +61,8 @@ class VirtuemartViewVendor extends VmView {
 			$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_LIST'));
 
 			$vendors = $model->getVendors();
+			$model->addImages($vendors);
+
 			$this->assignRef('vendors', $vendors);
 
 		} else {

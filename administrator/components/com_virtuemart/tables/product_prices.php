@@ -40,13 +40,13 @@ class TableProduct_prices extends VmTableData {
 
     /** @var string Product price */
     var $product_price = null;
-    var $override = 0;
-    var $product_override_price = 0;
-    var $product_tax_id = 0;
-    var $product_discount_id = 0;
+    var $override = null;
+    var $product_override_price = null;
+    var $product_tax_id = null;
+    var $product_discount_id = null;
 
     /** @var string Product currency */
-    var $product_currency = 0;
+    var $product_currency = null;
 
     var $product_price_vdate = null;
     var $product_price_edate = null;
@@ -80,8 +80,6 @@ class TableProduct_prices extends VmTableData {
 		} else {
 			$this->product_price = null;
 		}
-
-
 
 		return parent::check();
 	}
