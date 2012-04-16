@@ -145,7 +145,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, false), 2);
 	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
-
+if ($totalInPaymentCurrency <= 0) {
+     vmInfo(JText::_('VMPAYMENT_PAYPAL_PAYMENT_AMOUNT_INCORRECT'));
+	    return false;
+}
 	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
 	    vmInfo(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
