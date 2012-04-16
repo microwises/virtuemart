@@ -96,8 +96,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function plgVmOnViewCartModule( $product,$row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		foreach($plgParam as $k => $item){
+			$this->getVmPluginMethod($k);
 			if(!empty($item['comment']) ){
-				$html .='<span>'.$item['comment'].'</span>';
+				$html .='<span>'.$this->_vmpCtable->custom_title.' '.$item['comment'].'</span>';
 			}
 		 }
 		return true;
@@ -112,8 +113,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		$html  .= '<div>';
 		foreach($plgParam as $k => $item){
+			$this->getVmPluginMethod($k);
 			if(!empty($item['comment']) ){
-				$html .='<span>'.$item['comment'].'</span>';
+				$html .='<span>'.$this->_vmpCtable->custom_title.' '.$item['comment'].'</span>';
 			}
 		 }
 		$html .='</div>';
