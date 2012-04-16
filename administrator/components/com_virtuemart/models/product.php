@@ -1147,7 +1147,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function createClone($id){
 		//	if (is_array($cids)) $cids = array($cids);
-		$product = $this->getProduct($id);
+		$product = $this->getProduct($id, false, true, false);
 		$product->field = $this->productCustomsfieldsClone($id);
 // 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
