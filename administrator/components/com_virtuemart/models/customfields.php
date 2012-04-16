@@ -997,7 +997,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							    $child = self::getChild($item->productCustom->custom_value);
 								$value = $child->product_name;
 								} elseif ($item->productCustom->field_type == "M") {
-								$value = self::displayCustomMedia($item->productCustom->custom_value);						     }elseif ($item->productCustom->field_type == "S") {
+								$value = self::displayCustomMedia($item->productCustom->custom_value);
 						    } elseif (($item->productCustom->field_type == "S")) {
 								$value = $item->productCustom->custom_value;
 							}  else {
