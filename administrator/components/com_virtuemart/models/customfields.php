@@ -988,7 +988,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					    if ($item->productCustom = self::getProductCustomFieldCart ($virtuemart_customfield_id ) ) {
 							if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 							// vmdebug('$param',$param);
-							$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
+							$html .= ' <span class="product-field-type-'.$item->productCustom->field_type.'">';
 							$value ='';
 						    if ($item->productCustom->field_type == "E") {
 
@@ -997,13 +997,13 @@ class VirtueMartModelCustomfields extends VmModel {
 							    $child = self::getChild($item->productCustom->custom_value);
 								$value = $child->product_name;
 								} elseif ($item->productCustom->field_type == "M") {
-								$value = self::displayCustomMedia($productCustom->custom_value);						     }elseif ($item->productCustom->field_type == "S") {
-						    } elseif (($productCustom->field_type == "S")) {
-								$value = $productCustom->custom_value;
+								$value = self::displayCustomMedia($item->productCustom->custom_value);						     }elseif ($item->productCustom->field_type == "S") {
+						    } elseif (($item->productCustom->field_type == "S")) {
+								$value = $item->productCustom->custom_value;
 							}  else {
-								$value = $productCustom->custom_value;
+								$value = $item->productCustom->custom_value;
 						    }
-							$html .=ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
+							$html .=ShopFunctionsF::translateTwoLangKeys($item->productCustom->custom_title,$value);
 
 							$html .= '</span>';
 					    } else {
