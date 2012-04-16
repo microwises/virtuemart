@@ -38,7 +38,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 	JRequest::setVar('view', 'virtuemart');
-
+	$task='';
 } else {
 
 	//Lets load first englisch, then joomla default standard, then user language.

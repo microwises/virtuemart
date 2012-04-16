@@ -9,6 +9,8 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  * @package	VirtueMart
  * @subpackage Helpers
  * @author RolandD
+ * @author Max Milbers
+ * @author Patrick Kohl
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 class ShopFunctions {

@@ -389,7 +389,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function getChilds($child_id = null) {
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT CONCAT ( `product_name`, " [' .JText::_('COM_VIRTUEMART_PRODUCT_SKU').'"," : ",`product_sku`,"]") as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VMLANG.'` as l '
+		$q = 'SELECT CONCAT( `product_name`, " [' .JText::_('COM_VIRTUEMART_PRODUCT_SKU').'"," : ",`product_sku`,"]") as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VMLANG.'` as l '
 		. ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)'
 		. 'WHERE `product_parent_id` ='.(int)$child_id ;
 		$db->setQuery($q);
@@ -401,6 +401,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			return array();
 		} else return $result ;
 	}
+
 	function getFieldId($virtuemart_product_id, $child_id ) {
 
 		$db = JFactory::getDBO();
@@ -413,6 +414,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			return false;
 		} else return $result ;
 	}
+
 	function getValideChild($child_id ) {
 		$db = JFactory::getDBO();
 		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
