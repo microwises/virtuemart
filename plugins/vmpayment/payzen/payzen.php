@@ -136,6 +136,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$this->_debug = $method->debug; // enable debug
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
+
 	$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- order number: ' . $order['details']['BT']->order_number, 'message');
 
 	if (!class_exists('VadsApi')) {
@@ -188,7 +189,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$currency = $api->findCurrencyByNumCode($currencyObj->currency_numeric_code);
 	if ($currency == null) {
 	    $this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- Could not find currency numeric code for currency : ' . $currencyObj->currency_numeric_code, 'error');
-	    vmInfo(JText::_('VMPAYMENT_'.$this->_name.'_CURRENCY_NOT_SUPPORTED'));
+	    vmInfo(JText::_('VMPAYMENT_' . $this->_name . '_CURRENCY_NOT_SUPPORTED'));
 	    return null;
 	}
 	$api->set('currency', $currency->num);
@@ -249,16 +250,16 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- payment data saved to table ' . $this->_tablename, 'message');
 
 	// echo the redirect form
-	$form = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
-	$form .= '<p>' . JText::_('VMPAYMENT_'.$this->_name.'_PLEASE_WAIT') . '</p>';
-	$form .= '<p>' . JText::_('VMPAYMENT_'.$this->_name.'_CLICK_BUTTON_IF_NOT_REDIRECTED') . '</p>';
+	$form = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
+	$form .= '<p>' . JText::_('VMPAYMENT_' . $this->_name . '_PLEASE_WAIT') . '</p>';
+	$form .= '<p>' . JText::_('VMPAYMENT_' . $this->_name . '_CLICK_BUTTON_IF_NOT_REDIRECTED') . '</p>';
 	$form .= '<form action="' . $api->platformUrl . '" method="POST" name="vm_' . $this->_name . '_form" >';
-	$form .= '<input type="image" name="submit" src="' . JURI::base(true) . '/images/stories/virtuemart/payment/' . $this->_name . '.jpg" alt="' . JText::_('VMPAYMENT_'.$this->_name.'_BTN_ALT') . '" title="' . JText::_('VMPAYMENT_PAYZEN_BTN_ALT') . '"/>';
+	$form .= '<input type="image" name="submit" src="' . JURI::base(true) . '/images/stories/virtuemart/payment/' . $this->_name . '.jpg" alt="' . JText::_('VMPAYMENT_' . $this->_name . '_BTN_ALT') . '" title="' . JText::_('VMPAYMENT_PAYZEN_BTN_ALT') . '"/>';
 	$form .= $api->getRequestFieldsHtml();
 	$form .= '</form></div>';
 	$form .= '<script type="text/javascript">document.forms[0].submit();</script></body></html>';
 
-	$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- user redirected to '.$this->_name, 'message');
+	$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- user redirected to ' . $this->_name, 'message');
 
 	echo $form;
 
@@ -276,19 +277,23 @@ class plgVMPaymentPayzen extends vmPSPlugin {
      * @return
      */
     function plgVmOnPaymentResponseReceived(&$html) {
+	if (!class_exists('VirtueMartCart'))
+	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 	// the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-
+//vmDebug($this->_name.'  plgVmOnPaymentResponseReceived',$virtuemart_paymentmethod_id);
 	$vendorId = 0;
 	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
+	//vmDebug($this->_name.'  plgVmOnPaymentResponseReceived',$method);
+
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
 
 	//$this->_debug = true; // enable debug
-	$this->logInfo('plgVmOnPaymentResponseReceived -- user returned back from '.$this->_name, 'message');
+	$this->logInfo('plgVmOnPaymentResponseReceived -- user returned back from ' . $this->_name, 'message');
 
 	$data = JRequest::get('request');
 
@@ -304,7 +309,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	if (!$resp->isAuthentified()) {
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- suspect request sent to plgVmOnPaymentResponseReceived, IP : ' . $_SERVER['REMOTE_ADDR'], 'error');
-	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_'.$this->_name.'_ERROR_MSG', false);
+	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_' . $this->_name . '_ERROR_MSG', false);
 	    return null;
 	}
 
@@ -317,9 +322,9 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	// Order not found
 	if (!$virtuemart_order_id) {
-	    vmdebug('plgVmOnPaymentResponseReceived '.$this->_name, $data, $resp->get('order_id'));
+	    vmdebug('plgVmOnPaymentResponseReceived ' . $this->_name, $data, $resp->get('order_id'));
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- payment check attempted on non existing order : ' . $resp->get('order_id'), 'error');
-	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_'.$this->_name.'_ERROR_MSG', false);
+	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_' . $this->_name . '_ERROR_MSG', false);
 // 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
 	    return null;
 	}
@@ -330,12 +335,12 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if ($resp->isAcceptedPayment()) {
 	    $currency = $api->findCurrencyByNumCode($resp->get('currency'))->alpha3;
 	    $amount = ($resp->get('amount') / 100) . ' ' . $currency;
-	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_'.$this->_name.'_SUCCESS_MSG', true, $resp->get('order_id'), $amount);
+	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_' . $this->_name . '_SUCCESS_MSG', true, $resp->get('order_id'), $amount);
 	    //JRequest::setVar('paymentResponseHtml', $html, 'post');
 
 	    $new_status = $method->order_success_status;
 	} else {
-	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_'.$this->_name.'_FAILURE_MSG', false);
+	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_' . $this->_name . '_FAILURE_MSG', false);
 // 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
 	    $new_status = $method->order_failure_status;
 	}
@@ -345,13 +350,19 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- check url does not work.', 'warning');
 	    if ($method->site_id == '56790135') {
 		// Mode TEST DEFAULT VALUE: The plugin use default value.
-		vmWarn(JText::_('VMPAYMENT_'.$this->_name.'_CHECK_URL_WARN_VIRTUEMART'), '');
+		vmWarn(JText::_('VMPAYMENT_' . $this->_name . '_CHECK_URL_WARN_VIRTUEMART'), '');
 	    } elseif ($method->ctx_mode == 'TEST') {
 		//Mode TEST warning : Check URL not correctly called.
-		vmWarn(JText::_('VMPAYMENT_'.$this->_name.'_CHECK_URL_WARN'), '');
+		vmWarn(JText::_('VMPAYMENT_' . $this->_name . '_CHECK_URL_WARN'), '');
 	    }
-	    $this->managePaymentResponse($virtuemart_order_id, $resp, $new_status);
+
+
+	    $this->managePaymentResponse($virtuemart_order_id, $resp, $new_status );
 	}
+//We delete the old stuff
+	// get the correct cart / session
+	$cart = VirtueMartCart::getCart();
+	$cart->emptyCart();
 
 	return null;
     }
@@ -397,7 +408,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
     function plgVmOnPaymentNotification() {
 	// platform params and payment data
 	$data = JRequest::get('post');
-	$this->_debug = true; // enable debug
+
 	$this->logInfo('plgVmOnPaymentNotification START ', 'error');
 	if (!array_key_exists('vads_order_id', $data) || !isset($data['vads_order_id'])) {
 	    $this->logInfo('plgVmOnPaymentNotification -- Another method was selected, do nothing : ', 'error');
@@ -440,7 +451,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	  die($response);
 	  }
 	 */
-	$method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
+	$method = $this->getVmPluginMethod($payment_data->virtuemart_paymentmethod_id);
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
@@ -527,11 +538,11 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$expiry = str_pad($paymentTable->$payment_response_expiry_month, 2, '0', STR_PAD_LEFT) .
 		' / ' . $paymentTable->$payment_response_expiry_year;
 
-	$html .= $this->getHtmlRowBE( $this->_name.'_RESULT', $result);
-	$html .= $this->getHtmlRowBE($this->_name.'_TRANS_ID', $paymentTable->$payment_response_trans_id);
-	$html .= $this->getHtmlRowBE($this->_name.'_CC_NUMBER', $paymentTable->$payment_response_card_number);
-	$html .= $this->getHtmlRowBE($this->_name.'_CC_EXPIRY', $expiry);
-	$html .= $this->getHtmlRowBE($this->_name.'_CC_TYPE', $paymentTable->$payment_response_payment_mean);
+	$html .= $this->getHtmlRowBE($this->_name . '_RESULT', $result);
+	$html .= $this->getHtmlRowBE($this->_name . '_TRANS_ID', $paymentTable->$payment_response_trans_id);
+	$html .= $this->getHtmlRowBE($this->_name . '_CC_NUMBER', $paymentTable->$payment_response_card_number);
+	$html .= $this->getHtmlRowBE($this->_name . '_CC_EXPIRY', $expiry);
+	$html .= $this->getHtmlRowBE($this->_name . '_CC_TYPE', $paymentTable->$payment_response_payment_mean);
 	$html .= '</table>' . "\n";
 
 	return $html;
@@ -543,8 +554,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	} else {
 	    $html = '<table>' . "\n";
 	    $html .= '<thead><tr><td colspan="2" style="text-align: center;">' . JText::_($msg) . '</td></tr></thead>';
-	    $html .= $this->getHtmlRow($this->_name.'_ORDER_NUMBER', $order_id, 'style="width: 90px;" class="key"');
-	    $html .= $this->getHtmlRow($this->_name.'_AMOUNT', $amount, 'style="width: 90px;" class="key"');
+	    $html .= $this->getHtmlRow($this->_name . '_ORDER_NUMBER', $order_id, 'style="width: 90px;" class="key"');
+	    $html .= $this->getHtmlRow($this->_name . '_AMOUNT', $amount, 'style="width: 90px;" class="key"');
 	    $html .= '</table>' . "\n";
 
 	    return $html;
@@ -552,7 +563,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
     }
 
     function savePaymentData($virtuemart_order_id, $resp) {
-	vmdebug($this->_name.' response', $resp->raw_response);
+	vmdebug($this->_name . ' response', $resp->raw_response);
 	$response[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
 	$response['virtuemart_order_id'] = $virtuemart_order_id;
 	$response[$this->_name . '_response_payment_amount'] = $resp->get('amount');
@@ -593,6 +604,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	}
 
 	$cart = VirtueMartCart::getCart();
+	vmDebug('emptyCart', $cart);
 	$cart->emptyCart();
 	return true;
     }
@@ -610,8 +622,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$order['virtuemart_order_id'] = $virtuemart_order_id;
 	$order['customer_notified'] = 1;
 	$date = JFactory::getDate();
-	$order['comments'] = JText::sprintf('VMPAYMENT_'.$this->_name.'_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
-	vmdebug($this->_name.' - managePaymentResponse', $order);
+	$order['comments'] = JText::sprintf('VMPAYMENT_' . $this->_name . '_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
+	vmdebug($this->_name . ' - managePaymentResponse', $order);
 
 	// la fonction updateStatusForOneOrder fait l'envoie de l'email à partir de VM2.0.2
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
@@ -699,8 +711,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(),   &$paymentCounter) {
-	return $this->onCheckAutomaticSelected($cart, $cart_prices ,   $paymentCounter);
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
+	return $this->onCheckAutomaticSelected($cart, $cart_prices, $paymentCounter);
     }
 
     /**
