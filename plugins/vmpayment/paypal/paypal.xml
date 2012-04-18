@@ -33,13 +33,13 @@
 	<param type="spacer" default="" level="level1" />
 	<param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
 	<param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
-             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
+             default="your-PayPal-Merchant-email@domain.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
 
 	<param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
-	<param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
+	<param name="sandbox_merchant_email" type="text" size="50" default="your-PayPal-Sandbox-Merchant-email@domain.com" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
 	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
