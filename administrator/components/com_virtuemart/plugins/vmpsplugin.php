@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
+ * @version $Id: vmpsplugin.php 4601 2011-11-03 15:50:01Z alatak $
  */
 if (!class_exists('vmPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
@@ -196,6 +196,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	return true;
     }
 
+
+
     /**
      * onCheckAutomaticSelected
      * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
@@ -205,16 +207,21 @@ abstract class vmPSPlugin extends vmPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function onCheckAutomaticSelected(VirtueMartCart $cart, array $cart_prices = array()) {
+    function onCheckAutomaticSelected(VirtueMartCart $cart, array $cart_prices = array(), &$methodCounter=0) {
 
 	$nbPlugin = 0;
 	$virtuemart_pluginmethod_id = 0;
 
 	$nbMethod = $this->getSelectable($cart, $virtuemart_pluginmethod_id, $cart_prices);
+	$methodCounter +=$nbMethod;
 	if ($nbMethod == null) {
 	    return null;
 	} else {
-	    return ($nbMethod == 1) ? $virtuemart_pluginmethod_id : 0;
+	    if ($nbMethod==1) {
+		return $virtuemart_pluginmethod_id;
+	    } else {
+		return 0;
+	    }
 	}
     }
 
@@ -988,12 +995,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 	$this->logInfo('Notification: emptyCart ' . $session_id, 'message');
 	if ($session_id != null) {
-	    $session = JFactory::getSession();
-	    $session->close();
-
 	    // Recover session in wich the payment is done
-	    session_id($session_id);
-	    session_start();
+	     session_id($session_id);
+	     session_start();
 	}
 
 	$cart = VirtueMartCart::getCart();
