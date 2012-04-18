@@ -446,9 +446,8 @@ if ($totalInPaymentCurrency <= 0) {
 	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $order['order_status'], 'message');
 
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-
-	//// remove vmcart
-	$this->emptyCart($return_context);
+ 	//// remove vmcart
+	$this->emptyCart($paypal_data['custom']);
 	//die();
     }
 
