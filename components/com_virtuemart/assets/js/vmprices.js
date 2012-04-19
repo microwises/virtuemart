@@ -123,7 +123,7 @@ var Virtuemart = {
 jQuery.noConflict();
 jQuery(document).ready(function($) {
 
-	Virtuemart.product($(".product"));
+	Virtuemart.product($("form.product"));
 
 	$("form.js-recalculate").each(function(){
 		if ($(this).find(".product-fields").length) {

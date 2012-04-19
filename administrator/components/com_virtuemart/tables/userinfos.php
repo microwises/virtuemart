@@ -151,8 +151,8 @@ class TableUserinfos extends VmTableData {
 
 					$userId = JFactory::getUser()->id;
 					if($total[0]!=$userId){
-						vmError('Hacking attempt, you got logged');
-						echo 'Hacking attempt, you got logged';
+						vmError('Hacking attempt uid check, you got logged');
+						echo 'Hacking attempt uid check, you got logged';
 						return false;
 					}
 				}

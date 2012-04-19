@@ -52,6 +52,12 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         JHTML::_('script', 'openid.js');
     }
 
+    $html = '';
+    JPluginHelper::importPlugin('vmpayment');
+    $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html));
+
+    echo $html;
+
     //end plugins section
 
     //anonymous order section

@@ -997,7 +997,7 @@ class VirtueMartModelUser extends VmModel {
 				if(!Permissions::getInstance()->check("admin")) {
 					if($data->virtuemart_user_id!=$this->_id){
 						vmError('Hacking attempt loading userinfo, you got logged');
-						echo 'Hacking attempt, you got logged';
+						echo 'Hacking attempt loading userinfo, you got logged';
 						return false;
 					}
 				}
