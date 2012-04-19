@@ -54,6 +54,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 
     $html = '';
     JPluginHelper::importPlugin('vmpayment');
+    $dispatcher = JDispatcher::getInstance();
     $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html));
 
     echo $html;
