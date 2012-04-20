@@ -110,16 +110,6 @@ class KlarnaHandler {
 	return $country_data['country_code'];
     }
 
-    public function convertCountryInt($method, $country) {
-	$country_data = self::countryData($method, $country);
-	return $country_data['country'];
-    }
-
-    public function convertCountryToCountryNb($method, $country) {
-	$country_data = self::countryData($method, $country);
-	return $country_data['country'];
-    }
-
     public function getEid($method, $country) {
 	//$eid = 'klarna_merchantid_' . strtolower($country) . '';
 	//return isset($method->$eid) ? $method->$eid : 0;
@@ -128,11 +118,6 @@ class KlarnaHandler {
 	return $country_data['eid'];
     }
 
-    public function getSecret($method, $country) {
-	$country = self::convertToThreeLetterCode($country);
-	$country_data = self::countryData($method, $country);
-	return $country_data['secret'];
-    }
 
     public function getLanguageForCountry($method, $country) {
 	$country = self::convertToThreeLetterCode($country);
@@ -191,19 +176,7 @@ class KlarnaHandler {
 	return $salesPrice;
     }
 
-    public function getSettingsForCountry($method, $country) {
-	$settings = array();
-	$settings['eid'] = self::getEid($method, $country);
-	$settings['secret'] = self::getSecret($method, $country);
-	$settings['lang'] = self::getLanguageForCountry($method, $country);
-	$settings['invfee'] = self::getInvoiceFeeInclTax($method, $country);
-	return $settings;
-    }
 
-    public function convertCountryCode($method, $country) {
-	$country_data = self::countryData($method, $country);
-	return $country_data['country_code'];
-    }
 
     /*
      * @depredecated
@@ -729,7 +702,9 @@ class KlarnaHandler {
 	$totalSum = $vars['order_total'];
 	return $totalSum;
     }
-
+/*
+ * @deprecated
+ */
     public function getLocalTemplates() {
 	$kLoc = JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/'; //spec
 	$aTemplates = scandir($kLoc);
@@ -750,7 +725,9 @@ class KlarnaHandler {
 
 	return $aResult;
     }
-
+/*
+ * @deprecated
+ */
     public function getLocalTemplate($sTemplateName) {
 
 	$kLoc = JPATH_VMKLARNAPLUGIN . DS . 'klarna/tmpl/'; // spec

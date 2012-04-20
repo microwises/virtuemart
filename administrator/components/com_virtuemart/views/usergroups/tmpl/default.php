@@ -48,7 +48,7 @@ AdminUIHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
+				<?php   ?>
 			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->usergroups); ?>);" />

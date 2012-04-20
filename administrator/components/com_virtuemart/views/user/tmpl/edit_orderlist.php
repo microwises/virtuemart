@@ -25,9 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th width="10">
-			<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-		</th>
+
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NUMBER'); ?>
 		</th>
@@ -60,9 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			?>
 			<tr class="row<?php echo $k ; ?>">
-				<td align="center">
-					<?php echo $n++; ?>
-				</td>
+				 
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
 				</td>
