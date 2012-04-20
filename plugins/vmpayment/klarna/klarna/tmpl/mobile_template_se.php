@@ -1,4 +1,5 @@
-        <center><p> -- OR --</p></center>
+<?php  defined('_JEXEC') or die(); ?>
+<center><p> -- OR --</p></center>
          <!-- KLARNA BOX -->
          <script type="text/javascript">
          <!--

@@ -64,9 +64,16 @@ $tt=$this;
 				<td><?php echo $this->orderbt->ip_address; ?></td>
 			</tr>
 			<?php
-			if (VmConfig::get('coupons_enable') == '1') { ?>
+			if ($this->orderbt->coupon_code) { ?>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?></strong></td>
+				<td><?php echo $this->orderbt->coupon_code; ?></td>
+			</tr>
+			<?php } ?>
+			<?php
+			if ($this->orderbt->coupon_code) { ?>
+			<tr>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_INVOICE_NUMBER') ?></strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>
 			</tr>
 			<?php } ?>
@@ -435,7 +442,7 @@ $tt=$this;
 		<td valign="top"><?php
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEShipment',array(  $this->orderID,$this->virtuemart_shipmentmethod_id));
+		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEShipment',array(  $this->orderID,$this->virtuemart_shipmentmethod_id, $this->orderdetails));
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
 				echo $returnValue;
@@ -446,7 +453,7 @@ $tt=$this;
 		<td valign="top"><?php
 		JPluginHelper::importPlugin('vmpayment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEPayment',array( $this->orderID,$this->orderbt->virtuemart_paymentmethod_id));
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEPayment',array( $this->orderID,$this->orderbt->virtuemart_paymentmethod_id, $this->orderdetails));
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {
 				echo $_returnValue;

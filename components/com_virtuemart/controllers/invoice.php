@@ -118,7 +118,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$pdf->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
 		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
-		$pdf->SetKeywords('Invoice by Virtuemart 2');
+		$pdf->SetKeywords('Invoice by VirtueMart 2');
 
 		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
 		if(empty($view->vendor->images[0])){

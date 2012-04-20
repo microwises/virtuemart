@@ -1,4 +1,4 @@
-
+<?php  defined('_JEXEC') or die(); ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
 <script type="text/javascript">

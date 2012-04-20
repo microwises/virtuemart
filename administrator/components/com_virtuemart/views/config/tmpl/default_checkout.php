@@ -152,6 +152,18 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo VmHTML::checkbox('pdf_invoice', $this->config->get('pdf_invoice',1)); ?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key"><span
+				class="hasTip"
+				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_EXPLAIN'); ?>">
+					 <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES') ?>
+				 </span>
+			</td>
+			<td>
+					<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'inv_os', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('inv_os','C'),false,true); ?>
+
+			</td>
+		</tr>
 	</table>
 </fieldset>
 </td>

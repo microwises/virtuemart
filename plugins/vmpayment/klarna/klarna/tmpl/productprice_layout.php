@@ -54,7 +54,10 @@ jQuery(function(){
         <div class="klarna_PPBox_pull" id="klarna_PPBox_pullDown">
             <img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>/images/productPrice/default/pullDown.png" alt="More info" />
         </div>
-        <?php echo $viewData['nlBanner'] ?>
+        <?php
+	$notice = (($viewData['country']  == 'nl') ? '<div class="nlBanner"><img src="' . VMKLARNAPLUGINWEBASSETS . '/images/account/notice_nl.jpg" /></div>' : "");
+	echo $notice;
+	 ?>
     </div>
 </div>
 <div style="clear: both; height: 80px;"></div>

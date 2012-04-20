@@ -1,4 +1,4 @@
-
+<?php  defined('_JEXEC') or die(); ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
 <script type="text/javascript">
@@ -258,7 +258,7 @@ jQuery( function (){
                 <?php echo JText::_('VMPAYMENT_KLARNA_ILT_TITLE'); ?>
             </div>
             <div class="klarna_box_iltContents">
-            
+
             </div>
         </div>
     </div>

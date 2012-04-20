@@ -5,15 +5,12 @@ defined('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
+
 if (JVM_VERSION === 2) {
-     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
-
+     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna'. DS . 'klarna' . DS.'helpers' . DS . 'define.php');
 } else {
-     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
- }
-
+     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS.'helpers' . DS . 'define.php');
+}
 class JElementKlarnaLogo extends JElement
 {
 	/**

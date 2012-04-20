@@ -1,4 +1,4 @@
-
+<?php  defined('_JEXEC') or die(); ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
 <script type="text/javascript">
@@ -121,16 +121,19 @@ jQuery(function (){
                             <img src="<?php echo VMKLARNAPLUGINWEBASSETS.'/images/' ?>share/loader1.gif" alt="" />
                         </div>
                         <input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_SE'); ?>"
+			       <?php echo @$viewData['readOnly']['socialNumber'] ; ?>
                             name="<?php echo $viewData['input']['socialNumber'] ; ?>" value=""
                             class="Klarna_pnoInputField" />
                         <div class="referenceDiv" style="display: none">
                             <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_REFERENCE'); ?></div>
                             <input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_REFERENCE'); ?>"
+				    <?php echo @$viewData['readOnly']['reference'] ; ?>
                                 name="<?php echo $viewData['input']['reference'] ; ?>" value="<?php echo @$viewData['value']['reference'] ; ?>"
                                 class="Klarna_fullwidth" />
                         </div>
                         <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
                         <input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
+			        <?php echo @$viewData['readOnly']['phoneNumber'] ; ?>
                             name="<?php echo $viewData['input']['phoneNumber'] ; ?>" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
                             class="Klarna_fullwidth" /> <br /> <br />
                         <div class="klarna_box_bottom_address" style="display: none">

@@ -66,6 +66,7 @@ class VirtuemartViewOrders extends VmView {
 			$userFieldsModel = VmModel::getModel('userfields');
 			$productModel = VmModel::getModel('product');
 
+
 			// Get the data
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);

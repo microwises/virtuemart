@@ -611,7 +611,7 @@ class VadsApi {
 	 * @access public
 	 * @static
 	 */
-	function sign($parameters, $key, $hashed = true) {
+	function sign($parameters, $key, $hashed= true) {
 		$signContent = "";
 		ksort($parameters);
 		foreach ($parameters as $name => $value) {

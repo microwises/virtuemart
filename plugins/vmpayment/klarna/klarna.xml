@@ -30,90 +30,101 @@
 	    <option value="klarna_live">VMPAYMENT_KLARNA_CONF_MODE_LIVE</option>
 	    <option value="klarna_beta">VMPAYMENT_KLARNA_CONF_MODE_BETA</option>
 	</param>
-	<param name="klarna_modules" type="klarnamultilist" multiple="multiple"  label="VMPAYMENT_KLARNA_CONF_MODULE" description="VMPAYMENT_KLARNA_CONF_MODULE_DESC" >
+	<!--param name="klarna_modules" type="klarnamultilist" multiple="multiple"  label="VMPAYMENT_KLARNA_CONF_MODULE" description="VMPAYMENT_KLARNA_CONF_MODULE_DESC" >
 	    <option value="klarna_invoice">VMPAYMENT_KLARNA_CONF_MODULE_INVOICE</option>
 	    <option value="klarna_partpay">VMPAYMENT_KLARNA_CONF_MODULE_PARTPAYMENT</option>
 	    <option value="klarna_speccamp">VMPAYMENT_KLARNA_CONF_MODULE_SPECCAMP</option>
-	</param>
+	</param-->
 
 	<param type="klarnacountrylogo" default="SV" level="level1" />
 	<param name="klarna_active_swe" type="radio" default="0"   label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_swe" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_sharedsecret_swe" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_invoicefee_swe" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_invoice_tax_id_swe" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_swe" type="text"    label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="klarnacountrylogo" default="NB" level="level1" />
 	<param name="klarna_active_nor" type="radio" default="0"  label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_nor" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_sharedsecret_nor" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_invoicefee_nor" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_invoice_tax_id_nor" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_nor" type="text"  label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="klarnacountrylogo" default="DA" level="level1" />
 	<param name="klarna_active_dnk" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_dnk" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_sharedsecret_dnk" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_invoicefee_dnk" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_invoice_tax_id_dnk" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_dnk" type="text"  label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="klarnacountrylogo" default="FI" level="level1" />
 	<param name="klarna_active_fin" type="radio" default="0"  label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_fin" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" />
 	<param name="klarna_sharedsecret_fin" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" />
 	<param name="klarna_invoicefee_fin" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" />
 	<param name="klarna_invoice_tax_id_fin" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_fin" type="text"    label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="klarnacountrylogo" default="DE" level="level1" />
 	<param name="klarna_active_deu" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_deu" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_sharedsecret_deu" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_invoicefee_deu" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_invoice_tax_id_deu" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_deu" type="text"    label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="klarnacountrylogo" default="NL" level="level1" />
 	<param name="klarna_active_nld" type="radio" default="0"  label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="klarna_merchantid_nld" type="text"   label="VMPAYMENT_KLARNA_CONF_MERCHANT_ID" description="VMPAYMENT_KLARNA_CONF_MERCHANT_ID_DESC" />
 	<param name="klarna_sharedsecret_nld" type="text"   label="VMPAYMENT_KLARNA_CONF_SHARED_SECRET" description="VMPAYMENT_KLARNA_CONF_SHARED_SECRET_DESC" />
 	<param name="klarna_invoicefee_nld" type="text"   label="VMPAYMENT_KLARNA_CONF_INVOICE_FEE" description="VMPAYMENT_KLARNA_CONF_INVOICE_FEE_DESC" />
 	<param name="klarna_invoice_tax_id_nld" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_KLARNA_CONF_INVOICE_TAX" description="VMPAYMENT_KLARNA_CONF_INVOICE_TAX_DESC" />
+	<param name="klarna_min_amount_part_nld" type="text"   label="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART" description="VMPAYMENT_KLARNA_CONF_MINIMUM_AMOUNT_PART_DESC" />
 
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_PAGE" level="level1" />
 
-	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="G" label="VMPAYMENT_KLARNA_CONF_STATUS_PENDING" description="VMPAYMENT_KLARNA_CONF_STATUS_PENDING_DESC" />
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
 	<param name="status_shipped" type="vmorderstate" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED" description="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED_DESC" />
 	<param name="delete_order" type="radio" default="1"  label="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED" description="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED_DESC" >
-	<option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
-	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_DENIED" description="VMPAYMENT_KLARNA_CONF_STATUS_DENIED_DESC" />
+	<param name="status_denied" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_DENIED" description="VMPAYMENT_KLARNA_CONF_STATUS_DENIED_DESC" />
 
-	<param name="send_invoice" type="send_invoice" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE" description="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE_DESC" />
+	<param name="send_invoice" type="radio"   default="S" label="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE" description="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE_DESC" >
+	    <option value="email">VMPAYMENT_KLARNA_CONF_EMAIL</option>
+	    <option value="mail">VMPAYMENT_KLARNA_CONF_MAIL</option>
+	    <option value="printout">VMPAYMENT_KLARNA_CONF_PRINTOUT</option>
+	</param>
 	<param name="delay_invoice" type="delay_invoice" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE" description="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE_DESC" />
 
 
-	<param name="klarna_pc_type" type="text" default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
-	<param name="klarna_pc_uri" type="text"   size="80"  default="" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" />
+	<!-- param name="klarna_pc_type" type="text" default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
+	<param name="VMKLARNA_PC_URI" type="text"   size="80"  default="" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" / -->
 	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES" description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" />
 
 

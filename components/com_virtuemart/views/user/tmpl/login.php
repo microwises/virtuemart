@@ -57,7 +57,14 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
     $dispatcher = JDispatcher::getInstance();
     $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html));
 
-    echo $html;
+    if (is_array($html)) {
+	foreach ($html as $login) {
+	    echo $login.'<br />';
+	}
+    }
+    else {
+	echo $html;
+    }
 
     //end plugins section
 

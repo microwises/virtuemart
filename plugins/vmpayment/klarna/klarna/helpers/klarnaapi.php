@@ -28,6 +28,12 @@ class KlarnaAPI {
      * @var array
      */
     protected $aInputValues = array();
+     /**
+     * Array with different input value values
+     *
+     * @var array
+     */
+    protected $aReadOnlyParameters = array();
 
     /**
      * The county code
@@ -626,45 +632,7 @@ class KlarnaAPI {
 	    return @$this->aSetupSettings[$sName];
 	} else if ($sType == "value") {
 	    return (@$this->aInputValues[$sName]);
-	} else if ($sType == 'ilt') {
-	    if ($sName == 'box') {
-		$sHtml = "";
-
-		if (count($this->aIltQuestions) > 0) {
-		    foreach ($this->aIltQuestions as $sInputValue => $aQuestion) {
-			$sQuestion = $aQuestion['text'];
-			$sAnswer = "";
-			$sType = strtolower($aQuestion['type']);
-			$aValues = $aQuestion['values'];
-			$bSet = true;
-
-			if ($sType == 'dropdown') {
-			    $sAnswer = "<select name=\"$sInputValue\">\n";
-
-			    foreach ($aValues as $iNum => $aData) {
-				$sAnswer .= '<option value="' . htmlentities($aData['value']) . '">' . htmlentities($aData['name']) . '</option>' . "\n";
-			    }
-
-			    $sAnswer .= "</select>";
-			} else {
-			    $bSet = false;
-			}
-
-			if ($bSet) {
-			    $aParams = array('ilt_question' => $sQuestion, 'ilt_answer' => $sAnswer);
-
-			    $sHtml .= $this->retrieveHTML($aParams, null, ($this->sPath != null ? $this->sPath : "") . '/tmpl/ilt_template.html');
-			}
-		    }
-		}
-
-		return $sHtml;
-	    } else {
-		if (array_key_exists($sName, $this->aInputParameters)) {
-		    return $this->aInputParameters[$sName];
-		}
-	    }
-	} else {
+	}   else {
 	    throw new KlarnaApiException('Error in ' . __METHOD__ . ': Invalid field name (' . $sType . ') found in HTML code!');
 	    return false;
 	}

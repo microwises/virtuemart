@@ -321,8 +321,8 @@ class VirtueMartControllerCart extends JController {
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 
 			if ($cart->getInCheckOut()) {
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
+				$app = JFactory::getApplication();
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
 			}
 		}
 		// 	self::Cart();

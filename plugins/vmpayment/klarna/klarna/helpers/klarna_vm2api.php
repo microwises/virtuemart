@@ -1,4 +1,5 @@
 <?php
+
 defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
@@ -18,29 +19,30 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  *
  * http://virtuemart.net
  */
+if (!class_exists('KlarnaAPI'))
+    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 
-	if (!class_exists('KlarnaAPI'))
-	    require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 class KlarnaVm2API extends KlarnaAPI {
-/*
- * $a_sCountry: 3 letters country code
- * $a_sLangISO: if null, retricves from 3 letlers country code
- */
+    /*
+     * $a_sCountry: 3 letters country code
+     * $a_sLangISO: if null, retricves from 3 letlers country code
+     */
+
     public function __construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, &$a_oKlarna = null, $aTypes = null, $sPath = null) {
-		parent::__construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, $a_oKlarna, $aTypes , $sPath ) ;
+	parent::__construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, $a_oKlarna, $aTypes, $sPath);
+    }
 
-	}
-
-	function retrieveLayout($a_aParams, $a_aValues, $aTemplateData =null) {
+    function retrieveLayout($a_aParams, $a_aValues, $a_aReadOnly, $aTemplateData = null) {
 	if ($a_aValues != null)
 	    $this->aInputValues = array_merge($this->aInputValues, $a_aValues);
 
 
 	if ($a_aParams != null)
 	    $this->aInputParameters = array_merge($this->aInputParameters, $a_aParams);
-
+	if ($a_aReadOnly != null)
+	    $this->aReadOnlyParameters = array_merge($this->aReadOnlyParameters, $a_aReadOnly);
 	if (is_array($this->aPClasses)) {
-		 $this->aInputValues['paymentPlan'] = '';
+	    $this->aInputValues['paymentPlan'] = '';
 	    foreach ($this->aPClasses as $pclass) {
 		if ($pclass['default'] === true) {
 		    $this->aInputValues['paymentPlan'] = $pclass['pclass']->getId();
@@ -50,15 +52,16 @@ class KlarnaVm2API extends KlarnaAPI {
 	}
 
 	if ($this->sType != "spec") {
-		$this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
+	    $this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
 	}
-	$tmplLayout = $this->sType ."_". strtolower($this->sCountryCode) ;
-	return vmPlugin::renderByLayout($tmplLayout,array('checkout' => $this->oKlarna->checkoutHTML(),
-		'input'=>$this->aInputParameters,
-		'value'=>$this->aInputValues,
-		'setup'=>$this->aSetupSettings
-		),'klarna','payment');
+	$tmplLayout = $this->sType . "_" . strtolower($this->sCountryCode);
+	return vmPlugin::renderByLayout($tmplLayout, array('checkout' => $this->oKlarna->checkoutHTML(),
+		    'input' => $this->aInputParameters,
+		    'value' => $this->aInputValues,
+		    'setup' => $this->aSetupSettings,
+		    'readonly' => $this->aReadOnlyParameters,
+			), 'klarna', 'payment');
+    }
 
-	}
 }
 

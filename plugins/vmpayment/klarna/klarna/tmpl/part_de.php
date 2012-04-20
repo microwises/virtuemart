@@ -1,4 +1,4 @@
-
+<?php  defined('_JEXEC') or die(); ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
 <script type="text/javascript">
@@ -246,7 +246,6 @@ jQuery(document).ready(function() {
                                 <select style="width: 100%" name="<?php echo $viewData['input']['birth_year'] ; ?>"
                                     id="selectBox_part_year">
                                     <option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_YEAR'); ?></option>
-				      <option value="1960"><?php echo "1960"; ?></option>
                                 </select>
                             </div>
                         </div>

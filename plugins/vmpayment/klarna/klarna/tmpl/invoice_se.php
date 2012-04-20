@@ -1,4 +1,4 @@
-
+<?php  defined('_JEXEC') or die(); ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
 <script type="text/javascript">
@@ -120,7 +120,7 @@ jQuery( function (){
                         <input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_SE'); ?>"
                             name="<?php echo $viewData['input']['socialNumber'] ; ?>" value="<?php echo @$viewData['value']['socialNumber'] ; ?>"
                             class="Klarna_pnoInputField" />
-			
+
                         <div class="referenceDiv" style="display: none">
                             <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_REFERENCE'); ?></div>
                             <input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_REFERENCE'); ?>"

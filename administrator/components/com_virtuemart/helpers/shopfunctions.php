@@ -808,6 +808,34 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
+
+	/**
+	 * Return the countryID of a given Currency name
+	 *
+	 * @author Valerie Isaksen
+	 * @access public
+	 * @param string $_name Currency name
+	 * @return int Currency ID
+	 */
+	public function getCurrencyIDByName ($name)
+	{
+		if (empty($name)) {
+			return 0;
+		}
+		$db = JFactory::getDBO();
+
+		if(strlen($name)===2){
+			$fieldname = 'currency_code_2';
+		} else if(strlen($name)===3){
+			$fieldname = 'currency_code_3';
+		} else {
+			$fieldname = 'currency_name';
+		}
+		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
+		$db->setQuery($q);
+		$r = $db->loadResult();
+		return $r;
+	}
 	/**
 	 * Print a select-list with enumerated categories
 	 *

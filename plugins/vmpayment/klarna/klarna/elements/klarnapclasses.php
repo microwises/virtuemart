@@ -1,3 +1,4 @@
+<?php  defined('_JEXEC') or die(); ?>
 <?php
 
 /**
@@ -17,22 +18,18 @@
  * http://virtuemart.org
  */
 // Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+
 
 /**
  * Fetches pclasses
  *
  */
 if (JVM_VERSION === 2) {
-     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna');
-     if (!defined ('VMKLARNAPLUGINWEBASSETS')) define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
-
+     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna'. DS . 'klarna' . DS.'helpers' . DS . 'define.php');
 } else {
-     if (!defined ('JPATH_VMKLARNAPLUGIN')) define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-     if (!defined ('VMKLARNAPLUGINWEBROOT')) define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment');
-     if (!defined ('VMKLARNAPLUGINWEBASSETS')) define('VMKLARNAPLUGINWEBASSETS', JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets');
+     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS.'helpers' . DS . 'define.php');
 }
+
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 if (!class_exists('klarna_virtuemart'))

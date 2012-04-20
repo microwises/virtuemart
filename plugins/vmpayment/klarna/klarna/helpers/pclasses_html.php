@@ -18,6 +18,7 @@
  */
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
+ require('define.php');
 
     $jlang =JFactory::getLanguage();
     $jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
@@ -33,14 +34,12 @@ defined('JPATH_BASE') or die();
 	if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 	$data = $parameters->getParamByName('data');
-	if (empty($data->klarna_pc_uri)) {
-	    echo '<span class="no_pclasses">'.JText::_('VMPAYMENT_KLARNA_CONF_NO_PC_URI').'</span>';
-	}
+
 	$eid_array = KlarnaHandler::getEidSecretArray($data);
 	foreach ($eid_array as $country => $eid_data) {
 	    try {
 		$klarna = new Klarna_virtuemart();
-		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $data->klarna_mode, $data->klarna_pc_type, $data->klarna_pc_uri, ($data->klarna_mode=='klarna_live'));
+		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $data->klarna_mode, VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, ($data->klarna_mode=='klarna_live'));
 		$klarna->setCountry($country);
 		$pclasses = $klarna->getPClasses();
 		$total = $total + count($pclasses);

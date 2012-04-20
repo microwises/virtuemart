@@ -399,7 +399,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			*/
 			if ($data->order_status == "X") {
 				JPluginHelper::importPlugin('vmpayment');																			//Should we add this? $inputOrder
-				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
+				$_dispatcher = JDispatcher::getInstance();
+				$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
 		}
 
@@ -1086,11 +1087,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if($newOrderData!=0){	//We do not really need that
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
+
 		$vars['orderDetails']=$order;
 
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
-
 		//I think this is misleading, I think it should always ask for example $vars['newOrderData']['doVendor'] directly
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
 		//We may add later something to the method, defining this better

@@ -210,6 +210,7 @@ class shopFunctionsF {
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
+		//vmdebug('renderMail',$view);
 		$user= self::sendVmMail($view, $recipient,$noVendorMail);
 		if (isset($view->doVendor) && !$noVendorMail) {
 			self::sendVmMail($view, $view->vendorEmail, true);
