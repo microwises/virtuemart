@@ -193,7 +193,14 @@ class VirtuemartViewInvoice extends VmView {
 		    JPluginHelper::importPlugin('vmpayment');
 		    $dispatcher = JDispatcher::getInstance();
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
-		 }
+			if(is_array($returnValues)){
+				foreach($returnValues as $val){
+					if($val==false){
+						return parent::display($tpl);
+					}
+				}
+			}
+		}
 
 		$virtuemart_vendor_id=1;
 		$vendorModel = VmModel::getModel('vendor');
@@ -213,6 +220,7 @@ class VirtuemartViewInvoice extends VmView {
 		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
 
 		$usermodel = VmModel::getModel('user');
+// 		$usermodel->setId($userId);
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false,true);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];

@@ -772,10 +772,53 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	// fetches PClasses From XML file
 	$call = jrequest::getWord('call');
-	require (JPATH_VMKLARNAPLUGIN . '/klarna/helpers/selfcall.php');
-	$SelfCall = new KlarnaSelfCall;
-	$SelfCall->$call();
+// 	require (JPATH_VMKLARNAPLUGIN . '/klarna/helpers/selfcall.php');
+// 	$SelfCall = new KlarnaSelfCall;
+	$this->$call();
 	jexit();
+    }
+
+    /*
+    * @author Valérie Isaksen
+    *
+    */
+    function checkOrderStatus() {
+    	if (!class_exists('VirtueMartModelOrders'))
+    	require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
+    	$payment_methodid = JRequest::getInt('payment_methodid');
+    	$invNo = JRequest::getInt('invNo');
+    	$country = JRequest::getInt('country');
+    	$orderNumber = JRequest::getString('order_number');
+    	$orderPass = JRequest::getString('order_pass');
+
+    	if (!($method = $this->getVmPluginMethod($payment_methodid))) {
+    		return null; // Another method was selected, do nothing
+    	}
+
+    	$modelOrder = VmModel::getModel('orders');
+    	// If the user is not logged in, we will check the order number and order pass
+    	$orderId = $modelOrder->getOrderIdByOrderPass($orderNumber, $orderPass);
+    	if (empty($orderId)) {
+    		echo 'Invalid order_number/password ' . JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+    		return 0;
+    	}
+    	//$orderDetails = $modelOrder->getOrder($orderId);
+    	$klarna_order_status = KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
+    	if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
+    		/* if Klarna's order status is pending: add it in the history */
+    		/* The order is under manual review and will be accepted or denied at a later stage.
+    		 Use cronjob with checkOrderStatus() or visit Klarna Online to check to see if the status has changed.
+    		You should still show it to the customer as it was accepted, to avoid further attempts to fraud. */
+    		$order['order_status'] = $method->status_success;
+    	} else {
+    		$order['order_status'] = $method->status_canceled;
+    	}
+    	$order['customer_notified'] = 0;
+    	$order['comments'] = $log;
+    	$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
+    	//jexit();
+    	// echo result with tmpl ?
     }
 
     function _getTablepkeyValue($virtuemart_order_id) {
@@ -1415,7 +1458,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
-	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
+
+    	$payment_name = $this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
+
+    	return false;
     }
 
     /**

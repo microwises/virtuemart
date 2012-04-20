@@ -235,10 +235,10 @@ abstract class vmPSPlugin extends vmPlugin {
      * @author Valerie Isaksen
      */
     protected function onShowOrderFE($virtuemart_order_id, $virtuemart_method_id, &$method_info) {
-	if (!($this->selectedThisByMethodId($virtuemart_method_id))) {
-	    return null;
-	}
-	$method_info = $this->getOrderMethodNamebyOrderId($virtuemart_order_id);
+		if (!($this->selectedThisByMethodId($virtuemart_method_id))) {
+			return null;
+		}
+		$method_info = $this->getOrderMethodNamebyOrderId($virtuemart_order_id);
     }
 
     /**
