@@ -61,7 +61,7 @@ AdminUIHelper::startAdminArea();
 		for ($i = 0, $n = count($this->userList); $i < $n; $i++) {
 			$row = $this->userList[$i];
 			$checked = JHTML::_('grid.id', $i, $row->id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&cid[]=' . $row->id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');
 		?>
 			<tr class="row<?php echo $k ; ?>">

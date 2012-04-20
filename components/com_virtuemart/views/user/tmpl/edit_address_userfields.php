@@ -96,7 +96,10 @@ foreach ($typefields as $typefield) {
     $_set = false;
     $_table = false;
     $_hiddenFields = '';
-    reset($this->userFields['fields']);
+    if(is_array($this->userFields['fields'])) {
+		reset($this->userFields['fields']);
+    }
+
 }
 
 echo $_hiddenFields;

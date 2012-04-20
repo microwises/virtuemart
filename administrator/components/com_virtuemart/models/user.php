@@ -48,7 +48,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function __construct(){
 
-		parent::__construct();
+		parent::__construct('virtuemart_user_id');
 
 		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');

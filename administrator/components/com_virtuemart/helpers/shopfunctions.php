@@ -88,9 +88,13 @@ class ShopFunctions {
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
 				if ($i < $quantity) {
-					$links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=' . $view . '&task=edit&cid[]=' . $value), $tmp) . ', ';
+					if($view!='user'){
+						$cid = 'cid';
+					} else {
+						$cid = 'virtuemart_user_id';
+					}
+					$links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=' . $view . '&task=edit&'.$cid.'[]=' . $value), $tmp) . ', ';
 				}
-				//$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
 				$ttip .= $tmp . ', ';
 
 				//				$list .= $tmp. ', ';
@@ -570,7 +574,7 @@ class ShopFunctions {
 				.'&view=user'
 				.'&task='.$task
 				.'&addrtype=ST'
-				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
+				.'&virtuemart_user_id[]='.$_addressList[$_i]->virtuemart_user_id
 				.'&virtuemart_userinfo_id='.$_addressList[$_i]->virtuemart_userinfo_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
@@ -578,7 +582,7 @@ class ShopFunctions {
 			$useXHTTML = empty($this->useXHTML) ? true:$this->useXHTML;
 			$useSSL = empty($this->useSSL) ? false:$this->useSSL;
 
-$addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task='.$task.'&new=1&addrtype=ST&cid[]='.$userModel->getId(),$useXHTTML,$useSSL) .'"><span class="vmicon vmicon-16-editadd"></span> ';
+$addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task='.$task.'&new=1&addrtype=ST&virtuemart_user_id[]='.$userModel->getId(),$useXHTTML,$useSSL) .'"><span class="vmicon vmicon-16-editadd"></span> ';
 		$addLink .= JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL').' </a>';
 
 			return $addLink.'<ul>' . join('', $_shipTo) . '</ul>';

@@ -75,21 +75,15 @@ class VirtueMartControllerCart extends JController {
 			$success = true;
 			if ($cart->add($virtuemart_product_ids,$success)) {
 				$msg = JText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
-				$mainframe->enqueueMessage($msg);
 				$type = '';
 			} else {
 				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 				$type = 'error';
 			}
-			//			if (JRequest::getWord('format','') =='raw' ) {
-			//				JRequest::setVar('layout','minicart','POST');
-			//				$this->cart();
-			//				//$view->display();
-			//				return ;
-			//			} else {
+
 			$mainframe->enqueueMessage($msg, $type);
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
-			//			}
+
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}

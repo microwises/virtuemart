@@ -118,10 +118,9 @@ class VirtuemartViewUser extends VmView {
 	$this->assignRef('address_type', $address_type);
 
 	$new = false;
-	if (JRequest::getInt('new', '0') === 1) {
+	if (JRequest::getInt('new', '0') == 1) {
 	    $new = true;
 	}
-
 
 	if ($new) {
 	    $virtuemart_userinfo_id = 0;
@@ -146,13 +145,13 @@ class VirtuemartViewUser extends VmView {
 
 	    $task = JRequest::getWord('task', '');
 	} else {
-	    $userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
-	    if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
-		$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
-		vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
-	    }
-	    $userFields = $userFields[$virtuemart_userinfo_id];
-	    $task = 'editAddressSt';
+		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
+	   if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
+			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
+		}
+	   $userFields = $userFields[$virtuemart_userinfo_id];
+	   $task = 'editAddressSt';
 	}
 
 	$this->assignRef('userFields', $userFields);

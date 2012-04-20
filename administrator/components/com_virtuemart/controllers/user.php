@@ -42,8 +42,7 @@ class VirtuemartControllerUser extends VmController {
 	 * @author
 	 */
 	function __construct(){
-		parent::__construct();
-
+		parent::__construct('virtuemart_user_id');
 	}
 
 	/**
@@ -51,10 +50,10 @@ class VirtuemartControllerUser extends VmController {
 	 */
 	function edit($view=0){
 
-		//We set here the cid, when no cid is set to 0, for adding a new user
-		//In every other case the cid is sent.
-		$cid = JRequest::getVar('cid');
-		if(!isset($cid)) JRequest::setVar('cid', (int)0);
+		//We set here the virtuemart_user_id, when no virtuemart_user_id is set to 0, for adding a new user
+		//In every other case the virtuemart_user_id is sent.
+		$cid = JRequest::getVar('virtuemart_user_id');
+		if(!isset($cid)) JRequest::setVar('virtuemart_user_id', (int)0);
 
 		parent::edit('edit');
 	}
@@ -67,8 +66,8 @@ class VirtuemartControllerUser extends VmController {
 	function editshop(){
 
 		$user = JFactory::getUser();
-		//the cid var gets overriden in the edit function, when not set. So we must set it here
-		JRequest::setVar('cid', (int)$user->id);
+		//the virtuemart_user_id var gets overriden in the edit function, when not set. So we must set it here
+		JRequest::setVar('virtuemart_user_id', (int)$user->id);
 		$this->edit();
 
 	}
@@ -122,7 +121,7 @@ class VirtuemartControllerUser extends VmController {
 		$lastTask = JRequest::getWord('last_task');
 		if($cmd == 'apply'){
 			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
-			else $redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
+			else $redirection = 'index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]='.$ret['newId'];
 		} else {
 			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart';
 			else $redirection = 'index.php?option=com_virtuemart&view=user';
