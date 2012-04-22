@@ -195,8 +195,10 @@ class VirtuemartViewInvoice extends VmView {
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
 			if(is_array($returnValues)){
 				foreach($returnValues as $val){
-					if($val==false){
-						/* don't send the invoice */
+					if($val==false and $layout != 'mail'){
+						// don't send the invoice
+						$app = JFactory::getApplication();
+						$app->redirect('index.php?option=com_virtuemart&view=orders','Klarna is doing the invoice');
 					}
 				}
 			}

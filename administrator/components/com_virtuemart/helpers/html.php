@@ -294,7 +294,7 @@ class VmHTML{
 	 * @param string $value
 	 */
 	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
-		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more.'</td>';
+		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more;
 	}
 
 	/**
@@ -306,7 +306,7 @@ class VmHTML{
 	 * @param string $value
 	 */
 	public function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
-		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea ></td>';
+		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea >';
 	}
 	/**
 	 * render editor code

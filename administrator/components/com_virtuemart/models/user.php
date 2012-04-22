@@ -559,7 +559,7 @@ class VirtueMartModelUser extends VmModel {
 
 			foreach($user->getErrors() as $error) {
 				// 				vmError('user bind '.$error);
-				vmError('user bind '.$error,'Couldnt store user '.$error);
+				vmError('user bind '.$error,JText::sprintf('COM_VIRTUEMART_USER_STORE_ERROR',$error));
 			}
 			$message = 'Couldnt bind data to joomla user';
 			array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);

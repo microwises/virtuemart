@@ -357,8 +357,8 @@ class VirtueMartModelVendor extends VmModel {
 
 		$userId = self::getUserIdByVendorId($virtuemart_vendor_id);
 		$usermodel = VmModel::getModel('user');
-
-		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
+// 		$usermodel->setId($userId);
+		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id();
 		$vendorAdressBt = $this->getTable('userinfos');
 		$vendorAdressBt->load($virtuemart_userinfo_id);
 		return $vendorAdressBt;

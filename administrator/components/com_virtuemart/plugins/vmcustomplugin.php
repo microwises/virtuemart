@@ -121,11 +121,16 @@ abstract class vmCustomPlugin extends vmPlugin {
     		if(!isset($this->params->$k)){
     			$this->params->$k = $field->$k;
     		}
-
     	}
 
 	}
 
+	/**
+	 * Helper to add all params of specific product of this custom to an object
+	 *
+	 * @param object $field
+	 * @param int $product_id
+	 */
 	protected function getPluginProductDataCustom(&$field,$product_id){
 
 		$id = $this->getIdForCustomIdProduct( $product_id,$field->virtuemart_custom_id) ;
@@ -142,9 +147,13 @@ abstract class vmCustomPlugin extends vmPlugin {
 		}
 
 	}
-	/*
+
+	/**
 	 * helper to get plugin table as object
 	 * All params are added to $this->params plugin
+	 *
+	 * @param unknown_type $field
+	 * @param unknown_type $product_id
 	 */
 	protected function getPluginCustomData(&$field,$product_id){
 
@@ -158,8 +167,10 @@ abstract class vmCustomPlugin extends vmPlugin {
 				$this->params->$k = $datas->$k;
 			}
 		}
-
 	}
+
+
+
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *

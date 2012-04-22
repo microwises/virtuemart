@@ -154,7 +154,6 @@ class TableMedias extends VmTable {
 					if($item['virtuemart_media_id']!=$this->virtuemart_media_id) {
 						$lastDir = substr($this->file_url,0,strrpos($this->file_url,'/'));
 						$lastDir = substr($lastDir,strrpos($lastDir,'/')+1);
-// 						vmdebug('media check',$this->file_url,$lastDir);
 						if(!empty($lastDir)){
 							$this->file_title = $this->file_title.'_'.$lastDir;
 						} else {
@@ -238,7 +237,7 @@ class TableMedias extends VmTable {
 			     }
 
 			     //images
-			     elseif($file_extension === 'jpg' || $file_extension === 'jpeg'){
+			     elseif($file_extension === 'jpg' or $file_extension === 'jpeg' or $file_extension === 'jpe'){
 				     $this->file_mimetype = 'image/jpeg';
 			     }
 			     elseif($file_extension === 'gif'){
@@ -262,6 +261,23 @@ class TableMedias extends VmTable {
 			     elseif($file_extension === 'oga'){
 			     	$this->file_mimetype = 'audio/vorbis';
 			     }
+			     elseif($file_extension === 'wma'){
+			     	$this->file_mimetype = 'audio-/x-ms-wma';
+			     }
+
+			     //video
+			     elseif( $file_extension === 'mp4' or $file_extension === 'mpe' or $file_extension === 'mpeg' or $file_extension === 'mpg' or $file_extension === 'mpga'){
+			     	$this->file_mimetype = 'video/mpeg';
+			     }
+			     elseif($file_extension === 'avi'){
+			     	$this->file_mimetype = 'video/x-msvideo';
+			     }
+			     elseif($file_extension === 'qt' or $file_extension === 'mov'){
+			     	$this->file_mimetype = 'video/quicktime';
+			     }
+			     elseif($file_extension === 'wmv'){
+			     	$this->file_mimetype = 'video/x-ms-wmv';
+			     }
 
 			     //applications
 			     elseif($file_extension === 'zip'){
@@ -275,6 +291,9 @@ class TableMedias extends VmTable {
 			     }
 			     elseif($file_extension === 'exe'){
 			     	$this->file_mimetype = 'application/octet-stream';
+			     }
+			     elseif($file_extension === 'swf'){
+			     	$this->file_mimetype = 'application/x-shockwave-flash';
 			     }
 			     else{
 				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
