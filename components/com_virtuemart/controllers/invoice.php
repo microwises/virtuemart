@@ -113,7 +113,7 @@ class VirtueMartControllerInvoice extends JController
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		// set document information
-		$pdf->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
+		$pdf->SetCreator('Invoice by VirtueMart 2, used library tcpdf');
 		$pdf->SetAuthor($view->vendor->vendor_name);
 
 		$pdf->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));

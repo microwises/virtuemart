@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * http://virtuemart.net
  */
-jimport('phpxmlrpc.xmlrpc');
+
 
 class klarna_payments {
 
@@ -72,7 +72,11 @@ class klarna_payments {
 
     function __construct($method, $country, $cart) {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
-	$this->klarna_email = $cart->BT['email'];
+	if ($cart->BT == 0 or empty($cart->BT)) {
+	$this->klarna_email = '';
+	} else {
+	    $this->klarna_email = $cart->BT['email'];
+	}
 	// Set country and currency set in the store.
 
 	$cData = KlarnaHandler::countryData($method, $country);
@@ -95,10 +99,11 @@ class klarna_payments {
 	$this->web_root = JURI::base();
 	try {
 	    $this->klarna = new Klarna_virtuemart();
-	    //$this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country_code'], $this->cData['language'], $this->cData['currency'], $this->mode , VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, false);
+	    //$this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country_code'], $this->cData['language'], $this->cData['currency'], $this->mode , VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), false);
 
-	    $this->klarna->config($this->eid, $this->secret, $this->country, $this->lang, $this->currency, $this->mode, VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, $this->ssl);
+	    $this->klarna->config($this->eid, $this->secret, $this->country, $this->lang, $this->currency, $this->mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), $this->ssl);
 	} catch (Exception $e) {
+	    VmDebug('klarna_payments', $e);
 	    unset($this->klarna);
 	}
     }
@@ -190,16 +195,7 @@ class klarna_payments {
 	return $aValues;
     }
 
-    function getReadOnly($aValues) {
-	foreach ($aValues as $key => $aValue) {
-	    if (empty($aValue)) {
-		$reaOnly[$key] = 'readonly="read-only"';
-	    } else {
-		$reaOnly[$key] = '';
-	    }
-	}
-	return $reaOnly;
-    }
+
 
     /**
      * German and dutch purchases need a different structure
@@ -233,25 +229,25 @@ class klarna_payments {
      * come back after failing a purchase.
      */
     private function setPreviouslyFilledIn($klarna_data) {
-	if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['PNO'])) {
-	    $pno = $klarna_data['PNO'];
+	if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['pno'])) {
+	    $pno = $klarna_data['pno'];
 	    $this->klarna_bday['year'] = substr($pno, 4, 4);
 	    $this->klarna_bday['month'] = substr($pno, 2, 2);
 	    $this->klarna_bday['day'] = substr($pno, 0, 2);
 	}
-	$this->klarna_street = ( (isset($klarna_data['STREET']) &&
-		!isset($this->klarna_street)) ? $klarna_data['STREET'] :
+	$this->klarna_street = ( (isset($klarna_data['street']) &&
+		!isset($this->klarna_street)) ? $klarna_data['street'] :
 			$this->klarna_street );
-	$this->klarna_houseNr = ( (isset($klarna_data['HOUSE_NO']) &&
-		!isset($this->klarna_houseNr)) ? $klarna_data['HOUSE_NO'] :
+	$this->klarna_houseNr = ( (isset($klarna_data['house_no']) &&
+		!isset($this->klarna_houseNr)) ? $klarna_data['house_no'] :
 			$this->klarna_houseNr );
-	$this->klarna_houseExt = ( (isset($klarna_data['HOUSE_EXT']) &&
-		!isset($this->klarna_houseExt)) ? $klarna_data['HOUSE_EXT'] :
+	$this->klarna_houseExt = ( (isset($klarna_data['house_ext']) &&
+		!isset($this->klarna_houseExt)) ? $klarna_data['house_ext'] :
 			$this->klarna_houseExt );
-	$this->klarna_gender = ( (isset($klarna_data['GENDER']) &&
-		!isset($this->klarna_gender)) ? $klarna_data['GENDER'] :
+	$this->klarna_gender = ( (isset($klarna_data['gender']) &&
+		!isset($this->klarna_gender)) ? $klarna_data['gender'] :
 			$this->klarna_gender );
-	$this->klarna_year_salary = ( (isset($klarna_data['YEAR_SALARY']) && !isset($this->klarna_year_salary)) ? $klarna_data['YEAR_SALARY'] : $this->klarna_year_salary );
+	$this->klarna_year_salary = ( (isset($klarna_data['year_salary']) && !isset($this->klarna_year_salary)) ? $klarna_data['year_salary'] : $this->klarna_year_salary );
     }
 
     /**
@@ -281,11 +277,6 @@ class klarna_payments {
 	    $link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
 	    $kCheckout->addSetupValue('agb_link', $link);
 	}
-	$kCheckout->addMultipleSetupValues(
-		array("web_root" => $this->web_root,
-		    "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/",
-		    "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/',
-		    "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
 
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$symbol = KlarnaHandler::getCurrencySymbolForCountry($method, $this->country);
@@ -330,10 +321,10 @@ class klarna_payments {
 
 	$aParams = $this->getParams();
 	$aValues = $this->getValues();
-	$aReadOnly = $this->getReadOnly($aValues);
+
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues, $aReadOnly));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
 
 	return array('id' => 'klarna_invoice', 'module' => $title, 'fields' => $fields);
     }
@@ -394,8 +385,6 @@ class klarna_payments {
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 	     // Cheapest is in the Klarna country currency, convert it to the current currency display
 
-	 
-
 	    $currencyDisplay = CurrencyDisplay::getInstance( );
 	    $countryCurrencyId = $this->virtuemart_currency_id;
 	    $sFee = $currencyDisplay->priceDisplay($cheapest, 0, 1,false);
@@ -433,11 +422,10 @@ class klarna_payments {
 
 	$aParams = $this->getParams();
 	$aValues = $this->getValues();
-	$aReadOnly = $this->getReadOnly($aValues);
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues, $aReadOnly));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
 
 	// If module isn't enabled, don't show it.
 	if ($this->enabled == false) {
@@ -504,18 +492,18 @@ class klarna_payments {
 	if (isset($_SESSION['KLARNA_DATA'])) {
 	    $this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);
 	}
-	$aParams = $this->getParams();
-	$aValues = $this->getValues();
-	$aReadOnly = $this->getReadOnly($aValues);
 
 	// If module isn't enabled, don't show it.
 	if ($this->enabled == false) {
 	    return false;
 	}
+$aParams = $this->getParams();
+	$aValues = $this->getValues();
+
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues, $aReadOnly));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
 	return array('id' => "klarna_SpecCamp", 'module' => $title, 'fields' => $fields);
     }
 

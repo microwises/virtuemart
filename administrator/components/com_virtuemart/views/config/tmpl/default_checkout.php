@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP_EXPLAIN'); ?>">
 					<label for="addtocart_popup"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP') ?>
-				</label> 
+				</label>
 			</span>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
 					<label for="addtocart_popup"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX') ?>
-				</label> 
+				</label>
 			</span>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
 					<label for="automatic_shipment"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT') ?>
-				</label> 
+				</label>
 			</span>
 			</td>
 			<td>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
 					<label for="automatic_payment"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT') ?>
-				</label> 
+				</label>
 			</span>
 			</td>
 			<td>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
 					<label for="agree_to_tos_onorder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
-				</label> 
+				</label>
 			</span>
 			</td>
 			<td>
@@ -141,17 +141,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo VmHTML::checkbox('oncheckout_show_images', $this->config->get('oncheckout_show_images',0)); ?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key"><span
-				class="hasTip"
-				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_PDF_INVOICES_EXPLAIN'); ?>">
-					<label for="pdf_invoice"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_PDF_INVOICES') ?>
-				</label> </span>
-			</td>
-			<td>
-			<?php echo VmHTML::checkbox('pdf_invoice', $this->config->get('pdf_invoice',1)); ?>
-			</td>
-		</tr>
+
 		<tr>
 			<td class="key"><span
 				class="hasTip"
@@ -160,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 				 </span>
 			</td>
 			<td>
-					<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'inv_os', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('inv_os','C'),false,true); ?>
+					<?php echo VmHTML::select('Select.genericlist', $this->orderStatusList, 'inv_os', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('inv_os','C'),false,true); ?>
 
 			</td>
 		</tr>

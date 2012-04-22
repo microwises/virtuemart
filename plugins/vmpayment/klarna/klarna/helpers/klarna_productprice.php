@@ -45,7 +45,7 @@ class klarna_productPrice {
 	try {
 	    $iMode = KlarnaHandler::getKlarnaMode($method);
 	    $this->klarna = new Klarna_virtuemart();
-	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, false);
+	    $this->klarna->config($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $iMode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), false);
 	} catch (Exception $e) {
 	    vmDebug('klarna_productPrice', $e->getMessage(), $this->cData);
 	    unset($this->klarna);

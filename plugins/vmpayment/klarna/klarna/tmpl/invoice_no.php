@@ -200,4 +200,5 @@ jQuery( function (){
 </div>
 <input type="hidden" name="<?php echo $viewData['input']['emailAddress'] ; ?>"
     value="<?php echo @$viewData['value']['emailAddress'] ; ?>" />
+<?php echo JHTML::_('form.token'); ?>
 <!-- END KLARNA BOX -->

@@ -196,7 +196,7 @@ class VirtuemartViewInvoice extends VmView {
 			if(is_array($returnValues)){
 				foreach($returnValues as $val){
 					if($val==false){
-						return parent::display($tpl);
+						/* don't send the invoice */
 					}
 				}
 			}

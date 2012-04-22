@@ -28,12 +28,7 @@ class KlarnaAPI {
      * @var array
      */
     protected $aInputValues = array();
-     /**
-     * Array with different input value values
-     *
-     * @var array
-     */
-    protected $aReadOnlyParameters = array();
+
 
     /**
      * The county code

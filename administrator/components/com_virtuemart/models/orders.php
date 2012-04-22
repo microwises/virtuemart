@@ -1108,7 +1108,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
-		$pdfInvoice = VmConfig::get('pdf_invoice', 1);
+		$pdfInvoice = VmConfig::get('pdf_invoice', 1); // backwards compatible
 
 		// florian : added if pdf invoice are enabled
 		if ( ($order['details']['BT']->order_status == $orderstatusForInvoice) && ($path !== 0) && ($pdfInvoice )  ){

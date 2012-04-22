@@ -39,7 +39,7 @@ defined('JPATH_BASE') or die();
 	foreach ($eid_array as $country => $eid_data) {
 	    try {
 		$klarna = new Klarna_virtuemart();
-		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $data->klarna_mode, VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, ($data->klarna_mode=='klarna_live'));
+		$klarna->config($eid_data['eid'], $eid_data['secret'], null, null, null, $data->klarna_mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), ($data->klarna_mode=='klarna_live'));
 		$klarna->setCountry($country);
 		$pclasses = $klarna->getPClasses();
 		$total = $total + count($pclasses);

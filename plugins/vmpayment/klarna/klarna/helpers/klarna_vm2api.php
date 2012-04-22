@@ -32,15 +32,14 @@ class KlarnaVm2API extends KlarnaAPI {
 	parent::__construct($a_sCountry, $a_sLangISO, $a_sType, $a_iSum, $a_iFlag, $a_oKlarna, $aTypes, $sPath);
     }
 
-    function retrieveLayout($a_aParams, $a_aValues, $a_aReadOnly, $aTemplateData = null) {
+    function retrieveLayout($a_aParams, $a_aValues,   $aTemplateData = null) {
 	if ($a_aValues != null)
 	    $this->aInputValues = array_merge($this->aInputValues, $a_aValues);
 
 
 	if ($a_aParams != null)
 	    $this->aInputParameters = array_merge($this->aInputParameters, $a_aParams);
-	if ($a_aReadOnly != null)
-	    $this->aReadOnlyParameters = array_merge($this->aReadOnlyParameters, $a_aReadOnly);
+
 	if (is_array($this->aPClasses)) {
 	    $this->aInputValues['paymentPlan'] = '';
 	    foreach ($this->aPClasses as $pclass) {
@@ -59,7 +58,6 @@ class KlarnaVm2API extends KlarnaAPI {
 		    'input' => $this->aInputParameters,
 		    'value' => $this->aInputValues,
 		    'setup' => $this->aSetupSettings,
-		    'readonly' => $this->aReadOnlyParameters,
 			), 'klarna', 'payment');
     }
 

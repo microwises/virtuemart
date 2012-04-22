@@ -45,6 +45,9 @@ if (!class_exists('KlarnaHandler'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 
 
+require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc.inc');
+require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc_wrappers.inc');
+
 define('KLARNA_INVOICE_ACTIVE', 4);
 
 class plgVmPaymentKlarna extends vmPSPlugin {
@@ -145,7 +148,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    $cart = VirtueMartCart::getCart();
 	}
 	$address = (($cart->ST == 0 or empty($cart->ST)) ? $cart->BT : $cart->ST);
-	if (!isset($address['virtuemart_country_id'])) {
+	if (!isset($address['virtuemart_country_id']) or empty($address['virtuemart_country_id']) ) {
 	    if ($fld == 'country_3_code') {
 		$countryCode = 'swe';
 	    } else {
@@ -172,7 +175,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * TODO: check if ST or BT address
      */
 
-    function _getOrderAddressCountryCode($virtuemart_order_id, $fld = 'country_3_code') {
+    function getCountryCodeByOrderId($virtuemart_order_id, $fld = 'country_3_code') {
 	$db = JFactory::getDBO();
 	$q = 'SELECT `virtuemart_country_id`,  `address_type` FROM #__virtuemart_order_userinfos  WHERE virtuemart_order_id=' . $virtuemart_order_id;
 
@@ -287,7 +290,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	$html = '';
 
-	$payments = new klarna_payments($method, $country_code, $cart);
+	$payments = new klarna_payments($method, $countrySettings['country_code_3'], $cart);
 	$klarna_pm = $payments->invoice($method);
 	$html .= $this->renderByLayout('displaypayment', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
 	if ($partpay > 0) {
@@ -377,14 +380,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     function checkCountryCondition($method, $country_code, $cart) {
 
 	$active_country = "klarna_active_" . strtolower($country_code);
+	if (!isset($method->$active_country) or !$method->$active_country) {
+	    return false;
+	}
 	if (empty($country_code)) {
 	    $app = JFactory::getApplication();
 	    $msg = JText::_('VMPAYMENT_KLARNA_GET_SWEDISH_ADDRESS');
 	    $country_code = "swe";
 	    vmWarn($msg);
 	    //return false;
-	} else if (!$method->$active_country) {
-	    return false;
 	}
 	// convert price in euro
 	$currency = CurrencyDisplay::getInstance();
@@ -499,7 +503,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    $invoiceno = $result[1];
 	    if ($invoiceno && is_numeric($invoiceno)) {
 		//Get address id used for this order.
-		$country = $sessionKlarnaData->KLARNA_DATA['COUNTRY'];
+		$country = $sessionKlarnaData->KLARNA_DATA['country'];
 		// $lang = KlarnaHandler::getLanguageForCountry($method, KlarnaHandler::convertToThreeLetterCode($country));
 		// $d['order_payment_name'] = $kLang->fetch('MODULE_INVOICE_TEXT_TITLE', $lang);
 		// Add a note in the log
@@ -511,7 +515,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 		$dbValues['order_payment'] = $order['details']['BT']->order_payment;
 		$dbValues['order_payment_tax'] = $order['details']['BT']->order_payment_tax;
-		$dbValues['klarna_pclass'] = $sessionKlarnaData->KLARNA_DATA['PCLASS'];
+		$dbValues['klarna_pclass'] = $sessionKlarnaData->KLARNA_DATA['pclass'];
 		$dbValues['klarna_invoice_no'] = $invoiceno;
 		$dbValues['klarna_log'] = $log;
 		$dbValues['klarna_eid'] = $result['eid'];
@@ -622,9 +626,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	}
 	// Status code is === 3==> active invoice. Cannot be be deleted
 	// the invoice is active
-	if ($order->order_status == $method->status_success) {
+	//if ($order->order_status == $method->status_success) {
 	    if ($invNo = $this->_getKlarnaInvoiceNo($payments)) {
-		$country = $this->_getOrderAddressCountryCode($order->virtuemart_order_id);
+		//vmDebug('order',$order);return;
+		$country = $this->getCountryCodeByOrderId($order->virtuemart_order_id);
 		$klarna = new Klarna_virtuemart();
 		$cData = KlarnaHandler::countryData($method, $country);
 		$mode = KlarnaHandler::getKlarnaMode($method);
@@ -651,13 +656,16 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		    $log = $e->getMessage() . " (#" . $e->getCode() . ")";
 		    $this->_updateKlarnaInternalData($order, $log, $invNo);
 		    VmError($e->getMessage() . " (#" . $e->getCode() . ")");
+		    if ($e->getCode()=='8113') {
+			VmError('invoice_not_passive');
+		    }
 		    return false;
 		}
 	    }
-	} else {
-	    VmError('VMPAYMENT_KLARNA_CANNOT_DELETE');
-	    return false;
-	}
+	//} else {
+	 //   VmError('VMPAYMENT_KLARNA_CANNOT_DELETE');
+	//    return false;
+	//}
 	return true;
     }
 
@@ -685,7 +693,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      *  @author Valerie Isaksen
      */
 
-
     function plgVmOnPaymentNotification() {
 
 	if (!class_exists('VirtueMartModelOrders'))
@@ -694,7 +701,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$payment_methodid = JRequest::getInt('payment_methodid');
 	$invNo = JRequest::getInt('invNo');
 	$country = JRequest::getInt('country');
-	KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country );
+	KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
 	$vendorId = 0;
 	if (!($payment = $this->getDataByOrderId($virtuemart_order_id))) {
 	    return;
@@ -704,9 +711,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
- $invNo = JRequest::getInt('invNo');
+	$invNo = JRequest::getInt('invNo');
 	$country = JRequest::getInt('country');
-	$order_status= KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country );
+	$order_status = KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
 
 	$order['customer_notified'] = 1;
 
@@ -724,8 +731,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$this->emptyCart($paypal_data['custom']);
 	//die();
     }
-
-
 
     /*
      * @author Patrick Kohl
@@ -755,7 +760,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$settings = KlarnaHandler::getCountryData($method, $country);
 
 	$klarna = new Klarna_virtuemart();
-	$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode($method), VMKLARNA_PC_TYPE, VMKLARNA_PC_URI, true);
+	$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode($method), KlarnaHandler::getKlarna_pc_type(), KlarnaHandler::getKlarna_pc_type(), true);
 
 	$SelfCall = new KlarnaAjax($klarna, (int) $settings['eid'], JPATH_VMKLARNAPLUGIN, Juri::base());
 	$action = JRequest::getWord('action');
@@ -779,76 +784,81 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function getPclasses() {
-    	jimport('phpxmlrpc.xmlrpc');
-    	$jlang = JFactory::getLanguage();
-    	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
-    	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-    	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
-    	$handler = new KlarnaHandler();
-    	// call klarna server for pClasses
-    	//$methodid = jrequest::getInt('methodid');
-    	if (!class_exists('VmModel'))
-    	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
-    	$model = VmModel::getModel('paymentmethod');
-    	$payment = $model->getPayment();
-    	if (!class_exists('vmParameters'))
-    	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-    	$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
-    	$data = $parameters->getParamByName('data');
-    	// echo "<pre>";print_r($data);
-    	$json = $handler->fetchPClasses($data);
-    	ob_start();
-    	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
-    	$json['pclasses'] = ob_get_clean();
-    	$document = JFactory::getDocument();
-    	$document->setMimeEncoding('application/json');
-    	//echo json_encode($json, true);
-    	echo json_encode($json);
-    	jexit();
-    	// echo result with tmpl ?
+
+	$jlang = JFactory::getLanguage();
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
+	$handler = new KlarnaHandler();
+	// call klarna server for pClasses
+	//$methodid = jrequest::getInt('methodid');
+	if (!class_exists('VmModel'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+	$model = VmModel::getModel('paymentmethod');
+	$payment = $model->getPayment();
+	if (!class_exists('vmParameters'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+	$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
+	$data = $parameters->getParamByName('data');
+	// echo "<pre>";print_r($data);
+	$json = $handler->fetchPClasses($data);
+	ob_start();
+	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
+	$json['pclasses'] = ob_get_clean();
+	$document = JFactory::getDocument();
+	$document->setMimeEncoding('application/json');
+	//echo json_encode($json, true);
+	echo json_encode($json);
+	jexit();
+	// echo result with tmpl ?
     }
 
     /*
-    * @author Valérie Isaksen
-    *
-    */
+     * @author Valérie Isaksen
+     *
+     */
+
     function checkOrderStatus() {
-    	if (!class_exists('VirtueMartModelOrders'))
-    	require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-    	$payment_methodid = JRequest::getInt('payment_methodid');
-    	$invNo = JRequest::getInt('invNo');
-    	$country = JRequest::getInt('country');
-    	$orderNumber = JRequest::getString('order_number');
-    	$orderPass = JRequest::getString('order_pass');
+	$payment_methodid = JRequest::getInt('payment_methodid');
+	$invNo = JRequest::getInt('invNo');
+	$orderNumber = JRequest::getString('order_number');
+	$orderPass = JRequest::getString('order_pass');
 
-    	if (!($method = $this->getVmPluginMethod($payment_methodid))) {
-    		return null; // Another method was selected, do nothing
-    	}
+	if (!($method = $this->getVmPluginMethod($payment_methodid))) {
+	    return null; // Another method was selected, do nothing
+	}
 
-    	$modelOrder = VmModel::getModel('orders');
-    	// If the user is not logged in, we will check the order number and order pass
-    	$orderId = $modelOrder->getOrderIdByOrderPass($orderNumber, $orderPass);
-    	if (empty($orderId)) {
-    		echo 'Invalid order_number/password ' . JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-    		return 0;
-    	}
-    	//$orderDetails = $modelOrder->getOrder($orderId);
-    	$klarna_order_status = KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
-    	if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
-    		/* if Klarna's order status is pending: add it in the history */
-    		/* The order is under manual review and will be accepted or denied at a later stage.
-    		 Use cronjob with checkOrderStatus() or visit Klarna Online to check to see if the status has changed.
-    		You should still show it to the customer as it was accepted, to avoid further attempts to fraud. */
-    		$order['order_status'] = $method->status_success;
-    	} else {
-    		$order['order_status'] = $method->status_canceled;
-    	}
-    	$order['customer_notified'] = 0;
-    	$order['comments'] = $log;
-    	$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
-    	//jexit();
-    	// echo result with tmpl ?
+	$modelOrder = VmModel::getModel('orders');
+	// If the user is not logged in, we will check the order number and order pass
+	$orderId = $modelOrder->getOrderIdByOrderPass($orderNumber, $orderPass);
+	if (empty($orderId)) {
+	    VmError('Invalid order_number/password ' . JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
+	    return 0;
+	}
+
+	$country = $this->getCountryCodeByOrderID($orderId);
+	$settings = KlarnaHandler::countryData($method, $country);
+	$mode = KlarnaHandler::getKlarnaMode($method);
+	$klarna_order_status = KlarnaHandler::checkOrderStatus($settings, $mode, $invNo);
+	if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
+	    /* if Klarna's order status is pending: add it in the history */
+	    /* The order is under manual review and will be accepted or denied at a later stage.
+	      Use cronjob with checkOrderStatus() or visit Klarna Online to check to see if the status has changed.
+	      You should still show it to the customer as it was accepted, to avoid further attempts to fraud. */
+	    $order['order_status'] = $method->status_success;
+	    $order['customer_notified'] = 1;
+	} elseif ($klarna_order_status == KlarnaFlags::DENIED) {
+	    $order['order_status'] = $method->status_canceled;
+	    $order['customer_notified'] = 1;
+	} else {
+	    $order['comments'] = $klarna_order_status;
+	    $order['customer_notified'] = 0;
+	}
+	$modelOrder->updateStatusForOneOrder($orderId, $order, true);
+	jexit();
     }
 
     function _getTablepkeyValue($virtuemart_order_id) {
@@ -908,9 +918,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	    $country = $this->_getOrderAddressCountryCode($virtuemart_order_id);
+	    $country = $this->getCountryCodeByOrderId($virtuemart_order_id);
 	    $invNo = $payments[$nb - 1]->klarna_invoice_no;
-	    $checkOrderStatus = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=checkOrderStatus&payment_methodid=' . (int) $payment_method_id . '&order_number=' . $order->order_number.'&order_pass=' . $order->order_pass . '&country=' . $country . '&invNo=' . $invNo;
+	    $checkOrderStatus = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=checkOrderStatus&payment_methodid=' . (int) $payment_method_id . '&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass . '&country=' . $country . '&invNo=' . $invNo;
 
 	    $link = '<a href="' . $checkOrderStatus . '">' . JText::_('VMPAYMENT_KLARNA_GET_NEW_STATUS') . '</a>';
 	    $html .= $this->getHtmlRowBE('KLARNA_PAYMENT_CHECK_ORDER_STATUS', $link);
@@ -949,7 +959,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * skipped!), or null when this method is not actived.
 
      */
-    public function plgVmOnUpdateOrderPayment($order, $old_order_status) {
+    public function plgVmOnUpdateOrderPayment(&$order, $old_order_status) {
 	if (!$this->selectedThisByMethodId($order->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
 	}
@@ -961,16 +971,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    vmError(JText::sprintf('VMPAYMENT_KLARNA_ERROR_NO_DATA', $order->virtuemart_order_id));
 	    return null;
 	}
-	if (($klarnaStatus = $this->_getKlarnaStatusCode($payments)) != KlarnaFlags::ACCEPTED) {
-	    VmInfo('VMPAYMENT_KLARNA_STATUS_' . $klarnaStatus);
-	    return null;
-	}
+
 	if (!($invNo = $this->_getKlarnaInvoiceNo($payments))) {
 	    return null;
 	}
 	// to actiavte the order
 	if ($order->order_status == $method->status_shipped) {
-	    $country = $this->_getOrderAddressCountryCode($order->virtuemart_order_id);
+	    $country = $this->_getCountryCodeByOrderId($order->virtuemart_order_id);
 	    $klarna = new Klarna_virtuemart();
 	    $cData = KlarnaHandler::countryData($method, $country);
 	    /*
@@ -986,8 +993,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 //You can specify a new pclass ID if the customer wanted to change it before you activate.
 
 		$invoice_url = $klarna->activateInvoice($invNo);
-
-
 		$dbValues['order_number'] = $order->order_number;
 		$dbValues['virtuemart_order_id'] = $order->virtuemart_order_id;
 		$dbValues['virtuemart_paymentmethod_id'] = $order->virtuemart_paymentmethod_id;
@@ -1068,18 +1073,18 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$sessionKlarna = new stdClass();
 	//$post = JRequest::get('post');
 
-	$klarna_paymentmethod = JRequest::getVar('klarna_paymentmethod');
-	if ($klarna_paymentmethod == 'klarna_invoice') {
+	$klarnaData_paymentmethod = JRequest::getVar('klarna_paymentmethod');
+	if ($klarnaData_paymentmethod == 'klarna_invoice') {
 	    $kIndex = "klarna_";
-	    $klarna_payment = "klarna_invoice";
+	    $klarnaData_payment = "klarna_invoice";
 	    $sessionKlarna->klarna_option = 'invoice';
-	} elseif ($klarna_paymentmethod == 'klarna_partPayment') {
+	} elseif ($klarnaData_paymentmethod == 'klarna_partPayment') {
 	    $kIndex = "klarna_part_"; //"klarna_partPayment";
-	    $klarna_payment = "klarna_partpay";
+	    $klarnaData_payment = "klarna_partpay";
 	    $sessionKlarna->klarna_option = 'part';
-	} elseif ($klarna_paymentmethod == 'klarna_speccamp') {
+	} elseif ($klarnaData_paymentmethod == 'klarna_speccamp') {
 	    $kIndex = "klarna_spec_";
-	    $klarna_payment = "klarna_speccamp";
+	    $klarnaData_payment = "klarna_speccamp";
 	    $sessionKlarna->klarna_option = 'spec';
 	} else {
 	    return;
@@ -1088,178 +1093,109 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	// Store payment_method_id so we can activate the
 	// right payment in case something goes wrong.
 	$sessionKlarna->virtuemart_payment_method_id = $cart->virtuemart_paymentmethod_id;
-	$sessionKlarna->klarna_paymentmethod = $klarna_paymentmethod;
+	$sessionKlarna->klarna_paymentmethod = $klarnaData_paymentmethod;
 
 	$this->_getCartAddressCountryCode($cart, $country3, $countryId, 'country_3_code');
 	// $country2=  strtolower($country2);
 	if (empty($country3)) {
-	    $country3 = "SE";
+	    $country3 = "SWE";
 	    $countryId = ShopFunctions::getCountryIDByName($country3);
 	}
 
 	$cData = KlarnaHandler::countryData($method, strtoupper($country3));
+
+	$klarnaData = KlarnaHandler::getDataFromEditPayment($kIndex);
+	$klarnaData['country'] = $cData['country_code'];
 	//$country = $cData['country_code']; //KlarnaHandler::convertCountry($method, $country2);
 	//$lang = $cData['language_code']; //KlarnaHandler::getLanguageForCountry($method, $country);
 	// Get the correct data
 	//Removes spaces, tabs, and other delimiters.
-	$klarna_pno = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex . 'pnum', ''));
-	if (empty($klarna_pno)) {
-	    $klarna_pno = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar('socialNumber'));
-	}
-	$klarna_phone = JRequest::getVar($kIndex . 'phone');
-	$klarna_email = JRequest::getVar($kIndex . 'email');
-	$klarna_gender = JRequest::getVar($kIndex . 'gender');
-	$klarna_street = JRequest::getVar($kIndex . 'street');
-	$klarna_house_no = JRequest::getVar($kIndex . 'house');
-	$klarna_house_ext = JRequest::getVar($kIndex . 'house_extension');
-	$klarna_year_salary = JRequest::getVar($kIndex . 'ysalary');
-	$klarna_reference = JRequest::getVar($kIndex . 'reference');
-	$klarna_city = JRequest::getVar($kIndex . 'city');
-	$klarna_zip = JRequest::getVar($kIndex . 'zip');
-	$klarna_first_name = JRequest::getVar($kIndex . 'first_name');
-	$klarna_last_name = JRequest::getVar($kIndex . 'last_name');
-	$klarna_invoice_type = JRequest::getVar('klarna_invoice_type');
-	$klarna_company_name = JRequest::getVar('klarna_company_name');
-
-	if (!isset($klarna_pno) || $klarna_pno == '') {
-	    $klarna_pno = JRequest::getVar($kIndex . 'birth_day') .
-		    JRequest::getVar($kIndex . 'birth_month') .
-		    JRequest::getVar($kIndex . 'birth_year');
-	}
-
-
-
 	// If it is a swedish customer we use the information from getAddress
 	if (strtolower($cData['country_code']) == "se") {
-
-	    $swedish_addresses = klarnaHandler::getAddresses($klarna_pno, $method);
+	    if (empty($klarnaData['pno'])) {
+		VmInfo('VMPAYMENT_KLARNA_MUST_VALID_PNO');
+		return false;
+	    }
+	    $swedish_addresses = klarnaHandler::getAddresses($klarnaData['pno'], $cData);
 	    if (empty($swedish_addresses)) {
 		VmInfo('VMPAYMENT_KLARNA_NO_GETADDRESS');
+		return false;
 	    }
 	    //This example only works for GA_GIVEN.
 	    foreach ($swedish_addresses as $index => $addr) {
 		if ($addr->isCompany) {
-		    $klarna_company_name = $addr->getCompanyName();
-		    $klarna_street = $addr->getStreet();
-		    $klarna_zip = $addr->getZipCode();
-		    $klarna_city = $addr->getCity();
-		    $klarna_country = $addr->getCountryCode();
+		    $klarnaData['company_name'] = $addr->getCompanyName();
+		    $klarnaData['street'] = $addr->getStreet();
+		    $klarnaData['zip'] = $addr->getZipCode();
+		    $klarnaData['city'] = $addr->getCity();
+		    $klarnaData['country'] = $addr->getCountryCode();
 		} else {
-		    $klarna_first_name = $addr->getFirstName();
-		    $klarna_last_name = $addr->getLastName();
-		    $klarna_street = $addr->getStreet();
-		    $klarna_zip = $addr->getZipCode();
-		    $klarna_city = $addr->getCity();
-		    $klarna_country = $addr->getCountryCode();
+		    $klarnaData['first_name'] = $addr->getFirstName();
+		    $klarnaData['last_name'] = $addr->getLastName();
+		    $klarnaData['street'] = $addr->getStreet();
+		    $klarnaData['zip'] = $addr->getZipCode();
+		    $klarnaData['city'] = $addr->getCity();
+		    $klarnaData['country'] = $addr->getCountryCode();
+
 		}
+		   $klarnaData['virtuemart_country_id'] = shopFunctions::getCountryIDByName($klarnaData['country']);
 	    }
 
-	    /*
 
-	      // Get the address. The address should be sent from the payment
-	      // form split in pieces with | as separator.
-	      // It is already called in the standardregister, so we don't
-	      // have to call it again.
-	      $address = explode('|', JRequest::getVar($kIndex . 'shipment_address'));
-
-	      if ($klarna_invoice_type != 'company') {
-	      $klarna_first_name = $address[0];
-	      $klarna_last_name = $address[1];
-	      $klarna_street = $address[2];
-	      $klarna_zip = $address[3];
-	      $klarna_city = $address[4];
-	      $klarna_company_name = '';
-	      } else {
-	      $name = explode(' ', $klarna_reference, 2);
-	      $klarna_first_name = $name[0];
-	      $klarna_last_name = $name[1];
-	      $klarna_company_name = $address[0];
-	      $klarna_street = $address[1];
-	      $klarna_zip = $address[2];
-	      $klarna_city = $address[3];
-	      }
-	     * */
-	}
-
-	if ($cart->ST == 0 or empty($cart->ST)) {
+	} // end of sweden
+	// IN ALL CASES Update the Shipping Address to what is specified in the register.
+	if ($cart->BT == 0 or empty($cart->BT)) {
+	    $address_type = 'BT';
+	    $prefix = '';
+	} else {
+	    $address_type = 'ST';
 	    $prefix = 'shipto_';
-	    // Update the Shipping Address to what is specified in the register.
-	    $update_data = array(
-		$prefix . 'address_type_name' => 'Klarna',
-		$prefix . 'company' => html_entity_decode($klarna_company_name),
-		$prefix . 'first_name' => html_entity_decode($klarna_first_name),
-		$prefix . 'last_name' => html_entity_decode($klarna_last_name),
-		$prefix . 'address_1' => html_entity_decode($klarna_street) .
-		(isset($klarna_house_no) ? ' ' . $klarna_house_no : '') .
-		(isset($klarna_house_ext) ? ' ' . $klarna_house_ext : ''),
-		$prefix . 'zip' => html_entity_decode($klarna_zip),
-		$prefix . 'city' => html_entity_decode($klarna_city),
-		$prefix . 'virtuemart_country_id' => $countryId,
-		$prefix . 'state' => '-',
-		$prefix . 'phone_1' => $klarna_phone,
-		$prefix . 'user_email' => $klarna_email,
-		'address_type' => 'ST'
-	    );
-
-
-	   // if (false) {
-		$cart->saveAddressInCart($update_data, $update_data['address_type']);
-		vmInfo(JText::_('VMPAYMENT_KLARNA_ADDRESS_UPDATED_NOTICE'));
-	    //}
 	}
-
+	// Update the Shipping Address to what is specified in the register.
+	$update_data = array(
+	    $prefix . 'address_type_name' => 'Klarna',
+	    $prefix . 'company' => html_entity_decode( $klarnaData['company_name']),
+	    $prefix . 'first_name' => html_entity_decode( $klarnaData['first_name'] ),
+	    $prefix . 'last_name' => html_entity_decode( $klarnaData['last_name']),
+	    $prefix . 'address_1' => html_entity_decode($klarnaData['street']) .
+	    (isset($klarnaData['house_no']) ? ' ' . $klarnaData['house_no'] : '') .
+	    (isset($klarnaData['house_ext']) ? ' ' . $klarnaData['house_ext'] : ''),
+	    $prefix . 'zip' => html_entity_decode(  $klarnaData['zip'] ),
+	    $prefix . 'city' => html_entity_decode($klarnaData['city']),
+	    $prefix . 'virtuemart_country_id' =>  $countryId, //$klarnaData['virtuemart_country_id'],
+	    $prefix . 'state' => '',
+	    $prefix . 'phone_1' => $klarnaData['phone'],
+	    $prefix . 'user_email' => $klarnaData['email'],
+	    'address_type' => $address_type
+	);
+// save address in cart if different
+	// if (false) {
+	//$cart->saveAddressInCart($update_data, $update_data['address_type'], true);
+	//vmInfo(JText::_('VMPAYMENT_KLARNA_ADDRESS_UPDATED_NOTICE'));
+	//}
+	//}
 	// Store the Klarna data in a session variable so
 	// we can retrevie it later when we need it
-	$sessionKlarna->KLARNA_DATA = array(
-	    'PNO' => $klarna_pno,
-	    'FIRST_NAME' => $klarna_first_name,
-	    'LAST_NAME' => $klarna_last_name,
-	    'PHONE' => $klarna_phone,
-	    'EMAIL' => $klarna_email,
-	    'PCLASS' => ($klarna_paymentmethod == 'klarna_invoice' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan"))), //???
-	    'STREET' => $klarna_street,
-	    'ZIP' => $klarna_zip,
-	    'CITY' => $klarna_city,
-	    'COUNTRY' => $cData['country_code'],
-	    'INVOICE_TYPE' => $klarna_invoice_type
-	);
-	if ($klarna_invoice_type == 'company') {
-	    $sessionKlarna->KLARNA_DATA['COMPANY_NAME'] = $klarna_company_name;
-	    $sessionKlarna->KLARNA_DATA['REFERENCE'] = $klarna_reference;
-	}
-	if (isset($klarna_gender)) {
-	    $sessionKlarna->KLARNA_DATA['GENDER'] = $klarna_gender;
-	}
-	if (isset($klarna_street)) {
-	    $sessionKlarna->KLARNA_DATA['STREET'] = $klarna_street;
-	}
-	if (isset($klarna_house_no)) {
-	    $sessionKlarna->KLARNA_DATA['HOUSE_NO'] = $klarna_house_no;
-	}
-	if (isset($klarna_house_ext)) {
-	    $sessionKlarna->KLARNA_DATA['HOUSE_EXT'] = $klarna_house_ext;
-	}
-	if (isset($klarna_year_salary)) {
-	    $sessionKlarna->KLARNA_DATA['YEAR_SALARY'] = $klarna_year_salary;
-	}
+	$klarnaData['pclass']=($klarna_paymentmethod == 'klarna_invoice' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan")));
 
+	$sessionKlarna->KLARNA_DATA = $klarnaData;
 
 // 2 letters small
 	//$settings = KlarnaHandler::getCountryData($method, $cart_country2);
 
 	try {
 	    $addr = new KlarnaAddr(
-			    $klarna_email,
-			    $klarna_phone,
+			    $klarnaData['email'],
+			    $klarnaData['phone'],
 			    "",
-			    $klarna_first_name,
-			    $klarna_last_name, '',
-			    $klarna_street,
-			    $klarna_zip,
-			    $klarna_city,
-			    $cData['country_code'], // $settings['country'],
-			    $klarna_house_no,
-			    $klarna_house_ext
+			    $klarnaData['first_name'],
+			    $klarnaData['last_name'], '',
+			    $klarnaData['street'],
+			    $klarnaData['zip'] ,
+			    $klarnaData['city'],
+			    $klarnaData['country'], // $settings['country'],
+			    $klarnaData['house_no'],
+			    $klarnaData['house_ext']
 	    );
 	} catch (Exception $e) {
 	    VmInfo($e->getMessage());
@@ -1316,7 +1252,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	//$html = $this->renderByLayout('displaylogin', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
 	$link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment');
 	foreach ($this->methods as $method) {
-	    $html = $this->renderByLayout('displaylogin', array('editpayment_link' => $link));
+	    $html .= $this->renderByLayout('displaylogin', array('editpayment_link' => $link));
 	}
     }
 
@@ -1341,20 +1277,17 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return null;
 	}
 
-
-
 	$sessionKlarnaData = $this->getKlarnaSessionData();
 	if (empty($sessionKlarnaData)) {
 	    return '';
 	}
-
 
 	$cart_prices_name = '';
 	$cart_prices[$this->_psType . '_tax_id'] = 0;
 	$cart_prices['cost'] = 0;
 
 	$this->_getCartAddressCountryCode($cart, $country_code, $countryId, 'country_2_code');
-	if (strcasecmp($country_code, $sessionKlarnaData->KLARNA_DATA['COUNTRY']) != 0) {
+	if (strcasecmp($country_code, $sessionKlarnaData->KLARNA_DATA['country']) != 0) {
 	    return false;
 	}
 	$paramsName = $this->_psType . '_params';
@@ -1429,35 +1362,35 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return '';
 	}
 	$sessionKlarnaData = unserialize($sessionKlarna);
-
-	KlarnaHandler::convertCountry($method, $this->_getCartAddressCountryCode(null, $country, $countryId, 'country_2_code'));
+	$this->_getCartAddressCountryCode(null, $country, $countryId, 'country_2_code');
+	KlarnaHandler::convertCountry($method, $country);
 	$country = strtolower($country);
 	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo';
 	switch ($sessionKlarnaData->klarna_option) {
 	    case 'invoice':
-		$logo .= '/klarna_invoice_' . $country . '.png';
-		$method = "";
+		$image = '/klarna_invoice_' . $country . '.png';
+		$text = "";
 		break;
 	    case 'partpayment':
 	    case 'part':
-		$logo .= '/klarna_account_' . $country . '.png';
-		$method = "";
+		$image = '/klarna_account_' . $country . '.png';
+		$text = "";
 		break;
 	    case 'speccamp':
-		$logo .= 'klarna_logo.png';
-		$method = JText::_('VMPAYMENT_KLARNA_MODULE_SPEC_TEXT_TITLE');
+		$image = 'klarna_logo.png';
+		$text = JText::_('VMPAYMENT_KLARNA_MODULE_SPEC_TEXT_TITLE');
 		break;
 	    default:
-		$logo = '';
-		$method = '';
+		$image = '';
+		$text = '';
 		break;
 	}
-	$logo .= '"/>';
+	$logo = $logo . $image . '"/>';
 
 	$html = '  <div class="klarna_info">
         <span style="">
-            <a href="http://www.klarna.com/">' . $logo . '</a><br>
-            ' . $method . '
+            <a href="http://www.klarna.com/">' . $logo . '</a><br />
+            ' . $text . '
         </span>
     </div>
 
@@ -1475,7 +1408,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      *
      */
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
-	return null;
+	return 0;
 	return $this->onCheckAutomaticSelected($cart, $cart_prices);
     }
 
@@ -1489,9 +1422,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      */
     public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 
-    	$payment_name = $this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
+	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 
-    	return false;
+	return false;
     }
 
     /**
