@@ -311,7 +311,8 @@ class KlarnaHandler {
 	 */
 	// Get information stored in session and unset the session variable.
 	vmdebug('order',$order);
-	$shipTo = ((!isset($order['details']['ST'] ) or $order['details']['ST'] == 0 or empty($order['details']['ST'])) ? $order['details']['BT'] : $order['details']['ST']);
+	//
+	$shipTo = (!isset($order['details']['ST']) or empty($order['details']['ST']) or count($order['details']['ST'])==0) ? $order['details']['BT'] : $order['details']['ST'];
 	$shipping_tax = $order['details']['BT']->order_shipment_tax;
 
 	$total_price_excl_vat = $order['details']['BT']->order_subtotal;

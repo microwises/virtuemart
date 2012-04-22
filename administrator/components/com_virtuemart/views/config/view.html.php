@@ -82,6 +82,7 @@ class VirtuemartViewConfig extends VmView {
 		$orderStatusModel=VmModel::getModel('orderstatus');
 		$orderStates = $orderStatusModel->getOrderStatusList();
 		$orderStatusList = array();
+		$orderStatusList[0] = JText::_('COM_VIRTUEMART_NONE');
 		foreach ($orderStates as $orderState) {
 			$orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
 		}

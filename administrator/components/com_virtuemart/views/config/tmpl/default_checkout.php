@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 			</span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('addtocart_popup', $this->config->get('addtocart_popup')); ?>
+			<?php echo VmHTML::checkbox('addtocart_popup', $this->config->get('addtocart_popup',1)); ?>
 			</td>
 		</tr>
 		<tr>

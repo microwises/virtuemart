@@ -858,7 +858,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    $order['customer_notified'] = 0;
 	}
 	$modelOrder->updateStatusForOneOrder($orderId, $order, true);
-	jexit();
+	$app = JFactory::getApplication();
+	$app->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$orderId);
+// 	jexit();
     }
 
     function _getTablepkeyValue($virtuemart_order_id) {
@@ -1169,10 +1171,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    'address_type' => $address_type
 	);
 // save address in cart if different
-	// if (false) {
-	//$cart->saveAddressInCart($update_data, $update_data['address_type'], true);
+// 	if (false) {
+	$cart->saveAddressInCart($update_data, $update_data['address_type'], true);
+	vmdebug('plgVmOnSelectCheckPayment $cart',$cart);
 	//vmInfo(JText::_('VMPAYMENT_KLARNA_ADDRESS_UPDATED_NOTICE'));
-	//}
+// 	}
 	//}
 	// Store the Klarna data in a session variable so
 	// we can retrevie it later when we need it
