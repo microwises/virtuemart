@@ -19,8 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-$min = VmConfig::get('vm_asks_minimum_comment_length', 50);
-$max = VmConfig::get('vm_asks_maximum_comment_length', 2000);
+$min = VmConfig::get('asks_minimum_comment_length', 50);
+$max = VmConfig::get('asks_maximum_comment_length', 2000);
 vmJsApi::JvalideForm();
 $document = JFactory::getDocument();
 // $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
@@ -70,7 +70,7 @@ if (empty ( $this->product )) {
 				<br />
 			<label>
 				<?php
-				$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
+				$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max);
 				echo $ask_comment;
 				?>
 				<br />
