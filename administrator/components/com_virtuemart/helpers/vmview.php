@@ -68,7 +68,7 @@ class VmView extends JView{
 
 		/* set list filters */
 		$option = JRequest::getCmd('option');
-		$view = JRequest::getCmd('view', JRequest::getCmd('controller'));
+		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
 
 		$app = JFactory::getApplication();
 		$lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');

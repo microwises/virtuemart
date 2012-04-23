@@ -315,7 +315,12 @@ class calculationHelper {
 		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
 		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
 
+		if ($override==-1) {
+			$prices['discountedPriceWithoutTax'] = $product_override_price;
+		}
+
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax']) ? $prices['discountedPriceWithoutTax'] : $prices['basePrice'];
+
 		$prices['priceBeforeTax'] = $priceBeforeTax;
 		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true));
 
@@ -329,11 +334,12 @@ class calculationHelper {
 
 		$prices['salesPriceTemp'] = $prices['salesPrice'];
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
-		if ($override) {
+		if ($override==1) {
 			$prices['salesPrice'] = $product_override_price;
 // 			$prices['discountedPriceWithoutTax'] = $this->product_override_price;
 // 			$prices['salesPriceWithDiscount'] = $this->product_override_price;
 		}
+
 // 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
 		//The whole discount Amount
 		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);

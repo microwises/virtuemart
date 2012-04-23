@@ -151,8 +151,8 @@ $i=0;
 				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 				<table class="adminform">
 
-					<tr class="row0">
-						<td width="29%">
+					<tr class="row0" >
+						<td width="29%" >
 							<div style="text-align: right; font-weight: bold;">
 								<span
 									class="hasTip"
@@ -161,11 +161,12 @@ $i=0;
 								</span>
 							</div>
 						</td>
-						<td width="71%"><input
+						<td width="71%" colspan="2" ><input
 							type="text"
 							class="inputbox"
 							name="product_price"
-							size="10"
+							size="12"
+							style="text-align:right;"
 							value="<?php echo $this->product->prices['costPrice']; ?>" />
 							<?php echo $this->currencies; ?>
 						</td>
@@ -181,12 +182,12 @@ $i=0;
 								</span>
 							</div>
 						</td>
-						<td  ><input
+						<td colspan="2" ><input
 							type="text"
 							readonly
 							class="inputbox readonly"
 							name="basePrice"
-							size="10"
+							size="12"
 							value="<?php echo $this->product->prices['basePrice']; ?>" />
 						<?php echo $this->vendor_currency;   ?>
 						</td>
@@ -204,11 +205,13 @@ $i=0;
 						<td ><input
 							type="text"
 							name="salesPrice"
-							size="10"
+							size="12"
+							style="text-align:right;"
 							value="<?php echo $this->product->prices['salesPriceTemp']; ?>" />
 
 							<?php echo $this->vendor_currency;   ?>
-							<input type="checkbox" name="use_desired_price" value="1" />
+						</td>
+						<td >	<input type="checkbox" name="use_desired_price" value="1" />
 							<span
 							class="hasTip"
 							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
@@ -227,11 +230,15 @@ $i=0;
 							</div>
 						</td>
 						<td>
-							<input type="text" size="10" name="product_override_price" value="<?php echo $this->product->product_override_price ?>"/>
-						<?php
-							$checked = '';
-							if ($this->product->override) $checked = 'checked="checked"' ?>
-							<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
+							<input type="text" size="12" style="text-align:right;" name="product_override_price" value="<?php echo $this->product->product_override_price ?>"/>
+							<?php echo $this->vendor_currency;   ?>
+						</td>
+						<td><?php
+// 							echo VmHtml::checkbox('override',$this->product->override);
+						$options = array(0 => 'Disabled', 1 => 'Overwrite final',-1 =>'Overwrite price to tax');
+							echo VmHtml::radioList('override',$this->product->override,$options);
+
+						?>
 						</td>
 					</tr>
 				</table>

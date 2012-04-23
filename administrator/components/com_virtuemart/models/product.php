@@ -712,7 +712,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product->product_tax_id = null;
 		$product->product_discount_id = null;
 		$product->product_override_price = null;
-		$product->override = 0;
+		$product->override = null;
 		$product->categories = array();
 		$product->shoppergroups= array();
 

@@ -582,7 +582,10 @@ class vmrouterHelper {
 
 			if (self::$limit===null){
 				$mainframe = Jfactory::getApplication(); ;
-				self::$limit= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
+				$view = 'virtuemart';
+				if(isset($query['view'])) $view = $query['view'];
+				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('list_limit', 20), 'int');
+// 				self::$limit= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 			}
 		}
 		return self::$_instances[$instanceKey];
