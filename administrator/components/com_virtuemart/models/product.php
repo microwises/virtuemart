@@ -755,7 +755,7 @@ class VirtueMartModelProduct extends VmModel {
 		$categories = array();
 		if ($virtuemart_product_id > 0) {
 			$q = 'SELECT pc.`virtuemart_category_id` FROM `#__virtuemart_product_categories` as pc';
-			if ($front) $q.= ' LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
+			if ($front) $q.= ' LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = pc.`virtuemart_category_id`';
 			$q.= ' WHERE pc.`virtuemart_product_id` = '.(int)$virtuemart_product_id;
 			if ($front) $q.= ' AND `published`=1';
 			$this->_db->setQuery($q);
