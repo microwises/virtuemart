@@ -43,6 +43,7 @@ AdminUIHelper::startAdminArea();
 		<th><?php echo $this->sort('product_sku')?></th>
 		<th><?php echo $this->sort('product_in_stock','COM_VIRTUEMART_PRODUCT_INVENTORY_STOCK') ?></th>
 		<th><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_INVENTORY_PRICE') ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_INVENTORY_VALUE') ?> </th>
 		<th><?php echo $this->sort('product_weight','COM_VIRTUEMART_PRODUCT_INVENTORY_WEIGHT') ?></th>
 		<th><?php echo $this->sort('published')?></th>
 	</tr>
@@ -71,6 +72,7 @@ AdminUIHelper::startAdminArea();
 				<td><?php echo $product->product_in_stock; ?></td>
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
+				<td><?php echo $product->product_instock_value; ?></td>
 				<!-- Product weight -->
 				<td><?php echo $product->product_weight." ". $product->weigth_unit_display; ?></td>
 				<!-- published -->

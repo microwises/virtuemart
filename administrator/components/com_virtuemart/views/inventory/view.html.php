@@ -1,20 +1,20 @@
 <?php
 /**
-*
-* Description
-*
-* @package	VirtueMart
-* @subpackage
-* @author
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* @version $Id$
-*/
+ *
+ * Description
+ *
+ * @package	VirtueMart
+ * @subpackage
+ * @author
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * @version $Id$
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -52,11 +52,13 @@ class VirtuemartViewInventory extends VmView {
 
 		// Apply currency
 		$currencydisplay = CurrencyDisplay::getInstance();;
-      $weigth_unit = ShopFunctions::getWeightUnit();
+		$weigth_unit = ShopFunctions::getWeightUnit();
 
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
-			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',false);
-                        $product->weigth_unit_display= $weigth_unit[$product->product_weight_uom];
+			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
+			$product->product_instock_value = $currencydisplay->priceDisplay($product->product_price,'',$product->product_in_stock,false);
+			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',1,false);
+			$product->weigth_unit_display= $weigth_unit[$product->product_weight_uom];
 		}
 		$this->assignRef('inventorylist', $inventorylist);
 

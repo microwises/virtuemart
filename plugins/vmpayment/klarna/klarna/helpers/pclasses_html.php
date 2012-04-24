@@ -35,6 +35,7 @@ defined('JPATH_BASE') or die();
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 	$data = $parameters->getParamByName('data');
 
+	vmdebug('pclasses',$data);
 	$eid_array = KlarnaHandler::getEidSecretArray($data);
 	foreach ($eid_array as $country => $eid_data) {
 	    try {

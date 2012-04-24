@@ -6,7 +6,7 @@
     <authorEmail>support@payzen.eu</authorEmail>
     <authorUrl>http://www.lyra-network.com</authorUrl>
     <copyright>Copyright Lyra Network.</copyright>
-    <license></license>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>2.0.6</version>
     <description>
     	<![CDATA[<a href="http://www.lyra-network.com" target="_blank">PayZen</a> is a multi bank payment provider. ]]>
