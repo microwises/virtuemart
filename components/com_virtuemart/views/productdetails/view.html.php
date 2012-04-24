@@ -162,14 +162,15 @@ class VirtueMartViewProductdetails extends VmView {
 
 	// Get the category ID
 	
-	if (in_array($last_category_id, $product->categories) && !empty($product) ){
+	if (in_array($last_category_id, $product->categories) ){
 		$virtuemart_category_id = $last_category_id;
+		
 	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
-	if ($virtuemart_category_id == 0 && !empty($product)) {
+	if ($virtuemart_category_id == 0 ) {
 	    if (array_key_exists('0', $product->categories))
 		$virtuemart_category_id = $product->categories[0];
 	}
-
+	$product->virtuemart_category_id = $virtuemart_category_id;
 	shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 	if ($category_model) {

@@ -578,7 +578,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			/* Load the categories the product is in */
-			$product->categories = $this->getProductCategories($this->_id);
+			$product->categories = $this->getProductCategories($this->_id,$front);
 
 			if ( !empty($product->categories) and is_array($product->categories) and !empty($product->categories[0]) ){
 				$product->virtuemart_category_id = $product->categories[0];
@@ -604,8 +604,21 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			if(!empty($product->categories[0])){
+				$virtuemart_category_id = 0;
+				if ($front) {
+					$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
+					if (in_array($last_category_id, $product->categories) ){
+						$virtuemart_category_id = $last_category_id;
+						
+					} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
+				}
+				if ($virtuemart_category_id == 0 ) {
+					if (array_key_exists('0', $product->categories))
+					$virtuemart_category_id = $product->categories[0];
+				}
+
 				$catTable = $this->getTable('categories');
-				$catTable->load($product->categories[0]);
+				$catTable->load($virtuemart_category_id);
 				$product->category_name = $catTable->category_name;
 			} else {
 				$product->category_name ='';
@@ -737,11 +750,14 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Kohl Patrick,RolandD,Max Milbers
 	 * @return array list of categories product is in
 	 */
-	private function getProductCategories($virtuemart_product_id=0) {
+	private function getProductCategories($virtuemart_product_id=0,$front=false) {
 
 		$categories = array();
 		if ($virtuemart_product_id > 0) {
-			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = "'.(int)$virtuemart_product_id.'"';
+			$q = 'SELECT pc.`virtuemart_category_id` FROM `#__virtuemart_product_categories` as pc';
+			if ($front) $q.= ' LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
+			$q.= ' WHERE pc.`virtuemart_product_id` = '.(int)$virtuemart_product_id;
+			if ($front) $q.= ' AND `published`=1';
 			$this->_db->setQuery($q);
 			$categories = $this->_db->loadResultArray();
 		}
