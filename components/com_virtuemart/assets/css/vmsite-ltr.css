@@ -2,6 +2,7 @@
 .general-bg,input.custom-attribute,input.quantity-input,.manufacturer-product-link a,a.ask-a-question,input.vm-default,a.product-details,a.details,div.details,button.default{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #CAC9C9 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-decoration:none;padding:5px 5px 4px;}
 span.custom-variant-inputbox input.custom-attribute:hover,span.quantity-box input.quantity-input:hover,input.vm-default:hover,span.quantity-box input.quantity-input:hover,.ask-a-question-view input.counter:hover,.ask-a-question-view input#email:hover,table.user-details input:hover,a.ask-a-question:hover,a.details:hover,div.details:hover,a.product-details:hover,button.default:hover{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position:0 -40px;color:#000;text-decoration:none;}
 .productdetails-view .spacer-buy-area{padding:0 0 0 12px;}
+.back-to-category {float:right;}
 .product-neighbours{color:#777;margin:0 0 15px;}
 .product-neighbours a.next-page{background:url(../images/vmgeneral/next_16x16.png) no-repeat right;padding-right:30px;line-height:20px;float:right;}
 .product-neighbours a.previous-page{background:url(../images/vmgeneral/previous_16x16.png) no-repeat left;padding-left:30px;line-height:20px;float:left;}
@@ -10,7 +11,7 @@ span.custom-variant-inputbox input.custom-attribute:hover,span.quantity-box inpu
 .productdetails-view .product-description,.product-fields{margin:15px 0;}
 span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-size:14px;margin:0 0 6px;}
 .product-packaging{margin:15px 0 0;}
-.icons{text-align:right;float:right;margin:0 0 10px 30px;}
+.icons{text-align:right;float:right;margin:4px 0 10px 30px;}
 .additional-images img{margin-right:8px;width:50px;height:auto;}
 .product-price{margin:0 0 15px;}
 .productdetails-view .addtocart-bar{margin:15px 0 0;padding:0 0 0 38px;}
