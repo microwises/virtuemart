@@ -324,6 +324,7 @@ class CurrencyDisplay {
 	 */
 	private function getFormattedCurrency( $nb, $nbDecimal=-1){
 
+		//TODO $this->_nbDecimal is the config of the currency and $nbDecimal is the config of the price type.
 		if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
 		if($nb>=0){
 			$format = $this->_positivePos;

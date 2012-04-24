@@ -298,23 +298,26 @@ class VirtueMartControllerCart extends JController {
 			$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$msg = '';
 			$_dispatcher = JDispatcher::getInstance();
-			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $cart));
+			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $cart, &$msg));
 			$dataValid = true;
+			vmdebug('setpayment $_retValues',$_retValues);
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true ) {
 					// Plugin completed succesfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
 				} else if ($_retVal === false ) {
-		   $mainframe = JFactory::getApplication();
-		   $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $_retVal);
-		   break;
+		   		$app = JFactory::getApplication();
+		   		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
+		   		break;
 				}
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
-
+// 			vmdebug('setpayment $cart',$cart);
 			if ($cart->getInCheckOut()) {
+				vmdebug('setpayment $cart getInCheckOut= true ',$cart->BT);
 				$app = JFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
 			}
