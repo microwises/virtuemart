@@ -206,7 +206,7 @@ class KlarnaHandler {
 
 	//Removes spaces, tabs, and other delimiters.
 	$klarna['pno'] = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex . 'pnum', ''));
-	$klarna['socialNumber'] = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex .'socialNumber'));
+	$klarna['socialNumber'] = preg_replace('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar($kIndex . 'socialNumber'));
 
 
 	$klarna['phone'] = JRequest::getVar($kIndex . 'phone');
@@ -224,15 +224,28 @@ class KlarnaHandler {
 	$klarna['invoice_type'] = JRequest::getVar('klarna_invoice_type');
 	$klarna['company_name'] = JRequest::getVar('klarna_company_name');
 	$klarna['phone'] = JRequest::getVar($kIndex . 'phone');
-
+	switch (JRequest::getVar($kIndex . 'gender')) {
+	    case KlarnaFlags::MALE :
+		$klarna['title'] = JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MR');
+		break;
+	    case KlarnaFlags::FEMALE:
+		$this->klarna_gender = KlarnaFlags::FEMALE;
+		$klarna['title'] = JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MRS');
+		break;
+	}
 	$klarna['birth_day'] = JRequest::getVar($kIndex . 'birth_day', '');
 	$klarna['birth_month'] = JRequest::getVar($kIndex . 'birth_month', '');
 	$klarna['birth_year'] = JRequest::getVar($kIndex . 'birth_year', '');
-	if (isset($klarna['birth_year'])  and !empty($klarna['birth_year'])) {
-	    $klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
-	    $klarna['pno_frombirthday'] = JRequest::getVar($kIndex . 'birth_day') .
-		    JRequest::getVar($kIndex . 'birth_month') .
-		    JRequest::getVar($kIndex . 'birth_year');
+	if (isset($klarna['birth_year']) and !empty($klarna['birth_year'])) {
+	    // due to the select list
+	    if ($klarna['birth_month'] != 0 and $klarna['birth_month'] != 0) {
+		$klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
+		$klarna['pno_frombirthday'] = JRequest::getVar($kIndex . 'birth_day') .
+			JRequest::getVar($kIndex . 'birth_month') .
+			JRequest::getVar($kIndex . 'birth_year');
+	    } else {
+		$klarna['birthday'] = '';
+	    }
 	} else {
 	    $klarna['birthday'] = '';
 	}
@@ -252,13 +265,12 @@ class KlarnaHandler {
 	    $splitAddress = self::splitAddress($bt['address_1']);
 	    $bill_street = $splitAddress[0];
 	    $bill_number = $splitAddress[1];
-	    switch (strtolower($bt['title'])) {
-		case JText::_(''):
+	    switch ($bt['title']) {
+		case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MR'):
 		    $this->klarna_gender = KlarnaFlags::MALE;
 		    break;
-		case JText::_('MISS'):
-		case JText::_('MISS'):
-		case JText::_('MISS'):
+		case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MISS'):
+		case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MRS'):
 		    $this->klarna_gender = KlarnaFlags::FEMALE;
 		    break;
 		default:
@@ -347,7 +359,7 @@ class KlarnaHandler {
 			    utf8_decode($shipTo->city),
 			    utf8_decode($cData['country']),
 			    $shipTo->address_2,
-			    $shipTo->house_extension
+			    $shipTo->house_no
 	    );
 	} catch (Exception $e) {
 	    VmInfo($e->getMessage());
@@ -777,7 +789,7 @@ class KlarnaHandler {
 	    $shipTo = (($cart->ST == 0 or empty($cart->ST)) ? $cart->BT : $cart->ST);
 	}
 
-	switch (strtolower(@$shipTo['title'])) {
+	switch (@$shipTo['title']) {
 	    case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MR'):
 		$r['gender'] = KlarnaFlags::MALE;
 		break;
@@ -793,8 +805,8 @@ class KlarnaHandler {
 	$r['email'] = $cart->BT['email'];
 	$r['country'] = @ShopFunctions::getCountryByID(@$shipTo['virtuemart_country_id'], 'country_3_code');
 	$r['socialNumber'] = @$shipTo['social_number'];
-	$r['houseNr'] = @$shipTo['address_2'];
-	$r['houseExt'] = @$shipTo['house_extension'];
+	$r['houseNr'] = @$shipTo['house_no'];
+	$r['houseExt'] = @$shipTo['address_2'];
 	$r['first_name'] = @$shipTo['first_name'];
 	$r['last_name'] = @$shipTo['last_name'];
 	$r['reference'] = $shipTo['first_name'] . ' ' . $shipTo['last_name'];
@@ -806,9 +818,8 @@ class KlarnaHandler {
 	$r['country'] = @ShopFunctions::getCountryByID(@$shipTo['virtuemart_country_id'], 'country_3_code');
 	$r['state'] = @$shipTo['state'];
 	$r['zip'] = @$shipTo['zip'];
-	$r['title'] = @$shipTo['title'];
 	$r['birthday'] = @$shipTo['birthday'];
-	if (isset($shipTo['birthday']) and empty($shipTo['birthday']) ) {
+	if (isset($shipTo['birthday']) and empty($shipTo['birthday'])) {
 	    $date = explode("-", $shipTo['birthday']);
 	    if (is_array($date)) {
 		$r['year'] = $date['0'];
@@ -940,6 +951,49 @@ class KlarnaHandler {
 	}
 
 	return $pno;
+    }
+
+    function checkDataFromEditPayment($data) {
+	$vm_shopperfields = array("first_name", "last_name", "address_1", "city", "zip", "company", "phone_1");
+
+	$shopperfields_country = array(
+	    "socialNumber" => array("se", "dk", "no", "fin"),
+	    "birthday" => array("de", "nl"),
+	    "house_no" => array("nl")
+	);
+	$country_shopperfields = array(
+	    "se" => array("socialNumber"),
+	    "de" => array("birthday", "title"),
+	    "nl" => array("birthday", "house_no"),
+	    "no" => array("socialNumber"),
+	    "dk" => array("socialNumber"),
+	    "fi" => array("socialNumber"),
+	);
+	$fields = $country_shopperfields[$data['country']];
+	$found = 0;
+	foreach ($vm_shopperfields as $vm_field) {
+	    foreach ($data as $key => $value) {
+		if ($key == $vm_field and !empty($data[$key])) {
+		    $found++;
+		}
+	    }
+	}
+	if ($found < count($vm_shopperfields)) {
+	    return false;
+	}
+	$fields = $country_shopperfields[$data['country']];
+	$found = 0;
+	foreach ($country_shopperfields[$data['country']] as $field) {
+	    foreach ($data as $key => $value) {
+		if ($key == $field and !empty($data[$key])) {
+		    $found++;
+		}
+	    }
+	}
+	if ($found < count($country_shopperfields[$data['country']])) {
+	    return false;
+	}
+	return true;
     }
 
 }

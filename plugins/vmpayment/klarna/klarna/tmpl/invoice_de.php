@@ -172,7 +172,7 @@ jQuery( function (){
                             <div id="left" style="width: 30%">
                                 <select style="width: 98%" name="<?php echo $viewData['input']['birth_day'] ; ?>"
                                     id="selectBox_bday">
-                                    <option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_DAY'); ?></option>
+                                    <option value="00" selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_DAY'); ?></option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
                                     <option value="03">03</option>
@@ -209,7 +209,7 @@ jQuery( function (){
                             <div id="left" style="width: 40%">
                                 <select style="width: 98%" name="<?php echo $viewData['input']['birth_month'] ; ?>"
                                     id="selectBox_bmonth">
-                                    <option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_MONTH'); ?></option>
+                                    <option  value="00" selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_MONTH'); ?></option>
                                     <option value="01"><?php echo JText::_('VMPAYMENT_KLARNA_MONTH_1'); ?></option>
                                     <option value="02"><?php echo JText::_('VMPAYMENT_KLARNA_MONTH_2'); ?></option>
                                     <option value="03"><?php echo JText::_('VMPAYMENT_KLARNA_MONTH_3'); ?></option>

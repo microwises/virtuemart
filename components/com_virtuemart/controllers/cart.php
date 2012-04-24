@@ -302,7 +302,6 @@ class VirtueMartControllerCart extends JController {
 			$_dispatcher = JDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $cart, &$msg));
 			$dataValid = true;
-			vmdebug('setpayment $_retValues',$_retValues);
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true ) {
 					// Plugin completed succesfull; nothing else to do
@@ -317,7 +316,6 @@ class VirtueMartControllerCart extends JController {
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 // 			vmdebug('setpayment $cart',$cart);
 			if ($cart->getInCheckOut()) {
-				vmdebug('setpayment $cart getInCheckOut= true ',$cart->BT);
 				$app = JFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
 			}

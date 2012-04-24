@@ -156,19 +156,25 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	}
 
 	// Set urls
-	$uri = & JURI::getInstance($method->url_return);
+	$url_return = JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived');
+	$uri =  JURI::getInstance($url_return);
 	//$uri->setVar('pelement', $this->payment_element);
 	$uri->setVar('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
+	$uri->setVar('Itemid', JRequest::getInt('Itemid'));
 	$api->set('url_return', $uri->toString());
 
-	$uri = & JURI::getInstance($method->url_success);
+	$url_success = JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived');
+	$uri = $url_success; //& JURI::getInstance($method->url_success);
 	//$uri->setVar('pelement', $this->payment_element);
+	$uri->setVar('Itemid', JRequest::getInt('Itemid'));
 	$uri->setVar('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
 	$api->set('url_success', $uri->toString());
 
-	$uri = & JURI::getInstance($method->url_cancel);
+	$url_cancel = JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel');
+	$uri =  $url_cancel ; //JURI::getInstance($method->url_cancel);
 	$uri->setVar('on', $order['details']['BT']->order_number);
 	$uri->setVar('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
+	$uri->setVar('Itemid', JRequest::getInt('Itemid'));
 	$api->set('url_cancel', $uri->toString());
 
 	// Set the language code
@@ -357,7 +363,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    }
 
 
-	    $this->managePaymentResponse($virtuemart_order_id, $resp, $new_status );
+	    $this->managePaymentResponse($virtuemart_order_id, $resp, $new_status);
 	}
 //We delete the old stuff
 	// get the correct cart / session

@@ -121,10 +121,7 @@
 	    <option value="GET">GET</option>
 	    <option value="POST">POST</option>
 	</param>
-	<param name="url_success" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_SYSTEMPAY_URL_SUCCESS" description="VMPAYMENT_SYSTEMPAY_URL_SUCCESS_DESC" editable="true"/>
-	<param name="url_return" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_SYSTEMPAY_URL_ERROR" description="VMPAYMENT_SYSTEMPAY_URL_ERROR_DESC" editable="true"/>
-	<param name="url_cancel" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel" label="VMPAYMENT_SYSTEMPAY_URL_CANCEL" description="VMPAYMENT_SYSTEMPAY_URL_CANCEL_DESC" editable="true"/>
-	<param name="silent_url" type="systempayurl" label="VMPAYMENT_SYSTEMPAY_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
+	 <param name="silent_url" type="systempayurl" label="VMPAYMENT_SYSTEMPAY_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
 
 	<param name="order_success_status" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SYSTEMPAY_ORDER_SUCCESS_STATUS" description="VMPAYMENT_SYSTEMPAY_ORDER_SUCCESS_STATUS_DESC" />
 	<param name="order_failure_status" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_SYSTEMPAY_ORDER_FAILURE_STATUS" description="VMPAYMENT_SYSTEMPAY_ORDER_FAILURE_STATUS_DESC" />

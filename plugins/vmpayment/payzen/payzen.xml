@@ -120,11 +120,7 @@
 	    <option value="GET">GET</option>
 	    <option value="POST">POST</option>
 	</param>
-	<param name="url_success" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_PAYZEN_URL_SUCCESS" description="VMPAYMENT_PAYZEN_URL_SUCCESS_DESC" editable="true"/>
-	<param name="url_return" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_PAYZEN_URL_ERROR" description="VMPAYMENT_PAYZEN_URL_ERROR_DESC" editable="true"/>
-	<param name="url_cancel" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel" label="VMPAYMENT_PAYZEN_URL_CANCEL" description="VMPAYMENT_PAYZEN_URL_CANCEL_DESC" editable="true"/>
-	<param name="silent_url" type="payzenurl" label="VMPAYMENT_PAYZEN_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
-
+	 <param name="silent_url" type="payzenurl" label="VMPAYMENT_PAYZEN_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
 	<param name="order_success_status" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS" description="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS_DESC" />
 	<param name="order_failure_status" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS" description="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS_DESC" />
 	<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYZEN_DEBUG" description="VMPAYMENT_PAYZEN_DEBUG_DESC" >

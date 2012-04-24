@@ -129,6 +129,7 @@ jQuery(function (){
                                 name="<?php echo $viewData['input']['reference'] ; ?>" value="<?php echo @$viewData['value']['reference'] ; ?>"
                                 class="Klarna_fullwidth" />
                         </div>
+
                         <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
                         <input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
                             name="<?php echo $viewData['input']['phoneNumber'] ; ?>" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"

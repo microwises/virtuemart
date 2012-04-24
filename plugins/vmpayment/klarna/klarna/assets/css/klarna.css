@@ -540,3 +540,9 @@ ol#paymentPlan{
     margin:0 !important;
     padding:0 !important;
 }
+.klarna_box_login {
+border: 1px solid #7BA7C9;
+width: 100%;
+background-color: white;
+display: inline-block;
+}

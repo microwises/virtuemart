@@ -142,6 +142,10 @@ jQuery(document).ready(function() {
                                 name="<?php echo $viewData['input']['reference'] ; ?>" value="<?php echo @$viewData['value']['reference'] ; ?>"
                                 class="Klarna_fullwidth" />
                         </div>
+			<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_EMAIL'); ?></div>
+                        <input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
+                            name="<?php echo $viewData['input']['emailAddress'] ; ?>" value="<?php echo @$viewData['value']['emailAddress'] ; ?>"
+                            class="Klarna_fullwidth" /> <br /> <br />
                         <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
                         <input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
                             name="<?php echo $viewData['input']['phoneNumber'] ; ?>" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
@@ -153,10 +157,6 @@ jQuery(document).ready(function() {
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="klarna_box_ilt">
-            <div class="klarna_box_ilt_title"><?php echo JText::_('VMPAYMENT_KLARNA_ILT_TITLE'); ?></div>
-            <div class="klarna_box_iltContents"></div>
         </div>
     </div>
 </div>
