@@ -23,7 +23,7 @@
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1" />
 	<param type="klarnalogo"   level="level1"  />
-
+	<param type="authorizenetcurl" />
 	<param name="module version" type="klarnamoduleversion"  />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_SERVER_SETTINGS" level="level1" />
 	<param name="klarna_mode" type="radio"  default="klarna_beta" label="VMPAYMENT_KLARNA_CONF_MODE" description="VMPAYMENT_KLARNA_CONF_MODE_DESC" >
@@ -106,7 +106,7 @@
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_PAGE" level="level1" />
 
-	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="G" label="VMPAYMENT_KLARNA_CONF_STATUS_PENDING" description="VMPAYMENT_KLARNA_CONF_STATUS_PENDING_DESC" />
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_KLARNA_CONF_STATUS_PENDING" description="VMPAYMENT_KLARNA_CONF_STATUS_PENDING_DESC" />
 	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
 	<param name="status_shipped" type="vmorderstate" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED" description="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED_DESC" />
 	<param name="delete_order" type="radio" default="1"  label="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED" description="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED_DESC" >
@@ -126,9 +126,6 @@
 	<!-- param name="klarna_pc_type" type="text" default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
 	<param name="KlarnaHandler::getKlarna_pc_type()" type="text"   size="80"  default="" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" / -->
 	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES" description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" />
-
-
-
 
 	<!-- param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_DEBUG" description="VMPAYMENT_KLARNA_CONF_DEBUG_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>

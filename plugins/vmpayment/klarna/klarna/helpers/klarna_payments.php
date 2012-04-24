@@ -19,8 +19,6 @@ defined('_JEXEC') or die('Restricted access');
  *
  * http://virtuemart.net
  */
-
-
 class klarna_payments {
 
     // Estore ID
@@ -72,11 +70,7 @@ class klarna_payments {
 
     function __construct($method, $country, $cart) {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
-	if ($cart->BT == 0 or empty($cart->BT)) {
-	$this->klarna_email = '';
-	} else {
-	    $this->klarna_email = $cart->BT['email'];
-	}
+
 	// Set country and currency set in the store.
 
 	$cData = KlarnaHandler::countryData($method, $country);
@@ -84,7 +78,7 @@ class klarna_payments {
 	$this->country = $cData['country_code'];
 	$this->country_code_3 = $cData['country_code_3'];
 	$this->currency = $cData['country_code_3'];
-	$this->virtuemart_currency_id= $cData['virtuemart_currency_id'];
+	$this->virtuemart_currency_id = $cData['virtuemart_currency_id'];
 	//$this->currency = $vendor_currency;
 	// Get EID and Secret
 	$this->eid = $cData['eid'];
@@ -164,64 +158,28 @@ class klarna_payments {
 	$aValues = array();
 	$c = strtolower($this->country);
 	// Values for non-swedish customers.
-	if ($this->country != "se") {
-	    $aValues["firstName"] = $this->shipTo['first_name'];
-	    $aValues["lastName"] = $this->shipTo['last_name'];
-	    $aValues["street"] = $this->klarna_addr;
-	    $aValues["city"] = $this->shipTo['city'];
-	    $aValues["zipcode"] = $this->shipTo['zip'];
-	    $aValues["companyName"] = $this->shipTo['company_name'];
+	$aValues["firstName"] = $this->shipTo['first_name'];
+	$aValues["lastName"] = $this->shipTo['last_name'];
+	$aValues["street"] = $this->shipTo['street'];
+	$aValues["city"] = $this->shipTo['city'];
+	$aValues["zipcode"] = $this->shipTo['zip'];
+	$aValues["companyName"] = $this->shipTo['company_name'];
 
-	    if ($this->country == "de" || $this->country == "nl") {    // Germany && Netherlands
-		$aValues["gender"] = $this->klarna_gender;
-		$aValues["homenumber"] = $this->klarna_houseNr;
-		$aValues["birth_year"] = $this->klarna_bday['year'];
-		$aValues["birth_month"] = $this->klarna_bday['month'];
-		$aValues["birth_day"] = $this->klarna_bday['day'];
-	    }
-	    if ($this->country == "nl") {    // Netherlands only
-		$aValues["house_extension"] = utf8_decode($this->klarna_houseExt);
-	    }
-	    if ($this->country == "dk") {
-		$aValues["year_salary"] = $this->klarna_year_salary;
-	    }
-	}
+	$aValues["gender"] = $this->shipTo['gender'];
+	$aValues["homenumber"] = $this->shipTo['houseNr'];
+	$aValues["birth_year"] = @$this->shipTo['year'];
+	$aValues["birth_month"] = @$this->shipTo['month'];
+	$aValues["birth_day"] = @$this->shipTo['day'];
+	$aValues["house_extension"] = $this->shipTo['houseExt'];
+	$aValues["year_salary"] = $this->klarna_year_salary;
 
 	// Values that are the same for all countries
-	$aValues["phoneNumber"] = $this->klarna_phone;
-	$aValues["emailAddress"] = $this->klarna_email;
-	$aValues["reference"] = $this->klarna_reference;
+	$aValues["phoneNumber"] = $this->shipTo['phone'];
+	$aValues["socialNumber"] = $this->shipTo['socialNumber'];
+	$aValues["emailAddress"] = $this->shipTo['email'];
+	$aValues["reference"] = $this->shipTo['reference'];
 	$aValues["agreement_link"] = $this->payment_charge_link;
 	return $aValues;
-    }
-
-
-
-    /**
-     * German and dutch purchases need a different structure
-     * on the address, and they need gender specified.
-     */
-    private function setGermanDutchData() {
-	$splitAddress = array('', '', '');
-	$splitAddress = KlarnaHandler::splitAddress($this->shipTo['street']);
-	$this->klarna_addr = $splitAddress[0];
-	$this->klarna_houseNr = $splitAddress[1];
-	switch (strtolower($this->shipTo['title'])) {
-	    case "mr.":
-		$this->klarna_gender = KlarnaFlags::MALE;
-		break;
-	    case "miss.":
-	    case "mrs.":
-	    case "ms.":
-		$this->klarna_gender = KlarnaFlags::FEMALE;
-		break;
-	    default:
-		$this->klarna_gender = null;
-		break;
-	}
-	if ($this->country == "nl") {
-	    $this->klarna_houseExt = $splitAddress[2];
-	}
     }
 
     /**
@@ -254,6 +212,8 @@ class klarna_payments {
      * Build the Invoice module.
      */
     public function invoice($method) {
+	if (!class_exists('CurrencyDisplay'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 	$this->code = "klarna_invoice";
 	// If module isn't enabled, don't do anything.
 	if ($this->enabled == false) {
@@ -280,8 +240,7 @@ class klarna_payments {
 
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$symbol = KlarnaHandler::getCurrencySymbolForCountry($method, $this->country);
-	if (!class_exists('CurrencyDisplay'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+
 	$currency = CurrencyDisplay::getInstance();
 	$display_fee = $currency->priceDisplay($klarna_invoice_fee);
 
@@ -292,17 +251,6 @@ class klarna_payments {
 		JText::_('VMPAYMENT_KLARNA_INVOICE_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
-	$this->klarna_phone = $this->shipTo['phone'];
-	// done in constrict
-	//$this->klarna_email = JFactory::getUser()->email;
-	$this->klarna_reference = $this->shipTo['first_name'] . ' ' . $this->shipTo['last_name'];
-
-	// Get some extra info for Germany and The Netherlands
-	if (strtolower($this->country) == "nl" || strtolower($this->country) == "de") {
-	    $this->setGermanDutchData();
-	} else {
-	    $this->klarna_addr = $this->shipTo['street'];
-	}
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
 	    $kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $klarnaOption);
@@ -324,7 +272,7 @@ class klarna_payments {
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 
 	return array('id' => 'klarna_invoice', 'module' => $title, 'fields' => $fields);
     }
@@ -334,6 +282,7 @@ class klarna_payments {
      */
     public function partPay($method, $cart) {
 	// If module isn't enabled, don't do anything.
+	$this->code = "klarna_partPayment";
 	if ($this->enabled == false) {
 	    return null;
 	}
@@ -383,12 +332,11 @@ class klarna_payments {
 	    }
 	    if (!class_exists('VirtueMartModelCurrency'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
-	     // Cheapest is in the Klarna country currency, convert it to the current currency display
-
-	    $currencyDisplay = CurrencyDisplay::getInstance( );
-	    $countryCurrencyId = $this->virtuemart_currency_id;
-	    $sFee = $currencyDisplay->priceDisplay($cheapest, 0, 1,false);
-
+	    // Cheapest is in the Klarna country currency, convert it to the current currency display
+	    //$currencyDisplay = CurrencyDisplay::getInstance( );
+	    //$countryCurrencyId = $this->virtuemart_currency_id;
+	    //$sFee = $currencyDisplay->priceDisplay($cheapest, 0, 1,false);
+	    $sFee = $kCheckout->getPresentableValuta($cheapest);
 	    $title = JText::sprintf('VMPAYMENT_KLARNA_PARTPAY_TITLE', $sFee);
 	} else {
 	    $title = JText::_('VMPAYMENT_KLARNA_PARTPAY_TITLE_NOSUM');
@@ -398,16 +346,7 @@ class klarna_payments {
 		JText::_('VMPAYMENT_KLARNA_PARTPAY_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
-	$this->klarna_phone = $this->shipTo['phone'];
-	// done in constrict
-	//$this->klarna_email = JFactory::getUser()->email;
-	$this->klarna_reference = $this->shipTo['first_name'] . ' ' . $this->shipTo['last_name'];
-	// Get some extra info for Germany and The Netherlands
-	if (strtolower($this->country) == "nl" || strtolower($this->country) == "de") {
-	    $this->setGermanDutchData();
-	} else {
-	    $this->klarna_addr = $this->shipTo['street'];
-	}
+
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
@@ -425,7 +364,7 @@ class klarna_payments {
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 
 	// If module isn't enabled, don't show it.
 	if ($this->enabled == false) {
@@ -471,16 +410,6 @@ class klarna_payments {
 		JText::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
 		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
-	$this->klarna_phone = $this->shipTo['phone'];
-	//$this->klarna_email = JFactory::getUser()->email;
-	$this->klarna_reference = $this->shipTo['first_name'] . ' ' . $this->shipTo['last_name'];
-
-	// Get some extra info for Germany and The Netherlands
-	if (strtolower($this->country) == "nl" || strtolower($this->country) == "de") {
-	    $this->setGermanDutchData();
-	} else {
-	    $this->klarna_addr = $this->shipTo['street'];
-	}
 
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
@@ -497,13 +426,13 @@ class klarna_payments {
 	if ($this->enabled == false) {
 	    return false;
 	}
-$aParams = $this->getParams();
+	$aParams = $this->getParams();
 	$aValues = $this->getValues();
 
 
 	// Create the html for the register.
 	$fields = array();
-	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues ));
+	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 	return array('id' => "klarna_SpecCamp", 'module' => $title, 'fields' => $fields);
     }
 

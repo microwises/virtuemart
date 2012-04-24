@@ -122,7 +122,7 @@ jQuery(document).ready(function() {
                         <input type="hidden" name="<?php echo $viewData['input']['paymentPlan'] ; ?>"
                             value="<?php echo @$viewData['value']['paymentPlan'] ; ?>" class="paymentPlan" />
                         <div class="klarna_box_bottom_content_listPriceInfo">
-                            <?php echo JText::_('VMPAYMENT_KLARNA_PRICES_ARE_IN_SEK'); ?></div>
+                            <?php // echo JText::_('VMPAYMENT_KLARNA_PRICES_ARE_IN_SEK'); ?></div>
                     </div>
                 </div>
                 <div class="klarna_box_bottom_right">

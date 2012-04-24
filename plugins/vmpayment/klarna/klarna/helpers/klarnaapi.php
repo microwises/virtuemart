@@ -665,7 +665,7 @@ class KlarnaAPI {
      * @param    integer    $iSum    The sum to present
      * @return    string
      */
-    private function getPresentableValuta($iSum) {
+    /*private*/ function getPresentableValuta($iSum) {
 	$sBefore = "";
 	$sAfter = "";
 
