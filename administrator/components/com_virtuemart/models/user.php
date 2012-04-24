@@ -862,7 +862,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
-		if(isset($data['shipto_virtuemart_userinfo_id'])){
+		if($data['address_type'] == 'ST' or isset($data['shipto_virtuemart_userinfo_id'])){
 			$dataST = array();
 			$_pattern = '/^shipto_/';
 

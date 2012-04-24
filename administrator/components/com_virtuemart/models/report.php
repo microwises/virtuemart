@@ -127,7 +127,7 @@ class VirtuemartModelReport extends VmModel {
 		$groupBy = 'GROUP BY intervals ';
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
-		$selectFields[] = 'SUM(product_final_price) as order_subtotal';
+		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal';
 		$this->dates = ' DATE( o.created_on ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
 		// Filter by statut
@@ -165,7 +165,7 @@ class VirtuemartModelReport extends VmModel {
 				break;
 		}
 
-			$selectFields[] = 'COUNT(o.virtuemart_order_id) as count_order_id';
+			$selectFields[] = 'COUNT(DISTINCT o.virtuemart_order_id) as count_order_id';
 			$selectFields[] = 'SUM(product_quantity) as product_quantity';
 
 

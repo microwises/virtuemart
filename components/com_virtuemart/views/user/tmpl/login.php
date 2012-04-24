@@ -25,17 +25,15 @@ $comUserOption=shopfunctionsF::getComUserOption();
 $uri = JFactory::getURI();
 $url = $uri->toString(array('path', 'query', 'fragment'));
 // vmdebug('$this->show ',$this);
-if ($this->show and $this->JUser->id == 0  ) {
+$user = JFactory::getUser();
+if(!isset($this->show)) $this->show = true;
+if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
-// vmdebug('cart',$this->cart);
-
 
 
 $uri = JFactory::getURI();
 $url = $uri->toString(array('path', 'query', 'fragment'));
- vmdebug('my url loginform '.$url);
-// 	Hmmmm	$this->cart->userDetails->JUser->id === 0
 
 
 	//Extra login stuff, systems like openId and plugins HERE
@@ -167,10 +165,10 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         <?php echo JHTML::_('form.token'); ?>
     </form>
 
-<?php  }else if ($this->JUser->id  ){ ?>
+<?php  }else if ($user->id  ){ ?>
 
    <form action="index.php" method="post" name="login" id="form-login">
-        <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $this->JUser->name ); ?>
+        <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
 	<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
         <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
         <?php if ( JVM_VERSION===1 ) { ?>
