@@ -23,7 +23,7 @@
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1" />
 	<param type="klarnalogo"   level="level1"  />
-	<param type="authorizenetcurl" />
+	<param type="klarnacurl" />
 	<param name="module version" type="klarnamoduleversion"  />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_SERVER_SETTINGS" level="level1" />
 	<param name="klarna_mode" type="radio"  default="klarna_beta" label="VMPAYMENT_KLARNA_CONF_MODE" description="VMPAYMENT_KLARNA_CONF_MODE_DESC" >

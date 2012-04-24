@@ -495,10 +495,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$session = JFactory::getSession();
 		$session->clear('Klarna', 'vm');
 		//We delete the old stuff
-		if (!$testing) {
 
-		    $cart->emptyCart();
-		}
+		$cart->emptyCart();
+
 
 		JRequest::setVar('html', $html);
 
@@ -1461,9 +1460,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      */
     public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 
-	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
-
-	return false;
+	if ($this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name)) {
+	    return false;
+	}
+	return null;
     }
 
     /**
