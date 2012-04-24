@@ -50,13 +50,12 @@ if(VmConfig::get('shop_is_offline',0)){
 	/* Front-end helpers */
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
-	if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-
 
 	/* Loading jQuery and VM scripts. */
 	vmJsApi::jQuery();
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
+
 	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
 // 	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );		$this makes trouble!
 	$task = JRequest::getWord('task') ;
@@ -68,34 +67,35 @@ if(VmConfig::get('shop_is_offline',0)){
 		else {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if	(Permissions::getInstance()->check("admin,storeadmin")) {
-				 $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
-				require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
-				//require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-
+				$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
+				$basePath = JPATH_VM_ADMINISTRATOR;
+				$trigger = 'onVmAdminController';
 			} else {
 				$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 			}
 		}
 
-
-	/* Require specific controller if requested */
 	} elseif($_controller) {
-		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
-			// Only if the file exists, since it might be a Joomla view we're requesting...
-			require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
-		}
-		else {
-			// try plugins
-			JPluginHelper::importPlugin('vmextended');
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onVmSiteController', $_controller);
-		}
+			$basePath = JPATH_VM_SITE;
 	}
-
 }
 
-/* Create the controller */
+/* Create the controller name */
 $_class = 'VirtuemartController'.ucfirst($_controller);
+
+if (file_exists($basePath.DS.'controllers'.DS.$_controller.'.php')) {
+	if (!class_exists($_class)) {
+		require ($basePath.DS.'controllers'.DS.$_controller.'.php');
+	}
+}
+else {
+	// try plugins
+	JPluginHelper::importPlugin('vmextended');
+	$dispatcher = JDispatcher::getInstance();
+	$dispatcher->trigger($trigger, $_controller);
+}
+
+
 if (class_exists($_class)) {
     $controller = new $_class();
 
