@@ -95,18 +95,18 @@ class VirtueMartViewProductdetails extends VmView {
 
 // 		vmTime('Customs','customs');
 // 		vmdebug('my second $product->customfields',$product->customfields);
-
+	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 	if (empty($product->slug)) {
 
 	    //Todo this should be redesigned to fit better for SEO
 	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
-	    $virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
+	    
 	    $categoryLink = '';
-	    if (!$virtuemart_category_id) {
-		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
+	    if (!$last_category_id) {
+		$last_category_id = JRequest::getInt('virtuemart_category_id', false);
 	    }
-	    if ($virtuemart_category_id) {
-		$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
+	    if ($last_category_id) {
+		$categoryLink = '&virtuemart_category_id=' . $last_category_id;
 	    }
 
 	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404'));
@@ -161,7 +161,10 @@ class VirtueMartViewProductdetails extends VmView {
 	$category_model = VmModel::getModel('category');
 
 	// Get the category ID
-	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
+	
+	if (in_array($last_category_id, $product->categories) && !empty($product) ){
+		$virtuemart_category_id = $last_category_id;
+	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
 	if ($virtuemart_category_id == 0 && !empty($product)) {
 	    if (array_key_exists('0', $product->categories))
 		$virtuemart_category_id = $product->categories[0];
@@ -170,7 +173,8 @@ class VirtueMartViewProductdetails extends VmView {
 	shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 	if ($category_model) {
-	    $category = $category_model->getCategory($virtuemart_category_id);
+
+		$category = $category_model->getCategory($virtuemart_category_id);
 
 	    $category_model->addImages($category, 1);
 	    $this->assignRef('category', $category);

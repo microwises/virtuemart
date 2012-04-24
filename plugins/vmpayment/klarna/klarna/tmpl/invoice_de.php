@@ -48,8 +48,9 @@
             }
 
 
-
-
+jQuery( function (){
+    klarna.methodReady('invoice');
+});
      //-->
 </script>
 <div class="klarna_baloon" id="klarna_baloon" style="display: none">
@@ -67,11 +68,7 @@
     </div>
     <div class="klarna_blue_baloon_bottom"></div>
 </div>
-<script type="text/javascript">
-jQuery( function (){
-    klarna.methodReady('invoice');
-});
-</script>
+
 <div class="klarna_box_container">
     <div class="klarna_box" id="klarna_box_invoice">
         <script type="text/javascript">

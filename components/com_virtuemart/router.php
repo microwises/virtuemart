@@ -146,6 +146,8 @@ function virtuemartBuildRoute(&$query) {
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
 					else $query['Itemid'] = $jmenu['virtuemart'];
+				} else {
+					$query['Itemid'] = $jmenu['virtuemart']?$jmenu['virtuemart']:@$jmenu['virtuemart_category_id'][0];
 				}
 					unset($query['virtuemart_category_id']);
 
