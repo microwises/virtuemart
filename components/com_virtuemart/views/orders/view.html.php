@@ -153,8 +153,8 @@ class VirtuemartViewOrders extends VmView {
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$payment_name));
 
 			if($format=='pdf'){
-
-				$invoiceNumberDate = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+				$invoiceNumberDate = array();
+				$return = $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate );
 				$this->assignRef('invoiceNumber', $invoiceNumberDate[0]);
 				$this->assignRef('invoiceDate', $invoiceNumberDate[1]);
 			}

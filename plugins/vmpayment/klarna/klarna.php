@@ -398,7 +398,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function plgVmConfirmedOrder($cart, $order) {
-	$testing = true;
+
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
@@ -513,16 +513,66 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
-	    return false;
+	    return null;
 	}
+	$data['invoice_number'] = 0; // Nerver send the invoice via email
 	if (!($payments = $this->_getKlarnaInternalData($orderDetails['virtuemart_order_id']) )) {
 	    vmError(JText::sprintf('VMPAYMENT_KLARNA_ERROR_NO_DATA', $orderDetails['virtuemart_order_id']));
 	    return null;
 	}
-	if (!($klarna_invoice_no = $this->_getKlarnaInvoiceNo($payments) )) {
-	    return null;
+
+	// status shipped= invoice has been activated
+	if (!($method->status_shipped == $orderDetails['order_status'] && $klarna_invoice_pdf = $this->_getKlarnaInvoicePDFURL($payments))) {
+	    return;
 	}
-	$data['invoice_number'] = $klarna_invoice_no;
+	// get the pdf and store  it
+	$klarna_invoice_no = $this->_getKlarnaInvoiceNo($payments);
+	if (!$this->copyInvoice($klarna_invoice_pdf, $klarna_invoice_no)) {
+	    return;
+	}
+    }
+
+    function copyInvoice(&$klarna_invoice_pdf, &$invoiceNumber) {
+
+	$path = VmConfig::get('forSale_path', 0);
+	if ($path === 0) {
+	    vmError('No path set to store invoices');
+	    return false;
+	} else {
+	    $path .= 'invoices' . DS;
+	    if (!file_exists($path)) {
+		vmError('Path wrong to store invoices, folder invoices does not exist ' . $path);
+		return false;
+	    } else if (!is_writable($path)) {
+		vmError('Cannot store pdf, directory not writeable ' . $path);
+		return false;
+	    }
+	}
+
+	$invoiceNumber = 'klarna_' . $invoiceNumber;
+	$path .= 'vminvoice_' . $invoiceNumber . '.pdf';
+	if (file_exists($path)) {
+	    // invoice has already been copied , don't do it again
+	    return true;
+	}
+	$ch = curl_init($klarna_invoice_pdf);
+	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+	$pdf = curl_exec($ch);
+	curl_close($ch);
+	$f = fopen($path, 'wb');
+	if (!$f) {
+	    vmError('Unable to create output file: ' . $path);
+	    return false;
+	}
+	if (fwrite($f, $pdf) === false) {
+	    vmError('Unable to write output file: ' . $path);
+	    return false;
+	}
+	fclose($f);
+	return true;
     }
 
     function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
@@ -619,6 +669,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     function _getKlarnaInvoiceNo($payments) {
 	$nb = count($payments);
 	return $payments[$nb - 1]->klarna_invoice_no;
+    }
+
+    function _getKlarnaInvoicePDFURL($payments) {
+	foreach ($payments as $payment) {
+	    if ($payment->klarna_pdf_invoice_url) {
+		return $payment->klarna_pdf_invoice_url;
+	    }
+	}
+	return false;
     }
 
     function _getKlarnaPlcass($payments) {
@@ -962,8 +1021,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$dbValues['klarna_invoice_no'] = $invNo;
 		$dbValues['klarna_log'] = Jtext::_('VMPAYMENT_KLARNA_ACTIVATE_INVOICE', $invNo);
 		$dbValues['klarna_eid'] = $cData['eid'];
-		$dbValues['klarna_status_code'] = KLARNA_INVOICE_ACTIVE; // Invoice is active
-		$dbValues['klarna_status_text'] = '';
+		//$dbValues['klarna_status_code'] = KLARNA_INVOICE_ACTIVE; // Invoice is active
+		//$dbValues['klarna_status_text'] = '';
 		$dbValues['klarna_pdf_invoice_url'] = $invoice_url;
 
 		$this->storePSPluginInternalData($dbValues);
@@ -1072,7 +1131,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * This event is fired after the payment method has been selected. It can be used to store
      * additional payment info in the cart.
 
-     * @author Val√©rie isaksen
+     * @author Valérie isaksen
      *
      * @param VirtueMartCart $cart: the actual cart
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
@@ -1159,8 +1218,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$klarnaData[$key] = mb_convert_encoding($klarnaData[$key], 'UTF-8', 'ISO-8859-1');
 	    }
 	} elseif (!KlarnaHandler::checkDataFromEditPayment($klarnaData)) {
-	    VmInfo('VMPAYMENT_KLARNA_MISSING_DATA');
-	    return false;
+	    //VmInfo('VMPAYMENT_KLARNA_MISSING_DATA');
+	    //return false;
 	}
 	if (VMKLARNA_SHIPTO_SAME_AS_BILLTO) {
 	    $st = $cart->BT;

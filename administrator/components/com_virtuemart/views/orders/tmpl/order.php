@@ -42,10 +42,14 @@ $tt=$this;
 			<tr>
 				<th colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></th>
 			</tr>
-
+			<?php
+			    $print_url = juri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&tmpl=component&virtuemart_order_id=' . $this->orderbt->virtuemart_order_id . '&order_number=' .$this->orderbt->order_number. '&order_pass=' .$this->orderbt->order_pass;
+			    $print_link = "<a title=\"".JText::_('COM_VIRTUEMART_PRINT')."\" href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
+			    $print_link .=   $this->orderbt->order_number . ' </a>';
+	?>
          <tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
-				<td><?php echo  $this->orderbt->order_number;?></td>
+				<td><?php echo  $print_link;?></td>
 			</tr>
          <tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_PASS') ?></strong></td>
@@ -71,10 +75,13 @@ $tt=$this;
 			</tr>
 			<?php } ?>
 			<?php
-			if ($this->orderbt->coupon_code) { ?>
+			if ($this->orderbt->invoiceNumber) {
+				$invoice_url = juri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $this->orderbt->virtuemart_order_id . '&order_number=' .$this->orderbt->order_number. '&order_pass=' .$this->orderbt->order_pass;
+				$invoice_link = "<a title=\"".JText::_('COM_VIRTUEMART_INVOICE_PRINT')."\"  href=\"javascript:void window.open('$invoice_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
+				$invoice_link .=   $this->orderbt->invoiceNumber . '</a>';?>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_INVOICE_NUMBER') ?></strong></td>
-				<td><?php echo $this->orderbt->coupon_code; ?></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_INVOICE') ?></strong></td>
+				<td><?php echo $invoice_link; ?></td>
 			</tr>
 			<?php } ?>
 		</table>
@@ -134,6 +141,23 @@ $tt=$this;
 		</table>
 		</td>
 	</tr>
+	<?php if ($this->orderbt->customer_note) { ?>
+	<tr>
+		<!-- Customer Note -->
+		<td valign="top" width="30%" colspan="2">
+		<table class="adminlist" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+				</tr>
+			</thead>
+			<tr>
+				<td valign="top" align="left" width="50%"><?php echo $this->orderbt->customer_note; ?></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<?php } ?>
 </table>
 &nbsp;
 <table width="100%">
@@ -461,21 +485,7 @@ $tt=$this;
 		}
 		?></td>
 	</tr>
-	<tr>
-		<!-- Customer Note -->
-		<td valign="top" width="30%" colspan="2">
-		<table class="adminlist" cellspacing="0" cellpadding="0">
-			<thead>
-				<tr>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
-				</tr>
-			</thead>
-			<tr>
-				<td valign="top" align="left" width="50%"><?php echo $this->orderbt->customer_note; ?></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
+	 
 </table>
 
 

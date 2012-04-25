@@ -74,7 +74,7 @@ class VirtuemartViewOrders extends VmView {
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
-
+			$orderbt ->invoiceNumber = $orderModel->getInvoiceNumber($orderbt->virtuemart_order_id);
 			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 
 			$this->assignRef('currency', $currency);
@@ -180,6 +180,7 @@ class VirtuemartViewOrders extends VmView {
 					    $_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
 				    }
 				    $order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
+				    $order->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
 
 			    }
 			}

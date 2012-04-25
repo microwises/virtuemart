@@ -164,14 +164,14 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$api->set('url_return', $uri->toString());
 
 	$url_success = JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived');
-	$uri = $url_success; //& JURI::getInstance($method->url_success);
+	$uri = JURI::getInstance($url_success);
 	//$uri->setVar('pelement', $this->payment_element);
 	$uri->setVar('Itemid', JRequest::getInt('Itemid'));
 	$uri->setVar('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
 	$api->set('url_success', $uri->toString());
 
 	$url_cancel = JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel');
-	$uri =  $url_cancel ; //JURI::getInstance($method->url_cancel);
+	$uri =  JURI::getInstance($url_cancel);
 	$uri->setVar('on', $order['details']['BT']->order_number);
 	$uri->setVar('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
 	$uri->setVar('Itemid', JRequest::getInt('Itemid'));
@@ -328,7 +328,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	// Order not found
 	if (!$virtuemart_order_id) {
-	    vmdebug('plgVmOnPaymentResponseReceived ' . $this->_name, $data, $resp->get('order_id'));
+	   // vmdebug('plgVmOnPaymentResponseReceived ' . $this->_name, $data, $resp->get('order_id'));
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- payment check attempted on non existing order : ' . $resp->get('order_id'), 'error');
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_' . $this->_name . '_ERROR_MSG', false);
 // 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
@@ -569,7 +569,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
     }
 
     function savePaymentData($virtuemart_order_id, $resp) {
-	vmdebug($this->_name . ' response', $resp->raw_response);
+	//vmdebug($this->_name . ' response', $resp->raw_response);
 	$response[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
 	$response['virtuemart_order_id'] = $virtuemart_order_id;
 	$response[$this->_name . '_response_payment_amount'] = $resp->get('amount');
@@ -610,7 +610,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	}
 
 	$cart = VirtueMartCart::getCart();
-	vmDebug('emptyCart', $cart);
+	//vmDebug('emptyCart', $cart);
 	$cart->emptyCart();
 	return true;
     }
@@ -629,7 +629,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$order['customer_notified'] = 1;
 	$date = JFactory::getDate();
 	$order['comments'] = JText::sprintf('VMPAYMENT_' . $this->_name . '_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
-	vmdebug($this->_name . ' - managePaymentResponse', $order);
+	//vmdebug($this->_name . ' - managePaymentResponse', $order);
 
 	// la fonction updateStatusForOneOrder fait l'envoie de l'email à partir de VM2.0.2
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);

@@ -329,7 +329,6 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
     public function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
-	return true;
     }
 
     /**

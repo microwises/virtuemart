@@ -117,15 +117,16 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('orderDetails', $orderDetails);
 
 		if(empty($this->invoiceNumber)){
-			$invoiceNumberDate = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
-
-			$this->invoiceNumber = $invoiceNumberDate[0];
-			$this->invoiceDate = $invoiceNumberDate[1];
-
-			if(!$this->invoiceNumber or empty($this->invoiceNumber)){
-				vmError('Cant create pdf, createInvoiceNumber failed');;
-				return 0;
-			}
+		    $invoiceNumberDate=array();
+			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
+			    $this->invoiceNumber = $invoiceNumberDate[0];
+			    $this->invoiceDate = $invoiceNumberDate[1];
+vmDebug('invoice', $this->invoiceNumber);
+			    if(!$this->invoiceNumber or empty($this->invoiceNumber)){
+				    vmError('Cant create pdf, createInvoiceNumber failed');;
+				    return 0;
+			    }
+			} 
 		}
 
 		$shopperName =  $orderDetails['details']['BT']->title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;

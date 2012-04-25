@@ -150,8 +150,9 @@ defined('_JEXEC') or die('Restricted access');
 				 </span>
 			</td>
 			<td>
-					<?php echo VmHTML::select('Select.genericlist', $this->orderStatusList, 'inv_os', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('inv_os','C'),false,true); ?>
-
+					<?php
+					echo VmHTML::selectList('inv_os',$this->config->get('inv_os','C'),$this->orderStatusList);
+					?>
 			</td>
 		</tr>
 	</table>

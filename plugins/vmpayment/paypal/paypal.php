@@ -299,7 +299,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	$paypal_data = JRequest::get('post');
-	vmdebug('PAYPAL plgVmOnPaymentResponseReceived', $paypal_data);
+	//vmdebug('PAYPAL plgVmOnPaymentResponseReceived', $paypal_data);
 	// the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 	$order_number = JRequest::getString('on', 0);

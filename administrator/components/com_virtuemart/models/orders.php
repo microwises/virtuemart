@@ -999,7 +999,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	}
 
 
-	function createInvoiceNumber($orderDetails){
+	function createInvoiceNumber($orderDetails, &$invoiceNumber){
 
 		$orderDetails = (array)$orderDetails;
 		$db = JFactory::getDBO();
@@ -1022,12 +1022,21 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
+			// plugin returns invoice number, 0 if it does not want an invoice number to be created by Vm
 			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',array($orderDetails,&$data));
 			foreach($plg_datas as $plg_data){
 // 				$data = array_merge($plg_data,$data);
 			}
-
-			if(empty($data['invoice_number'])) {
+			if (isset($data['invoice_number']) && $data['invoice_number']==0) {
+			    return false;
+			} elseif(!isset($data['invoice_number'])) {
+			    // check the default configuration
+			    $orderstatusForInvoice = VmConfig::get('inv_os','C');
+			    $pdfInvoice = VmConfig::get('pdf_invoice', 1); // backwards compatible
+			    // florian : added if pdf invoice are enabled
+			    if ( ($orderDetails['order_status'] != $orderstatusForInvoice)  or (!$pdfInvoice )  ){
+				return false;
+			    } else {
 				$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 				$db->setQuery($q);
 
@@ -1039,6 +1048,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 					$date = JFactory::getDate()->toMySQL();
 					$data['invoice_number'] = str_replace('-', '', substr($date,2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
 				}
+			    }
 			}
 
 
@@ -1046,12 +1056,24 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$table->bindChecknStore($data);
 
-			return array($table->invoice_number,$table->created_on);
+			$invoiceNumber= array($table->invoice_number,$table->created_on);
 
 		} else {
-			return array($result['invoice_number'],$result['created_on']);
+			$invoiceNumber = array($result['invoice_number'],$result['created_on']);
 		}
+		return true;
+	}
 
+	/*
+	 * @author Valerie
+	 */
+	function getInvoiceNumber($virtuemart_order_id){
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT invoice_number FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$virtuemart_order_id.'" ';
+		$db->setQuery($q);
+		return $db->loadresult();
+//
 	}
 
 
@@ -1105,14 +1127,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$vars['vendor'] = $vendor;
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
-
+/*
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
 		$pdfInvoice = VmConfig::get('pdf_invoice', 1); // backwards compatible
-
+*/
 		// florian : added if pdf invoice are enabled
-		if ( ($order['details']['BT']->order_status == $orderstatusForInvoice) && ($path !== 0) && ($pdfInvoice )  ){
-
+		//if  ($this->getInvoiceNumber( $order['details']['BT']->virtuemart_order_id ) ){
+		$invoiceNumberDate = array();
+		if ($orderModel->createInvoiceNumber($order['details']['BT'], $invoiceNumberDate )) {
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(
 													  'model_path' => JPATH_VM_SITE.DS.'models',
