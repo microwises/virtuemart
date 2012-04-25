@@ -385,6 +385,9 @@ class VmModel extends JModel {
 			}
 			$this->_total = $count;
 			if($limitStart>=$count){
+				if(empty($limit)){
+					$limit = 1.0;
+				}
 				$limitStart = floor($count/$limit);
 				$this->_db->setQuery($q,$limitStart,$limit);
 				if($object == 2){

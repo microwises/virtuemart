@@ -286,7 +286,7 @@ function virtuemartParseRoute($segments) {
 		array_pop($segments);
 		$results = explode('-',$splitted[1],2);
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
-		// limistart is swapped by joomla to start ! See includes/route.php
+		// limitstart is swapped by joomla to start ! See includes/route.php
 			if ($start = $results[0]-1) $vars['limitstart'] = $start;
 			else $vars['limitstart'] = 0 ;
 			$vars['limit'] = $results[1]-$results[0]+1;

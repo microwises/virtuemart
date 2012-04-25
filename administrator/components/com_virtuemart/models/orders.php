@@ -809,7 +809,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 // 							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
 
-							$product_attribute[$selected] = $selected;
+							$product_attribute[$selected] = $productCustom->custom_element;
 // 							vmdebug('_createOrderLines',$product_attribute);
 // 							$product_attribute[$variant] = $selected;
 // 							JPluginHelper::importPlugin('vmcustom');
@@ -822,11 +822,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 							if(!empty($_prod->param)){
 								foreach($_prod->param as $k => $plg){
 									if ($k == $variant){
-										$product_attribute[$selected] = $plg ;
+// 										$product_attribute[$selected] = $plg ;
+										$product_attribute[$productCustom->custom_element] = $plg ;
 									}
 								}
 							}
-// 							vmdebug('_createOrderLines after foreach',$product_attribute);
+							vmdebug('_createOrderLines after foreach',$product_attribute);
 
 						} else {
 
