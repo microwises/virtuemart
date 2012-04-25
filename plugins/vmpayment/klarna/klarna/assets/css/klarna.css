@@ -468,12 +468,12 @@
     display: table;
 }
 
-.klarna_box_bottom_input_combo div#left
+.klarna_box_bottom_input_combo div.klarna_left
 {
     float: left;
 }
 
-.klarna_box_bottom_input_combo div#right
+.klarna_box_bottom_input_combo div.klarna_right
 {
     float: right;
      margin: 0;

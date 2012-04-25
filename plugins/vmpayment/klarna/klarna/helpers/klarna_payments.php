@@ -103,6 +103,8 @@ class klarna_payments {
     }
 
     private function getParams() {
+		
+	$aParams = array();
 	if ($this->code == "klarna_invoice") {
 	    $kIndex = '';
 	} elseif ($this->code == "klarna_partPayment") {
@@ -112,7 +114,7 @@ class klarna_payments {
 	    $kIndex = 'spec_';
 	    $aParams["paymentPlan"] = "klarna_spec_paymentPlan";
 	}
-	$aParams = array();
+	
 	// Params specific for:
 	// ---- Sweden, Denmark, Norway, Finland
 

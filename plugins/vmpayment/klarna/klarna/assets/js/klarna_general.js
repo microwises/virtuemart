@@ -185,7 +185,7 @@ var klarna = {
 		if (typeof opts == 'undefined') {
 			opts = jQuery(document);
 		}
-
+		// specialCampaign only
 		if(typeof InitKlarnaSpecialPaymentElements != 'undefined')
 			InitKlarnaSpecialPaymentElements('specialCampaignPopupLink', klarna.eid, klarna.countryCode);
 
@@ -660,7 +660,7 @@ var klarna = {
 				{
 					replaceBox.find('.klarna_box').remove();
 					replaceBox.append(jQuery(response).find('.klarna_box'));
-					if(newIso != klarna['language_'+Type])
+					if(newIso != klarna['language'])
 						replaceBox.find('.klarna_box_bottom_languageInfo').fadeIn('slow', function () {
 							klarna.changeLanguage_busy = false;
 						});
