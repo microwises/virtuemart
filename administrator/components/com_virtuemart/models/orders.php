@@ -802,35 +802,24 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					if ($selected) {
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($selected );
-// 						vmdebug('$_prod,$productCustom',$_prod,$productCustom );
+						vmdebug('$_prod,$productCustom',$productCustom );
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
-// 							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
-
-							$product_attribute[$selected] = $productCustom->custom_element;
-// 							vmdebug('_createOrderLines',$product_attribute);
-// 							$product_attribute[$variant] = $selected;
-// 							JPluginHelper::importPlugin('vmcustom');
-// 							$dispatcher = JDispatcher::getInstance();
-// 							$html = '';
-// 							$varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
-// 							$product_attribute[$selected] = $html;
-
-// 							foreach($productCustom->custom_param as $k => $plg){
+							//We need something like this
+							$product_attribute[$selected] = $productCustom->virtuemart_custom_id;
+							//but seems we are forced to use this
+							//$product_attribute[$selected] = $selected;
 							if(!empty($_prod->param)){
 								foreach($_prod->param as $k => $plg){
 									if ($k == $variant){
-// 										$product_attribute[$selected] = $plg ;
-										$product_attribute[$productCustom->custom_element] = $plg ;
+										$product_attribute[$selected] = $plg ;
 									}
 								}
 							}
-							vmdebug('_createOrderLines after foreach',$product_attribute);
 
 						} else {
-
 							$product_attribute[$selected] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
 						}
 					}
