@@ -21,10 +21,6 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-// addon for joomla modal Box
-JHTML::_ ( 'behavior.modal' );
-JHTML::_('behavior.tooltip');
-
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -221,97 +217,11 @@ if (empty ( $this->product )) {
 		if ($this->product->box) $product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING2').$this->product->box;
 		echo str_replace("{unit}",$this->product->product_unit ? $this->product->product_unit : JText::_('COM_VIRTUEMART_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging); ?>
 	</div>
-	<?php } // Product Packaging END ?>
+	<?php } 
+	// Product Packaging END 
 
-	<?php // Product Files
-	// foreach ($this->product->images as $fkey => $file) {
-		// Todo add downloadable files again
-		// if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
-		// else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
-
-		/* Show pdf in a new Window, other file types will be offered as download */
-		// $target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-		// $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&virtuemart_product_id='.$this->product->virtuemart_product_id);
-		// echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
-	// }
-	?>
-
-	<?php // Related Products
-/*	if ($this->product->related && !empty($this->product->related)) {
-		$iRelatedCol = 1;
-		$iRelatedProduct = 1;
-		$RelatedProducts_per_row = 4 ;
-		$Relatedcellwidth = ' width'.floor ( 100 / $RelatedProducts_per_row );
-		$verticalseparator = " vertical-separator"; ?>
-
-		<div class="related-products-view">
-			<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h4>
-
-		<?php // Start the Output
-		foreach ($this->product->related as $rkey => $related) {
-
-			// Show the horizontal seperator
-			if ($iRelatedCol == 1 && $iRelatedProduct > $RelatedProducts_per_row) { ?>
-				<div class="horizontal-separator"></div>
-			<?php }
-
-			// this is an indicator wether a row needs to be opened or not
-			if ($iRelatedCol == 1) { ?>
-				<div class="row">
-			<?php }
-
-			// Show the vertical seperator
-			if ($iRelatedProduct == $RelatedProducts_per_row or $iRelatedProduct % $RelatedProducts_per_row == 0) {
-				$show_vertical_separator = ' ';
-			} else {
-				$show_vertical_separator = $verticalseparator;
-			}
-
-					// Show Products ?>
-					<div class="product floatleft<?php echo $Relatedcellwidth . $show_vertical_separator ?>">
-						<div class="spacer">
-							<div>
-								<h3><?php echo JHTML::_('link', $related->link, $related->product_name); ?></h3>
-
-								<?php // Product Image
-								echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"')); ?>
-
-								<div class="product-price">
-								<?php /** @todo Format pricing  ?>
-								<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
-								</div>
-
-								<div>
-								<?php // Product Details Button
-								echo JHTML::link($related->link, JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $related->product_name, 'class' => 'product-details' ) ); ?>
-								</div>
-							</div>
-						<div class="clear"></div>
-						</div>
-					</div>
-			<?php
-			$iRelatedProduct ++;
-
-			// Do we need to close the current row now?
-			if ($iRelatedCol == $RelatedProducts_per_row) { ?>
-				<div class="clear"></div>
-				</div>
-			<?php
-			$iRelatedCol = 1;
-			} else {
-				$iRelatedCol ++;
-			}
-		}
-		// Do we need a final closing row tag?
-		if ($iRelatedCol != 1) { ?>
-			<div class="clear"></div>
-			</div>
-		<?php } ?>
-		</div>
-	<?php } */ ?>
-
-	<?php // Customer Reviews
-	if($this->allowRating || $this->showReview) {
+	// Customer Reviews
+	if( $this->showReview ) {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
 		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
@@ -341,13 +251,8 @@ if (empty ( $this->product )) {
 					$color = 'highlight';
 				}
 
-				/* Check if user already commented */
-//				if ($review->virtuemart_userid == $this->user->id) {
-//					$alreadycommented = true;
-//				} ?>
-
-				<?php // Loop through all reviews
-				if (!empty($this->rating_reviews)) { ?>
+	// Loop through all reviews
+			if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
 					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote !?>
@@ -381,13 +286,10 @@ if (empty ( $this->product )) {
 //						echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 //					}
 
-	if($this->allowRating || $this->showReview) {
+	if( $this->showReview ) {
 	?>
 	</div>
 	<?php
 	}
-
-
-	// else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 	?>
 </div>

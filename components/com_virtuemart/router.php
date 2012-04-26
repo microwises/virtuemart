@@ -182,6 +182,8 @@ function virtuemartBuildRoute(&$query) {
 			if (isset($query['task'])) {
 				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
 				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartST') ;
+				elseif ($query['addrtype'] == 'BT') $segments[] = $helper->lang('editaddresscheckoutST') ;
+				elseif ($query['addrtype'] == 'ST') $segments[] = $helper->lang('editaddresscheckoutST') ;
 				else $segments[] = $query['task'] ;
 				unset ($query['task'] , $query['addrtype']);
 			}
@@ -410,7 +412,15 @@ function virtuemartParseRoute($segments) {
 			elseif (  $helper->compareKey($segments[0] ,'editaddresscartST') ) {
 				$vars['addrtype'] = 'ST' ;
 				$vars['task'] = 'editaddresscart' ;
-				} else $vars['task'] = $segments[0] ;
+			}
+			elseif (  $helper->compareKey($segments[0] ,'editaddresscheckoutBT') ) {
+				$vars['addrtype'] = 'ST' ;
+				$vars['task'] = 'editaddresscheckout' ;
+			}
+			elseif (  $helper->compareKey($segments[0] ,'editaddresscheckoutST') ) {
+				$vars['addrtype'] = 'BT' ;
+				$vars['task'] = 'editaddresscheckout' ;
+			} else $vars['task'] = $segments[0] ;
 		}
 		return $vars;
 	}

@@ -469,23 +469,25 @@ class VmConfig {
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
 			//Why not using the usterstae?
 		} else {
-			if ( JVM_VERSION===1 ) {
-			// try to find in session lang
-			// this work with joomfish j1.5 (application.data.lang)
+			if (!$siteLang = JRequest::getVar('vmlang',FALSE )) {
+				if ( JVM_VERSION===1 ) {
+				// try to find in session lang
+				// this work with joomfish j1.5 (application.data.lang)
 
-			$session  =JFactory::getSession();
-			$registry =& $session->get('registry');
-			$siteLang = $registry->getValue('application.data.lang') ;
-			} else  {
-			// TODO test wiht j1.7
-			jimport('joomla.language.helper');
-			$languages = JLanguageHelper::getLanguages('lang_code');
-			$siteLang = JFactory::getLanguage()->getTag();
-			}
-			if ( ! $siteLang ) {
-				// use user default
-				$lang =JFactory::getLanguage();
-				$siteLang = $lang->getTag();
+				$session  =JFactory::getSession();
+				$registry =& $session->get('registry');
+				$siteLang = $registry->getValue('application.data.lang') ;
+				} else  {
+				// TODO test wiht j1.7
+				jimport('joomla.language.helper');
+				$languages = JLanguageHelper::getLanguages('lang_code');
+				$siteLang = JFactory::getLanguage()->getTag();
+				}
+				if ( ! $siteLang ) {
+					// use user default
+					$lang =JFactory::getLanguage();
+					$siteLang = $lang->getTag();
+				}
 			}
 			/*//What is the difference of this?
 			$params = JComponentHelper::getParams('com_languages');

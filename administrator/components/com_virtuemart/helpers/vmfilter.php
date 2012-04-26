@@ -741,7 +741,7 @@ public static function loadconfig($c) {
   break;
   case 'simple':
   //Allowing only safe HTML and the elements a, br, em, and strong --
-    $config = array('safe'=>1, 'elements'=>'br, em, h2, h3, h4, h5, h6,p , strong');
+    $config = array('safe'=>1, 'elements'=>'br, em, h2, h3, h4, h5, h6, p, span, strong');
   break;
   case 'no_js_flash':
   // Not allowing elements script and object --
