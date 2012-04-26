@@ -60,7 +60,7 @@ class KlarnaAjax {
             $iInvoiceFee = JRequest::getFloat('fee', 0);
             $iFlag = JRequest::getInt('flag');
             $sType = JRequest::getWord('type');
-	     $aParams = JRequest::getVar('params');
+			$aParams = JRequest::getVar('params');
             $aValues = JRequest::getVar('values');
 
             // foreach($aValues as $key => $value) {

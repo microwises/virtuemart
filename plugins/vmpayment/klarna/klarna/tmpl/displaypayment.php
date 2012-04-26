@@ -4,7 +4,7 @@
             <tbody>
                 <tr>
                     <td colspan="2">
-                        <input class="klarnaPayment" id="<?php echo $viewData['klarna_pm']['id'] ?>" type="radio" name="virtuemart_paymentmethod_id" value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>" />
+                        <input class="klarnaPayment" data-stype="<?php echo $viewData['stype'] ?>" id="<?php echo $viewData['klarna_pm']['id'] ?>" type="radio" name="virtuemart_paymentmethod_id" value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>" />
 			<input  value="<?php echo $viewData['klarna_pm']['id'] ?>" type="hidden" name="klarna_paymentmethod" />
 <label for="<?php echo $viewData['klarna_pm']['id']?>">
                                  <?php echo $viewData['klarna_pm']['module'] ?></label>

@@ -1,6 +1,8 @@
 
 var klarna_js_loaded = true;
 if (typeof klarna == "undefined") {
+var $$ = $;
+var $ = jQuery;
 var klarna = {
 	invoice_fee: 0,
 	sum : 0,
@@ -13,6 +15,9 @@ var klarna = {
 	spec_different_language : false,
 	part_active : false,
 	part_different_language : false,
+	currentMinHeight_part : 0,
+	currentMinHeight_spec : 0,
+	currentMinHeight_invoice : 0,
 	red_baloon_busy : false,
 	blue_baloon_busy : false,
 	address_busy : false,
@@ -74,7 +79,7 @@ var klarna = {
 		if (typeof animate == 'undefined') {
 			animate = false;
 		}
-		console.log('box',box);
+
 		if (animate) {
 			jQuery(box).animate({"min-height": currentMinHeight}, 200, function () {
 				klarna.showHideIlt(jQuery(this).find('.klarna_box_ilt'), true);
@@ -107,11 +112,11 @@ var klarna = {
 		//jQuery('input[value="'+choice+'"]').attr("id");
 		var klarnaBox = jQuery('#paymentForm .klarnaPayment');
 		klarnaBox.each(function () { 
-			var boxid = jQuery(this).attr('id');
+			var boxid = jQuery(this).data("stype");
 			if (klarna.gChoice != boxid)
-			klarna.hidePaymentOption(boxid);
+				klarna.hidePaymentOption('#klarna_box_'+boxid);
 		});
-		klarna.choosePaymentOption(klarna.gChoice);
+		if ( isklarna ) klarna.choosePaymentOption(choice);
 	},
 
 	choosePaymentOption : function  (choice) {
@@ -120,48 +125,13 @@ var klarna = {
 			klarna.hideRedBaloon();
 			klarna.hideBlueBaloon();
 			klarna.openBox_busy = true;
-			jQuery('input[value="'+choice+'"]').attr("checked", "checked");
-			jQuery('input[id="'+choice+'"]').attr("checked", "checked");
+			// jQuery('input[value="'+choice+'"]').attr("checked", "checked");
+			// jQuery('input[id="'+choice+'"]').attr("checked", "checked");
 			// choice = klarna_invoice
-			if (choice == klarna.invoice_name)
-			{
-				klarna.hidePaymentOption(jQuery('#klarna_box_part'), true);
-				klarna.hidePaymentOption(jQuery('#klarna_box_spec'), true);
-				klarna.showPaymentOption(jQuery('#klarna_box_invoice'), true,
-				klarna.currentMinHeight_invoice, klarna.invoice_different_language);
-				klarna.invoice_active = true;
-
-			}
-			else if (choice == klarna.part_name)
-			{
-				klarna.hidePaymentOption(jQuery('#klarna_box_invoice'), true);
-				klarna.hidePaymentOption(jQuery('#klarna_box_spec'), true);
-				klarna.showPaymentOption(jQuery('#klarna_box_part'), true,
-				klarna.currentMinHeight_part, klarna.part_different_language);
-				klarna.part_active = true;
-			}
-			else if (choice == klarna.spec_name)
-			{
-				klarna.hidePaymentOption(jQuery('#klarna_box_invoice'), true);
-				klarna.hidePaymentOption(jQuery('#klarna_box_part'), true);
-				klarna.showPaymentOption(jQuery('#klarna_box_spec'), true,
-				klarna.currentMinHeight_spec, klarna.spec_different_language);
-				klarna.spec_active = true;
-			}
-			else {
-				klarna.hidePaymentOption(jQuery('#klarna_box_invoice'), true);
-				klarna.hidePaymentOption(jQuery('#klarna_box_part'), true);
-				klarna.hidePaymentOption(jQuery('#klarna_box_spec'), true);
-				
-				// jQuery('.klarna_box_bottom_languageInfo').fadeOut('fast');
-
-
-					invoice_active = false;
-					klarna.openBox_busy = false;
-			}
+			klarna.showPaymentOption(jQuery('#klarna_box_'+klarna.gChoice), true,
+				klarna['currentMinHeight_'+klarna.gChoice], klarna[klarna.gChoice+'_different_language']);
 		}
 		klarna.selected_method = choice;
-		console.log(choice);
 	},
 
 	setGender : function  (context, gender) {
@@ -222,24 +192,24 @@ var klarna = {
 		});
 
 		// Chosing the active language
-		jQuery('.box_active_language', opts).click(function () {
-			if (klarna.flagChange_active == false)
-			{
-				klarna.flagChange_active = true;
+		// jQuery('.box_active_language', opts).click(function () {
+			// if (klarna.flagChange_active == false)
+			// {
+				// klarna.flagChange_active = true;
 
-				jQuery(this).parent().find('.klarna_box_top_flag_list').slideToggle('fast', function () {
-					if (jQuery(this).is(':visible'))
-					{
-						jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 1.0}, 'fast');
-					}
-					else {
-						jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 0.4}, 'fast');
-					}
+				// jQuery(this).parent().find('.klarna_box_top_flag_list').slideToggle('fast', function () {
+					// if (jQuery(this).is(':visible'))
+					// {
+						// jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 1.0}, 'fast');
+					// }
+					// else {
+						// jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 0.4}, 'fast');
+					// }
 
-					klarna.flagChange_active = false;
-				});
-			}
-		});
+					// klarna.flagChange_active = false;
+				// });
+			// }
+		// });
 
 		jQuery('.klarna_box_top_flag_list img', opts).click(function (){
 			if (klarna.changeLanguage_busy == false)
@@ -248,7 +218,7 @@ var klarna = {
 
 				var newIso = jQuery(this).attr("alt");
 
-				jQuery('#box_active_language', opts).attr("src", jQuery(this).attr("src"));
+				jQuery('.box_active_language', opts).attr("src", jQuery(this).attr("src"));
 
 				var box = jQuery(this).parents('.klarna_box_container');
 				var params;
@@ -260,7 +230,7 @@ var klarna = {
 					console.log(boxType);
 					return ;
 				}
-				klarna.changeLanguage(box, klarna['params_'+Type], newIso, klarna.countryCode, Type);
+				klarna.changeLanguage(box, klarna.params, newIso, klarna.countryCode, Type);
 			}
 		});
 
@@ -288,11 +258,12 @@ var klarna = {
 		});
 	},
 
-	doDocumentIsReady : function  ()
+	doDocumentIsReady : function  (klarnaBox)
 	{
-		klarna.currentMinHeight_invoice = jQuery('#klarna_box_invoice').height();
-		klarna.currentMinHeight_part = jQuery('#klarna_box_part').height();
-		klarna.currentMinHeight_spec = jQuery('#klarna_box_spec').height();
+		klarnaBox.each(function () { 
+			var type = jQuery(this).parents('table').find('.klarnaPayment').data("stype");
+			klarna['currentMinHeight_'+type] = jQuery(this).children('.klarna_box_top').height();
+		});
 
 
 
@@ -417,10 +388,10 @@ var klarna = {
 									jQuery('.klarna_box_bottom').animate({"min-height": "300px"},'fast');
 								}
 
-								if (companyAllowed == false && typeof lang_companyNotAllowed != "undefined")
+								if (companyAllowed == false && typeof klarna.lang_companyNotAllowed != "")
 								{
 									showRedBaloon(jQuery(box));
-									jQuery('#klarna_red_baloon_content div').html(lang_companyNotAllowed);
+									jQuery('#klarna_red_baloon_content div').html(klarna.lang_companyNotAllowed);
 									klarna.showing_companyNotAlowed_box = true;
 								}
 								else {
@@ -614,12 +585,10 @@ var klarna = {
 		});
 	},
 
-	saveDates : function (replaceBox, Type) {
-		if (Type = 'invoice') Type='';
-		else Type = Type+'_';
-		klarna['select_'+Type+'bday']= jQuery(replaceBox).find('#selectBox_'+Type+'bday').val();
-		klarna['select_'+Type+'bmonth'] = jQuery(replaceBox).find('#selectBox_'+Type+'bmonth').val();
-		klarna['select_'+Type+'year'] = jQuery(replaceBox).find('#selectBox_'+Type+'year').val();
+	saveDates : function (replaceBox) {
+		klarna['select_bday']= jQuery(replaceBox).find('.selectBox_bday').val();
+		klarna['select_bmonth'] = jQuery(replaceBox).find('.selectBox_bmonth').val();
+		klarna['select_year'] = jQuery(replaceBox).find('.selectBox_year').val();
 	},
 
 	changeLanguage : function (replaceBox, params, newIso, country, Type)
@@ -649,7 +618,7 @@ var klarna = {
 		}
 		virtuemart_paymentmethod_id = jQuery(replaceBox).parents('table').find('.klarnaPayment').val();
 		data['cid'] = virtuemart_paymentmethod_id;
-		klarna.saveDates(replaceBox, Type);
+		klarna.saveDates(replaceBox);
 		jQuery.ajax({
 			type: "GET",
 			url: klarna.ajaxPath,
@@ -681,9 +650,9 @@ var klarna = {
 	methodReady : function  (Type)
 	{
 		var foundBox = false;
-		var currentMinHeight = jQuery('#klarna_box_invoice').height();
-		if (Type == 'invoice') var name='';
-		else var name = Type+'_' ;
+		box = jQuery('#klarna_box_'+Type);
+		var currentMinHeight = box.height();
+		
 		// Select birthdate and fill years box
 		// console.log(Type, klarna.countryCode);
 		if (klarna.countryCode == "de" || klarna.countryCode == "nl")
@@ -692,57 +661,49 @@ var klarna = {
 			var date = new Date();
 			for (i = date.getFullYear(); i >= 1900; i--)
 			{
-				jQuery('<option/>').val(i).text(i).appendTo('#selectBox_'+name+'year')
+				jQuery('<option/>').val(i).text(i).appendTo( box.find('.selectBox_year') )
 			}
-
-			if(typeof klarna.select_bday != "undefined") {
-				jQuery('#selectBox_'+name+'bday').val(klarna['select_'+name+'bday']);
-			}
-
-			if(typeof klarna.select_bmonth != "undefined") {
-				jQuery('#selectBox_'+name+'bmonth').val(klarna['select_'+name+'bmonth']);
-			}
-
-			if(typeof klarna.select_byear != "undefined") {
-				jQuery('#selectBox_'+name+'year').val(klarna['select_'+name+'byear']);
-			}
+			box.find('.selectBox_bday').val(klarna.select_bday);
+			box.find('.selectBox_bmonth').val(klarna.select_bmonth);
+			box.find('.selectBox_year').val(klarna.select_byear);
 		}
 
 		// Chosing the active language
-		jQuery('#box_active_language').click(function () {
-			jQuery('.klarna_box_top_flag_list').slideToggle('fast', function () {
+		box.find('.box_active_language').click(function () {
+			jQuery(this).next('.klarna_box_top_flag_list').slideToggle('fast', function () {
 				if (jQuery(this).is(':visible'))
 				{
-					jQuery('.klarna_box_top_flag').animate({opacity: 1.0}, 'fast');
+					jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 1.0}, 'fast');
 				}
 				else {
-					jQuery('.klarna_box_top_flag').animate({opacity: 0.4}, 'fast');
+					jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 0.4}, 'fast');
 				}
 			});
 		});
 
 		if (Type == 'invoice') {
-			if(typeof invoice_ITId != "undefined") {
-				jQuery('input[name='+invoice_ITId+']').change(function (){
-					var val = jQuery(this).val();
 
-					if (val == "private")
-					{
-						jQuery('#invoice_perOrg_title').text(lang_personNum);
-						jQuery('#invoice_box_private').slideDown('fast');
-						jQuery('#invoice_box_company').slideUp('fast');
-					}
-					else if (val == "company")
-					{
-						jQuery('#invoice_perOrg_title').text(lang_orgNum);
-						jQuery('#invoice_box_company').slideDown('fast');
-						jQuery('#invoice_box_private').slideUp('fast');
-					}
-				});
-			}
+			jQuery('input[name='+klarna.invoice_ITId+']').change(function (){
+				var val = jQuery(this).val();
+
+				if (val == "private")
+				{
+					jQuery('#invoice_perOrg_title').text(klarna.lang_personNum);
+					jQuery('#invoice_box_private').slideDown('fast');
+					jQuery('#invoice_box_company').slideUp('fast');
+				}
+				else if (val == "company")
+				{
+					jQuery('#invoice_perOrg_title').text(klarna.lang_orgNum);
+					jQuery('#invoice_box_company').slideDown('fast');
+					jQuery('#invoice_box_private').slideUp('fast');
+				}
+			});
 		}
 	}
-}};
+}
+var $ = $$;
+};
 Address = function (companyName, firstName, lastName, street, zip, city, countryCode) {
     this.companyName = companyName;
     this.firstName = firstName;
@@ -844,7 +805,7 @@ AddressCollection.prototype.render = function (to, inputName) {
 		$('body').append(baloon);
 		$('body').append(baloon3);
 
-		klarna.doDocumentIsReady();
+		klarna.doDocumentIsReady(jQuery('.klarna_box'));
 
 		$('.klarna_box_bottom_languageInfo').remove();
 
@@ -867,7 +828,7 @@ AddressCollection.prototype.render = function (to, inputName) {
 			var fields = selectedTable.find('*').serializeArray();
 			fields.push({"name":"task","value":"setpayment"});
 			fields.push({"name":"view","value":"cart"});
-			fields.push({"name":"klarna_paymentmethod","value":klarna.selected_method});
+			fields.push({"name":"klarna_paymentmethod","value":vmmethod.next('input').val()});
 			var form = $('<form></form>');
 			form.attr("method", "post");
 			form.attr("action", action);
@@ -887,7 +848,6 @@ AddressCollection.prototype.render = function (to, inputName) {
 			$(document.body).append(form);
 			form.submit();
 
-			console.log(fields);
 			return false;
 		});
 		klarna.baloons_moved = true;

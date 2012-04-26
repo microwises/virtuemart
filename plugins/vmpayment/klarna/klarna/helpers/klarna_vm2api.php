@@ -49,7 +49,11 @@ class KlarnaVm2API extends KlarnaAPI {
 		}
 	    }
 	}
-
+	if (strtolower($this->sCountryCode) == 'de') {
+	    $vendor_id = 1;
+	    $link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
+	    $this->aSetupSettings['agb_link'] = $link;
+	}
 	if ($this->sType != "spec") {
 	    $this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
 	}
@@ -59,7 +63,7 @@ class KlarnaVm2API extends KlarnaAPI {
 		    'input' => $this->aInputParameters,
 		    'value' => $this->aInputValues,
 		    'setup' => $this->aSetupSettings,
-		    'sType' => $this->sType,
+		    'sType' => $this->sType
 			), 'klarna', 'payment');
     }
 

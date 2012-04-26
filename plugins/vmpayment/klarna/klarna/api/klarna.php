@@ -2877,9 +2877,9 @@ class Klarna {
      * @return PCStorage
      */
     protected function getPCStorage() {
-        require_once('pclasses/storage.intf.php');
+        //require_once('pclasses/storage.intf.php');
         $className = $this->pcStorage.'storage';
-        $pclassStorage = dirname(__FILE__).'/pclasses/'.$className.'.class.php';
+        $pclassStorage = JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'pclasses' . DS . $className.'.class.php';
         require_once($pclassStorage);
         $storage = new $className;
         if(!($storage instanceof PCStorage)) {

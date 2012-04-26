@@ -105,52 +105,48 @@ class klarna_payments {
     private function getParams() {
 		
 	$aParams = array();
-	if ($this->code == "klarna_invoice") {
-	    $kIndex = '';
-	} elseif ($this->code == "klarna_partPayment") {
-	    $kIndex = 'part_';
-	    $aParams["paymentPlan"] = "klarna_part_paymentPlan";
+	if ($this->code == "klarna_partPayment") {
+	    $aParams["paymentPlan"] = "klarna_paymentPlan";
 	} elseif ($this->code == "klarna_SpecCamp") {
-	    $kIndex = 'spec_';
-	    $aParams["paymentPlan"] = "klarna_spec_paymentPlan";
+	    $aParams["paymentPlan"] = "klarna_paymentPlan";
 	}
 	
 	// Params specific for:
 	// ---- Sweden, Denmark, Norway, Finland
 
 	if ($this->country == "se" || $this->country == "dk" || $this->country == "no" || $this->country == "fi") {
-	    $aParams["socialNumber"] = "klarna_" . $kIndex . "pnum";
+	    $aParams["socialNumber"] = "klarna_pnum";
 	}
 	// Params needed for non-swedish customers
 	if ($this->country != "se") {
-	    $aParams["firstName"] = "klarna_" . $kIndex . "first_name";
-	    $aParams["lastName"] = "klarna_" . $kIndex . "last_name";
-	    $aParams["street"] = "klarna_" . $kIndex . "street";
-	    $aParams["city"] = "klarna_" . $kIndex . "city";
-	    $aParams["zipcode"] = "klarna_" . $kIndex . "zip";
-	    $aParams["companyName"] = "klarna_" . $kIndex . "company_name";
+	    $aParams["firstName"] = "klarna_first_name";
+	    $aParams["lastName"] = "klarna_last_name";
+	    $aParams["street"] = "klarna_street";
+	    $aParams["city"] = "klarna_city";
+	    $aParams["zipcode"] = "klarna_zip";
+	    $aParams["companyName"] = "klarna_company_name";
 
 	    // Specific for Germany and Netherlands
 	    if ($this->country == "de" || $this->country == "nl") {    // Germany && Netherlands
-		$aParams["gender"] = "klarna_" . $kIndex . "gender";
-		$aParams["homenumber"] = "klarna_" . $kIndex . "house";
-		$aParams["birth_year"] = "klarna_" . $kIndex . "birth_year";
-		$aParams["birth_month"] = "klarna_" . $kIndex . "birth_month";
-		$aParams["birth_day"] = "klarna_" . $kIndex . "birth_day";
+		$aParams["gender"] = "klarna_gender";
+		$aParams["homenumber"] = "klarna_house";
+		$aParams["birth_year"] = "klarna_birth_year";
+		$aParams["birth_month"] = "klarna_birth_month";
+		$aParams["birth_day"] = "klarna_birth_day";
 	    }
 	    if ($this->country == "nl") {    // Netherlands only
-		$aParams["house_extension"] = "klarna_" . $kIndex . "house_extension";
+		$aParams["house_extension"] = "klarna_house_extension";
 	    }
 	    if ($this->country == "dk") {    // Denmark only
 		$aParams["year_salary"] = "klarna_spec_ysalary";
 	    }
 	}
 	// Params that are the same for all countries
-	$aParams["phoneNumber"] = "klarna_" . $kIndex . "phone";
-	$aParams["emailAddress"] = "klarna_" . $kIndex . "email";
+	$aParams["phoneNumber"] = "klarna_phone";
+	$aParams["emailAddress"] = "klarna_email";
 	$aParams["invoiceType"] = "klarna_invoice_type";
-	$aParams["reference"] = "klarna_" . $kIndex . "reference";
-	$aParams["shipmentAddressInput"] = "klarna_" . $kIndex . "shipment_address";
+	$aParams["reference"] = "klarna_reference";
+	$aParams["shipmentAddressInput"] = "klarna_shipment_address";
 	$aParams["type"] = "klarna_invoice";
 
 	return $aParams;

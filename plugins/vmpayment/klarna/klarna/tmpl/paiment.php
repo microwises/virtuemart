@@ -1,6 +1,7 @@
 <?php  defined('_JEXEC') or die(); 
 $code2 = $viewData['setup']['countryCode'] ;
 $sType = $viewData['sType'];
+// missing house_extension,ysalary,companyName
 ?>
 <!-- KLARNA BOX -->
 <?php echo $viewData['checkout']; ?>
@@ -28,34 +29,29 @@ $sType = $viewData['sType'];
             klarna.select_byear    = '<?php echo @$viewData['value']['birth_year'] ; ?>';
             klarna.gender                = '<?php echo @$viewData['value']['gender'] ; ?>';
 
-            klarna.spec_ITId        = '<?php echo $viewData['input']['invoice_type'] ; ?>';
-
-            klarna.invoice_name   = '<?php echo $viewData['setup']['invoice_name'] ; ?>';
-            klarna.part_name      = '<?php echo $viewData['setup']['part_name'] ; ?>';
-            klarna.spec_name      = '<?php echo $viewData['setup']['spec_name'] ; ?>';
-
+            klarna.invoice_ITId        = 'klarna_invoice_type';
             // Mapping to the real field names which may be prefixed
-            klarna.params_<?php echo $sType ; ?> = {
-				<?php if ( isset($viewData['input']['birth_day']) ) { ?>
-					birth_day: '<?php echo $viewData['input']['birth_day'] ; ?>',
-					birth_month: '<?php echo $viewData['input']['birth_month'] ; ?>',
-					birth_year: '<?php echo $viewData['input']['birth_year'] ; ?>',
-				<?php } ?>
-                companyName: '<?php echo $viewData['input']['companyName'] ; ?>',
-                socialNumber: '<?php echo $viewData['input']['socialNumber'] ; ?>',
-                firstName: '<?php echo $viewData['input']['firstName'] ; ?>',
-                lastName: '<?php echo $viewData['input']['lastName'] ; ?>',
-                gender: '<?php echo $viewData['input']['gender'] ; ?>',
-                street: '<?php echo $viewData['input']['street'] ; ?>',
-                homenumber: '<?php echo $viewData['input']['homenumber'] ; ?>',
-                house_extension: '<?php echo $viewData['input']['house_extension'] ; ?>',
-                city: '<?php echo $viewData['input']['city'] ; ?>',
-                zipcode: '<?php echo $viewData['input']['zipcode'] ; ?>',
-                reference: '<?php echo $viewData['input']['reference'] ; ?>',
-                phoneNumber: '<?php echo $viewData['input']['phoneNumber'] ; ?>',
-                emailAddress: '<?php echo $viewData['input']['emailAddress'] ; ?>',
-                invoiceType: '<?php echo $viewData['input']['invoiceType'] ; ?>',
-                shipmentAddressInput: '<?php echo $viewData['input']['shipmentAddressInput'] ; ?>'
+            klarna.params = {
+				birth_day: 'klarna_birth_day',
+				birth_month: 'klarna_birth_month',
+				birth_year: 'klarna_birth_year',
+				companyName: 'klarna_company_name',
+                socialNumber: 'klarna_socialNumber',
+                firstName: 'klarna_firstName',
+                lastName: 'klarna_lastName',
+                gender: 'klarna_gender',
+                street: 'klarna_street',
+                homenumber: 'klarna_homenumber',
+                house_extension: 'house_extension',
+                city: 'klarna_city',
+                zipcode: 'klarna_zip',
+                reference: 'klarna_reference',
+                phoneNumber: 'klarna_phone',
+                emailAddress: 'klarna_email',
+                invoiceType: 'klarna_invoice_type',
+                shipmentAddressInput: 'klarna_shipment_address',
+				consent: 'klarna_consent'
+				
 
               }
 
@@ -129,7 +125,7 @@ jQuery(function (){
                         alt="<?php echo JText::_('VMPAYMENT_KLARNA_LANGUAGESETTING_NOTE_'.$code2); ?>" />
                 </div>
             </div>
-            <img class="klarna_logo" src="<?php echo VMKLARNAPLUGINWEBASSETS.'/images/' ?>logo/klarna_logo.png"
+            <img class="klarna_logo" src="<?php echo VMKLARNAPLUGINWEBASSETS.'/images/' ?>logo/klarna_<?php echo $sType.'_'.$code2; ?>.png"
                 alt="<?php echo JText::_('VMPAYMENT_KLARNA_IMG_LOGO_ACCOUNT'); ?>" />
         </div>
         <div class="klarna_box_bottom">
@@ -140,7 +136,7 @@ jQuery(function (){
                         <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_'.$sType.'_PAYMENT'); ?></div>
                         <ol id="paymentPlan"><?php echo $this->renderPClasses(); ?>
                         </ol>
-                        <input type="hidden" name="<?php echo $viewData['input']['paymentPlan'] ; ?>"
+                        <input type="hidden" name="klarna_paymentPlan"
                             value="<?php echo @$viewData['value']['paymentPlan'] ; ?>" class="paymentPlan" />
                         <div class="klarna_box_bottom_content_listPriceInfo">
                             <?php // echo JText::_('VMPAYMENT_KLARNA_PRICES_ARE_IN_SEK'); ?></div>
@@ -155,44 +151,44 @@ jQuery(function (){
 							<div class="klarna_left" style="width: 60%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_FIRST_NAME'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_FIRSTNAME'); ?>" type="text"
-									name="<?php echo $viewData['input']['firstName'] ; ?>" value="<?php echo @$viewData['value']['firstName'] ; ?>"
+									name="klarna_firstName" value="<?php echo @$viewData['value']['firstName'] ; ?>"
 									style="width: 98%" />
 							</div>
 							<div class="klarna_right" style="width: 40%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_LAST_NAME'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_LASTNAME'); ?>" type="text"
-									name="<?php echo $viewData['input']['lastName'] ; ?>" value="<?php echo @$viewData['value']['lastName'] ; ?>"
+									name="klarna_lastName" value="<?php echo @$viewData['value']['lastName'] ; ?>"
 									style="width: 100%" />
 							</div>
 						</div>
 						<?php if ($code2 =='de' || $code2 =='nl') { ?>
 							<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_SEX'); ?></div>
-							<input type="radio" name="<?php echo $viewData['input']['gender'] ; ?>" value="1" id="<?php echo $sType ?>_male"
+							<input type="radio" name="klarna_gender" value="1" id="<?php echo $sType ?>_male"
 								class="Klarna_radio gender" />
 							<div class="klarna_box_bottom_radio_title" style="float: left">
 								<label for="<?php echo $sType ?>_male"><?php echo JText::_('VMPAYMENT_KLARNA_SEX_MALE'); ?></label>
 							</div>
-							<input type="radio" name="<?php echo $viewData['input']['gender'] ; ?>" value="0"
+							<input type="radio" name="klarna_gender" value="0"
 								id="<?php echo $sType ?>_female" class="Klarna_radio gender" />
 							<div class="klarna_box_bottom_radio_title" style="float: none">
 								<label for="<?php echo $sType ?>_female"><?php echo JText::_('VMPAYMENT_KLARNA_SEX_FEMALE'); ?></label>
 							</div>
 						<?php } ?>
 						<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
-						<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_'.$code2); ?>" type="text"
-							name="<?php echo $viewData['input']['phoneNumber'] ; ?>" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
+						<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_'.$code2); ?>" type="text" 
+						name="klarna_phone" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
 							class="Klarna_fullwidth" />
 						<div class="klarna_box_bottom_input_combo">
 							<div class="klarna_left" style="width: 60%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_ADDRESS_STREET'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_STREETADDRESS'); ?>" type="text"
-									name="<?php echo $viewData['input']['street'] ; ?>" value="<?php echo @$viewData['value']['street'] ; ?>"
+									name="klarna_street" value="<?php echo @$viewData['value']['street'] ; ?>"
 									style="width: 98%" />
 							</div>
 							<div class="klarna_right" style="width: 40%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_ADDRESS_HOMENUMBER'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_HOUSENUMBER'); ?>" type="text"
-									name="<?php echo $viewData['input']['homenumber'] ; ?>" value="<?php echo @$viewData['value']['homenumber'] ; ?>"
+									name="klarna_homenumber" value="<?php echo @$viewData['value']['homenumber'] ; ?>"
 									style="width: 100%" />
 							</div>
 						</div>
@@ -200,13 +196,13 @@ jQuery(function (){
 							<div class="klarna_left" style="width: 60%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_ADDRESS_ZIP'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_ZIP'); ?>" type="text"
-									name="<?php echo $viewData['input']['zipcode'] ; ?>" value="<?php echo @$viewData['value']['zipcode'] ; ?>"
+									name="klarna_zipcode" value="<?php echo @$viewData['value']['zipcode'] ; ?>"
 									style="width: 98%" />
 							</div>
 							<div class="klarna_right" style="width: 40%">
 								<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_ADDRESS_CITY'); ?></div>
 								<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_CITY'); ?>" type="text"
-									name="<?php echo $viewData['input']['city'] ; ?>" value="<?php echo @$viewData['value']['city'] ; ?>"
+									name="klarna_city" value="<?php echo @$viewData['value']['city'] ; ?>"
 									style="width: 100%" />
 							</div>
 						</div>
@@ -218,22 +214,22 @@ jQuery(function (){
 							<img src="<?php echo VMKLARNAPLUGINWEBASSETS.'/images/' ?>share/loader1.gif" alt="" />
 						</div>
 						<input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_SE'); ?>"
-							name="<?php echo $viewData['input']['socialNumber'] ; ?>" value="<?php echo @$viewData['value']['socialNumber'] ; ?>"
+							name="klarna_socialNumber" value="<?php echo @$viewData['value']['socialNumber'] ; ?>"
 							class="Klarna_pnoInputField" />
 
 						<div class="referenceDiv" style="display: none">
 							<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_REFERENCE'); ?></div>
 							<input type="text" alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_REFERENCE'); ?>"
-								name="<?php echo $viewData['input']['reference'] ; ?>" value="<?php echo @$viewData['value']['reference'] ; ?>"
+								name="klarna_reference" value="<?php echo @$viewData['value']['reference'] ; ?>"
 								class="Klarna_fullwidth" />
 						</div>
 						<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_EMAIL'); ?></div>
 						<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
-							name="<?php echo $viewData['input']['emailAddress'] ; ?>" value="<?php echo @$viewData['value']['emailAddress'] ; ?>"
+							name="klarna_emailAddress" value="<?php echo @$viewData['value']['emailAddress'] ; ?>"
 							class="Klarna_fullwidth" /> <br /> <br />
 						<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
 						<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
-							name="<?php echo $viewData['input']['phoneNumber'] ; ?>" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
+							name="klarna_phoneNumber" value="<?php echo @$viewData['value']['phoneNumber'] ; ?>"
 							class="Klarna_fullwidth" /> <br /> <br />
 						<div class="klarna_box_bottom_address" style="display: none">
 							<div class="klarna_box_bottom_address_title"><?php echo JText::_('VMPAYMENT_KLARNA_DELIVERY_ADDRESS'); ?></div>
@@ -249,8 +245,8 @@ jQuery(function (){
 						<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_BIRTHDAY'); ?></div>
 						<div class="klarna_box_bottom_input_combo" style="width: 100%">
 							<div class="klarna_left" style="width: 30%">
-								<select style="width: 98%" name="<?php echo $viewData['input']['birth_day'] ; ?>"
-									id="selectBox_<?php echo $sType ?>_bday">
+								<select style="width: 98%" name="klarna_birth_day"
+									class="selectBox_bday">
 									<option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_DAY'); ?></option>
 									<option value="01">01</option>
 									<option value="02">02</option>
@@ -286,8 +282,8 @@ jQuery(function (){
 								</select>
 							</div>
 							<div class="klarna_left" style="width: 40%">
-								<select style="width: 98%" name="<?php echo $viewData['input']['birth_month'] ; ?>"
-									id="selectBox_<?php echo $sType ?>_bmonth">
+								<select style="width: 98%" name="klarna_birth_month"
+									class="selectBox_bmonth">
 									<option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_MONTH'); ?></option>
 									<option value="01"><?php echo JText::_('VMPAYMENT_KLARNA_MONTH_1'); ?></option>
 									<option value="02"><?php echo JText::_('VMPAYMENT_KLARNA_MONTH_2'); ?></option>
@@ -304,8 +300,8 @@ jQuery(function (){
 								</select>
 							</div>
 							<div class="klarna_right" style="width: 30%">
-								<select style="width: 100%" name="<?php echo $viewData['input']['birth_year'] ; ?>"
-									id="selectBox_<?php echo $sType ?>_year">
+								<select style="width: 100%" name="klarna_birth_year>"
+									class="selectBox_year">
 									<option selected="selected"><?php echo JText::_('VMPAYMENT_KLARNA_DATE_YEAR'); ?></option>
 								</select>
 							</div>
@@ -319,8 +315,8 @@ jQuery(function (){
 					<?php } 
 					if ($code2 =='de') { ?>
 						<div class="klarna_box_bottom_input_combo" style="width: 100%">
-							<input type="checkbox" name="<?php echo $viewData['input']['consent'] ; ?>"
-								id="box_<?php echo $viewData['input']['consent'] ; ?>"
+							<input type="checkbox" name="klarna_consent"
+								id="box_klarna_consent'] ; ?>"
 								style="float: left; margin-right: 3px" />
 								<div class="klarna_box_bottom_title" style="width: 80%; margin-top: 3px">Mit der &Uuml;bermittlung der f&uuml;r die Abwicklung des Rechnungskaufes und einer Identit&auml;ts- und Bonit&auml;tspr&uuml;fung erforderlichen Daten an Klarna bin ich einverstanden. Meine <a href="javascript:ShowKlarnaConsentPopup('<?php echo $viewData['setup']['eid'] ; ?>','<?php echo $sType ?>')">Einwilligung</a> kann ich jederzeit mit Wirkung f&uuml;r die Zukunft widerrufen. Es gelten die <a href="<?php echo $viewData['setup']['agb_link'] ; ?>">AGB</a> des H&auml;ndlers.</div>
 						</div>
@@ -335,6 +331,6 @@ jQuery(function (){
         </div>
     </div>
 </div>
-<input type="hidden" name="<?php echo $viewData['input']['emailAddress'] ; ?>"
+<input type="hidden" name="klarna_emailAddress"
     value="<?php echo @$viewData['value']['emailAddress'] ; ?>" />
 <!-- END KLARNA BOX -->
