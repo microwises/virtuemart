@@ -41,8 +41,15 @@ var Virtuemart = {
 		);
 	},
 	sendtocart : function (form){
-		var $ = jQuery ;
 		if (Virtuemart.addtocart_popup ==1) {
+			Virtuemart.cartEffect(form) ;
+		} else {
+			form.append('<input type="hidden" name="task" value="add" />');
+			form.submit();
+		}
+	},
+	cartEffect : function(form) {
+			var $ = jQuery ;
 			$.ajaxSetup({ cache: false })
 			var datas = form.serialize();
 			$.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang,encodeURIComponent(datas),
@@ -72,10 +79,6 @@ var Virtuemart = {
 				}
 			});
 			$.ajaxSetup({ cache: true });
-		} else {
-			form.append('<input type="hidden" name="task" value="add" />');
-			form.submit();
-		}
 	},
 	product : function(carts) {
 		carts.each(function(){
