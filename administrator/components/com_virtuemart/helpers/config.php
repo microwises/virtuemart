@@ -838,19 +838,20 @@ class vmJsApi{
 	 */
 	function jQuery() {
 		if ( JFactory::getApplication()->get('jquery')) return false;
-		if ( !VmConfig::get('jquery',true ) and JFactory::getApplication()->isSite()) return false;
+		$isSite = JFactory::getApplication()->isSite();
+		if ( !VmConfig::get('jquery',true ) and $isSite) return false;
 // 		static $jquery;
 		// If exist exit
 // 		if ($jquery) return;
 		$document = JFactory::getDocument();
 		if(VmConfig::get('google_jquery',true)){
 			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
+			if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
 			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
-			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
+			if (!$isSite) $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
-		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.ui.autocomplete.html.js');
+		if (!$isSite) $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.ui.autocomplete.html.js');
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.noConflict.js');
 
 		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
@@ -867,7 +868,7 @@ class vmJsApi{
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
-
+		vmJsApi::jQuery();
 		//JPlugin::loadLanguage('com_virtuemart');
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart');
@@ -1056,9 +1057,11 @@ class vmJsApi{
 		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 		$lg = JFactory::getLanguage();
-		$lang = substr($lg->getTag(), 0, 2);
+		$lang = $lg->getTag();
+		
 		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-		if (!in_array($lang, $existingLang)) $lang ="en-GB";
+		if (!in_array($lang, $existingLang)) $lang = substr($lang, 0, 2);
+		elseif (!in_array($lang, $existingLang)) $lang ="en-GB";
 		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
 
 		$jDate = true;
