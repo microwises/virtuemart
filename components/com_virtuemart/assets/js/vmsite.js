@@ -60,9 +60,9 @@
 		},
 		addToList: function(opt,values,dest) {
 			$.each(values, function(dataKey, dataValue) { 
-				groupExist = $("#group"+dataValue+"").size(); 
+				var groupExist = $("#group"+dataValue+"").size(); 
 				if ( ! groupExist ) {
-					datas = opt.data( 'd'+dataValue );
+					var datas = opt.data( 'd'+dataValue );
 					if (datas.length >0) {
 					var label = opt.find("option[value='"+dataValue+"']").text();
 					var group ='<optgroup id="group'+dataValue+'" label="'+label+'">';
@@ -83,10 +83,10 @@
 		if ( methods[method] ) {
 		  return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 		} else if ( typeof method === 'object' || ! method ) {
-		  return methods.init.apply( this, arguments );
+			return methods.init.apply( this, arguments );
 		} else {
 		  $.error( 'Method ' +  method + ' does not exist on Vm2 front jQuery library' );
 		}    
-	  
+	
 	};
 })(jQuery)

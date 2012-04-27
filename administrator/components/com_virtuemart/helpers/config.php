@@ -876,8 +876,8 @@ class vmJsApi{
 		static $loaded = array();
 
 		// Only load once 
-		// using of namespace assume same library have same namespace
-		// loading 2 time jquery with this method simply return and do not load it the second time
+		// using of namespace assume same css have same namespace
+		// loading 2 time css with this method simply return and do not load it the second time
 		
 		if (!empty($loaded[$namespace])) {
 			return;
@@ -896,9 +896,9 @@ class vmJsApi{
 	public static function setPath( $namespace ,$path = false ,$version='' ,$minified = null , $ext = 'js')
 	{
 
-		$version	= $version ? '.'.$version : '';
-		$min	= $minified ? '.min' : '';
-		$file = $namespace.$version.$min.'.'.$ext ;
+		$version = $version ? '.'.$version : '';
+		$min	 = $minified ? '.min' : '';
+		$file 	 = $namespace.$version.$min.'.'.$ext ;
 		$template = JFactory::getApplication()->getTemplate() ;
 		if ($path === false) {
 			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
@@ -931,9 +931,9 @@ class vmJsApi{
 		if ( !VmConfig::get('jquery',true ) and $isSite) return false;
 		$document = JFactory::getDocument();
 		if(VmConfig::get('google_jquery',true)){
-			vmJsApi::js('//ajax.googleapis.com/ajax/libs/jquery/1.6.4','jquery','',true);
+			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',true);
 			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
-			if (!$isSite) vmJsApi::js('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16','jquery-ui','',true);
+			if (!$isSite) vmJsApi::js('jquery-ui','//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16','',true);
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
 			vmJsApi::js( 'jquery',false,'',true);
@@ -975,8 +975,6 @@ class vmJsApi{
 		$document->addScriptDeclaration($jsVars);
 		vmJsApi::js( 'facebox');
 		vmJsApi::js( 'vmprices');
-		// JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
-		// JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
 		vmJsApi::css('facebox');
 
 		$jPrice = true;
@@ -996,7 +994,6 @@ class vmJsApi{
 		if ($JcountryStateList) return;
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
-		//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
 		$document->addScriptDeclaration(' jQuery( function($) {
 			$("select.virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
@@ -1005,27 +1002,28 @@ class vmJsApi{
 	}
 
 
-	function JvalideForm()
+	function JvalideForm($name='#adminForm')
 	{
 		static $jvalideForm;
 		// If exist exit
-		if ($jvalideForm) return;
+		if ($jvalideForm === $name ) return;
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration( "
+
+			jQuery(document).ready(function() {
+				jQuery('".$name."').validationEngine();
+			});"  );
+		if ( $jvalideForm ) return;
 		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
 		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
 		if (!in_array($lang, $existingLang)) $lang ="en";
 		vmJsApi::js( 'jquery.validationEngine');
 		vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration( "
 
-			jQuery(document).ready(function() {
-				jQuery('#adminForm').validationEngine();
-			});"  );
 		vmJsApi::css ( 'validationEngine.template' );
 		vmJsApi::css ( 'validationEngine.jquery' );
-		$jvalideForm = true;
-		return;
+		$jvalideForm = $name;
 	}
 
 	// Virtuemart product and price script
