@@ -300,7 +300,7 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers
 	 */
-	function renderTaxList($selected, $name='product_tax_id', $class='multiple="multiple"') {
+	function renderTaxList($selected, $name='product_tax_id', $class='') {
 
 		if (!class_exists('VirtueMartModelCalc'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');

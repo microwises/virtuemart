@@ -826,6 +826,7 @@ class vmRequest{
  * @author Max Milbers
  */
 class vmJsApi{
+	
 
 	private function __construct() {
 
@@ -839,29 +840,45 @@ class vmJsApi{
 	 * @return  nothing
 	 */
 
-	public static function js($path,$namespace,$version='', $minified = null)
+	public static function js($path=false,$namespace,$version='', $minified = null)
 	{
 
 		static $loaded = array();
-
 		// Only load once
 		// using of namespace assume same library have same namespace
 		// NEVER WRITE FULL NAME AS $namespace IN CASE OF REVISION NUMBER IF YOU WANT PREVENT MULTI LOAD !!!
 		// eg. $namespace = 'jquery.1.8.6' and 'jquery.1.6.2' does not prevent load it 
 		// use $namespace = 'jquery',$revision ='1.8.6' , $namespace = 'jquery',$revision ='1.6.2' ...
 		// loading 2 time a JS file with this method simply return and do not load it the second time
-		
+
+
 		if (!empty($loaded[$namespace])) {
 			return;
 		}
-		if (strpos($path, '//') !== 0)
+		$version	= $version ? '.'.$version : '';
+		$min	= $minified ? '.min' : '';
+		$file = $namespace.$version.$min.'.js' ;
+		$template = JFactory::getApplication()->getTemplate() ;
+		if ($path === false) {
+			$uri = JPATH_THEMES .'/'. $template.'/js' ;
+			$path= 'templates/'. $template .'/js' ;
+		}
+		if (strpos($path, 'templates/'. $template ) !== false)
+		{
+			// Search in template or fallback
+			if (!file_exists($uri.'/'. $file)) {
+				$path = str_replace('templates/'. $template,'components/com_virtuemart/assets', $path);
+				// vmWarn('file not found in tmpl :'.$file );
+			}
+			$path = JURI::root(true) .'/'.$path;
+			
+		}
+		elseif (strpos($path, '//') === false)
 		{
 			$path = JURI::root(true) .'/'.$path;
 		}
-		$version	= $version ? '.'.$version : '';
-		$min	= $minified ? '.min' : '';
 		$document = JFactory::getDocument();
-		$document->addScript($path.'/'.$namespace.$version.$min.'.js');
+		$document->addScript($path.'/'.$file);
 		$loaded[$namespace] = true;
 	}	/**
 	 * Write a <link ></link > element
@@ -884,7 +901,7 @@ class vmJsApi{
 		if (!empty($loaded[$namespace])) {
 			return;
 		}
-		if (strpos($path, '//') !== 0)
+		if (strpos($path, '//') === false)
 		{
 			$path = JURI::root(true) .'/'.$path;
 		}
@@ -912,13 +929,13 @@ class vmJsApi{
 			if (!$isSite) vmJsApi::js('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16','jquery-ui','',true);
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
-			vmJsApi::js('components/com_virtuemart/assets/js','jquery','',true);
+			vmJsApi::js(false,'jquery','',true);
 			//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
-			if (!$isSite) vmJsApi::js('components/com_virtuemart/assets/js','jquery-ui','',true);
+			if (!$isSite) vmJsApi::js(false,'jquery-ui','',true);
 			//if (!$isSite) $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
-		if (!$isSite) vmJsApi::js( 'components/com_virtuemart/assets/js','jquery.ui.autocomplete.html');
-		vmJsApi::js( 'components/com_virtuemart/assets/js','jquery.noConflict');
+		if (!$isSite) vmJsApi::js( false,'jquery.ui.autocomplete.html');
+		vmJsApi::js( false,'jquery.noConflict');
 		JFactory::getApplication()->set('jquery',true);
 		return true;
 	}
@@ -949,8 +966,8 @@ class vmJsApi{
 
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
-		vmJsApi::js('components/com_virtuemart/assets/js','facebox');
-		vmJsApi::js('components/com_virtuemart/assets/js','vmprices');
+		vmJsApi::js(false,'facebox');
+		vmJsApi::js(false,'vmprices');
 		// JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
 		// JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
 		vmJsApi::css('components/com_virtuemart/assets/css/','facebox');
@@ -963,7 +980,7 @@ class vmJsApi{
 	function jSite()
 	{
 		if ( !VmConfig::get('jsite',true ) and JFactory::getApplication()->isSite() ) return false;
-		vmJsApi::js( 'components/com_virtuemart/assets/js','vmsite');
+		vmJsApi::js(false,'vmsite');
 	}
 
 	function JcountryStateList($stateIds) {
@@ -990,8 +1007,8 @@ class vmJsApi{
 		$lang = substr($lg->getTag(), 0, 2);
 		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
 		if (!in_array($lang, $existingLang)) $lang ="en";
-		vmJsApi::js( 'components/com_virtuemart/assets/js','jquery.validationEngine');
-		vmJsApi::js( 'components/com_virtuemart/assets/js/languages','jquery.validationEngine-'.$lang );
+		vmJsApi::js( false,'jquery.validationEngine');
+		vmJsApi::js( false,'jquery.validationEngine-'.$lang );
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration( "
 

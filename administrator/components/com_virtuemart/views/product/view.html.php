@@ -108,7 +108,7 @@ class VirtuemartViewProduct extends VmView {
 				if(!isset($product->product_tax_id)){
 					$product->product_tax_id=0;
 				}
-				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id[]');
+				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id');
 				if(!isset($product->product_discount_id)){
 					$product->product_discount_id=0;
 				}
@@ -370,7 +370,7 @@ class VirtuemartViewProduct extends VmView {
 		foreach($discounts as $discount){
 			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
-		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id[]', 'multiple="multiple"', 'product_discount_id', 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id]', '', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 
 	}
