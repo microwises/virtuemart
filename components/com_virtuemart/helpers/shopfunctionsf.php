@@ -397,9 +397,8 @@ class shopFunctionsF {
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	function buildTabs($load_template = array()) {
-		$document = JFactory::getDocument ();
-		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
 
+		vmJsApi::js( 'vmtabs');
 		$html = '<div id="ui-tabs">';
 		$i = 1;
 		foreach ( $load_template as $tab_content => $tab_title ) {

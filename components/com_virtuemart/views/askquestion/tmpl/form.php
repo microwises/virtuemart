@@ -22,7 +22,6 @@ $min = VmConfig::get('asks_minimum_comment_length', 50);
 $max = VmConfig::get('asks_maximum_comment_length', 2000) ;
 vmJsApi::JvalideForm();
 $document = JFactory::getDocument();
-// $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
 $document->addScriptDeclaration('
 	jQuery(function($){
 			$("#askform").validationEngine("attach");

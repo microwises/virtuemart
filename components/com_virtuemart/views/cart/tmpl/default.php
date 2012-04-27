@@ -19,9 +19,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
-JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
-
+vmJsApi::js('facebox');
+vmJsApi::css('facebox');
 JHtml::_('behavior.formvalidation');
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("

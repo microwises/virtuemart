@@ -17,12 +17,7 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 *
 * www.virtuemart.net
 */
-/*if (!class_exists( 'VmConfig' )) {
-require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
-//VmConfig::loadConfig();
 
-vmJsApi::jPrice();
-vmJsApi::cssSite();*/
 $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 
@@ -51,7 +46,6 @@ $useXHTML = true;
 $data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$useXHTML,$useSSL).'">'.$linkName.'</a>';
 $data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
-vmJsApi::jQuery();
 vmJsApi::jPrice();
 vmJsApi::cssSite();
 $document = JFactory::getDocument();

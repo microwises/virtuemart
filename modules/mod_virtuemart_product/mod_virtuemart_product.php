@@ -64,7 +64,6 @@ if (!($output = $cache->get($key))) {
 	$currency = CurrencyDisplay::getInstance( );
 
 	if ($show_addtocart) {
-		vmJsApi::jQuery();
 		vmJsApi::jPrice();
 		vmJsApi::cssSite();
 	}

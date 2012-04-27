@@ -53,7 +53,6 @@ defined('_JEXEC') or die('Restricted access');
 	$max = VmConfig::get('vm_asks_maximum_comment_length', 2000) ;
 	vmJsApi::JvalideForm();
 	$document = JFactory::getDocument();
-	// $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
 	$document->addScriptDeclaration('
 		jQuery(function($){
 				$("#askform").validationEngine("attach");
