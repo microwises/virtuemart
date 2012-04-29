@@ -129,9 +129,24 @@ class VirtuemartModelReport extends VmModel {
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal';
 		$this->dates = ' DATE( o.created_on ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
-
+		$statusList = array();
 		// Filter by statut
-		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
+		if ($orderstates = JRequest::getVar('order_status_code',null)) {
+			$query = 'SELECT `order_status_code`
+				FROM `#__virtuemart_orderstates`
+				WHERE published=1 ' ;
+			$this->_db->setQuery($query);
+			$list = $this->_db->loadResultArray();
+			foreach ($orderstates as $val)
+			{
+				if (in_array($val, $list))
+				{
+				$statusList[] = '`o`.`order_status` = "'.$val.'"' ;
+				}
+			}
+			if ( $statusList) 
+			$where[] = '('. implode(' OR ', $statusList ) .')';
+		}
 		//getRevenue
 		// select wich table to order sum ordered
 		$filterorders = JRequest::getvar('filter_order','intervals');
@@ -313,13 +328,14 @@ class VirtuemartModelReport extends VmModel {
 	}
 
 	public function renderOrderstatesList() {
-		$orderstates = JRequest::getWord('order_status_code','');
+		$orderstates = JRequest::getVar('order_status_code','');
+		//print_r($orderstates);
 		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
 			FROM `#__virtuemart_orderstates`
 			WHERE published=1 ' ;
 		$this->_db->setQuery($query);
 		$list = $this->_db->loadObjectList();
-		return VmHTML::select( 'order_status_code', $list,  $orderstates,'class="inputbox" onchange="this.form.submit();"');
+		return VmHTML::select( 'order_status_code[]', $list,  $orderstates,'class="inputbox" onchange="this.form.submit();" multiple="multiple"');
     }
 	public function renderIntervalsList() {
 		$intervals = JRequest::getWord('intervals','day');

@@ -24,12 +24,13 @@ $intervalTitle = JRequest::getVar('intervals','day');
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
 
-if( $this->pagination->limit < $rows ){
-	if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
-		$rows = $this->pagination->limitstart + $this->pagination->limit;
-	}
-}
-
+// if( $this->pagination->limit < $rows ){
+	// if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
+		// $rows = $this->pagination->limitstart + $this->pagination->limit;
+	// }
+// }
+if ( JVM_VERSION == 2 )
+	JHtml::_('behavior.framework', true);
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
@@ -78,13 +79,6 @@ if( $this->pagination->limit < $rows ){
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="10">
-                        <?php echo $this->pagination->getListFooter(); ?>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
                 <?php
 	    $i = 0;
@@ -124,6 +118,13 @@ if( $this->pagination->limit < $rows ){
                     <th class="right"><?php echo $this->totalReport['revenueTotal'];?></th>
 				</tr>
             </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="10">
+                        <?php echo $this->pagination->getListFooter(); ?>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -131,3 +132,4 @@ if( $this->pagination->limit < $rows ){
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>
+

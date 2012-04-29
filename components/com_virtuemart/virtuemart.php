@@ -28,12 +28,14 @@ vmRam('Start');
 // vmSetStartTime();
 vmSetStartTime('Start');
 
+//Lets load first englisch, then joomla default standard, then user language.
+$jlang =JFactory::getLanguage();
 if(VmConfig::get('enableEnglish', 1)){
-    $jlang =JFactory::getLanguage();
     $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
-    $jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
-    $jlang->load('com_virtuemart', JPATH_SITE, null, true);
 }
+$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
+$jlang->load('com_virtuemart', JPATH_SITE, null, true);
+
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
@@ -41,18 +43,12 @@ if(VmConfig::get('shop_is_offline',0)){
 	$task='';
 } else {
 
-	//Lets load first englisch, then joomla default standard, then user language.
-	 $jlang =JFactory::getLanguage();
-	 $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
-	 $jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
-	 $jlang->load('com_virtuemart', JPATH_SITE, null, true);
-
 	/* Front-end helpers */
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 	/* Loading jQuery and VM scripts. */
-	vmJsApi::jQuery();
+	vmJsApi::jPrice();
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 
