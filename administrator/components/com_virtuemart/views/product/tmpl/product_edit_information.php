@@ -388,18 +388,13 @@ $i=0;
 			colspan="2">
 			<fieldset>
 				<legend>
-				<?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?></legend>
-				<textarea
-					style="width: 100%;"
-					class="inputbox"
-					name="intnotes"
-					id="intnotes"
-					cols="35"
-					rows="6">
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_PRINT_INTNOTES'); ?></legend>
+				<textarea style="width: 100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6">
 					<?php echo $this->product->intnotes; ?></textarea>
 			</fieldset>
 		</td>
 	</tr>
+
 </table>
 
 
@@ -412,5 +407,21 @@ if( property_exists($this, 'taxrates') && is_array( $this->taxrates )) {
 	}
 }
 ?>
+
+</script>
+
+<script type="text/javascript">
+<!--
+
+/* JS for editstatus */
+
+jQuery('.sendEmailFormSubmit').click(function() {
+	//document.orderStatForm.task.value = 'updateOrderItemStatus';
+	document.sendEmailFormSubmit.submit();
+
+	return false
+});
+
+var editingItem = 0;
 
 </script>

@@ -58,12 +58,19 @@ class VirtuemartViewProduct extends VmView {
 				$product = $model->getProductSingle($virtuemart_product_id,false);
 // 				$product_child = $model->getProductChilds($virtuemart_product_id);
 
+
 				$this->assignRef('product_childs', $product_childs);
 				$product_parent= $model->getProductParent($product->product_parent_id);
 
 				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 				$this->assignRef('manufacturers',	$manufacturers);
+
+				$product_emails = $model->getProductEmails($virtuemart_product_id);
+				$product_shoppers= $model->getOrdersByProductID($virtuemart_product_id);
+
+				$this->assignRef('product_emails',	$product_emails);
+				$this->assignRef('product_nbshoppers',	count($product_shoppers));
 
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -237,7 +244,7 @@ class VirtuemartViewProduct extends VmView {
 					}
 				}
 				$this->SetViewTitle('PRODUCT',$text);
-
+				//JToolBarHelper::custom('sentproductemailtocustomer', 'email_32', 'email_32',  'COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPER' ,false);
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 				break;
 
@@ -319,6 +326,8 @@ class VirtuemartViewProduct extends VmView {
 			$this->lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 			// Toolbar
+
+			JToolBarHelper::save('sentproductemailtoshoppers', JText::_('COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPERS'));
 			JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);

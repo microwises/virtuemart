@@ -230,7 +230,10 @@ class shopFunctionsF {
 	 */
 	private function sendVmMail (&$view, $recipient, $vendor=false) {
 		$jlang =JFactory::getLanguage();
-		$jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+		$jlang =JFactory::getLanguage();
+		if(VmConfig::get('enableEnglish', 1)){
+		     $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+		}
 		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
 		$jlang->load('com_virtuemart', JPATH_SITE, null, true);
 

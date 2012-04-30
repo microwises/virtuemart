@@ -931,7 +931,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param $_notified 1 (default) if the customer was notified, 0 otherwise
 	 * @param $_comment (Customer) comment, default empty
 	 */
-	private function _updateOrderHist($_id, $_status = 'P', $_notified = 0, $_comment = '')
+	function updateOrderHist($_id, $_status = 'P', $_notified = 0, $_comment = '')
 	{
 		$_orderHist = $this->getTable('order_histories');
 		$_orderHist->virtuemart_order_id = $_id;

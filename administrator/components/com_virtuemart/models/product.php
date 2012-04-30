@@ -1635,6 +1635,91 @@ function getProductParent($product_parent_id) {
 	$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` WHERE `virtuemart_product_id` ='.$product_parent_id);
 	return $db->loadObject();
 }
+/**
+	 * Update the product_emails_sent
+	 *
+	 * @author Valerie Isaksen
+	 * @param $id Product Id
+	 * @param $email_content
+	 */
+	private function updateProductEmailHistory($id,   $email_content = '')
+	{
+		$product_email = $this->getTable('product_emails');
+		$product_email->virtuemart_product_id = $id;
+		$product_email->email_content = $email_content;
+		$product_email->store();
+	}
+/**
+	 * Get product_emails_sent
+	 *
+	 * @author Valerie Isaksen
+	 * @param $virtuemart_product_id Product Id
+	 */
+	function getProductEmails($virtuemart_product_id) {
+		$db = JFactory::getDBO();
+		$q = "SELECT *
+			FROM #__virtuemart_product_emails
+			WHERE virtuemart_product_id=".$virtuemart_product_id."
+			ORDER BY virtuemart_product_email_id ASC";
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
 
+	function sentProductEmailToShoppers() {
+
+		$cids = JRequest::getVar('virtuemart_product_id', JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+		vmdebug('sentProductEmailToShoppers product id',$cids);
+		$modelOrder = VmModel::getModel('orders');
+		$app = JFactory::getApplication();
+		foreach($cids as $cid){
+			$orders= $this->getOrdersbyProductId($cid);
+			vmdebug('$orders ',$orders);
+			$vars = array();
+			$productModel = VmModel::getModel('product');
+			$vars['product'] = $productModel->getProduct($cid);
+
+			$vendorModel = VmModel::getModel('vendor');
+			$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
+			$virtuemart_vendor_id=1;
+			$vendor = $vendorModel->getVendorAdressBT($virtuemart_vendor_id);
+			$vendorModel->addImages($vendor);
+
+			$vars['vendor'] = array('vendor_store_name' => $fromName );
+			foreach($orders as $order){
+				$vars['user'] = array('name' => $fromName, 'email' => $VendorEmail);
+				if (shopFunctionsF::renderMail('productemailshoppers', $order->email, $vars,'productdetails',false)) {
+					$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
+				} else {
+					$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
+				}
+				/* Update the product history */
+				$modelOrder->updateOrderHist($order->virtuemart_order_id,  $order->order_status_code, 1, $input['comments']);
+				$app->enqueueMessage(JText::sprintf($string, $order->email));
+
+			}
+		}
+
+	}
+
+	function getOrdersbyProductId($virtuemart_product_id) {
+	    $db = JFactory::getDbo();
+	    $q = 'SELECT `ou`.`title`,`ou`.`company`,`ou`.`last_name`,`ou`.`first_name`,`ou`.`email`, `oi`.`virtuemart_order_id`,  `s`.`order_status_code`
+					FROM `#__virtuemart_order_items` as `oi`
+					LEFT JOIN `#__virtuemart_orders` as `o` ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id`
+					LEFT JOIN `#__virtuemart_orderstates` as `s` ON `s`.`order_status_code` = `oi`.`order_status`
+					LEFT JOIN `#__virtuemart_order_userinfos` as `ou` ON `o`.`virtuemart_order_id` = `ou`.`virtuemart_order_id`
+					WHERE `oi`.`virtuemart_product_id` = "'.(int)$virtuemart_product_id.'" AND `address_type` = "BT" GROUP BY `ou`.email';
+
+			$db->setQuery($q);
+
+			$orders = $db->loadAssocList();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('sentProductEmailToShoppers '.$err);
+			}
+			return $orders;
+	}
 }
 // No closing tag

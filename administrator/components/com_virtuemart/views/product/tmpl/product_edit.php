@@ -41,11 +41,9 @@ $tabarray['status'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL';
 $tabarray['dimensions'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL';
 $tabarray['images'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL';
 $tabarray['custom'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB';
+$tabarray['emails'] = 'COM_VIRTUEMART_PRODUCT_FORM_EMAILS_TAB';
 
-
-if (isset($this->waitinglist) && count($this->waitinglist) > 0) { 
-	$tabarray['waitinglist'] = 'COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB';
-}
+ 
 
 AdminUIHelper::buildTabs ( $tabarray, $this->product->virtuemart_product_id );
 // Loading Templates in Tabs END ?>

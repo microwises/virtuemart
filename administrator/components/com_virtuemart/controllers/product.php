@@ -231,68 +231,49 @@ class VirtuemartControllerProduct extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}
 
-	public function sentProductEmailToCustomer(){
+	public function sentProductEmailToShoppers(){
+
+		//vmdebug('updatestatus');
+		$mainframe = Jfactory::getApplication();
+		$lastTask = JRequest::getWord('last_task');
 
 
-		$cids = JRequest::getVar('virtuemart_product_id', JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
-		vmdebug('sentProductEmailToCustomer',$cids);
-		$db = JFactory::getDbo();
-		foreach($cids as $cid){
-			$q = 'SELECT `ou`.`title`,`ou`.`company`,`ou`.`last_name`,`ou`.`first_name`,`ou`.`email`
-					FROM `#__virtuemart_order_items` as `oi`
-					LEFT JOIN `#__virtuemart_orders` as `o` ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id`
-					LEFT JOIN `#__virtuemart_order_userinfos` as `ou` ON `o`.`virtuemart_order_id` = `ou`.`virtuemart_order_id`
-					WHERE `oi`.`virtuemart_product_id` = "'.(int)$cid.'" AND `address_type` = "BT" GROUP BY `ou`.email';
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
 
-			$db->setQuery($q);
+		/* Load the helper */
+		$view->loadHelper('vendorHelper');
 
-			$addresses = $db->loadAssocList();
-			$err = $db->getErrorMsg();
-			if(!empty($err)){
-				vmError('sentProductEmailToCustomer '.$err);
-			}
-			vmdebug('$addresses '.$q,$addresses);
+		/* Update the statuses */
+		$model = VmModel::getModel('product');
 
-			$vars = array();
-			$productModel = VmModel::getModel('product');
-			$vars['product'] = $productModel->getProduct($virtuemart_product_id);
+		if ($lastTask == 'sentproductemailtoshoppers') {
+			// single order is in POST but we need an array
+			$products = array() ;
+			$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+			$product[$virtuemart_product_id] = (JRequest::get('post'));
+			$result = $model->sentProductEmailToShoppers($product);
 
-			$vendorModel = VmModel::getModel('vendor');
-			$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
-			$vars['vendor'] = array('vendor_store_name' => $fromName );
-
-			foreach($addresses as $address){
-
-				$user = JFactory::getUser();
-				$fromMail = $user->email;
-				$fromName = $user->name;
-				$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
-
-				$TOMail = JRequest::getVar('email');	//is sanitized then
-				$TOMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$TOMail);
-
-				//recommend and productdetails should be changed, we need a link to the order there.
-				if (shopFunctionsF::renderMail('recommend', $TOMail, $vars,'productdetails',true)) {
-					$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
-				}
-				else {
-					$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
-				}
-				$mainframe->enqueueMessage(JText::_($string));
-
-				// vmdebug('my email vars ',$vars,$TOMail);
-				// Display it all
-// 				$view = $this->getView('recommend', 'html');
-
-// 				$view->setLayout('mail_confirmed');
-// 				$view->display();
-			}
+		} else {
+			$result = $model->sentProductEmailToShoppers();
 		}
 
-		$app = Jfactory::getApplication();
-		$app->redirect('index.php?option=com_virtuemart&view=product');
+		$msg='';
+		if ($result['updated'] > 0)
+		$msg = JText::sprintf('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_SUCCESSFULLY', $result['updated'] );
+		else if ($result['error'] == 0)
+		$msg .= JText::_('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_NOT_SUCCESSFULL');
+		if ($result['error'] > 0)
+		$msg .= JText::sprintf('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_NOT_SUCCESSFULL', $result['error'] , $result['total']);
+		if ( $lastTask =='sentproductemailtoshoppers' ) {
+			$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$virtuemart_product_id , $msg);
+		}
+		else {
+			$mainframe->redirect('index.php?option=com_virtuemart&view=product', $msg);
+		}
+ ////
+
+
 	}
 
 }

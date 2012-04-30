@@ -28,15 +28,29 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?></div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
+						<input  type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
+
+					    <?php if (isset($this->waitinglist) && count($this->waitinglist) > 0) { ?>
+					    <?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
+						<div class="button2-left">
+							<div class="blank">
+								<a onclick="Joomla.submitbutton('notifyuserproductinstock')" href="#">
+								<span class="icon-nofloat vmicon icon-16-messages"></span><?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_NOTIFY_USER'); ?>
+								</a>
+							</div>
+						</div>
+					    <?php } ?>
 					</td>
+
+
+
 				</tr>
 				<tr class="row0">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?></div>
 					</td>
-					<td width="79%">
+					<td width="79%" colspan="2">
 						<input type="text" class="inputbox"  name="product_ordered" value="<?php echo $this->product->product_ordered; ?>" size="10" />
 					</td>
 				</tr>
@@ -78,19 +92,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABLE_DATE') ?>
 						</div>
 					</td>
-					<td width="79%" >
+					<td width="79%">
 						<?php
 
 						echo vmJsApi::jDate($this->product->product_available_date, 'product_available_date'); ?>
 					</td>
 				</tr>
-				<tr>
+				<tr class="row1">
 					<td valign="top" width="21%" >
 						<div style="text-align:right;font-weight:bold;">
 							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>
 						</div>
 					</td>
-					<td width="79%" >
+					<td width="79%">
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
 						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
 
@@ -98,17 +112,80 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
 					</td>
 				</tr>
-				<tr>
+				<tr class="row1">
 					<td width="21%">&nbsp;</td>
 					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->product->product_availability) echo JURI::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
 				</tr>
 
 				<tr class="row0">
-					<td colspan="2">&nbsp;</td>
+					 <tr>
+					     <td width="21%">&nbsp;</td>
+					     <td  >
+<fieldset>
+<legend>
+<?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');?></legend>
+<input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
+<input type="checkbox" value="0" checked="checked" id="notify_users" name="notify_users" />
+
+<label for="notify_users"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
+<br /><br />
+
+<table class="adminlist" cellspacing="0" cellpadding="0">
+	<thead>
+
+ <thead>
+		<tr>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_NAME');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_USERNAME');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_EMAIL');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_NOTIFIED');?></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php
+
+if (isset($this->waitinglist) && count($this->waitinglist) > 0) {
+
+	foreach ($this->waitinglist as $key => $wait) {
+		if ($wait->notified == 1) {
+			$waiting_notified = JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFIED') . ' ' . $wait->notify_date;
+		} else {
+			$waiting_notified = '';
+		}
+		if ($wait->virtuemart_user_id==0) {
+			$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td><td>'.$waiting_notified.'</td></tr>';
+		}
+		else {
+			$row = '<tr><td>'.$wait->name.'</td><td>'.$wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td><td>' . $waiting_notified.'</td></tr>';
+		}
+		echo $row;
+	}
+
+} else {
+    ?>
+	    <tr><td colspan="4">
+	    <?php
+   echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_NOWAITINGUSERS');
+   ?>
+		</td></tr>
+<?php
+}
+?>
+</tbody>
+</table>
+	      </fieldset>
+</td></tr>
 				</tr>
 			</table>
 		</td>
 	</tr>
+
+
+
+
+
+
+
 </table>
 <script type="text/javascript">
 	jQuery('#image').change( function() {
