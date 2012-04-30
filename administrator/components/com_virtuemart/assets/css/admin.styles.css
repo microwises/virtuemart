@@ -297,3 +297,6 @@ a.fg-button, .always-left{
 /*     padding-right: 2.1em; */
 }
 #searchMedia{margin:0;padding:0; }
+.stock-out{background-color:red !important;color : black}
+.stock-low{background-color:orange !important;color : black}
+.stock-normal{background-color:#F0F9D0 !important;color : black}

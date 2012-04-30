@@ -27,6 +27,7 @@ AdminUIHelper::startAdminArea();
 		  <tr>
 			 <td align="left">
 				<?php echo $this->displayDefaultViewSearch('filter_product') ?>
+				<?php echo $this->lists['stockfilter'] ?>
 			 </td>
 		  </tr>
 		</table>
@@ -42,9 +43,10 @@ AdminUIHelper::startAdminArea();
 		<th><?php echo $this->sort('product_name') ?></th>
 		<th><?php echo $this->sort('product_sku')?></th>
 		<th><?php echo $this->sort('product_in_stock','COM_VIRTUEMART_PRODUCT_INVENTORY_STOCK') ?></th>
+		<th><?php echo $this->sort('product_price','COM_VIRTUEMART_PRODUCT_PRICE') ?></th>
 		<th><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_INVENTORY_PRICE') ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_INVENTORY_VALUE') ?> </th>
 		<th><?php echo $this->sort('product_weight','COM_VIRTUEMART_PRODUCT_INVENTORY_WEIGHT') ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?> </th>
 		<th><?php echo $this->sort('published')?></th>
 	</tr>
 	</thead>
@@ -57,6 +59,13 @@ AdminUIHelper::startAdminArea();
 		foreach ($this->inventorylist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id);
 			$published = JHTML::_('grid.published', $product, $i );
+			
+			//<!-- low_stock_notification  -->
+			if ( $product->product_in_stock - $product->product_ordered < 1) $stockstatut ="out";
+			elseif ( $product->product_in_stock - $product->product_ordered < $product->low_stock_notification ) $stockstatut ="low";
+			else $stockstatut = "normal";
+			
+			$stockstatut='class="stock-'.$stockstatut.'" title="'.jText::_('COM_VIRTUEMART_STOCK_LEVEL_'.$stockstatut).'"';
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
@@ -66,19 +75,16 @@ AdminUIHelper::startAdminArea();
 				$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
-				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
-				<!-- Product in stock -->
-				<td><?php echo $product->product_in_stock; ?></td>
-				<!-- Product price -->
+				<td <?php echo $stockstatut; ?>><?php echo $product->product_in_stock; ?></td>
 				<td><?php echo $product->product_price_display; ?></td>
 				<td><?php echo $product->product_instock_value; ?></td>
-				<!-- Product weight -->
 				<td><?php echo $product->product_weight." ". $product->weigth_unit_display; ?></td>
-				<!-- published -->
+				<td><?php echo $product->product_ordered; ?></td>
 				<td><?php echo $published; ?></td>
 			</tr>
 		<?php
+			
 			$k = 1 - $k;
 			$i++;
 		}

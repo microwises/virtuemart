@@ -299,6 +299,12 @@ class VirtueMartModelProduct extends VmModel {
 					$joinPrice = true ;
 					$where[] = 'pp.`product_price` IS NULL';
 					break;
+				case 'stockout':
+					$where[] = 'p.`product_in_stock`- p.`product_ordered` < 1';
+					break;
+				case 'stocklow':
+					$where[] = 'p.`product_in_stock`- p.`product_ordered` < p.`low_stock_notification`';
+					break;
 			}
 		}
 

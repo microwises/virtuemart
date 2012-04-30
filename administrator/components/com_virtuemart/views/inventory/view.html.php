@@ -51,7 +51,7 @@ class VirtuemartViewInventory extends VmView {
 		$this->assignRef('pagination', $pagination);
 
 		// Apply currency
-		$currencydisplay = CurrencyDisplay::getInstance();;
+		$currencydisplay = CurrencyDisplay::getInstance();
 
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
 			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
@@ -63,10 +63,10 @@ class VirtuemartViewInventory extends VmView {
 
 
 		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
-		$options[] = JHTML::_('select.option', 0, JText::_('COM_VIRTUEMART_LIST_ALL_PRODUCTS'));
-		$options[] = JHTML::_('select.option', 1, JText::_('COM_VIRTUEMART_HIDE_OUT_OF_STOCK'));
-		$this->lists['stockfilter'] = JHTML::_('select.genericlist', $options, 'stockfilter', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('stockfilter'));
+		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_DISPLAY_STOCK').':');
+		$options[] = JHTML::_('select.option', 'stocklow', JText::_('COM_VIRTUEMART_STOCK_LEVEL_LOW'));
+		$options[] = JHTML::_('select.option', 'stockout', JText::_('COM_VIRTUEMART_STOCK_LEVEL_OUT'));
+		$this->lists['stockfilter'] = JHTML::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('search_type'));
 		$this->lists['filter_product'] = JRequest::getVar('filter_product');
 		// $this->assignRef('lists', $lists);
 
