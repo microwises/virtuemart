@@ -52,13 +52,12 @@ class VirtuemartViewInventory extends VmView {
 
 		// Apply currency
 		$currencydisplay = CurrencyDisplay::getInstance();;
-		$weigth_unit = ShopFunctions::getWeightUnit();
 
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
 			//TODO oculd be interesting to show the price for each product, and all stored ones $product->product_in_stock
 			$product->product_instock_value = $currencydisplay->priceDisplay($product->product_price,'',$product->product_in_stock,false);
 			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',1,false);
-			$product->weigth_unit_display= $weigth_unit[$product->product_weight_uom];
+			$product->weigth_unit_display= ShopFunctions::renderWeightUnit($product->product_weight_uom);
 		}
 		$this->assignRef('inventorylist', $inventorylist);
 

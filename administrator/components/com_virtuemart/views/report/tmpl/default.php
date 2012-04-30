@@ -92,7 +92,7 @@ if ( JVM_VERSION == 2 )
                     <?php echo $i;?>">
                     <td align="center">
                         <?php echo $r['intervals'] ;
-						if ( $addDateInfo ) echo ' ('.JHTML::_('date', $r['created_on'], '%Y').')';
+						if ( $addDateInfo ) echo ' ('.substr ( $r['created_on'],0,4 ).')';
 						;?>
                     </td>
                     <td align="center">

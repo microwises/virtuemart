@@ -370,7 +370,9 @@ class ShopFunctions {
 	 * @author Valérie Isaksen
 	 */
 	function getWeightUnit() {
-		return array(
+		static $weigth_unit ;
+		if ($weigth_unit) return $weigth_unit ;
+		return $weigth_unit = array(
                 'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
 		, 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
 		, 'MG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_MG')
