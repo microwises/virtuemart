@@ -129,6 +129,7 @@ class TableUserinfos extends VmTableData {
 
 		if($this->address_type=='BT' or $this->address_type=='ST' ){
 			if($this->address_type=='ST' and empty($this->address_type_name)){
+				vmError('Table userinfos check failed: address_type '.$this->address_type.' without name','check failed: ST has no name');
 				return false;
 			}
 		} else {

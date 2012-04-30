@@ -52,18 +52,20 @@ class VirtuemartViewUser extends VmView {
 			if(Vmconfig::get('multix','none') !=='none'){
 // 				$model->setCurrent();
 			} else {
-
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
-				$model->setId($userId);
 			}
 			$this->SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
-			$model->setId(0);
+			$userId  = 0;
 		} else {
+			$userId = JRequest::getVar('virtuemart_user_id',0);
+			if(is_array($userId)){
+				$userId = $userId[0];
+			}
 			$this->SetViewTitle('USER');
 		}
-
+		$model->setId($userId);
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$layoutName = $this->getLayout();
@@ -80,7 +82,6 @@ class VirtuemartViewUser extends VmView {
 			$this->loadHelper('image');
 
 			$userFieldsModel = VmModel::getModel('userfields');
-			//			$orderModel = VmModel::getModel('orders');
 
 			$userDetails = $model->getUser();
 
@@ -91,8 +92,7 @@ class VirtuemartViewUser extends VmView {
 				} else {
 					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
 				}
-					$vendorid = $userDetails->virtuemart_vendor_id;
-
+				$vendorid = $userDetails->virtuemart_vendor_id;
 			} else {
 				$vendorid = 0 ;
 				$this->SetViewTitle('USER',$userDetails->JUser->get('name'));

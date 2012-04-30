@@ -31,19 +31,19 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.6';
+	static $RELEASE = '2.0.7';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'Final';
+	static $DEV_STATUS = 'RC';
 	/** @var string Codename */
 	static $CODENAME = 'silver';
 	/** @var string Date */
-	static $RELDATE = 'April 15, 2012';
+	static $RELDATE = 'April 24, 2012';
 	/** @var string Time */
 	static $RELTIME = '17:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 5917';
+	static $REVISION = 'Revision: 5955';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */

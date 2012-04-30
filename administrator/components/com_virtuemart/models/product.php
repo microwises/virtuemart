@@ -606,10 +606,11 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($product->categories[0])){
 				$virtuemart_category_id = 0;
 				if ($front) {
+					if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 					if (in_array($last_category_id, $product->categories) ){
 						$virtuemart_category_id = $last_category_id;
-						
+
 					} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
 				}
 				if ($virtuemart_category_id == 0 ) {
@@ -1021,7 +1022,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function store($product=false) {
+	public function store($product=false,$isChild = false) {
 
 		/* Load the data */
 		if($product){
@@ -1096,26 +1097,29 @@ vmdebug('product_price ',$data['product_tax_id']);
 		if(!empty($data['childs'])){
 			foreach($data['childs'] as $productId => $child){
 				$child['virtuemart_product_id'] = $productId;
-				$this->store($child);
-			}
-		}
-		// Update waiting list
-		if(!empty($data['notify_users'])){
-			if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
-				$waitinglist = VmModel::getModel('Waitinglist');
-				$waitinglist->notifyList($data['virtuemart_product_id']);
+				$this->store($child,true);
 			}
 		}
 
+		if(!$isChild){
 
+			// Update waiting list
+			if(!empty($data['notify_users'])){
+				if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
+					$waitinglist = VmModel::getModel('Waitinglist');
+					$waitinglist->notifyList($data['virtuemart_product_id']);
+				}
+			}
 
-		// Process the images
-		$mediaModel = VmModel::getModel('Media');
+			// Process the images
+			$mediaModel = VmModel::getModel('Media');
 
-		$mediaModel->storeMedia($data,'product');
-		$errors = $mediaModel->getErrors();
-		foreach($errors as $error){
-			vmError($error);
+			$mediaModel->storeMedia($data,'product');
+			$errors = $mediaModel->getErrors();
+			foreach($errors as $error){
+				vmError($error);
+			}
+
 		}
 
 		return $product_data->virtuemart_product_id;

@@ -105,7 +105,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
-			<span class="comment"><?php echo JText::_('COM_VIRTUEMART_COMMENT'); ?></span><br />
+			<span class="comment"><?php echo JText::_('COM_VIRTUEMART_COMMENT_CART'); ?></span><br />
 			<textarea class="customer-comment" name="customer_comment" cols="50" rows="4"><?php echo $this->cart->customer_comment; ?></textarea>
 		</div>
 		<?php // Leave A Comment Field END ?>
