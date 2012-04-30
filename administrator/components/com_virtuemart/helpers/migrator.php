@@ -578,8 +578,8 @@ class Migrator extends VmModel{
 
 			foreach($oldUsers as $user){
 
-				$user['virtuemart_country_id'] = $this->getCountryIdByCode($user['country']);
-				$user['virtuemart_state_id'] = $this->getCountryIdByCode($user['state']);
+				$user['virtuemart_country_id'] = $this->getCountryIDByName($user['country']);
+				$user['virtuemart_state_id'] = $this->getStateIDByName($user['state']);
 
 				if(!empty($user['shopper_group_id'])){
 					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
@@ -666,8 +666,8 @@ class Migrator extends VmModel{
 				// 			if(!array_key_exists($oldcategory['virtuemart_userinfo_id'],$alreadyKnownIds)){
 				$oldUsersAddi['virtuemart_user_id'] = $oldUsersAddi['user_id'];
 
-				$oldUsersAddi['virtuemart_country_id'] = $this->getCountryIdByCode($oldUsersAddi['country']);
-				$oldUsersAddi['virtuemart_state_id'] = $this->getCountryIdByCode($oldUsersAddi['state']);
+				$oldUsersAddi['virtuemart_country_id'] = $this->getCountryIDByName($oldUsersAddi['country']);
+				$oldUsersAddi['virtuemart_state_id'] = $this->getStateIDByName($oldUsersAddi['state']);
 
 				$userfielddata = $userModel->_prepareUserFields($oldUsersAddi, 'ST');
 
@@ -1428,8 +1428,8 @@ class Migrator extends VmModel{
 						foreach($oldItems as $item){
 							$item['virtuemart_order_id'] = $newId;
 							$item['virtuemart_user_id'] = $item['user_id'];
-							$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
-							$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
+							$item['virtuemart_country_id'] = $this->getCountryIDByName($item['country']);
+							$item['virtuemart_state_id'] = $this->getStateIDByName($item['state']);
 
 							$item['email'] = $item['user_email'];
 							$orderUserinfoTable = $this->getTable('order_userinfos');
@@ -1570,7 +1570,28 @@ class Migrator extends VmModel{
 	 * @param string $name Country 3 or Country 2 code (example US for United States)
 	 * return int virtuemart_country_id
 	 */
-	private function getCountryIdByCode($name){
+	private $_countries = array();
+	private $_states = array();
+
+	private function getCountryIdByName($name){
+
+		if(empty($this->_countries[$name])){
+			$this->_countries[$name] = Shopfunctions::getCountryIDByName($name);
+		}
+
+		return $this->_countries[$name];
+	}
+
+	private function getStateIdByName($name){
+
+		if(empty($this->_states[$name])){
+			$this->_states[$name] = Shopfunctions::getStateIDByName($name);
+		}
+
+		return $this->_states[$name];
+	}
+
+/*	private function getCountryIdByCode($name){
 		if(empty($name)){
 			return 0;
 		}
@@ -1595,7 +1616,7 @@ class Migrator extends VmModel{
 	 * @param string $name Country 3 or Country 2 code (example US for United States)
 	 * return int virtuemart_country_id
 	 */
-	private function getStateIdByCode($name){
+/*	private function getStateIdByCode($name){
 		if(empty($name)){
 			return 0;
 		}
@@ -1612,7 +1633,7 @@ class Migrator extends VmModel{
 
 		return $this->_db->loadResult();
 	}
-
+*/
 	private function getCurrencyIdByCode($name){
 		if(empty($name)){
 			return 0;

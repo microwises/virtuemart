@@ -399,6 +399,7 @@ class VirtueMartCart {
 				// INDEX NOT FOUND IN JSON HERE
 				// changed name field you know exactly was this is
 				if (isset($post['customPrice'])) {
+
 					$product->customPrices = $post['customPrice'];
 					if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
 
@@ -409,11 +410,11 @@ class VirtueMartCart {
 
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
-									$productKey .= $customId . ':' . $userfieldId . ';';
-									$product->userfield[$customId . '-' . $userfieldId] = $userfield;
+									$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
+// 									$product->userfield[(int)$customId . '-' . (int)$userfieldId] = $userfield;  //not used
 								}
 							} else {
-								$productKey .= $customId . ':' . $custom_fieldId . ';';
+								$productKey .= (int)$customId . ':' .(int)$custom_fieldId . ';';
 							}
 
 						}
@@ -510,11 +511,11 @@ class VirtueMartCart {
 				unset($this->products[$cart_virtuemart_product_id]);
 				$updated = true;
 			}
+			// Save the cart
+			$this->setCartIntoSession();
 		}
-		//		}
 
-		/* Save the cart */
-		$this->setCartIntoSession();
+
 		if ($updated)
 		return true;
 		else

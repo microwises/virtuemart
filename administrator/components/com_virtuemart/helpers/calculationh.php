@@ -338,6 +338,8 @@ class calculationHelper {
 			$prices['salesPrice'] = $product_override_price;
 // 			$prices['discountedPriceWithoutTax'] = $this->product_override_price;
 // 			$prices['salesPriceWithDiscount'] = $this->product_override_price;
+		} else {
+
 		}
 
 // 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
@@ -1091,7 +1093,7 @@ class calculationHelper {
 
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
-				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency));
+				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
 				if($calculated){
 					foreach($calculated as $calc){
 						if($calc) return $calc;
@@ -1206,7 +1208,7 @@ class calculationHelper {
 					$query = 'SELECT  C.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-						WHERE field.`virtuemart_customfield_id`=' . $selected;
+						WHERE field.`virtuemart_customfield_id`=' .(int) $selected;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
 // 					vmdebug('calculateModificators',$productCustomsPrice);

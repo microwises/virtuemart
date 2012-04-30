@@ -529,7 +529,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	    						AND  (';
 
 	foreach ($user->shopper_groups as $groups) {
-	    $q .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
+	    $q .= ' s.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
 	}
 	$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) ORDER BY v.`ordering`';
 

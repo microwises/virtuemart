@@ -817,6 +817,7 @@ class vmRequest{
  		}
  	}
 
+
 }
 
 /**
@@ -826,7 +827,7 @@ class vmRequest{
  * @author Max Milbers
  */
 class vmJsApi{
-	
+
 
 	private function __construct() {
 
@@ -847,7 +848,7 @@ class vmJsApi{
 		// Only load once
 		// using of namespace assume same library have same namespace
 		// NEVER WRITE FULL NAME AS $namespace IN CASE OF REVISION NUMBER IF YOU WANT PREVENT MULTI LOAD !!!
-		// eg. $namespace = 'jquery.1.8.6' and 'jquery.1.6.2' does not prevent load it 
+		// eg. $namespace = 'jquery.1.8.6' and 'jquery.1.6.2' does not prevent load it
 		// use $namespace = 'jquery',$revision ='1.8.6' , $namespace = 'jquery',$revision ='1.6.2' ...
 		// loading 2 time a JS file with this method simply return and do not load it the second time
 
@@ -875,10 +876,10 @@ class vmJsApi{
 
 		static $loaded = array();
 
-		// Only load once 
+		// Only load once
 		// using of namespace assume same css have same namespace
 		// loading 2 time css with this method simply return and do not load it the second time
-		
+
 		if (!empty($loaded[$namespace])) {
 			return;
 		}
@@ -889,8 +890,8 @@ class vmJsApi{
 		$loaded[$namespace] = true;
 
 	}
-	
-	/* 
+
+	/*
 	 * Set file path(look in template if relative path)
 	 */
 	public static function setPath( $namespace ,$path = false ,$version='' ,$minified = null , $ext = 'js')
@@ -912,12 +913,12 @@ class vmJsApi{
 				// vmWarn('file not found in tmpl :'.$file );
 			}
 			$path = JURI::root(true) .'/'.$path;
-			
+
 		}
 		elseif (strpos($path, '//') === false)
 		{
 			$path = JURI::root(true) .'/'.$path;
-		}		
+		}
 		return $path.'/'.$file ;
 	}
 	/**
@@ -1126,7 +1127,7 @@ class vmJsApi{
 		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
-		
+
 		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
 		if (!in_array($lang, $existingLang)) $lang = substr($lang, 0, 2);
 		elseif (!in_array($lang, $existingLang)) $lang ="en-GB";

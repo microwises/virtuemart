@@ -134,6 +134,7 @@ class TableUserinfos extends VmTableData {
 			}
 		} else {
 			vmError('Table userinfos check failed: Unknown address_type '.$this->address_type,'check failed: Unknown address_type ');
+			vmdebug('Table userinfos check failed: Unknown address_type '.$this->address_type.' virtuemart_user_id '.$this->virtuemart_user_id.' name '.$this->name);
 			return false;
 		}
 
