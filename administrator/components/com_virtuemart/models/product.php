@@ -1695,7 +1695,7 @@ function getProductParent($product_parent_id) {
 					$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 				}
 				/* Update the product history */
-				$modelOrder->updateOrderHist($order->virtuemart_order_id,  $order->order_status_code, 1, $input['comments']);
+				$modelOrder->_updateOrderHist($order->virtuemart_order_id,  $order->order_status_code, 1, $input['comments']);
 				$app->enqueueMessage(JText::sprintf($string, $order->email));
 
 			}
