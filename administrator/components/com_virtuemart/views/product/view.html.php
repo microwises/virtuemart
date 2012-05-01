@@ -177,6 +177,8 @@ class VirtuemartViewProduct extends VmView {
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
+				$bookedUsers = $waitinglistmodel->getUsers($product->virtuemart_product_id ,'reserved');
+				$this->assignRef('customers', $bookedUsers);
 				$field_model = VmModel::getModel('customfields');
 				$fieldTypes = $field_model->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);

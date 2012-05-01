@@ -158,6 +158,24 @@ class VirtuemartViewProduct extends JView {
 
 			$this->json['value'] = $html;
 			$this->json['ok'] = 1 ;
+		} else if ($this->type=='userlist')
+		{
+			$html='';
+			$listType = JRequest::getWord('listType','waiting');
+			$userlist = VmModel::getModel('WaitingList');
+			$users = $userlist->getUsers($product_id ,$listType);
+			foreach ($users as $virtuemart_order_user_id => $customer)
+			{
+				$html.='
+				<tr class="customer" data-cid="'.$virtuemart_order_user_id.'">
+					<td class="customer_name">'.$customer['customer_name'].'</td>
+					<td><a class="mailto" href="'.$customer['mail_to'].'"><span class="mail">'.$customer['email'].'</span></a></td>
+					<td class="customer_phone">'.$customer['customer_phone'].'</td>
+					<td class="quantity">'.$customer['quantity'].'</td>
+				</tr>
+				';
+			}
+			$this->json['value'] = $html;
 		} else $this->json['ok'] = 0 ;
 
 		if ( empty($this->json)) {
