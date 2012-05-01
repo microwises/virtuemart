@@ -43,7 +43,7 @@ $keyword = JRequest::getWord('keyword', null);
 <?php
 $customs = $this->customs->items;
 //$roles = $this->customlistsroles;
-$pagination = $this->pagination;
+
 ?>
 
 

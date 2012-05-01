@@ -81,6 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 <!--
 
 /* JS for list changes */
+var $customerMailLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ?>';
 var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id='.$this->product->virtuemart_product_id ?>';
 var $customerListtype='reserved';
 jQuery('.mailing .button2-left').click(function() {
@@ -99,7 +100,7 @@ jQuery('.mailing .button2-left').click(function() {
 		var $subject = jQuery('.mailing .mail-subject').val();
 		var $body = jQuery('#mail-body').val();
 		
-		jQuery.getJSON($customerListLink,{ mailto: $customerListtype,subject: $subject,mailbody: $body, task: "mailing" },
+		jQuery.getJSON($customerMailLink,{ mailto: $customerListtype,subject: $subject,mailbody: $body, task: "mailing" },
 			function(data){
 				jQuery("#customers-list").html(data.value);
 		});

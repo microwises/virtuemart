@@ -39,15 +39,15 @@ class VirtuemartViewOrderstatus extends VmView {
 		$this->loadHelper('html');
 
 		$model = VmModel::getModel();
-		$orderStatus = $model->getOrderStatus();
 
-		$this->SetViewTitle('',JText::_($orderStatus->order_status_name) );
 
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
 
 		if ($layoutName == 'edit') {
+			$orderStatus = $model->getData();
+			$this->SetViewTitle('',JText::_($orderStatus->order_status_name) );
 			if ($orderStatus->virtuemart_orderstate_id < 1) {
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -82,7 +82,7 @@ class VirtuemartViewOrderstatus extends VmView {
 
 			$this->addStandardEditViewCommands();
 		} else {
-
+			$this->SetViewTitle('');
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 			$this->lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();

@@ -101,7 +101,7 @@ AdminUIHelper::startAdminArea();
 // 				</td>
 			$k = 1 - $k;
 		}
-		?>
+		?><?php /* NO limit used in model
 		<tfoot>
 			<tr>
 				<td colspan="10">
@@ -109,6 +109,7 @@ AdminUIHelper::startAdminArea();
 				</td>
 			</tr>
 		</tfoot>
+		*/ ?>
 	</table>
 </div>
 

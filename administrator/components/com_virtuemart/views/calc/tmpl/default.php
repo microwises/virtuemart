@@ -57,11 +57,11 @@ AdminUIHelper::startAdminArea();
 			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
 			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_SHOPPERGROUP_IDS', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
 <?php /*	<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
-			<th><?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?></th>
+			<th><?php echo $this->sort('publish_up' , 'COM_VIRTUEMART_START_DATE'); ?></th>
+			<th><?php echo $this->sort('publish_down' , 'COM_VIRTUEMART_END_DATE'); ?></th>
 <?php /*	<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
 			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th> */  ?>
 			<th><?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
@@ -132,21 +132,12 @@ AdminUIHelper::startAdminArea();
 				</td> */  ?>
 				<td>
 					<?php
-					$publish_up ='';
-					if (!strcmp($row->publish_up,'0000-00-00 00:00:00')) {
-						echo JText::_('COM_VIRTUEMART_NEVER');
-					} else {
 						echo vmJsApi::date( $row->publish_up, 'LC4',true);
-					}
 					?>
 				</td>
 				<td>
 					<?php
-						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-							echo JText::_('COM_VIRTUEMART_NEVER');
-						} else {
 							echo vmJsApi::date( $row->publish_down, 'LC4',true);
-						}
 					?>
 				</td>
 <?php /*				<td>

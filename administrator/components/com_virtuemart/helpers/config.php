@@ -1145,6 +1145,7 @@ class vmJsApi{
 	 */
 
 	function date($date , $format ='LC2', $joomla=false ,$revert=false ){
+		if (!strcmp($date,'0000-00-00 00:00:00')) return JText::_('COM_VIRTUEMART_NEVER');
 		If ($joomla) {
 			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
 		} else {

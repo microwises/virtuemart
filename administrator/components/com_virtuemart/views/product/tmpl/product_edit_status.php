@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
 			<div class="button2-left">
 				<div class="blank">
-					<a onclick="Joomla.submitbutton('notifyuserproductinstock')" href="#">
+					<a href="<?php echo $link ?>">
 					<span class="icon-nofloat vmicon icon-16-messages"></span><?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_NOTIFY_USER'); ?>
 					</a>
 				</div>
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');?>
 					</legend>
 					<input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
-					<input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" />
+					<input type="checkbox" value="1" id="notify_users" name="notify_users" />
 
 					<label for="notify_users"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
 					<br /><br />
@@ -182,10 +182,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		var in_stock = jQuery('.js-change-stock[name="product_in_stock"]');
 		var ordered = jQuery('.js-change-stock[name="product_ordered"]');
 		var product_in_stock= parseInt(in_stock.val());
-		if (var oldstock == "undefined") var oldstock = product_in_stock ;
+		if ( oldstock == "undefined") var oldstock = product_in_stock ;
 		var product_ordered=parseInt(ordered.val());
 		if (product_in_stock>product_ordered && product_in_stock!=oldstock )
 			jQuery('#notify_users').attr('checked','checked');
-		else jQuery('#notify_users').attr('checked','');
+		else jQuery('#notify_users').attr('checked',false);
 	});
 </script>
