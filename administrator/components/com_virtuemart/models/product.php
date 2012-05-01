@@ -1087,8 +1087,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!empty($data['virtuemart_manufacturer_id'])){
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
-vmdebug('product_price ',$data['product_discount_id']);
-vmdebug('product_price ',$data['product_tax_id']);
+
 // 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
 		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
 

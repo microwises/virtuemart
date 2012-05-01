@@ -897,11 +897,10 @@ class VirtueMartCart {
 		$store = $vendor->getVendor();
 		if ($store->vendor_min_pov > 0) {
 			$prices = $this->getCartPrices();
-			if ($prices['salesPrice'] <= $store->vendor_min_pov) {
+			if ($prices['salesPrice'] < $store->vendor_min_pov) {
 				if (!class_exists('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
-				$minValue = $currency->priceDisplay( $store->vendor_min_pov);
 				return JText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($store->vendor_min_pov));
 			}
 		}

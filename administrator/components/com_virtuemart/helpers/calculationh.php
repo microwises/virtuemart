@@ -330,6 +330,7 @@ class calculationHelper {
 
 		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 
+		vmdebug('$$override salesPriceWithDiscount',$override,$prices['salesPriceWithDiscount'],$salesPrice);
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
 		$prices['salesPriceTemp'] = $prices['salesPrice'];
@@ -342,6 +343,17 @@ class calculationHelper {
 
 		}
 
+// 		if(!empty($override)){
+			$this->_revert = true;
+			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['salesPrice'],true));
+
+
+			if(!empty($afterTax)){
+				$prices['taxAmount'] = $prices['salesPrice'] - $afterTax;
+			}
+			$this->_revert = false;
+// 		}
+
 // 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
 		//The whole discount Amount
 		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
@@ -353,6 +365,7 @@ class calculationHelper {
 
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
 		//		$prices['priceWithoutTax'] = $this->roundInternal($salesPrice - ($salesPrice - $discountedPrice));
+// 		$prices['priceWithoutTax'] = $prices['salesPrice'] - $prices['taxAmount'];
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 
 		$prices['variantModification'] = $variant;
@@ -601,7 +614,7 @@ class calculationHelper {
 
 		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 		$withDiscount = !empty($withDiscount) ? $withDiscount : $salesPrice;
-
+		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
 		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
 		$withTax = !empty($withTax) ? $withTax : $withDiscount;
 
@@ -1074,7 +1087,13 @@ class calculationHelper {
 						if(!$this->_revert){
 							$calculated = $price * $value / 100.0;
 						} else {
-							$calculated = $price /(1 +  (100.0 / $value));
+
+							if($sign == $plus){
+								$calculated =  abs($price /(1 -  (100.0 / $value)));
+							} else {
+								$calculated = abs($price /(1 +  (100.0 / $value)));
+							}
+							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
 						}
 					}
 				} else if (strlen($mathop) == 1){
