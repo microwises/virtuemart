@@ -101,6 +101,9 @@ class VirtuemartViewProduct extends VmView {
 				foreach($calculator->rules['Tax'] as $rule){
 					$tax .= $rule['calc_name']. '<br />';
 				}
+				foreach($calculator->rules['VatTax'] as $rule){
+					$tax .= $rule['calc_name']. '<br />';
+				}
 				$this->assignRef('taxRules', $tax);
 
 				$DATax = '';//JText::_('COM_VIRTUEMART_RULES_EFFECTING');
@@ -381,7 +384,7 @@ class VirtuemartViewProduct extends VmView {
 		foreach($discounts as $discount){
 			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
-		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id]', '', 'product_discount_id', 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', '', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 
 	}

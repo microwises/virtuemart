@@ -617,11 +617,13 @@ class VirtueMartModelUserfields extends VmModel {
 		,'links' => array()
 		);
 
+
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 		$_userData=(array)($_userData);
 		if (is_array($_selection)) {
 
 			foreach ($_selection as $_fld) {
+
 
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
@@ -632,6 +634,7 @@ class VirtueMartModelUserfields extends VmModel {
 				,'type' => $_fld->type
 				,'required' => $_fld->required
 				,'hidden' => false
+				,'formcode' => ''
 				);
 
 // 				vmdebug ('getUserFieldsFilled',$_fld);
@@ -817,7 +820,11 @@ class VirtueMartModelUserfields extends VmModel {
 					break;
 				}
 			}
+		} else {
+			vmdebug('getUserFieldsFilled $_selection is not an array ',$_selection);
+// 			$_return['fields'][$_fld->name]['formcode'] = '';
 		}
+
 		return $_return;
 	}
 

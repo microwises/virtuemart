@@ -97,6 +97,7 @@ class calculationHelper {
 
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
+		$this->rules['VatTax'] 	= array();
 		$this->rules['DBTax'] = array();
 		$this->rules['DATax'] = array();
 	}
@@ -119,18 +120,20 @@ class calculationHelper {
 
 		$this->productVendorId = $id;
 		if(empty($this->allrules[$this->productVendorId])){
-			$epoints = array("'Marge'","'Tax'","'DBTax'","'DATax'");
+			$epoints = array("'Marge'","'Tax'","'VatTax'","'DBTax'","'DATax'");
 			$this->allrules = array();
 			$this->allrules[$this->productVendorId]['Marge'] = array();
 			$this->allrules[$this->productVendorId]['Tax'] 	= array();
+			$this->allrules[$this->productVendorId]['VatTax'] 	= array();
 			$this->allrules[$this->productVendorId]['DBTax'] = array();
 			$this->allrules[$this->productVendorId]['DATax'] = array();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
 											                    `calc_kind` IN (' . implode(",",$epoints). ' )
 											                     AND `published`="1"
 											                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
-											                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-											                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
+											                     AND ( ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+											                     	AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" )
+																			OR `for_override` = "1" )';
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
 			foreach ($allrules as $rule){
@@ -283,6 +286,7 @@ class calculationHelper {
 		$this->setCountryState($this->_cart);
 
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
+		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
@@ -313,6 +317,11 @@ class calculationHelper {
 
 
 		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
+		if(!empty($this->rules['VatTax'])){
+			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['basePriceWithTax'], true));
+// 			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
+		}
+
 		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
 
 		if ($override==-1) {
@@ -327,6 +336,11 @@ class calculationHelper {
 		$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $priceBeforeTax;
 
 		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
+
+		if(!empty($this->rules['VatTax'])){
+			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice, true));
+			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
+		}
 
 		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 
@@ -343,16 +357,16 @@ class calculationHelper {
 
 		}
 
-// 		if(!empty($override)){
+		if(!empty($this->rules['VatTax'])){
 			$this->_revert = true;
-			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['salesPrice'],true));
-
+			$prices['priceWithoutTax'] = $prices['salesPrice'] - $prices['taxAmount'];
+			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['salesPrice']));
 
 			if(!empty($afterTax)){
 				$prices['taxAmount'] = $prices['salesPrice'] - $afterTax;
 			}
 			$this->_revert = false;
-// 		}
+		}
 
 // 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
 		//The whole discount Amount
@@ -378,6 +392,11 @@ class calculationHelper {
 		$prices['Tax'] = array();
 		foreach($this->rules['Tax'] as $tax){
 			$prices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
+		}
+
+		$prices['VatTax'] = array();
+		foreach($this->rules['VatTax'] as $tax){
+			$prices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
 		}
 
 		$prices['DATax'] = array();
@@ -607,13 +626,17 @@ class calculationHelper {
 		//$this->setCountryState($this->_cart);
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
+		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
 		$salesPrice = $data['salesPrice'];
 
-		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
-		$withDiscount = !empty($withDiscount) ? $withDiscount : $salesPrice;
+		$withoutVatTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice));
+		$withoutVatTax = !empty($withoutVatTax) ? $withoutVatTax : $salesPrice;
+
+		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $withoutVatTax));
+		$withDiscount = !empty($withDiscount) ? $withDiscount : $withoutVatTax;
 		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
 		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
 		$withTax = !empty($withTax) ? $withTax : $withDiscount;
@@ -732,13 +755,14 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint, $id) {
 
-		if ($id === -1) return ;
+		$testedRules = array();
+		if ($id === -1) return $testedRules;
 		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
 
-		$testedRules = array();
+
 
 // 		vmdebug('$this->allrules[$this->productVendorId]',$this->allrules[$this->productVendorId]);
 
@@ -747,11 +771,19 @@ class calculationHelper {
 			return $testedRules;
 		}
 		$allRules = $this->allrules[$this->productVendorId][$entrypoint];
+// 		vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$allRules);
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($allRules as $i => $rule) {
-// 			vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$this->allrules[$entrypoint]);
-			if(!empty($id) && $rule['virtuemart_calc_id']!==$id){
+
+			if(!empty($id)){
+				if($rule['virtuemart_calc_id']==$id){
+					$testedRules[] = $rule;
+				}
 // 				vmdebug('Price override set '.$id);
+				continue;
+			}
+			if(!empty($this->allrules[$this->productVendorId][$entrypoint][$i]['for_override'])){
+				vmdebug('Rule is meant for overwrite ',$rule);
 				continue;
 			}
 			if(!isset($this->allrules[$this->productVendorId][$entrypoint][$i]['cats'])){
