@@ -172,11 +172,11 @@ class VirtuemartViewProduct extends VmView {
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = date("Y-m-d") ;
 				}
-
+				$waitinglistmodel = VmModel::getModel('waitinglist');
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
-					$waitinglistmodel = VmModel::getModel('waitinglist');
+					
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
