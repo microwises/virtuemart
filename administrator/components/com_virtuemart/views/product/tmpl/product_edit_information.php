@@ -251,25 +251,31 @@ $i=0;
 					<td width="29%"><div style="text-align: right; font-weight: bold;">
 						<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
 					</td>
-					<td width="71%">
+					<td width="30%">
 						<?php echo $this->lists['taxrates']; ?><br />
-						<?php echo $this->taxRules ?>
+					</td>
+					<td>
+						<?php echo JText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />'.$this->taxRules ?>
 					</td>
 				</tr>
 				<tr class="row1">
-					<td width="21%"><div style="text-align: right; font-weight: bold;">
+					<td><div style="text-align: right; font-weight: bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
 					</td>
-					<td width="79%">
+					<td >
 						<?php echo $this->lists['discounts']; ?> <br />
-
+							<td>
 							<?php if(!empty($this->DBTaxRules)){
-								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DBTaxRules.'<br />';
+
+								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').'<br />'.$this->DBTaxRules.'<br />';
+
 							}
 							if(!empty($this->DATaxRules)){
-								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DATaxRules;
+								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').'<br />'.$this->DATaxRules;
+
 							}
 // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
+						</td>
 					</td>
 				</tr>
 

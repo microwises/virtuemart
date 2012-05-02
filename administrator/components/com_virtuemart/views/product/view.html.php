@@ -97,7 +97,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->assignRef('DBTaxRules', $DBTax);
 
-				$tax = JText::_('COM_VIRTUEMART_TAX_EFFECTING');
+				$tax = ''; //JText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />';
 				foreach($calculator->rules['Tax'] as $rule){
 					$tax .= $rule['calc_name']. '<br />';
 				}
