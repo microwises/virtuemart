@@ -76,27 +76,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$this->_tablepkey = 'id';
 	$this->_tableId = 'id';
 	$this->tableFields = array_keys($this->getTableSQLFields());
-	$varsToPush = array(
-	    'login_id' => array('', 'int'),
-	    'transaction_key' => array(0, 'int'),
-	    'secure_post' => array('', 'int'),
-	    'sandbox' => array('', 'int'),
-	    'sandbox_login_id' => array('', 'int'),
-	    'sandbox_transaction_key' => array('', 'int'),
-	    'creditcards' => array('', 'int'),
-	    'payment_logos' => array('', 'char'),
-	    'cvv_images' => array('', 'char'),
-	    'debug' => array(0, 'int'),
-	    'payment_approved_status' => array('C', 'char'),
-	    'payment_declined_status' => array('X', 'char'),
-	    'payment_held_status' => array('P', 'char'),
-	    'countries' => array(0, 'char'),
-	    'min_amount' => array(0, 'int'),
-	    'max_amount' => array(0, 'int'),
-	    'cost_per_transaction' => array(0, 'int'),
-	    'cost_percent_total' => array(0, 'char'),
-	    'tax_id' => array(0, 'int')
-	);
+	$varsToPush = $this->getVarsToPush();
 
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
     }
@@ -933,7 +913,7 @@ if (isset($method->xtype)) {
 		$this->approved = false;
 		$this->error = true;
 		$this->logInfo(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'ERROR');
-		$this->sendEmailToVendorAndAdmins(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), JText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR_WHILE_PROCESSING_PAYMENT', $authorizeNetResponse['invoice_number']));
+		//$this->sendEmailToVendorAndAdmins(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), JText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR_WHILE_PROCESSING_PAYMENT', $authorizeNetResponse['invoice_number']));
 		$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
 		$this->logInfo($html, 'PAYMENT DECLINED');
 		return $html;
