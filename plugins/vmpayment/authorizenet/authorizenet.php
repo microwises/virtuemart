@@ -499,7 +499,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$formdata = array_merge($this->_setResponseConfiguration(), $formdata);
 	$formdata = array_merge($this->_setBillingInformation($usrBT), $formdata);
 	$formdata = array_merge($this->_setShippingInformation($usrST), $formdata);
-	$formdata = array_merge($this->_setTransactionData($order['details']['BT']), $formdata);
+	$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $method), $formdata);
 	$formdata = array_merge($this->_setMerchantData($method), $formdata);
 	// prepare the array to post
 	$poststring = '';
@@ -769,14 +769,18 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	);
     }
 
-    function _setTransactionData($orderDetails) {
-
-
+    function _setTransactionData($orderDetails, $method) {
+// backward compatible
+if (isset($method->xtype)) {
+    $xtype=$method->xtype;
+} else {
+     $xtype= 'AUTH_CAPTURE';
+}
 	return array(
 	    'x_amount' => $orderDetails->order_total,
 	    'x_invoice_num' => $orderDetails->order_number,
 	    'x_method' => 'CC',
-	    'x_type' => 'AUTH_CAPTURE',
+	    'x_type' => $xtype,
 	    'x_recurring_billing' => 0, //$this->_recurringPayment($params),
 	    'x_card_num' => $this->_cc_number,
 	    'x_card_code' => $this->_cc_cvv,

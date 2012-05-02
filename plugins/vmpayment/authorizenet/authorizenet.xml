@@ -39,6 +39,13 @@
 
 	<param name="sandbox_login_id" type="text" size="50" default="" label="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID" description="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID_DESC"/>
 	<param name="sandbox_transaction_key" type="text" size="50" default="" label="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY" description="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY_DESC"  />
+	<param type="spacer" default=" " level="level1" />
+	<param type="spacer" default="VMPAYMENT_AUTHORIZENET_TRANSACTION_PARAMS" level="level1" />
+	<param name="xtype" type="list" default="AUTH_CAPTURE" label="VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE" description="VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_DESC">
+	    <option value="AUTH_CAPTURE">VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_AUTH_CAPTURE</option>
+	    <option value="AUTH_ONLY">VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_AUTH_ONLY</option>
+	</param>
+		<param type="spacer" default=" " level="level1" />
 
 	<param   type="spacer" default="VMPAYMENT_AUTHORIZENET_VIRTUEMART_PARAMS" level="level1" />
 
