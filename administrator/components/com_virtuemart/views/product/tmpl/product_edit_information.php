@@ -333,34 +333,32 @@ $i=0;
                 		}
                 	}
 
-
-
-//                 		vmdebug('ma $customs',$customs);
-						echo '<table>';
-
-						echo '<tr>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_CHILD').'</th>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME').'</th>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST').'</th>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').'</th>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK').'</th>';
-						foreach($customs as $custom){
-							echo '<th>'.JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',$custom->custom_value).'</th>';
-						}
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH').'</th>';
-						echo '</tr>';
-
-
+//					vmdebug('ma $customs',$customs);
+					?>
+             		
+					<table class="adminlist">
+						<tr>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME')?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
+							<?php foreach($customs as $custom){ ?>
+								<th><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',$custom->custom_value)?></th>
+							<?php } ?>
+							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH')?></th>
+						</tr>
+						<?php
 						foreach ($this->product_childs as $child  ) {
-
-						     $i = 1 - $i;
-							echo '<tr class="row'.$i.'">';
-								echo '<td>'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).'</td>';
-								echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_name]" size="32" value="'.$child->product_name.'" /></td>';
-								echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_price]" size="10" value="'.$child->product_price.'" /></td>';
-								echo '<td>'.$child->product_in_stock.'</td>';
-								echo '<td>'.$child->product_ordered.'</td>';
-								foreach($customs as $custom){
+							$i = 1 - $i;
+							 ?>
+							<tr class="row<?php echo $i ?>">
+								<td><?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" size="32" value="<?php echo $child->product_name ?>" /></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_price]" size="10" value="<?php echo $child->product_price ?>" /></td>
+								<td><?php $child->product_in_stock ?></td>
+								<td><?php $child->product_ordered ?></td>
+								<?php foreach($customs as $custom){
 									$attrib = $custom->custom_value;
 									if(isset($child->$attrib)){
 										$childAttrib = $child->$attrib;
@@ -370,17 +368,20 @@ $i=0;
 										$childAttrib = $child->$attrib;
 
 									}
-// 									echo $attrib;
-									echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.']['.$attrib.']" size="10" value="'.$childAttrib.'" />'.'</td>';
-								}
-
-								echo '<td>'.VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $this->product->published).'</td>';
-							echo '</tr>';
-
-						}
-						echo '</table>';
+									?>
+									<td><input type="text" class="inputbox" name="childs[<?php $child->virtuemart_product_id ?>][<?php $attrib ?>]" size="10" value="<?php $childAttrib ?>" /></td>
+									<?php
+								} 
+								?>
+								<td>
+									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $this->product->published) ?></td>
+							</tr>
+							<?php 
+						} ?>
+						</table>
+					 <?php
 					 }
-                        ?>
+					 ?>
 				</td>
 			</tr>
 		</table>

@@ -33,6 +33,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelOrderstatus extends VmModel {
 
+	private $renderStatusList = null;
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -61,6 +62,18 @@ class VirtueMartModelOrderstatus extends VmModel {
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
 		// 		vmdebug('order data',$this->_data);
 		return $this->_data ;
+	}
+	function renderOrderStatusList($multiple = true)
+	{
+		$currentStates = '';
+		if ($multiple) {
+			$attrs = 'multiple="multiple"';
+		}
+		if (!$this->renderStatusList) {
+			$orderStates = $this->getOrderStatusList();
+			$this->renderStatusList = JHTML::_('select.genericlist', $orderStates, 'order_status[]', 'multiple="multiple"', 'order_status_code', 'order_status_name', $currentStates, 'order_items_status',true);
+		}
+		return $this->renderStatusList ;
 	}
 
 }
