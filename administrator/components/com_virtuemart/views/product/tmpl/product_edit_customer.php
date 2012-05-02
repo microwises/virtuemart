@@ -103,15 +103,16 @@ jQuery('.mailing .button2-left').click(function() {
 		var $subject = jQuery('.mailing .mail-subject').val();
 		var $body = jQuery('#mail-body').val();
 		var $statut = jQuery('select#order_items_status').val();
-		jQuery.post($customerMailLink,{ subject: $subject,mailbody: $body, task: "mailing",statut : $statut, token : '<?php echo JUtility::getToken() ?>' },
+		jQuery.post($customerMailLink,{ subject: $subject,mailbody: $body, statut : $statut, token : '<?php echo JUtility::getToken() ?>' },
 			function(data){
 				jQuery("#customers-list").html(data.value);
 		});
 	}
 
 });
-	jQuery('select#order_items_status').chosen({enable_select_all: false,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}).change(function() {
+	jQuery('select#order_items_status').chosen({enable_select_all: false,select_some_options_text:vm2string.select_some_options_text}).change(function() {
 		var $status = jQuery(this).val() ;
+		if ($status == "undefined" || $status == null) $status = '';
 		jQuery.getJSON($customerListLink,{ status : $status  },
 			function(data){
 				jQuery("#customers-list").html(data.value);

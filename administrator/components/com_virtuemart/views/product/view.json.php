@@ -161,7 +161,22 @@ class VirtuemartViewProduct extends JView {
 		} else if ($this->type=='userlist')
 		{
 			$html='';
-			if (!$status = JRequest::getvar('status')) {
+			if ($status = JRequest::getvar('status')) {
+				$userlist = VmModel::getModel('WaitingList');
+				$users = $userlist->getProductShoppersByStatus($product_id ,$status);
+				foreach ($users as $virtuemart_order_user_id => $customer)
+					{
+						$html.='
+						<tr class="customer" data-cid="'.$virtuemart_order_user_id.'">
+							<td class="customer_name">'.$customer['customer_name'].'</td>
+							<td><a class="mailto" href="'.$customer['mail_to'].'"><span class="mail">'.$customer['email'].'</span></a></td>
+							<td class="customer_phone">'.$customer['customer_phone'].'</td>
+							<td class="quantity">'.$customer['quantity'].'</td>
+						</tr>
+						';
+					}
+			}
+			if ( empty($html) ) {
 				$html.='
 				<tr class="customer">
 					<td colspan="4">
@@ -169,20 +184,6 @@ class VirtuemartViewProduct extends JView {
 					</td>
 				</tr>
 				';
-			} else {
-			$userlist = VmModel::getModel('WaitingList');
-			$users = $userlist->getProductShoppersByStatus($product_id ,$status);
-			foreach ($users as $virtuemart_order_user_id => $customer)
-				{
-					$html.='
-					<tr class="customer" data-cid="'.$virtuemart_order_user_id.'">
-						<td class="customer_name">'.$customer['customer_name'].'</td>
-						<td><a class="mailto" href="'.$customer['mail_to'].'"><span class="mail">'.$customer['email'].'</span></a></td>
-						<td class="customer_phone">'.$customer['customer_phone'].'</td>
-						<td class="quantity">'.$customer['quantity'].'</td>
-					</tr>
-					';
-				}
 			}
 			$this->json['value'] = $html;
 		} else $this->json['ok'] = 0 ;

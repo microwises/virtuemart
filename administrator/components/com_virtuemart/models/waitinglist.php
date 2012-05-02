@@ -165,8 +165,11 @@ class VirtueMartModelWaitingList extends VmModel {
 
 	} */
 	public function getProductShoppersByStatus($product_id,$states ) {
+
+		if (empty( $states )) return false;
 		$orderstatusModel = VmModel::getModel('orderstatus');
 		$orderStates = $orderstatusModel->getOrderStatusNames();
+		
 		foreach ($states as &$status)
 			if (!array_key_exists($status,$orderStates)) unset($status);
 		if (empty( $states )) return false;
