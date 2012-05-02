@@ -18,6 +18,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
+<fieldset>
+				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL'); ?></legend>
 <table class="adminform" width="100%">
 	<tr class="row0">
 		<td>
@@ -104,13 +106,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->product->product_availability) echo JURI::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
 
 	</tr>
+</table>
+</fieldset>
 	<?php if ( VmConfig::get('stockhandle',0) == 'disableadd' && !empty($this->waitinglist ) or 1) { ?>
+<fieldset>
+				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></legend>
+<table class="adminform" width="100%">
 		<tr class="row0">
 			<td colspan ="4">
-				<fieldset>
-					<legend>
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');?>
-					</legend>
+
 					<input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
 					<input type="checkbox" value="1" id="notify_users" name="notify_users" />
 
@@ -144,7 +148,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 									echo $row;
 								}
 
-							} else 
+							} else
 							{ ?>
 									<tr>
 										<td colspan="4">
@@ -155,11 +159,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							} ?>
 						</tbody>
 					</table>
-				</fieldset>
+
 			</td>
 		</tr>
-	<?php } ?>
 </table>
+</fieldset>
+	<?php } ?>
+
 
 <script type="text/javascript">
 	jQuery('#image').change( function() {
@@ -168,7 +174,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
 		})
 	jQuery('.js-change-stock').change( function() {
-		
+
 		var in_stock = jQuery('.js-change-stock[name="product_in_stock"]');
 		var ordered = jQuery('.js-change-stock[name="product_ordered"]');
 		var product_in_stock= parseInt(in_stock.val());
@@ -179,5 +185,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		else jQuery('#notify_users').attr('checked',false);
 	});
 </script>
+
+<fieldset>
+				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
 <?php echo $this->loadTemplate('customer'); ?>
+</fieldset>
 

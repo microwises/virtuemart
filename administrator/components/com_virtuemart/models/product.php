@@ -1634,35 +1634,8 @@ function getProductParent($product_parent_id) {
 	$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` WHERE `virtuemart_product_id` ='.$product_parent_id);
 	return $db->loadObject();
 }
-/**
-	 * Update the product_emails_sent
-	 *
-	 * @author Valerie Isaksen
-	 * @param $id Product Id
-	 * @param $email_content
-	 */
-	private function updateProductEmailHistory($id,   $email_content = '')
-	{
-		$product_email = $this->getTable('product_emails');
-		$product_email->virtuemart_product_id = $id;
-		$product_email->email_content = $email_content;
-		$product_email->store();
-	}
-/**
-	 * Get product_emails_sent
-	 *
-	 * @author Valerie Isaksen
-	 * @param $virtuemart_product_id Product Id
-	 */
-	function getProductEmails($virtuemart_product_id) {
-		$db = JFactory::getDBO();
-		$q = "SELECT *
-			FROM #__virtuemart_product_emails
-			WHERE virtuemart_product_id=".$virtuemart_product_id."
-			ORDER BY virtuemart_product_email_id ASC";
-		$db->setQuery($q);
-		return $db->loadObjectList();
-	}
+
+ 
 
 	function sentProductEmailToShoppers() {
 

@@ -65,13 +65,7 @@ class VirtuemartViewProduct extends VmView {
 				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 				$this->assignRef('manufacturers',	$manufacturers);
-
-				$product_emails = $model->getProductEmails($virtuemart_product_id);
-				$product_shoppers= $model->getOrdersByProductID($virtuemart_product_id);
-
-				$this->assignRef('product_emails',	$product_emails);
-				$this->assignRef('product_nbshoppers',	count($product_shoppers));
-
+			
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();

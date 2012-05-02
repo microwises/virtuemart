@@ -33,22 +33,23 @@ defined('_JEXEC') or die('Restricted access');
 	<br />
 <?php echo $this->lists['OrderStatus'];?>
 	<span ID="customer-list-BT">
+	    <div class="button2-left" data-type="all" >
+			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_ALL_SHOPPERS_TIP'); ?>">
+				<span class="vmicon vmicon-16-forward-off" ></span>
+				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_ALL_SHOPPERS'); ?>
+			</div>
+		</div>
 		<div class="button2-left" data-type="reserved" >
-			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo jText::_('COM_VIRTUEMART_PRODUCT_LIST_BOOKED_BUYER_TIP'); ?>">
+			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo jText::_('COM_VIRTUEMART_PRODUCT_LIST_BOOKED_SHOPPERS_TIP'); ?>">
 				<span class="vmicon vmicon-16-forward" ></span>
-				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_BOOKED_BUYER'); ?>
+				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_BOOKED_SHOPPERS'); ?>
 			</div>
 		</div>
-		<div class="button2-left" data-type="all" >
-			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_BOOKED_ALL_TIP'); ?>">
-				<span class="vmicon vmicon-16-forward-off" ></span>
-				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_ALL_BUYER'); ?>
-			</div>
-		</div>
+
 		<div class="button2-left" data-type="delivered" >
-			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_DELIVERED_BUYER_TIP'); ?>" >
+			<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_DELIVERED_SHOPPERS_TIP'); ?>" >
 				<span class="vmicon vmicon-16-forward-off" ></span>
-				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_DELIVERED_BUYER'); ?>
+				<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_LIST_DELIVERED_SHOPPERS'); ?>
 			</div>
 		</div>
 	</span>
@@ -87,7 +88,7 @@ var $customerListtype='reserved';
 jQuery('.mailing .button2-left').click(function() {
 	//document.orderStatForm.task.value = 'updateOrderItemStatus';
 	that = jQuery(this).find('.vmicon');
-	if (that.hasClass('vmicon-16-forward-off')) 
+	if (that.hasClass('vmicon-16-forward-off'))
 	{
 		that.removeClass('vmicon-16-forward-off').addClass('vmicon-16-forward');
 		jQuery(this).siblings().children().children().addClass('vmicon-16-forward-off').removeClass('vmicon-16-forward');
@@ -99,13 +100,13 @@ jQuery('.mailing .button2-left').click(function() {
 	} else if(that.hasClass('vmicon-16-email')) {
 		var $subject = jQuery('.mailing .mail-subject').val();
 		var $body = jQuery('#mail-body').val();
-		
+
 		jQuery.getJSON($customerMailLink,{ mailto: $customerListtype,subject: $subject,mailbody: $body, task: "mailing" },
 			function(data){
 				jQuery("#customers-list").html(data.value);
 		});
 	}
-	
+
 });
 
 
