@@ -186,8 +186,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	});
 </script>
 
-<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
-<?php echo $this->loadTemplate('customer'); ?>
-</fieldset>
+	<fieldset>
+		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
+			<?php echo $this->loadTemplate('customer'); ?>
+	</fieldset>
 

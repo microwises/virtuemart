@@ -64,15 +64,17 @@ defined('_JEXEC') or die('Restricted access');
 		</thead>
 		<tbody id="customers-list">
 		<?php
-		foreach ($this->customers as $virtuemart_order_user_id => $customer) {
-			?>
-				<tr class="customer" data-cid="<?php echo $virtuemart_order_user_id ?>">
-					<td class=''><?php echo $customer['customer_name'] ?></td>
-					<td><a class='mailto' href="<?php echo $customer['mail_to'] ?>"><span class='mail'><?php echo $customer['email'] ?></span></a></td>
-					<td class='customer_phone'><?php echo $customer['customer_phone'] ?></td>
-					<td class='quantity'><?php echo $customer['quantity'] ?></td>
-				</tr>
-			<?php
+		if (!empty($this->customers)) { 
+			foreach ($this->customers as $virtuemart_order_user_id => $customer) {
+				?>
+					<tr class="customer" data-cid="<?php echo $virtuemart_order_user_id ?>">
+						<td class=''><?php echo $customer['customer_name'] ?></td>
+						<td><a class='mailto' href="<?php echo $customer['mail_to'] ?>"><span class='mail'><?php echo $customer['email'] ?></span></a></td>
+						<td class='customer_phone'><?php echo $customer['customer_phone'] ?></td>
+						<td class='quantity'><?php echo $customer['quantity'] ?></td>
+					</tr>
+				<?php
+			}
 		}
 		?>
 		</tbody>
@@ -82,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 <!--
 
 /* JS for list changes */
-var $customerMailLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ?>';
+var $customerMailLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id ?>';
 var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id='.$this->product->virtuemart_product_id ?>';
 var $customerListtype='reserved';
 jQuery('.mailing .button2-left').click(function() {
@@ -100,15 +102,21 @@ jQuery('.mailing .button2-left').click(function() {
 	} else if(that.hasClass('vmicon-16-email')) {
 		var $subject = jQuery('.mailing .mail-subject').val();
 		var $body = jQuery('#mail-body').val();
-
-		jQuery.getJSON($customerMailLink,{ mailto: $customerListtype,subject: $subject,mailbody: $body, task: "mailing" },
+		var $statut = jQuery('select#order_items_status').val();
+		jQuery.post($customerMailLink,{ subject: $subject,mailbody: $body, task: "mailing",statut : $statut, token : '<?php echo JUtility::getToken() ?>' },
 			function(data){
 				jQuery("#customers-list").html(data.value);
 		});
 	}
 
 });
-
+	jQuery('select#order_items_status').chosen({enable_select_all: false,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}).change(function() {
+		var $status = jQuery(this).val() ;
+		jQuery.getJSON($customerListLink,{ status : $status  },
+			function(data){
+				jQuery("#customers-list").html(data.value);
+		});
+	})	
 
 -->
 </script>

@@ -63,15 +63,36 @@ class VirtueMartModelOrderstatus extends VmModel {
 		// 		vmdebug('order data',$this->_data);
 		return $this->_data ;
 	}
-	function renderOrderStatusList($multiple = true)
+	/**
+	 * Return the order status names
+	 * 
+	 * @author Kohl Patrick
+	 * @access public
+	 *
+	 * @param char $_code Order status code
+	 * @return string The name of the order status
+	 */
+	public function getOrderStatusNames ()
 	{
-		$currentStates = '';
+		$q = 'SELECT `order_status_name`,`order_status_code` FROM `#__virtuemart_orderstates` order by `ordering` ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadAssocList(`order_status_code`);
+
+	}
+
+	function renderOrderStatusList($multiple = true,$value = '')
+	{
 		if ($multiple) {
 			$attrs = 'multiple="multiple"';
+			$name ='order_status[]';
+		} else {
+			$name ='order_status';
+			$attrs ='';
 		}
+
 		if (!$this->renderStatusList) {
-			$orderStates = $this->getOrderStatusList();
-			$this->renderStatusList = JHTML::_('select.genericlist', $orderStates, 'order_status[]', 'multiple="multiple"', 'order_status_code', 'order_status_name', $currentStates, 'order_items_status',true);
+			$orderStates = $this->getOrderStatusNames();
+			$this->renderStatusList = JHTML::_('select.genericlist', $orderStates, $name, 'multiple="multiple"', 'order_status_code', 'order_status_name', $value, 'order_items_status',true);
 		}
 		return $this->renderStatusList ;
 	}

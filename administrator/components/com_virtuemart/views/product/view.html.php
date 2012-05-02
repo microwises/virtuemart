@@ -65,7 +65,13 @@ class VirtuemartViewProduct extends VmView {
 				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 				$this->assignRef('manufacturers',	$manufacturers);
-			
+
+				// $product_emails = $model->getProductEmails($virtuemart_product_id);
+				// $product_shoppers= $model->getOrdersByProductID($virtuemart_product_id);
+
+				// $this->assignRef('product_emails',	$product_emails);
+				// $this->assignRef('product_nbshoppers',	count($product_shoppers));
+
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
@@ -174,10 +180,10 @@ class VirtuemartViewProduct extends VmView {
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-				$bookedUsers = $waitinglistmodel->getUsers($product->virtuemart_product_id ,'reserved');
+				$bookedUsers = $waitinglistmodel->getProductShoppersByStatus($product->virtuemart_product_id,array('S') );
 				$this->assignRef('customers', $bookedUsers);
 				$orderstatusModel = VmModel::getModel('orderstatus');
-				$lists['OrderStatus'] = $orderstatusModel->renderOrderStatusList();
+				$lists['OrderStatus'] = $orderstatusModel->renderOrderStatusList(true,array('S'));
 				$field_model = VmModel::getModel('customfields');
 				$fieldTypes = $field_model->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
