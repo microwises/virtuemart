@@ -436,7 +436,7 @@ class VmMediaHandler {
 					if($this->file_is_downloadable){
 						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('downloadable','zip.png');
 						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
-						return $this->displayIt($file_url, $file_alt, '',true,$withDescr);
+						return $this->displayIt($file_url, $file_alt, '',true,'',$withDescr);
 					} else {
 						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
 						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
@@ -505,9 +505,9 @@ class VmMediaHandler {
 			}
 			if($return){
 				if($this->file_is_downloadable){
-					return $this->displayIt($file_url, $file_alt, '',true,$withDescr,$absUrl);
+					return $this->displayIt($file_url, $file_alt, '',true,'',$withDescr,$absUrl);
 				} else {
-					return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$withDescr,$absUrl);
+					return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,'',$withDescr,$absUrl);
 				}
 			}
 
@@ -895,13 +895,13 @@ class VmMediaHandler {
 						//console.log(index+' ');
 
 					});
-					
+
 				}
 			});
 			$('#upload').change( function (){
 					if ($('#media_action0').is(':checked') ) $('#media_actionupload').attr('checked', true);
 				});
-			
+
 
 		}); ";
 
