@@ -37,8 +37,8 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		} ?>
 
 
-					
-					
+
+
 
 	<div class="customer-reviews">
 		<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
@@ -76,7 +76,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					    ?>
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-						<span class="vote"><?php echo $stars[$review->vote] ?></span>
+						<span class="vote"><?php echo $stars[(int)$review->vote] ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
 					</div>
@@ -121,7 +121,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 						// alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
 						// return false;
 					// }
-					//else 
+					//else
 					if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
 						alert('". addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get('reviews_minimum_comment_length', 100)) )."');
 						return false;
@@ -145,7 +145,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					var boxWidth = $('.write-reviews .ratingbox').width();// nbr of total pixels
 					var starSize = (boxWidth/steps);
 					var ratingboxPos= $('.write-reviews .ratingbox').offset();
-					
+
 					$('.write-reviews .ratingbox').mousemove( function(e){
 						var span = $(this).children();
 						var dif = e.pageX-ratingboxPos.left; // nbr of pixels
@@ -155,8 +155,8 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 						//console.log('note = ', difRatio);
 					});
 				});
-				
-				
+
+
 				";
 			$document = JFactory::getDocument();
 			$document->addScriptDeclaration($reviewJavascript);

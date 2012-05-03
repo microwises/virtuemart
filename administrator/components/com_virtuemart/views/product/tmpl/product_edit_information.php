@@ -335,7 +335,7 @@ $i=0;
 
 //					vmdebug('ma $customs',$customs);
 					?>
-             		
+
 					<table class="adminlist">
 						<tr>
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
@@ -369,14 +369,14 @@ $i=0;
 
 									}
 									?>
-									<td><input type="text" class="inputbox" name="childs[<?php $child->virtuemart_product_id ?>][<?php $attrib ?>]" size="10" value="<?php $childAttrib ?>" /></td>
+									<td><input type="text" class="inputbox" name="childs[<?php $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="10" value="<?php echo $childAttrib ?>" /></td>
 									<?php
-								} 
+								}
 								?>
 								<td>
 									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $this->product->published) ?></td>
 							</tr>
-							<?php 
+							<?php
 						} ?>
 						</table>
 					 <?php

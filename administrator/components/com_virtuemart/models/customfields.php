@@ -909,7 +909,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
 							$value ='';
 							if ($productCustom->field_type == "E") {
-
+								continue;
 							} elseif (($productCustom->field_type == "G")) {
 								$child = self::getChild($productCustom->custom_value);
 								$value = $child->product_name;

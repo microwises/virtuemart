@@ -33,7 +33,7 @@ if ($show_product_list) {
 				<span class="quantity"><?php echo  $product['quantity'] ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product['product_name'] ?></span>
 			</div>
 			<?php if ( !empty($product['product_attributes']) ) { ?>
-				<div class="product_attributes"><?php echo  $product['product_attributes'] ?></div>
+				<div class="product_attributes"><?php echo $product['product_attributes'] ?></div>
 
 			<?php }
 		}
