@@ -9,6 +9,7 @@ var klarna = {
 	gender : '',
 	klarnaGeneralLoaded : true,
 	selected_method : null,
+	stype : '',
 	invoice_active : false,
 	invoice_different_language : false,
 	spec_active : false,
@@ -24,7 +25,7 @@ var klarna = {
 	baloons_moved : false,
 	flagChange_active : false,
 	changeLanguage_busy : false,
-	openBox_busy : false,
+	// openBox_busy : false,
 	showing_companyNotAlowed_box : false,
 	gChoice : '',
     errorHandler: {
@@ -65,7 +66,7 @@ var klarna = {
 
 		if (animate) {
 			jQuery(box).find('.klarna_box_top_right, .klarna_box_bottom').
-				css({'display': 'none'});
+				hide();
 		} else {
 			jQuery(box).find('.klarna_box_top_right, .klarna_box_bottom').
 			fadeOut('fast');
@@ -82,6 +83,7 @@ var klarna = {
 
 		if (animate) {
 			jQuery(box).animate({"min-height": currentMinHeight}, 200, function () {
+				
 				klarna.showHideIlt(jQuery(this).find('.klarna_box_ilt'), true);
 				jQuery(this).find('.klarna_box_bottom').fadeIn('fast', function () {
 					jQuery('.klarna_box_bottom_content_loader').fadeOut();
@@ -97,10 +99,10 @@ var klarna = {
 					jQuery(this).find('.klarna_box_bottom_languageInfo').fadeIn('fast');
 					jQuery('.klarna_box_bottom_languageInfo').fadeIn('fast');
 				}
-				klarna.openBox_busy = false;
+				// klarna.openBox_busy = false;
 			});
 		} else {
-			jQuery(box).find('.klarna_box_top_right, .klarna_box_bottom').fadeIn('fast');
+			jQuery(box).find('.klarna_box_top_right, .klarna_box_bottom').show('fast');
 			klarna.showHideIlt(jQuery(box).find('.klarna_box_ilt'), true, animate);
 		}
 	},
@@ -108,29 +110,24 @@ var klarna = {
 	initPaymentSelection : function  (choice) {
 		var isklarna = choice.hasClass('klarnaPayment');
 		klarna.gChoice = '';
+		klarna.stype = choice.data("stype");
 		if ( isklarna ) klarna.gChoice = choice.attr('id');
 		//jQuery('input[value="'+choice+'"]').attr("id");
 		var klarnaBox = jQuery('#paymentForm .klarnaPayment');
 		klarnaBox.each(function () { 
-			var boxid = jQuery(this).data("stype");
-			if (klarna.gChoice != boxid)
-				klarna.hidePaymentOption('#klarna_box_'+boxid);
+			var thisStype = jQuery(this).data("stype");
+			if (klarna.stype != thisStype)
+				klarna.hidePaymentOption('#klarna_box_'+thisStype);
+			else klarna.choosePaymentOption(klarna.stype);
 		});
-		if ( isklarna ) klarna.choosePaymentOption(choice);
 	},
 
 	choosePaymentOption : function  (choice) {
-		if (klarna.openBox_busy == false)
-		{
-			klarna.hideRedBaloon();
-			klarna.hideBlueBaloon();
-			klarna.openBox_busy = true;
-			// jQuery('input[value="'+choice+'"]').attr("checked", "checked");
-			// jQuery('input[id="'+choice+'"]').attr("checked", "checked");
-			// choice = klarna_invoice
-			klarna.showPaymentOption(jQuery('#klarna_box_'+klarna.gChoice), true,
-				klarna['currentMinHeight_'+klarna.gChoice], klarna[klarna.gChoice+'_different_language']);
-		}
+
+		klarna.hideRedBaloon();
+		klarna.hideBlueBaloon();
+		klarna.showPaymentOption(jQuery('#klarna_box_'+choice), true,
+		klarna['currentMinHeight_'+klarna.stype], klarna[klarna.gChoice+'_different_language']);
 		klarna.selected_method = choice;
 	},
 
@@ -813,7 +810,8 @@ AddressCollection.prototype.render = function (to, inputName) {
 			var pList = jQuery('#paymentForm input[type=radio][name=virtuemart_paymentmethod_id]');
 			klarna.initPaymentSelection(pList.filter(":checked"));
 			pList.click( function (){
-				klarna.initPaymentSelection( jQuery(this) );
+				if ( klarna.stype != jQuery(this).data("stype") )
+					klarna.initPaymentSelection( jQuery(this) );
 			});
 		}
 		$('.klarnaPayment').parents('form').submit( function(){
