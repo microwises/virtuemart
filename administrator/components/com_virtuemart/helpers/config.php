@@ -1122,8 +1122,9 @@ class vmJsApi{
 			});
 		});
 		');
-		//$document->addScript($front.'js/jquery.ui.core.min.js');
-		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
+		vmJsApi::js ('jquery.ui.core',false,'',true);
+		vmJsApi::js ('jquery.ui.datepicker',false,'',true);
+
 		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
