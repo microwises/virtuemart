@@ -606,7 +606,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->_db->setQuery($query);
 		$groups = $this->_db->loadObjectList();
 
-		vmdebug('getProductCustomsFieldCart ',$groups);
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$row= 0 ;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -631,7 +630,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$query .=' ORDER BY field.`ordering`';
 
 			$this->_db->setQuery($query);
-			$options = $this->_db->loadObjectList(); vmdebug('getProductCustomsFieldCart options',$options);
+			$options = $this->_db->loadObjectList(); //vmdebug('getProductCustomsFieldCart options',$options);
 			$group->options = array();
 			foreach ( $options as $option){
 				$group->options[$option->value] = $option;
