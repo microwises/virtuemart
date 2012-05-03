@@ -371,7 +371,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				case 'A':
 					$options = array();
-					$options[] = array( 'value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME'));
+// 					$options[] = array( 'value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME')); Is anyway displayed there
 					$options[] = array( 'value' => 'product_sku' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU'));
 					$options[] = array( 'value' => 'slug' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS'));
 					$options[] = array( 'value' => 'product_length' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_LENGTH'));

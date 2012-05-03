@@ -356,8 +356,8 @@ $i=0;
 								<td><?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?></td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" size="32" value="<?php echo $child->product_name ?>" /></td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_price]" size="10" value="<?php echo $child->product_price ?>" /></td>
-								<td><?php $child->product_in_stock ?></td>
-								<td><?php $child->product_ordered ?></td>
+								<td><?php echo $child->product_in_stock ?></td>
+								<td><?php echo $child->product_ordered ?></td>
 								<?php foreach($customs as $custom){
 									$attrib = $custom->custom_value;
 									if(isset($child->$attrib)){
@@ -369,7 +369,7 @@ $i=0;
 
 									}
 									?>
-									<td><input type="text" class="inputbox" name="childs[<?php $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="10" value="<?php echo $childAttrib ?>" /></td>
+									<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][<?php echo $attrib ?>]" size="10" value="<?php echo $childAttrib ?>" /></td>
 									<?php
 								}
 								?>

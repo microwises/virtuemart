@@ -1620,9 +1620,11 @@ function getProductChilds($product_id ) {
 }
 
 function getProductChildIds($product_id ) {
+	vmdebug('getProductChildIds $product_id '.$product_id);
 	if(empty($product_id)) return array();
 	$db = JFactory::getDBO();
 	$db->setQuery(' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
+	vmdebug('getProductChildIds query '.$db->getQuery());
 	return $db->loadResultArray();
 
 }

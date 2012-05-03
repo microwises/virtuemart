@@ -53,24 +53,21 @@ class VirtuemartViewProduct extends VmView {
 				//this was in the controller for the edit tasks, I dont know if it is still needed,
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
-				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
-				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
+				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
+				vmdebug('getProductChildIds $virtuemart_product_id',$virtuemart_product_id);
+				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+					$virtuemart_product_id = (int)$virtuemart_product_id[0];
+				} else {
+					$virtuemart_product_id = (int)$virtuemart_product_id;
+				}
+
 				$product = $model->getProductSingle($virtuemart_product_id,false);
-// 				$product_child = $model->getProductChilds($virtuemart_product_id);
-
-
-				$this->assignRef('product_childs', $product_childs);
+				vmdebug('getProductChildIds $virtuemart_product_id',$virtuemart_product_id);
 				$product_parent= $model->getProductParent($product->product_parent_id);
 
 				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 				$this->assignRef('manufacturers',	$manufacturers);
-
-				// $product_emails = $model->getProductEmails($virtuemart_product_id);
-				// $product_shoppers= $model->getOrdersByProductID($virtuemart_product_id);
-
-				// $this->assignRef('product_emails',	$product_emails);
-				// $this->assignRef('product_nbshoppers',	count($product_shoppers));
 
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -87,10 +84,13 @@ class VirtuemartViewProduct extends VmView {
 				$product->prices = $calculator -> getProductPrices($product);
 
 				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
+
 				$product_childs = array();
 				foreach($product_childIds as $id){
 					$product_childs[] = $model->getProductSingle($id,false);
 				}
+				$this->assignRef('product_childs', $product_childs);
+
 				$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['DBTax'] as $rule){
 					$DBTax .= $rule['calc_name']. '<br />';
@@ -176,7 +176,7 @@ class VirtuemartViewProduct extends VmView {
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
-					
+
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
