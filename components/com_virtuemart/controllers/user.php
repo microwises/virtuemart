@@ -184,7 +184,7 @@ class VirtueMartControllerUser extends JController
 
 // 		vmdebug('$currentUser',$currentUser);
 		$data['address_type'] = JRequest::getWord('addrtype','BT');
-		if($currentUser->id!=0 || $register){
+		if($currentUser->guest!=1 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = VmModel::getModel('user');
 
@@ -204,7 +204,7 @@ class VirtueMartControllerUser extends JController
 			$ret = $userModel->store($data);
 			// 			}
 
-			if($currentUser->id==0){
+			if($currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );

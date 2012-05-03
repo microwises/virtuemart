@@ -578,7 +578,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),4,$_orderData->virtuemart_vendor_id);
 		}
 		if(empty($_orderData->order_pass)){
-			$_orderData->order_pass = 'p_'.substr( md5((string)time().$_orderData->order_number ), 0, 5);
+			$_orderData->order_pass = 'p_'.substr( md5((string)time().rand(1,1000).$_orderData->order_number ), 0, 5);
 		}
 
 		$orderTable =  $this->getTable('orders');

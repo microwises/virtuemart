@@ -223,7 +223,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 			if(!empty($filter_search)){
-				$where[] = implode(' OR ', $filter_search );
+				$where[] = '('.implode(' OR ', $filter_search ).')';
 			} else {
 				$where[] = '`product_name` LIKE '.$search;
 				//If they have no check boxes selected it will default to product name at least.
@@ -1635,7 +1635,7 @@ function getProductParent($product_parent_id) {
 	return $db->loadObject();
 }
 
- 
+
 
 	function sentProductEmailToShoppers() {
 

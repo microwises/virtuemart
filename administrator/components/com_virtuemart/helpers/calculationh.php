@@ -338,13 +338,13 @@ class calculationHelper {
 		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
 
 		if(!empty($this->rules['VatTax'])){
-			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice, true));
+			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice, true),'salesPrice');
 			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
 		}
 
-		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
+		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPrice');
 
-		vmdebug('$$override salesPriceWithDiscount',$override,$prices['salesPriceWithDiscount'],$salesPrice);
+// 		vmdebug('$$override salesPriceWithDiscount',$override,$prices['salesPriceWithDiscount'],$salesPrice);
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
 		$prices['salesPriceTemp'] = $prices['salesPrice'];
@@ -360,7 +360,7 @@ class calculationHelper {
 		if(!empty($this->rules['VatTax'])){
 			$this->_revert = true;
 			$prices['priceWithoutTax'] = $prices['salesPrice'] - $prices['taxAmount'];
-			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['salesPrice']));
+			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['salesPrice']),'salesPrice');
 
 			if(!empty($afterTax)){
 				$prices['taxAmount'] = $prices['salesPrice'] - $afterTax;
@@ -637,7 +637,7 @@ class calculationHelper {
 
 		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $withoutVatTax));
 		$withDiscount = !empty($withDiscount) ? $withDiscount : $withoutVatTax;
-		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
+// 		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
 		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
 		$withTax = !empty($withTax) ? $withTax : $withDiscount;
 
@@ -1093,10 +1093,10 @@ class calculationHelper {
 		 *
 		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 		 * @author Max Milbers
-		 * @param 	$mathop 	String reprasentation of the mathematical operation
-		 * @param	$value 		The value that affects the price
-		 * @param 	$currency	the currency which should be used
-		 * @param	$price		The price to calculate
+		 * @param 	$mathop 	String reprasentation of the mathematical operation, valid ('+','-','+%','-%')
+		 * @param	$value 	float	The value that affects the price
+		 * @param 	$currency int	the currency which should be used
+		 * @param	$price 	float	The price to calculate
 		 */
 		function interpreteMathOp($mathop, $value, $price, $currency='') {
 
@@ -1163,9 +1163,14 @@ class calculationHelper {
 		 * 2 digits
 		 * Should be setable via config (just for the crazy case)
 		 */
-		function roundInternal($value) {
+		function roundInternal($value,$name = 0) {
 
-			return round($value, $this->_internalDigits);
+			if($name!=0){
+				return round($value,$this->_priceConfig[$name][1]);
+			} else {
+				return round($value, $this->_internalDigits);
+			}
+
 		}
 
 		/**

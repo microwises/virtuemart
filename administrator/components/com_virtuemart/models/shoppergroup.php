@@ -117,7 +117,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
 			return false;
 		}
-		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
+		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
 		if (!$this->_db->query()) return ;
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
 		if (!$this->_db->query()) return ;

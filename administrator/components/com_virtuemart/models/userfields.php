@@ -637,7 +637,7 @@ class VirtueMartModelUserfields extends VmModel {
 				,'formcode' => ''
 				);
 
-// 				vmdebug ('getUserFieldsFilled',$_fld);
+// 				vmdebug ('getUserFieldsFilled',$_fld->name);
 				// 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
 				// First, see if there are predefined fields by checking the name
 				switch( $_fld->name ) {
@@ -674,6 +674,11 @@ class VirtueMartModelUserfields extends VmModel {
 						$_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" size="30" class="inputbox" />'."\n";
 						break;
 
+					case 'agreed':
+						$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
+						. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
+						. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
+						break;
 						// It's not a predefined field, so handle it by it's fieldtype
 					default:
 						if(strpos($_fld->type,'plugin')!==false){

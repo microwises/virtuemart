@@ -318,13 +318,12 @@ class Migrator extends VmModel{
 		//create array of filenames for easier handling
 		foreach($this->storedMedias as $media){
 			if($media->file_type == $type){
-
 				//Somehow we must use here the right char encoding, so that it works below
 				// in line 320
 				$knownNames[] = $media->file_url;
 			}
 		}
-		// 		vmdebug('my known paths of type'.$type,$knownNames);
+
 		$filesInDir = array();
 		$foldersInDir = array();
 
@@ -335,8 +334,6 @@ class Migrator extends VmModel{
 		} else {
 			$foldersInDir = array($url);
 		}
-
-		//$dir = JPATH_ROOT.DS.$path;
 
 		while(!empty($foldersInDir)){
 			foreach($foldersInDir as $dir){
@@ -371,17 +368,16 @@ class Migrator extends VmModel{
 								}
 							}
 						}
+						$foldersInDir = $subfoldersInDir;
+						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime-($this->maxScriptTime*0.6))){
+							break;
+						}
 					}
 				}
 			}
-			$foldersInDir = $subfoldersInDir;
-			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 
-				break;
-			}
 		}
-		//echo '<pre>'.print_r($filesInDir,1).'</pre>';
-		//		die;
+
 		$i = 0;
 		foreach($filesInDir as $file){
 

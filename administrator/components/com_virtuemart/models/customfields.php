@@ -606,6 +606,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->_db->setQuery($query);
 		$groups = $this->_db->loadObjectList();
 
+		vmdebug('getProductCustomsFieldCart ',$groups);
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$row= 0 ;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -630,7 +631,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$query .=' ORDER BY field.`ordering`';
 
 			$this->_db->setQuery($query);
-			$options = $this->_db->loadObjectList(); //vmdebug('getProductCustomsFieldCart',$this->_db);
+			$options = $this->_db->loadObjectList(); vmdebug('getProductCustomsFieldCart options',$options);
 			$group->options = array();
 			foreach ( $options as $option){
 				$group->options[$option->value] = $option;
@@ -638,7 +639,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			if ($group->field_type == 'V'){
 				$default = current($group->options);
-				foreach ($group->options as &$productCustom) {
+				foreach ($group->options as $productCustom) {
 					if ((float)$productCustom->custom_price ) {
 						$price = strip_tags($currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ) ;
 					} else  {
@@ -660,7 +661,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$price = ($productCustom->custom_price==='') ? '' : $free ;
 					}
 					$productCustom->text =  $productCustom->custom_value.' '.$price;
-					//// plugin
+
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
@@ -963,7 +964,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
 							$value ='';
 							if ($productCustom->field_type == "E") {
-
+								continue;
 							} elseif (($productCustom->field_type == "G")) {
 								$child = self::getChild($productCustom->custom_value);
 								// 						$html .= $productCustom->custom_title.' '.$child->product_name;
@@ -980,7 +981,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							}
 							$html .=ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
 
-							$html .= '</span>';
+							$html .= '</span><br />';
 						} else {
 							vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
 						}
@@ -988,6 +989,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					$row++;
 				}
+				vmdebug('HTML before trigger '.$html);
 				if ($variantmods ) {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -996,6 +998,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher->trigger('plgVmOnViewCart',array($product, $row,&$html));
 
 				}
+				vmdebug('HTML after trigger '.$html);
 				return $html.'</div>';
 			}
 
@@ -1060,7 +1063,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 
 			/**
-			 * TODO ask Patrick why there is a filter for product_id, when virtuemart_customfield_id is already unique
+			 *
 			 * custom fields for cart and cart module
 			 */
 			public function getProductCustomFieldCart($selected) {
@@ -1077,6 +1080,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$db->setQuery($query);
 				return $db->loadObject();
 			}
+
 			/*
 			 * add parameter to product definition
 			*/
