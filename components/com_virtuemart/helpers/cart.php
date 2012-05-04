@@ -1242,7 +1242,7 @@ class VirtueMartCart {
 
 	private function prepareCartPrice( $prices ){
 
-		foreach ($this->products as $cart_item_id=>&$product){
+		foreach ($this->products as $cart_item_id=>$product){
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);

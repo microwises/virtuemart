@@ -2,7 +2,7 @@
 	defined('_JEXEC') or die();
 	$class='vmcustom-textinput';
 	//if ($field->custom_price_by_letter) $class='vmcustom-textinput';?>
-	<input class="<?php echo $class ?>" type="text" value="" size="<?php echo $this->params->custom_size ?>" name="customPlugin[<?php echo $this->virtuemart_custom_id ?>][<?php echo $this->_name?>][comment]"><br />
+	<input class="<?php echo $class ?>" type="text" value="" size="<?php echo $this->params->custom_size ?>" name="customPlugin[<?php echo $viewData[0]->value ?>][<?php echo $this->_name?>][comment]"><br />
 <?php
 	// preventing 2 x load javascript
 	static $textinputjs;

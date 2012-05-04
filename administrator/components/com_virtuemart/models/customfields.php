@@ -647,7 +647,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 				}
-				$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->options,$default->custom_value,'','value','text',false);
+				$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_customfield_id.']',$group->options,$default->custom_value,'','value','text',false);
 			} else if ($group->field_type == 'G'){
 				$group->display .=''; // no direct display done by plugin;
 			} else if ($group->field_type == 'E'){
@@ -666,7 +666,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher = JDispatcher::getInstance();
 					$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductVariantFE',array($productCustom,&$row,&$group));
 
-					$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> ';
+					$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_customfield_id.']" /> ';
 					if (!empty($currency->_priceConfig['variantModification'][0]) and $price!=='') {
 						$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 					}
@@ -682,7 +682,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					$productCustom->text =  $productCustom->custom_value.' '.$price;
 
-					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> ';
+					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_customfield_id.']['.$productCustom->value.']" /> ';
 					if (!empty($currency->_priceConfig['variantModification'][0]) and $price!=='') {
 						$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 					}
@@ -707,7 +707,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					} else  {
 						$price = ($productCustom->custom_price==='') ? '' : $free ;
 					}
-					$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).' '.$price.'</label>' ;
+					$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_customfield_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).' '.$price.'</label>' ;
 					$checked ='';
 				}
 			}
@@ -1003,7 +1003,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				} else {
 					// 			vmTrace('$item->product_attribut is empty');
 				}
-				return '';
+				return false;
 			}
 
 			/**

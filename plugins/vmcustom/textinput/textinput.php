@@ -78,12 +78,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// default return if it's not this plugin
 		 if ($field->custom_element != $this->_name) return '';
 		$this->getCustomParams($field);
-			// ob_start();
-			// require($this->getLayoutPath('default'));
-			// $html = ob_get_clean();
-
 		$group->display .= $this->renderByLayout('default',array($field,&$idx,&$group ) );
-
 
 		return true;
 //         return $html;
@@ -93,32 +88,26 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$row,&$html) {
-		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-		foreach($plgParam as $k => $item){
-			$this->getVmPluginMethod($k);
-			if(!empty($item['comment']) ){
-				$html .='<span>'.$this->_vmpCtable->custom_title.' '.$item['comment'].'</span>';
-			}
-		 }
-		return true;
+	function plgVmOnViewCartModule( $product,$row,&$html,$productCustom) {
+
+		return $this->plgVmOnViewCart($item,$row,$html,$productCustom);
     }
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$row,&$html) {
+	function plgVmOnViewCart($product,$row,&$html,$productCustom) {
+		if (empty($productCustom->custom_element) or $productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 
-// 		$html  .= '<div>';
 		foreach($plgParam as $k => $item){
-			$this->getVmPluginMethod($k);
+
 			if(!empty($item['comment']) ){
-				$html .='<span>'.$this->_vmpCtable->custom_title.' '.$item['comment'].'</span>';
+				$this->getVmPluginMethod($k);
+				$html .='<span>'.JText::_($productCustom->custom_title).' '.$item['comment'].'</span>';
 			}
 		 }
-// 		$html .='</div>';
 
 		return true;
     }
@@ -128,9 +117,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function plgVmDisplayInOrderBE($item, $row, &$html) {
+	function plgVmDisplayInOrderBE($item, $row, &$html,$productCustom) {
 		if (empty($item->productCustom->custom_element) or $item->productCustom->custom_element != $this->_name) return '';
-		$this->plgVmOnViewCart($item,$row,$html); //same render as cart
+		$this->plgVmOnViewCart($item,$row,$html,$productCustom); //same render as cart
     }
 
 	/**
@@ -194,7 +183,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 	function plgVmOnSelfCallFE($type,$name,&$render) {
-		$render->html = 'test';
+		$render->html = '';
 	}
 
 }
