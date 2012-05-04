@@ -180,7 +180,6 @@ class VirtueMartCart {
 		$session = JFactory::getSession();
 
 		$sessionCart = new stdClass();
-		// 		vmdebug('setCartIntoSession ids',$this);
 
 		$products = array();
 		if ($this->products) {
@@ -188,7 +187,6 @@ class VirtueMartCart {
 
 				//Important DO NOT UNSET product_price
 				//unset($product->product_price);
-// 				vmdebug('$product',$product);
 				unset($product->prices);
 				unset($product->pricesUnformatted);
 				unset($product->mf_name);
@@ -378,7 +376,7 @@ class VirtueMartCart {
 			if (!empty($tmpProduct -> customfieldsCart) ) $product -> customfieldsCart = true;
 			//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
 
-			//			vmdebug('my product add to cart after',$product);
+
 			//Why reloading the product wiht same name $product ?
 			// passed all from $tmpProduct and relaoding it second time ????
 			// $tmpProduct = $this->getProduct((int) $virtuemart_product_id); seee before !!!
@@ -539,7 +537,6 @@ class VirtueMartCart {
 		$calculator = calculationHelper::getInstance();
 
 		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
-// 		vmdebug('Calling getCartPrices',$this->pricesUnformatted);
 
 		return $this->pricesUnformatted;
 	}
@@ -1252,6 +1249,7 @@ class VirtueMartCart {
 			if(!empty($product->customfieldsCart)){
 				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				$product->customfields = VirtueMartModelCustomfields::CustomsFieldCartDisplay($cart_item_id,$product);
+// 				vmdebug('prepareCartPrice',$product->customfields);
 			} else {
 				$product->customfields ='';
 			}

@@ -231,7 +231,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		$pluginFields = JRequest::getVar('customPlugin',null );
 		if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
 
-		return $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
+		return $pluginFields[$productCustomsPrice->virtuemart_customfield_id][$this->_name] ;
 
     }
 
@@ -247,7 +247,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 			if (!is_array($product->param)) return false ;
 			$param = array() ;
 
-			//vmdebug('$product->param',$product->param);
+// 			vmdebug('$product->param',$product->param);
     		foreach($product->param as $k => $plg){
 
     			if (is_array($plg) and key($plg)== $this->_name)

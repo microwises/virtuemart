@@ -887,57 +887,84 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 
 			/**
-			 * TODO This is html and view stuff and MUST NOT be in the model, notice by Max
-			 * render custom fields display cart module FE
+			 * There are too many functions doing almost the same for my taste
+			 * the results are sometimes slighty different and makes it hard to work with it, therefore here the function for future proxy use
+			 *
 			 */
-			public function CustomsFieldCartModDisplay($priceKey,$product) {
-				if (empty($calculator)) {
-					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-					$calculator = calculationHelper::getInstance();
-				}
-				$product_id = (int)$priceKey;
-				$variantmods = $calculator->parseModifier($priceKey);
-				$row = 0 ;
-				$html = '<div class="vm-customfield-mod">';
-				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+			public function customFieldDisplay($product, $variantmods,$html,$trigger){
 
-				foreach ($variantmods as $variant=>$selected){
+				vmdebug('customFieldDisplay $variantmods',$variantmods);
+				$row = 0;
+				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+				foreach ($variantmods as $selected=>$variant){
 					if ($selected) {
+
 						$productCustom = self::getProductCustomFieldCart ($selected );
 						if(!empty($productCustom)){
 							$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
-							$value ='';
 							if ($productCustom->field_type == "E") {
-								continue;
-							} elseif (($productCustom->field_type == "G")) {
-								$child = self::getChild($productCustom->custom_value);
-								$value = $child->product_name;
-							} elseif (($productCustom->field_type == "M")) {
-								$value = self::displayCustomMedia($productCustom->custom_value);
-							} elseif (($productCustom->field_type == "S")) {
-								$value = $productCustom->custom_value;
-							} else {
-								$value = $productCustom->custom_value;
-							}
-							$html .=ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
 
-							$html .= '</span>';
+								$product = self::addParam($product);
+								//vmdebug('CustomsFieldCartDisplay $productCustom',$productCustom);
+								vmdebug('customFieldDisplay $product->param selected '.$selected,$product->param);
+								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+								JPluginHelper::importPlugin('vmcustom');
+								$dispatcher = JDispatcher::getInstance();
+								$dispatcher->trigger($trigger,array($product, $row,&$html,$productCustom));
+
+							} else{
+
+								$value ='';
+								if (($productCustom->field_type == "G")) {
+
+									$child = self::getChild($productCustom->custom_value);
+									// 						$html .= $productCustom->custom_title.' '.$child->product_name;
+									$value = $child->product_name;
+								} elseif (($productCustom->field_type == "M")) {
+									// 						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value);
+									$value = self::displayCustomMedia($productCustom->custom_value);
+								} elseif (($productCustom->field_type == "S")) {
+									// 					q	$html .= $productCustom->custom_title.' '.JText::_($productCustom->custom_value);
+									$value = $productCustom->custom_value;
+								} else {
+									// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
+									$value = $productCustom->custom_value;
+								}
+								$html .=ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
+							}
+							$html .= '</span><br />';
 						} else {
-							vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
+							// falldown method if customfield are deleted
+							foreach((array)$selected as $key => $value) {
+								$html .= '<br/ >'.($key?'<span>'.$key.' </span>':'').$value;
+							}
+							vmdebug('CustomsFieldOrderDisplay, $item->productCustom empty? '.$variant);
+							vmdebug('customFieldDisplay, $productCustom is EMPTY ');
 						}
 
 					}
 					$row++;
 				}
-				if ($variantmods) {
-					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmOnViewCartModule',array($product, $row,&$html));
-				}
+				vmdebug('customFieldDisplay html begin: '.$html.' end');
 				return $html.'</div>';
+			}
+
+			/**
+			 * TODO This is html and view stuff and MUST NOT be in the model, notice by Max
+			 * render custom fields display cart module FE
+			 */
+			public function CustomsFieldCartModDisplay($priceKey,$product) {
+
+				if (empty($calculator)) {
+					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+					$calculator = calculationHelper::getInstance();
+				}
+
+				$variantmods = $calculator->parseModifier($priceKey);
+
+				return self::customFieldDisplay($product,$variantmods,'<div class="vm-customfield-mod">','plgVmOnViewCartModule');
+
 			}
 
 			/**
@@ -945,116 +972,34 @@ class VirtueMartModelCustomfields extends VmModel {
 			 * render custom fields display cart FE
 			 */
 			public function CustomsFieldCartDisplay($priceKey,$product) {
+
 				if (empty($calculator)) {
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 					$calculator = calculationHelper::getInstance();
 				}
-				$product_id = (int)$priceKey;
+
 				$variantmods = $calculator->parseModifier($priceKey);
-				$row = 0 ;
 
-				$html = '<div class="vm-customfield-cart">';
-				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+				return self::customFieldDisplay($product,$variantmods,'<div class="vm-customfield-cart">','plgVmOnViewCart');
 
-				foreach ($variantmods as $variant=>$selected){
-					if ($selected) {
-						$productCustom = self::getProductCustomFieldCart ($selected );
-						if(!empty($productCustom)){
-							$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
-							$value ='';
-							if ($productCustom->field_type == "E") {
-								continue;
-							} elseif (($productCustom->field_type == "G")) {
-								$child = self::getChild($productCustom->custom_value);
-								// 						$html .= $productCustom->custom_title.' '.$child->product_name;
-								$value = $child->product_name;
-							} elseif (($productCustom->field_type == "M")) {
-								// 						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value);
-								$value = self::displayCustomMedia($productCustom->custom_value);
-							} elseif (($productCustom->field_type == "S")) {
-								// 					q	$html .= $productCustom->custom_title.' '.JText::_($productCustom->custom_value);
-								$value = $productCustom->custom_value;
-							} else {
-								// 						$html .= $productCustom->custom_title.' '.$productCustom->custom_value;
-								$value = $productCustom->custom_value;
-							}
-							$html .=ShopFunctionsF::translateTwoLangKeys($productCustom->custom_title,$value);
-
-							$html .= '</span><br />';
-						} else {
-							vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
-						}
-
-					}
-					$row++;
-				}
-				vmdebug('HTML before trigger '.$html);
-				if ($variantmods ) {
-					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmOnViewCart',array($product, $row,&$html));
-
-				}
-				vmdebug('HTML after trigger '.$html);
-				return $html.'</div>';
 			}
 
 			/*
 			 * render custom fields display order BE/FE
 			*/
 			public function CustomsFieldOrderDisplay($item,$view='FE',$absUrl = false) {
+
 				$row = 0 ;
 				// 		$item=(array)$item;
 				if (!empty($item->product_attribute)) {
 					$item->param = json_decode($item->product_attribute,true);
-					$html = '<div class="vm-customfield-cart">';
+// 					$html = '<div class="vm-customfield-cart">';
 					if (!empty($item->param)) {
-						// 			vmdebug('CustomsFieldOrderDisplay',$item->param);
-						foreach ($item->param as $virtuemart_customfield_id=>$param){
-							if ($param) {
-								if ($item->productCustom = self::getProductCustomFieldCart ($virtuemart_customfield_id ) ) {
-									if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-									// vmdebug('$param',$param);
-									$html .= ' <span class="product-field-type-'.$item->productCustom->field_type.'">';
-									$value ='';
-									if ($item->productCustom->field_type == "E") {
+						return self::customFieldDisplay($item,$item->param,'<div class="vm-customfield-cart">','plgVmDisplayInOrder'.$view);
 
-
-									} elseif ($item->productCustom->field_type == "G") {
-										$child = self::getChild($item->productCustom->custom_value);
-										$value = $child->product_name;
-									} elseif ($item->productCustom->field_type == "M") {
-										$value = self::displayCustomMedia($item->productCustom->custom_value);
-									} elseif (($item->productCustom->field_type == "S")) {
-										$value = $item->productCustom->custom_value;
-									}  else {
-										$value = $item->productCustom->custom_value;
-									}
-									$html .=ShopFunctionsF::translateTwoLangKeys($item->productCustom->custom_title,$value);
-
-									$html .= '</span>';
-								} else {
-									// falldown method if customfield are deleted
-									foreach((array)$param as $key => $value) {
-										$html .= '<br/ >'.($key?'<span>'.$key.' </span>':'').$value;
-									}
-									vmdebug('CustomsFieldOrderDisplay, $item->productCustom empty? '.$virtuemart_customfield_id);
-								}
-							}
-							$row++;
-						}
-						// 			if (!empty($item->param) and !empty($item->custom_value)) {
-
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-						JPluginHelper::importPlugin('vmcustom');
-						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $row, &$html));
 					} else {
 						vmdebug('CustomsFieldOrderDisplay $item->param empty? ');
 					}
-					return $html.'</div> ';
 				} else {
 					// 			vmTrace('$item->product_attribut is empty');
 				}
@@ -1084,11 +1029,13 @@ class VirtueMartModelCustomfields extends VmModel {
 			 * add parameter to product definition
 			*/
 			public function addParam($product) {
+// 				vmdebug('addParam? ',$product->custom_param,$product->customPlugin);
 				$custom_param = empty($product->custom_param) ? array() : json_decode($product->custom_param,true);
 				$product_param = empty($product->customPlugin) ? array() : json_decode($product->customPlugin,true);
 				$params = (array)$product_param + (array)$custom_param;
-				foreach ($params as $key => $param )
-				$product->param[$key] = $param ;
+				foreach ($params as $key => $param ) {
+					$product->param[$key] = $param ;
+				}
 				return $product ;
 			}
 			public function getChild($child) {
