@@ -79,7 +79,6 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		$db =JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
 		if ($this->selectList = $db->loadAssocList() ) {
-			//vmdebug('$this->selectedPlugin',$this->selectedPlugin);
 			foreach ($this->selectList as $selected_custom_id) {
 				if ($virtuemart_custom_id == $selected_custom_id['virtuemart_custom_id']) {
 					$searchCustomValues.='<input type="text" value="" size="20" class="inputbox" name="custom_specification_name1" style="height:16px;vertical-align :middle;">';
@@ -172,7 +171,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
-	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){ 
+	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
 		return $this->declarePluginParams($psType, $name, $id, $data);
 	}
 

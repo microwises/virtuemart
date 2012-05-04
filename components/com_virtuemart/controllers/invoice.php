@@ -184,8 +184,6 @@ class VirtueMartControllerInvoice extends JController
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
 		$pdf->Output($path, 'F');
-		// 			vmdebug('Pdf object ',$pdf);
-// 		vmdebug('checkStoreInvoice start');
 		return $path;
 
 	}

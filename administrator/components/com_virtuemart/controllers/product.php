@@ -163,7 +163,7 @@ class VirtuemartControllerProduct extends VmController {
 				$msgtype = 'error';
 				$redirect = 'index.php?option=com_virtuemart&view=product';
 			}
-			vmdebug('$redirect '.$redirect);
+// 			vmdebug('$redirect '.$redirect);
 			$app->redirect($redirect, $msg, $msgtype);
 		}
 

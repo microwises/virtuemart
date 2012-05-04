@@ -35,7 +35,6 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
-		vmdebug('VirtueMartControllerUser');
 
 	}
 
@@ -182,7 +181,6 @@ class VirtueMartControllerUser extends JController
 			return false;
 		}*/
 
-// 		vmdebug('$currentUser',$currentUser);
 		$data['address_type'] = JRequest::getWord('addrtype','BT');
 		if($currentUser->guest!=1 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );

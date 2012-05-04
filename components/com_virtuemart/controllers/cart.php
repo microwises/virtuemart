@@ -232,7 +232,6 @@ class VirtueMartControllerCart extends JController {
 
 		/* Get the shipment ID from the cart */
 		$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
-		//vmdebug('setshipment',$virtuemart_shipmentmethod_id);
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
 			//Now set the shipment ID into the cart

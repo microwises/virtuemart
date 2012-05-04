@@ -583,7 +583,7 @@ class VirtueMartModelProduct extends VmModel {
 				$product->mf_url ='';
 			}
 
-			/* Load the categories the product is in */
+			// Load the categories the product is in
 			$product->categories = $this->getProductCategories($this->_id,$front);
 
 			if ( !empty($product->categories) and is_array($product->categories) and !empty($product->categories[0]) ){
@@ -595,6 +595,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ordering = $this->_db->loadObject();
 				if(!empty($ordering)){
 					$product->ordering = $ordering->ordering;
+					//What is this? notice by Max Milbers
 					$product->id = $ordering->id;
 				}
 
@@ -1620,11 +1621,11 @@ function getProductChilds($product_id ) {
 }
 
 function getProductChildIds($product_id ) {
-	vmdebug('getProductChildIds $product_id '.$product_id);
+
 	if(empty($product_id)) return array();
 	$db = JFactory::getDBO();
 	$db->setQuery(' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
-	vmdebug('getProductChildIds query '.$db->getQuery());
+
 	return $db->loadResultArray();
 
 }

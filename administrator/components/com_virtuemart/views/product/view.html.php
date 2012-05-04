@@ -54,7 +54,7 @@ class VirtuemartViewProduct extends VmView {
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
 				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
-				vmdebug('getProductChildIds $virtuemart_product_id',$virtuemart_product_id);
+
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
 				} else {
@@ -62,7 +62,6 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
-				vmdebug('getProductChildIds $virtuemart_product_id',$virtuemart_product_id);
 				$product_parent= $model->getProductParent($product->product_parent_id);
 
 				$mf_model = VmModel::getModel('manufacturer');

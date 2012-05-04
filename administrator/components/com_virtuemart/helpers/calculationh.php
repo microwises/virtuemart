@@ -762,16 +762,11 @@ class calculationHelper {
 		$states = '';
 		$shopperGroup = '';
 
-
-
-// 		vmdebug('$this->allrules[$this->productVendorId]',$this->allrules[$this->productVendorId]);
-
 		if(empty($this->allrules[$this->productVendorId][$entrypoint])){
-// 			vmdebug('$this->allrules',$this->productVendorId,$entrypoint);
 			return $testedRules;
 		}
 		$allRules = $this->allrules[$this->productVendorId][$entrypoint];
-// 		vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$allRules);
+
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($allRules as $i => $rule) {
 
@@ -779,17 +774,17 @@ class calculationHelper {
 				if($rule['virtuemart_calc_id']==$id){
 					$testedRules[] = $rule;
 				}
-// 				vmdebug('Price override set '.$id);
 				continue;
 			}
 			if(!empty($this->allrules[$this->productVendorId][$entrypoint][$i]['for_override'])){
-				vmdebug('Rule is meant for overwrite ',$rule);
 				continue;
 			}
 			if(!isset($this->allrules[$this->productVendorId][$entrypoint][$i]['cats'])){
+
 				$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
 				$this->_db->setQuery($q);
 				$this->allrules[$this->productVendorId][$entrypoint][$i]['cats'] = $this->_db->loadResultArray();
+
 			}
 
 			$hitsCategory = true;
@@ -839,8 +834,6 @@ class calculationHelper {
 			}
 		}
 
-// 		vmdebug('$testedRules before plugins',$testedRules);
-
 		//Test rules in plugins
 		if(!empty($testedRules)){
 			JPluginHelper::importPlugin('vmcalculation');
@@ -848,7 +841,6 @@ class calculationHelper {
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
-// 		vmdebug('$testedRules after plugins',$testedRules);
 		return $testedRules;
 	}
 
@@ -1125,7 +1117,7 @@ class calculationHelper {
 							} else {
 								$calculated = abs($price /(1 +  (100.0 / $value)));
 							}
-							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
+// 							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
 						}
 					}
 				} else if (strlen($mathop) == 1){
@@ -1296,10 +1288,13 @@ class calculationHelper {
 
 				foreach ($items as $item) {
 					if (!empty($item)) {
+// 						vmdebug('parseModifier',$item);
 						$index2 = strpos($item, ':');
-						$variant = substr($item, 0, $index2);
-						$selected = substr($item, $index2 + 1);
-						$variants[$variant] = $selected;
+						if($index2!=false){
+							$variant = substr($item, 0, $index2);
+							$selected = substr($item, $index2 + 1);
+							$variants[$variant] = $selected;
+						}
 					}
 				}
 			}
