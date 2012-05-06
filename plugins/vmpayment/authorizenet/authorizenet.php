@@ -751,11 +751,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
     function _setTransactionData($orderDetails, $method) {
 // backward compatible
-if (isset($method->xtype)) {
-    $xtype=$method->xtype;
-} else {
-     $xtype= 'AUTH_CAPTURE';
-}
+	if (isset($method->xtype)) {
+	    $xtype = $method->xtype;
+	} else {
+	    $xtype = 'AUTH_CAPTURE';
+	}
 	return array(
 	    'x_amount' => $orderDetails->order_total,
 	    'x_invoice_num' => $orderDetails->order_number,
@@ -999,8 +999,13 @@ if (isset($method->xtype)) {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(),   &$paymentCounter) {
-	return parent::onCheckAutomaticSelected($cart, $cart_prices,   $paymentCounter);
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
+	$return = $this->onCheckAutomaticSelected($cart, $cart_prices);
+	if (isset($return)) {
+	    return 0;
+	} else {
+	    return null;
+	}
     }
 
     /**
@@ -1012,8 +1017,8 @@ if (isset($method->xtype)) {
      * @author Valerie Isaksen
      */
     protected function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
-		$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
-		return true;
+	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
+	return true;
     }
 
     /**
