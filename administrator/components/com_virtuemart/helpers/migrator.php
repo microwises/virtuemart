@@ -335,6 +335,11 @@ class Migrator extends VmModel{
 			$foldersInDir = array($url);
 		}
 
+		if (!is_dir($foldersInDir[0])) {
+			vmError($type.' Path/Url is not set correct :'.$foldersInDir[0]);
+			return 0;
+		}
+
 		while(!empty($foldersInDir)){
 			foreach($foldersInDir as $dir){
 				$subfoldersInDir = null;
@@ -342,7 +347,7 @@ class Migrator extends VmModel{
 				if($type!='forSale'){
 					$relUrl = str_replace(DS, '/', substr($dir, strlen(JPATH_ROOT . DS)));
 				} else {
-					vmdebug('$dir',$dir);
+// 					vmdebug('$dir',$dir);
 					$relUrl = $dir;
 				}
 				if($handle = opendir($dir)){
@@ -354,7 +359,7 @@ class Migrator extends VmModel{
 							$filetype = filetype($dir . DS . $file);
 							$relUrlName = '';
 							$relUrlName = $relUrl.$file;
-							// 						vmdebug('my relative url ',$relUrlName);
+							// vmdebug('my relative url ',$relUrlName);
 
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
@@ -369,13 +374,15 @@ class Migrator extends VmModel{
 							}
 						}
 						$foldersInDir = $subfoldersInDir;
-						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime-($this->maxScriptTime*0.6))){
+						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime*0.4)){
 							break;
 						}
 					}
 				}
 			}
-
+			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime*0.4)){
+				break;
+			}
 		}
 
 		$i = 0;
@@ -907,12 +914,12 @@ class Migrator extends VmModel{
 		foreach($oldMfCategories as $oldmfcategory){
 
 			if(!array_key_exists($oldmfcategory['mf_category_id'],$alreadyKnownIds)){
-				//$category['virtuemart_category_id'] = $oldcategory['category_id'];
+
 				$mfcategory = null;
 				$mfcategory = array();
 				$mfcategory['mf_category_name'] = $oldmfcategory['mf_category_name'];
 				$mfcategory['mf_category_desc'] = $oldmfcategory['mf_category_desc'];
-
+				$mfcategory['published'] = 1;
 				$table = $this->getTable('manufacturercategories');
 
 				$table->bindChecknStore($mfcategory);
@@ -925,13 +932,9 @@ class Migrator extends VmModel{
 					break;
 				}
 
-				// 				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$alreadyKnownIds[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$i++;
 			}
-			/*			else {
-			 $oldtonewMfCats[$oldmfcategory['mf_category_id']] = $alreadyKnownIds[$oldmfcategory['mf_category_id']];
-			}*/
 
 			unset($mfcategory['virtuemart_manufacturercategories_id']);
 

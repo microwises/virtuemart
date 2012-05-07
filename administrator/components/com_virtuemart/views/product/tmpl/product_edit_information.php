@@ -326,7 +326,7 @@ $i=0;
                 	$customs = array();
                 	if(!empty($this->product->customfields)){
                 		foreach($this->product->customfields as $custom){
-                			// vmdebug('my custom',$custom);
+                			vmdebug('my custom',$custom);
                 			if($custom->field_type=='A'){
                 				$customs[] = $custom;
                 			}
@@ -363,7 +363,7 @@ $i=0;
 									if(isset($child->$attrib)){
 										$childAttrib = $child->$attrib;
 									} else {
-										vmdebug('unset? use Fallback product_name instead $attrib '.$attrib);
+										vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$custom);
 										$attrib = 'product_name';
 										$childAttrib = $child->$attrib;
 

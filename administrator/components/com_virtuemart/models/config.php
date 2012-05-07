@@ -276,40 +276,44 @@ class VirtueMartModelConfig extends JModel {
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
-				$url = $config->get($urlkey);
+				$url = trim($config->get($urlkey));
 				$length = strlen($url);
 				if(strrpos($url,'/')!=($length-1)){
 					$config->set($urlkey,$url.'/');
-					vmInfo('Corrected media path '.$urlkey.' added missing /');
+					vmInfo('Corrected media url '.$urlkey.' added missing /');
 				}
 		}
 
+/*		$path = trim($config->get('forSale_path'));
+		$length = strlen($path);
+		if(strrpos($url,DS)!=($length-1)){
+			if(is_dir()){
+				$config->set('forSale_path',$path.DS);
+				vmInfo('Corrected safe path added missing '.DS);
+			} else {
 
-		$confData['config'] = $config->toString();
-// 		vmdebug('config to store',$confData);
-		$confTable = $this->getTable('configs');
-		if (!$confTable->bindChecknStore($confData)) {
-			vmError($confTable->getError());
+			}
 		}
+*/
 
-		// Load the newly saved values into the session.
-		$config = VmConfig::loadConfig(true);
 
-		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
-		$updater = new GenericTableUpdater();
-		$result = $updater->createLanguageTables();
+		$safePath = trim($config->get('forSale_path'));
 
-		$safePath = VmConfig::get('forSale_path',0);
-		$lastIndex= strrpos(JPATH_ROOT,DS);
-		$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
 		if(empty($safePath)){
-
+			$lastIndex= strrpos(JPATH_ROOT,DS);
+			$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
 			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 		} else {
 			$exists = JFolder::exists($safePath);
+
 			if(!$exists){
 				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 			} else {
+				$length = strlen($safePath);
+				if(strrpos($safePath,DS)!=($length-1)){
+					$config->set('forSale_path',$safePath.DS);
+					vmInfo('Corrected safe path added missing '.DS);
+				}
 				$exists = JFolder::exists($safePath.'invoices');
 				if(!$exists){
 					$created = JFolder::create($safePath.'invoices');
@@ -322,6 +326,21 @@ class VirtueMartModelConfig extends JModel {
 
 			}
 		}
+
+		$confData['config'] = $config->toString();
+		// 		vmdebug('config to store',$confData);
+		$confTable = $this->getTable('configs');
+		if (!$confTable->bindChecknStore($confData)) {
+			vmError($confTable->getError());
+		}
+
+		// Load the newly saved values into the session.
+		$config = VmConfig::loadConfig(true);
+
+		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		$updater = new GenericTableUpdater();
+		$result = $updater->createLanguageTables();
+
 		return true;
 	}
 

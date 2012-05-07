@@ -531,7 +531,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			$app = JFactory::getApplication() ;
-			if($app->isSite() && VmConfig::get('stockhandle','none')=='disableit' && ($child->product_in_stock-$child->product_ordered)<=0){
+			if($app->isSite() and VmConfig::get('stockhandle','none')=='disableit' and ($child->product_in_stock-$child->product_ordered)<=0){
 				vmdebug('STOCK 0',VmConfig::get('use_as_catalog',0), VmConfig::get('stockhandle','none') , $child->product_in_stock);
 				return false;
 			}
@@ -1078,6 +1078,7 @@ class VirtueMartModelProduct extends VmModel {
 		// 	 	$dispatcher = JDispatcher::getInstance();
 		// 	 	$error = $dispatcher->trigger('plgVmOnStoreProduct', array('product',$data,$product_data->virtuemart_product_id));
 
+// 		vmdebug('save_customfields',$data['save_customfields']);
 		if (isset($data['save_customfields']) ){
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);

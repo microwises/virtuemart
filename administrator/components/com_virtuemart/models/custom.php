@@ -190,7 +190,7 @@ class VirtueMartModelCustom extends VmModel {
 				//if ($fields['field_type'] == "y" or $fields['field_type'] == "X") $fields['custom_value'] = JRequest::getVar('custom_value', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 						// if(empty ($data['password'])){
 				// $data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-				vmdebug('saveModelCustomfields',$fields);
+// 				vmdebug('saveModelCustomfields',$fields);
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 

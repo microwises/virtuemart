@@ -165,21 +165,6 @@ class VirtueMartControllerUser extends JController
 		$msg = '';
 
 		$data = JRequest::get('post');
-/*		//why is this in the controller and the model and not only in the model?
- * Why is this written as plugin, but works only correct for captcha?
- *
-		JPluginHelper::importPlugin('vmuserfield');
-		$dispatcher = JDispatcher::getInstance();
-		//Todo to adjust to new pattern, using &
-		$valid = true ;
-		if ($currentUser->id == 0) {$new = true;}
-		else $new=false;
-		Why you do create the new not directly in teh plugin? Why it does not get directly the data?
-		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
-		if( $valid == false ) {
-// 			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
-			return false;
-		}*/
 
 		$data['address_type'] = JRequest::getWord('addrtype','BT');
 		if($currentUser->guest!=1 || $register){
@@ -198,9 +183,7 @@ class VirtueMartControllerUser extends JController
 			}
 
 			//It should always be stored
-			// 			if($currentUser->id==0 ){
 			$ret = $userModel->store($data);
-			// 			}
 
 			if($currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;

@@ -647,7 +647,7 @@ class VirtueMartModelUserfields extends VmModel {
 					// 					break;
 					case 'virtuemart_country_id':
 						$_return['fields'][$_fld->name]['formcode'] =
-						ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
+						ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix, $_fld->required);
 
 						// Translate the value from ID to name
 						$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
@@ -657,10 +657,9 @@ class VirtueMartModelUserfields extends VmModel {
 
 						$_return['fields'][$_fld->name]['formcode'] =
 						shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
-						// ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
 						$_prefix,
-						false
-						// $_prefix
+						false,
+						$_fld->required
 						);
 
 						$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);

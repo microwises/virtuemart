@@ -238,7 +238,7 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '') {
+	public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '', $required = 0) {
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(true, true, false);
 		$attrs = array();
@@ -246,6 +246,10 @@ class ShopFunctions {
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
 		$attrs['class'] = 'virtuemart_country_id';
+
+		if($required!=0){
+			$attrs['class'] .= ' required';
+		}
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
@@ -276,7 +280,7 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	public function renderStateList($stateId = '0', $_prefix = '', $multiple = false) {
+	public function renderStateList($stateId = '0', $_prefix = '', $multiple = false, $required = 0) {
 
 		if (is_array($stateId))
 		$stateId = implode(",", $stateId);
@@ -286,6 +290,10 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
 		} else {
 			$attrs = 'size="1"  name="' . $_prefix . 'virtuemart_state_id" ';
+		}
+
+		if($required!=0){
+			$attrs.= ' required';
 		}
 
 		$listHTML = '<select class="inputbox multiple" id="virtuemart_state_id" ' . $attrs . '>

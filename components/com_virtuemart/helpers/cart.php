@@ -767,8 +767,8 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 		} else {
 			$redirectMsg = self::validateUserData();
-			if ($redirectMsg) {
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
+			if (!$redirectMsg) {
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
 			}
 		}
 
@@ -778,8 +778,8 @@ class VirtueMartCart {
 			//Only when there is an ST data, test if all necessary fields are filled
 			if (!empty($this->ST)) {
 				$redirectMsg = self::validateUserData('ST');
-				if ($redirectMsg) {
-					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , $redirectMsg);
+				if (!$redirectMsg) {
+					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
 				}
 			}
 		}
@@ -914,7 +914,14 @@ class VirtueMartCart {
 	 */
 	private function validateUserData($type='BT', $obj = null) {
 
-		if (!class_exists('VirtueMartModelUserfields'))
+		if(empty($obj)){
+			$obj = $this->{$type};
+		}
+
+		$usersModel = VmModel::getModel('user');
+		return $usersModel->validateUserData($type, $obj);
+
+/*		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 		$userFieldsModel = VmModel::getModel('userfields');
 
@@ -958,7 +965,7 @@ class VirtueMartCart {
 				}
 
 			}
-		}
+		}*/
 
 		return $redirectMsg;
 	}
@@ -1085,12 +1092,19 @@ class VirtueMartCart {
 		}
 
 		$address = array();
-
 		if(is_array($data)){
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
-					if(!empty($data[$prefix.$name])) $address[$name] = $data[$prefix.$name];
+					if($fld->required){
+						if(!empty($data[$prefix.$name])){
+							$address[$name] = $data[$prefix.$name];
+						} else {
+							$address[$name] = $this->{$type}[$name];
+						}
+					} else {
+						$address[$name] = $data[$prefix.$name];
+					}
 				}
 			}
 
@@ -1098,7 +1112,16 @@ class VirtueMartCart {
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
-					if(!empty($data->{$prefix.$name})) $address[$name] = $data->{$prefix.$name};
+					if($fld->required){
+						if(!empty($data->{$prefix.$name})){
+							$address[$name] = $data->{$prefix.$name};
+						} else {
+							$address[$name] = $this->{$type}[$name];
+						}
+					}else {
+						$address[$name] = $data->{$prefix.$name};
+					}
+
 				}
 			}
 

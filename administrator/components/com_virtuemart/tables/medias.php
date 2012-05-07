@@ -247,7 +247,7 @@ class TableMedias extends VmTable {
 				     $this->file_mimetype = 'image/png';
 			     }
 			     elseif($file_extension === 'bmp'){
-				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
+				     vmInfo(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
 				     $notice = true;
 			     }
 
@@ -296,7 +296,7 @@ class TableMedias extends VmTable {
 			     	$this->file_mimetype = 'application/x-shockwave-flash';
 			     }
 			     else{
-				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
+				     vmInfo(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
 				     $notice = true;
 			     }
 		     }

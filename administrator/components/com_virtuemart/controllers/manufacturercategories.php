@@ -41,7 +41,7 @@ class VirtuemartControllermanufacturercategories extends VmController {
 	 * @author
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_manufacturercategories_id');
 
 	}
 

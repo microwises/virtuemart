@@ -854,6 +854,10 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($data['address_type'] == 'BT'){
+
+			if(!$this->validateUserData('BT',(array)$data)){
+				return false;
+			}
 			$userfielddata = self::_prepareUserFields($data, 'BT');
 
 			if (!$userinfo->bindChecknStore($userfielddata)) {
@@ -903,6 +907,9 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
+			if(!$this->validateUserData('ST',(array)$data)){
+				return false;
+			}
 			$dataST['address_type'] = 'ST';
 			$userfielddata = self::_prepareUserFields($dataST, 'ST');
 
@@ -915,7 +922,77 @@ class VirtueMartModelUser extends VmModel {
 		return $userinfo->virtuemart_userinfo_id;
 	}
 
+	/**
+	* Test userdata if valid
+	*
+	* @author Max Milbers
+	* @param String if BT or ST
+	* @param Object If given, an object with data address data that must be formatted to an array
+	* @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
+	*/
+	public function validateUserData($type='BT', $data = null) {
 
+		if (!class_exists('VirtueMartModelUserfields'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+		$userFieldsModel = VmModel::getModel('userfields');
+
+		if ($type == 'BT') {
+			$fieldtype = 'account';
+		}else {
+			$fieldtype = 'shipment';
+		}
+
+		$neededFields = $userFieldsModel->getUserFields(
+		$fieldtype
+		, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
+		, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
+
+		$app = JFactory::getApplication();
+		if($app->isSite()){
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart();
+		}
+
+		$i = 0 ;
+
+		$return = true;
+		foreach ($neededFields as $field) {
+
+			if($field->required && empty($data[$field->name]) && $field->name != 'virtuemart_state_id'){
+
+				//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
+				if($i>3 && $type=='BT'){
+					vmInfo('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
+					return false;
+				} else {
+					vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
+					$i++;
+					$return = false;
+				}
+			}
+
+			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
+			if ($field->name == 'virtuemart_state_id') {
+				if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+				if(!empty($data['virtuemart_country_id']) && !empty($data['virtuemart_state_id']) ){
+					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
+						$i++;
+						vmInfo($msg);
+						return false;
+					}
+				}
+			}
+
+// 			if($app->isSite()){
+// 				if ($obj !== null && is_array($cart->{$type})) {
+// 					$cart->{$type}[$field->name] = $data[$field->name];
+// 				}
+// 			}
+
+		}
+		vmdebug('validateUserData '.$return);
+		return $return;
+	}
 
 
 	function _prepareUserFields($data, $type)
