@@ -463,7 +463,7 @@ $tt=$this;
 &nbsp;
 <table width="100%">
 	<tr>
-		<td valign="top"><?php
+		<td valign="top" width="50%"><?php
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
 		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEShipment',array(  $this->orderID,$this->virtuemart_shipmentmethod_id, $this->orderdetails));
@@ -485,7 +485,7 @@ $tt=$this;
 		}
 		?></td>
 	</tr>
-	 
+
 </table>
 
 

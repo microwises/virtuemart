@@ -69,7 +69,7 @@ defined('JPATH_BASE') or die();
 							<td class="pclass_number"><?php echo $pclass->getInvoiceFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
 							<td class="pclass_number"><?php echo $pclass->getStartFee() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
 							<td class="pclass_number"><?php echo $pclass->getMinAmount() . " " . KlarnaHandler::getCurrencySymbolForCountry($data, $klarna->getCountryCode()) ?></td>
-							<td class="pclass_flag"><img src="<?php echo VMKLARNAPLUGINWEBASSETS ?>/images/share/flags/<?php echo $klarna->getLanguageCode() ?>.png" /></td>
+							<td class="pclass_flag"><img src="<?php echo JURI::root(true) ?>/administrator/components/com_virtuemart/assets/images/flag/<?php echo $klarna->getLanguageCode() ?>.png" /></td>
 						</tr>
 	<?php
 				} ?>

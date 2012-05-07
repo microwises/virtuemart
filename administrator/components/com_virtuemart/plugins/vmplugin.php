@@ -424,7 +424,7 @@ abstract class vmPlugin extends JPlugin {
      * @param   string  $type  The name of the type
      * @param   string  $layout  The name of the type layout. If alternative
      *                           layout, in the form template:filename.
-     * @param   unknow  $params  The params you want to use in the layout
+     * @param   array  $viewData  The data you want to use in the layout
      *                           can be an object/array/string... to reuse in the template
      * @return  string  The path to the type layout
      * original from libraries\joomla\application\module\helper.php
@@ -457,7 +457,6 @@ abstract class vmPlugin extends JPlugin {
 	    $templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plugins' . DS . $pluginName . DS . $layout . '.php';
 	    $defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName  . DS . 'tmpl' . DS . $layout . '.php';
 	}
-
 
 	// if the site template has a layout override, use it
 	jimport('joomla.filesystem.file');

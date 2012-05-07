@@ -60,7 +60,9 @@
     background-repeat: repeat-x;
     cursor: pointer;
 }
-
+.klarna_PPBox_topMid_nl {
+    min-width: 163px;
+}
 .klarna_PPBox_topMid p {
     padding: 0 3px 0 5px;
     text-align: center;

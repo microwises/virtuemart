@@ -58,7 +58,7 @@ class KlarnaVm2API extends KlarnaAPI {
 	    $this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
 	}
 	//$tmplLayout = $this->sType . "_" . strtolower($this->sCountryCode);
-	$tmplLayout = 'paiment' ;
+	$tmplLayout = 'payment_form' ;
 	return vmPlugin::renderByLayout($tmplLayout, array('checkout' => $this->oKlarna->checkoutHTML(),
 		    'input' => $this->aInputParameters,
 		    'value' => $this->aInputValues,

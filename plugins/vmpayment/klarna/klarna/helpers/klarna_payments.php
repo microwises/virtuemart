@@ -45,8 +45,7 @@ class klarna_payments {
     private $web_root;
     // Title
     private $title;
-    // Description
-    private $description;
+
     private $code;
     // Enabled modules
     private $enabled;
@@ -68,12 +67,8 @@ class klarna_payments {
     private $splitAddress;
     private $klarna_bday;
 
-    function __construct($method, $country, $cart) {
+    function __construct($cData, $cart) {
 	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
-
-	// Set country and currency set in the store.
-
-	$cData = KlarnaHandler::countryData($method, $country);
 
 	$this->country = $cData['country_code'];
 	$this->country_code_3 = $cData['country_code_3'];
@@ -85,9 +80,9 @@ class klarna_payments {
 	$this->secret = $cData['secret'];
 	$this->lang = $cData['language_code'];
 	// Is Invoice enabled?
-	$this->enabled = true; //(in_array('klarna_invoice', $method->klarna_modules) ? true : false);
+	$this->enabled = true;
 	// Set modes
-	$this->mode = KlarnaHandler::getKlarnaMode($method);
+	$this->mode = $cData['mode'];
 	$this->ssl = KlarnaHandler::getKlarnaSSL($this->mode);
 
 	$this->web_root = JURI::base();
@@ -103,14 +98,14 @@ class klarna_payments {
     }
 
     private function getParams() {
-		
+
 	$aParams = array();
 	if ($this->code == "klarna_partPayment") {
 	    $aParams["paymentPlan"] = "klarna_paymentPlan";
 	} elseif ($this->code == "klarna_SpecCamp") {
 	    $aParams["paymentPlan"] = "klarna_paymentPlan";
 	}
-	
+
 	// Params specific for:
 	// ---- Sweden, Denmark, Norway, Finland
 
@@ -244,10 +239,6 @@ class klarna_payments {
 
 	//$title = str_replace('(+XX)', '(+' . $sFee . ')', $kCheckout->fetchFromLanguagePack('INVOICE_TITLE', $lang, JPATH_VMKLARNAPLUGIN ));
 	$title = JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE', $display_fee);
-	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/assets/images/logo/logo_small.png" border="0" /></div>' .
-		JText::_('VMPAYMENT_KLARNA_INVOICE_TEXT_DESCRIPTION') . '<br/><br/>' .
-		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
@@ -281,9 +272,7 @@ class klarna_payments {
     public function partPay($method, $cart) {
 	// If module isn't enabled, don't do anything.
 	$this->code = "klarna_partPayment";
-	if ($this->enabled == false) {
-	    return null;
-	}
+
 	if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 	    return null;
 	}
@@ -339,12 +328,6 @@ class klarna_payments {
 	} else {
 	    $title = JText::_('VMPAYMENT_KLARNA_PARTPAY_TITLE_NOSUM');
 	}
-	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/images/logo/logo_small.png" border="0" /></div>' .
-		JText::_('VMPAYMENT_KLARNA_PARTPAY_TEXT_DESCRIPTION') . '<br/><br/>' .
-		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
-
-
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
@@ -364,10 +347,6 @@ class klarna_payments {
 	$fields = array();
 	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
 
-	// If module isn't enabled, don't show it.
-	if ($this->enabled == false) {
-	    return 0;
-	}
 
 	return array('id' => 'klarna_partPayment', 'module' => $title, 'fields' => $fields);
     }
@@ -377,10 +356,7 @@ class klarna_payments {
      */
     public function specCamp($method, $cart) {
 	$this->code = "klarna_SpecCamp";
-	// If module isn't enabled, don't do anything.
-	if ($this->enabled == false) {
-	    return 0;
-	}
+
 	if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 	    return 0;
 	}
@@ -400,15 +376,8 @@ class klarna_payments {
 	    $link = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
 	    $kCheckout->addSetupValue('agb_link', $link);
 	}
-	$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
+	//$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
 	$title = JText::_('VMPAYMENT_KLARNA_SPEC_TITLE');
-
-	$description = '<div style="float: right; right: 10px; margin-top: -30px; position: absolute">' .
-		'<img src="' . VMKLARNAPLUGINWEBASSETS . '/images/logo/logo_small.png" border="0" /></div>' .
-		JText::_('VMPAYMENT_KLARNA_SPEC_TEXT_DESCRIPTION') . '<br/><br/>' .
-		'<img src="images/icon_popup.gif" border="0">&nbsp;<a href="https://www.klarna.com" target="_blank" style="text-decoration: underline; font-weight: bold;">Visit Klarna\'s Website</a>';
-
-
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);
@@ -420,13 +389,8 @@ class klarna_payments {
 	    $this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);
 	}
 
-	// If module isn't enabled, don't show it.
-	if ($this->enabled == false) {
-	    return false;
-	}
 	$aParams = $this->getParams();
 	$aValues = $this->getValues();
-
 
 	// Create the html for the register.
 	$fields = array();
