@@ -37,13 +37,13 @@ class vmVersion {
 	/** @var string Codename */
 	static $CODENAME = 'silver';
 	/** @var string Date */
-	static $RELDATE = 'May 6, 2012';
+	static $RELDATE = 'May 7, 2012';
 	/** @var string Time */
 	static $RELTIME = '17:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 6004';
+	static $REVISION = 'Revision: 6007';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */

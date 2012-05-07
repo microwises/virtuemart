@@ -112,16 +112,19 @@ class VirtueMartModelState extends VmModel {
 				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `virtuemart_state_id`="'.$stateId.'" and `published`="1"';
 				$db->setQuery($q);
 				if($db->loadResult()){
-					return 0;
+					return true;
 				} else {
-					return 'virtuemart_state_id';
+					//There is a country, but the state does not exist or is unlisted
+					return false;
 				}
 			} else {
-				return 0;
+				//This country has no states listed
+				return true;
 			}
 
 		} else {
-			return 'virtuemart_country_id';
+			//The given country does not exist, this can happen, when no country was choosen, which maybe valid.
+			return true;
 		}
 	}
 

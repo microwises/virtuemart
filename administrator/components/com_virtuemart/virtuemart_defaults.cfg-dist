@@ -79,24 +79,9 @@ vmlayout=default
 
 browse_orderby_field=p.virtuemart_product_id
 browse_orderby_fields=array:product_sku|category_name|mf_name|product_name
-# Hmm how was that stored?
-#    browse_orderby_fields=Array
-#        (
-#            0=product_sku
-#            1=category_name
-#            2=mf_name
-#            3=product_name
-#        )
 
 browse_search_fields=array:product_sku|category_name|category_description|mf_name|product_name|product_s_desc
-#        (
-#            0=product_sku
-#            1=category_name
-#            2=category_description
-#            3=mf_name
-#            4=product_name
-#            5=product_s_desc
-#        )
+
 
 ##Pricing
     show_prices=1
@@ -135,6 +120,7 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
     taxAmountRounding=2
 
 ##Check stock
+    addtocart_popup=1
     check_stock=0
     automatic_payment=1
     automatic_shipment=1
@@ -149,56 +135,4 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
     seo_translate=0
     seo_use_id=0
 
-##SOAP
-
-	soap_ws_cat_on=0
-	soap_ws_cat_cache_on=1
-	soap_auth_getcat=1
-	soap_auth_addcat=1
-	soap_auth_upcat=1
-	soap_auth_delcat=1
-	soap_auth_cat_otherget=1
-	soap_auth_cat_otheradd=1
-	soap_auth_cat_otherupdate=1
-	soap_auth_cat_otherdelete=1
-	soap_ws_user_on=0
-	soap_ws_user_cache_on=1
-	soap_auth_getuser=1
-	soap_auth_adduser=1
-	soap_auth_upuser=1
-	soap_auth_deluser=1
-	soap_auth_user_otherget=1
-	soap_auth_user_otheradd=1
-	soap_auth_user_otherupdate=1
-	soap_auth_user_otherdelete=1
-	soap_ws_prod_on=0
-	soap_ws_prod_cache_on=1
-	soap_auth_getprod=1
-	soap_auth_addprod=1
-	soap_auth_upprod=1
-	soap_auth_delprod=1
-	soap_auth_prod_otherget=1
-	soap_auth_prod_otheradd=1
-	soap_auth_prod_otherupdate=1
-	soap_auth_prod_otherdelete=1
-	soap_ws_order_on=0
-	soap_ws_order_cache_on=1
-	soap_auth_getorder=1
-	soap_auth_addorder=1
-	soap_auth_uporder=1
-	soap_auth_delorder=1
-	soap_auth_order_otherget=1
-	soap_auth_order_otheradd=1
-	soap_auth_order_otherupdate=1
-	soap_auth_order_otherdelete=1
-	soap_ws_sql_on=0
-	soap_ws_sql_cache_on=1
-	soap_auth_execsql=1
-	soap_auth_execsql_select=1
-	soap_auth_execsql_insert=1
-	soap_auth_execsql_update=1
-	soap_ws_custom_on=0
-	soap_ws_custom_cache_on=1
-	soap_EP_custom=VM_CustomizedService.php
-	soap_wsdl_custom=VM_Customized.wsdl
 	

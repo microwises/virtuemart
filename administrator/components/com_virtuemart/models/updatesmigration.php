@@ -193,7 +193,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['zip'] =  '055555';
 	$fields['virtuemart_state_id'] =  '361';
 	$fields['virtuemart_country_id'] =  '195';
-	$fields['virtuemart_shoppergroup_id'] = '';
+// 	$fields['virtuemart_shoppergroup_id'] = '';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['virtuemart_vendor_id'] = '1';

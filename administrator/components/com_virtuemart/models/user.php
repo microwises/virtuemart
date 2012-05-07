@@ -972,25 +972,18 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
-			if ($field->name == 'virtuemart_state_id') {
-				if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+			else if ($field->required and $field->name == 'virtuemart_state_id') {
 				if(!empty($data['virtuemart_country_id']) && !empty($data['virtuemart_state_id']) ){
+					if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
 					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
 						$i++;
-						vmInfo($msg);
-						return false;
+						vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
+						$return = false;
 					}
 				}
 			}
-
-// 			if($app->isSite()){
-// 				if ($obj !== null && is_array($cart->{$type})) {
-// 					$cart->{$type}[$field->name] = $data[$field->name];
-// 				}
-// 			}
-
 		}
-		vmdebug('validateUserData '.$return);
+
 		return $return;
 	}
 
