@@ -761,9 +761,10 @@ class Migrator extends VmModel{
 
 				$category['category_description'] = $oldcategory['category_description'];
 				$category['published'] = $oldcategory['category_publish'] == 'Y' ? 1 : 0;
-				$category['created_on'] = $oldcategory['cdate'];
-				$category['modified_on'] = $oldcategory['mdate'];
-
+// 				$category['created_on'] = $oldcategory['cdate'];
+// 				$category['modified_on'] = $oldcategory['mdate'];
+				$category['created_on'] = $this->_changeToStamp($oldcategory['cdate']);
+				$category['modified_on'] = $this->_changeToStamp($oldcategory['mdate']);
 				/*				if($default_category_browse!=$oldcategory['category_browsepage']){
 				 $browsepage = $oldcategory['category_browsepage'];
 				if (strcmp($browsepage, 'managed') ==0 ) {

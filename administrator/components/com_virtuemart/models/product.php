@@ -1067,13 +1067,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(empty($this->_id)) return false;
 
-		if(!empty($data['categories']) && count($data['categories'])>0){
-			$data['virtuemart_category_id'] = $data['categories'];
-		} else {
-			$data['virtuemart_category_id'] = array();
-		}
-		$data = $this->updateXrefAndChildTables($data,'product_categories');
-
 		// 	 	JPluginHelper::importPlugin('vmcustom');
 		// 	 	$dispatcher = JDispatcher::getInstance();
 		// 	 	$error = $dispatcher->trigger('plgVmOnStoreProduct', array('product',$data,$product_data->virtuemart_product_id));
@@ -1083,15 +1076,18 @@ class VirtueMartModelProduct extends VmModel {
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
 		}
-		$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
+
+		if(!empty($data['virtuemart_manufacturer_id'])){
+			$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
+		}
 
 		// Update manufacturer link
-		if(!empty($data['virtuemart_manufacturer_id'])){
+		if(!empty($data['virtuemart_shoppergroup_id'])){
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
 // 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
-		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
+		if(!$isChild and isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
 
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
@@ -1103,12 +1099,20 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(!empty($data['childs'])){
 			foreach($data['childs'] as $productId => $child){
+				$child['product_parent_id'] = $data['virtuemart_product_id'];
 				$child['virtuemart_product_id'] = $productId;
 				$this->store($child,true);
 			}
 		}
 
 		if(!$isChild){
+
+			if(!empty($data['categories']) && count($data['categories'])>0){
+				$data['virtuemart_category_id'] = $data['categories'];
+			} else {
+				$data['virtuemart_category_id'] = array();
+			}
+			$data = $this->updateXrefAndChildTables($data,'product_categories');
 
 			// Update waiting list
 			if(!empty($data['notify_users'])){
@@ -1132,11 +1136,11 @@ class VirtueMartModelProduct extends VmModel {
 		return $product_data->virtuemart_product_id;
 	}
 
-	private function updateXrefAndChildTables($data,$tableName){
+	private function updateXrefAndChildTables($data,$tableName,$preload=false){
 
 		//First we load the xref table, to get the old data
 		$product_table_Parent = $this->getTable($tableName);
-		$product_table_Parent->bindChecknStore($data);
+		$product_table_Parent->bindChecknStore($data,$preload);
 		$errors = $product_table_Parent->getErrors();
 		foreach($errors as $error){
 			vmError($error);
@@ -1158,11 +1162,29 @@ class VirtueMartModelProduct extends VmModel {
 		$childs = count($this->getProductChildIds($id));
 		$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`='.(int)$id );
 		$parent = $db->loadObject();
-		$data = array('product_name' => $parent->product_name,'slug' => $parent->product_name.$id.rand(1,9),'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
+		$newslug = $parent->slug.$id.rand(1,9);
+		$data = array('product_name' => $parent->product_name,'slug' => $newslug,'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
 
 		$prodTable = $this->getTable('products');
 		$prodTable->bindChecknStore($data);
 
+		$langs = (array) VmConfig::get('active_languages');
+		if(count($langs)>1){
+			foreach($langs as $lang){
+				$lang = str_replace('-', '_', $lang);
+				$db->setQuery('SELECT `product_name` FROM `#__virtuemart_products_'.$lang.'` WHERE `virtuemart_product_id` = "'.$prodTable->virtuemart_product_id.'" ');
+				$res = $db->loadResult();
+				if(!$res){
+					$db->setQuery('INSERT INTO `#__virtuemart_products_'.$lang.'` (`virtuemart_product_id`,`slug`) VALUES ("'.$prodTable->virtuemart_product_id.'","'.$newslug.'");');
+					$db->query();
+					$err = $db->getErrorMsg();
+					if(!empty($err)){
+						vmError('Database error: createChild '.$err);
+					}
+				}
+			}
+
+		}
 		return $data['virtuemart_product_id'] ;
 	}
 
