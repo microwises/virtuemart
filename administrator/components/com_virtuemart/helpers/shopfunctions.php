@@ -420,7 +420,7 @@ class ShopFunctions {
 	 * @author Valérie Isaksen
 	 */
 	function convertWeigthUnit($value, $from, $to) {
-
+		if ($from === $to ) return $value;
 		$value = str_replace(',', '.', $value);
 		$g = 1 ;
 
@@ -464,6 +464,7 @@ class ShopFunctions {
 	function convertDimensionUnit($value, $from, $to) {
 
 		$value = (float)str_replace(',', '.', $value);
+		if ($from === $to ) return $value;
 		$meter = 1 ;
 
 		// transform $value in meters

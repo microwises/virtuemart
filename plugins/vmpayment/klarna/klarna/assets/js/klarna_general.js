@@ -8,14 +8,7 @@ var klarna = {
 	sum : 0,
 	gender : '',
 	klarnaGeneralLoaded : true,
-	selected_method : null,
-	stype : '',
-	invoice_active : false,
-	invoice_different_language : false,
-	spec_active : false,
-	spec_different_language : false,
-	part_active : false,
-	part_different_language : false,
+	different_language : false,
 	currentMinHeight_part : 0,
 	currentMinHeight_spec : 0,
 	currentMinHeight_invoice : 0,
@@ -23,11 +16,10 @@ var klarna = {
 	blue_baloon_busy : false,
 	address_busy : false,
 	baloons_moved : false,
-	flagChange_active : false,
 	changeLanguage_busy : false,
-	// openBox_busy : false,
 	showing_companyNotAlowed_box : false,
 	gChoice : '',
+	stype : '',
     errorHandler: {
         show: function(parentBox, message, code, type) {
             var errorHTML = '<div class="klarna_errMsg"><span>'+message+'</span></div>';
@@ -94,12 +86,10 @@ var klarna = {
 					}
 				});
 				jQuery(this).find('.klarna_box_top_right').fadeIn('fast');
-
 				if (different_language) {
 					jQuery(this).find('.klarna_box_bottom_languageInfo').fadeIn('fast');
 					jQuery('.klarna_box_bottom_languageInfo').fadeIn('fast');
 				}
-				// klarna.openBox_busy = false;
 			});
 		} else {
 			jQuery(box).find('.klarna_box_top_right, .klarna_box_bottom').show('fast');
@@ -127,8 +117,7 @@ var klarna = {
 		klarna.hideRedBaloon();
 		klarna.hideBlueBaloon();
 		klarna.showPaymentOption(jQuery('#klarna_box_'+choice), true,
-		klarna['currentMinHeight_'+klarna.stype], klarna[klarna.gChoice+'_different_language']);
-		klarna.selected_method = choice;
+		klarna['currentMinHeight_'+klarna.stype], klarna.different_language);
 	},
 
 	setGender : function  (context, gender) {
@@ -187,26 +176,6 @@ var klarna = {
 		}).focusout(function () {
 			klarna.hideBaloon();
 		});
-
-		// Chosing the active language
-		// jQuery('.box_active_language', opts).click(function () {
-			// if (klarna.flagChange_active == false)
-			// {
-				// klarna.flagChange_active = true;
-
-				// jQuery(this).parent().find('.klarna_box_top_flag_list').slideToggle('fast', function () {
-					// if (jQuery(this).is(':visible'))
-					// {
-						// jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 1.0}, 'fast');
-					// }
-					// else {
-						// jQuery(this).parent('.klarna_box_top_flag').animate({opacity: 0.4}, 'fast');
-					// }
-
-					// klarna.flagChange_active = false;
-				// });
-			// }
-		// });
 
 		jQuery('.klarna_box_top_flag_list img', opts).click(function (){
 			if (klarna.changeLanguage_busy == false)
@@ -626,9 +595,10 @@ var klarna = {
 				{
 					replaceBox.find('.klarna_box').remove();
 					replaceBox.append(jQuery(response).find('.klarna_box'));
-					if(newIso != klarna['language'])
+					if(newIso != klarna.language)
 						replaceBox.find('.klarna_box_bottom_languageInfo').fadeIn('slow', function () {
 							klarna.changeLanguage_busy = false;
+							klarna.language = newIso ;
 						});
 					else
 						replaceBox.find('.klarna_box_bottom_languageInfo').fadeOut('slow', function () {

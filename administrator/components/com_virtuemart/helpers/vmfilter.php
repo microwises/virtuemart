@@ -1036,17 +1036,17 @@ class vmFilter{
 	// regex checker
 	function mail($v){
 		$regx = "�[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?�";
-		return preg_replace($regx , $v);
+		return preg_replace($regx ,'', $v);
 	}
 	function phone($v){
 		$regx = "�^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$�";
-		return preg_replace($regx , $v);
+		return preg_replace($regx ,'', $v);
 	}
 	function urlcheck($v) {
 
 		if (!preg_match("#(http|ftp|https)#",$v)) $v = "http://".$v ;
 		$regx = "#�(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?�#";
-		$site = preg_replace($regx , $var);
+		$site = preg_replace($regx ,'', $var);
 		if ($file = @fopen($site, 'r')) {
 			return $var ;
 		} else return '';

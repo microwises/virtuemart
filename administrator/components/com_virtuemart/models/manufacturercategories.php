@@ -50,24 +50,24 @@ class VirtuemartModelManufacturercategories extends VmModel {
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
      */
-	function getManufacturerCategory(){
+	// function getManufacturerCategory(){
 
-		//$db = JFactory::getDBO();
+		//// $db = JFactory::getDBO();
 
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('manufacturercategories');
-   			$this->_data->load((int)$this->_id);
-  		}
+  		// if (empty($this->_data)) {
+   			// $this->_data = $this->getTable('manufacturercategories');
+   			// $this->_data->load((int)$this->_id);
+  		// }
 
-		// print_r( $this->_db->_sql );
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-   			$this->_data = null;
-  		}
+		//// print_r( $this->_db->_sql );
+  		// if (!$this->_data) {
+   			// $this->_data = new stdClass();
+   			// $this->_id = 0;
+   			// $this->_data = null;
+  		// }
 
-  		return $this->_data;
-	}
+  		// return $this->_data;
+	// }
 	/**
 	 * Delete all record ids selected
      *
