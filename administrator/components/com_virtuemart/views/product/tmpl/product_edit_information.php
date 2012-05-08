@@ -152,7 +152,7 @@ $i=0;
 				<table class="adminform">
 
 					<tr class="row0" >
-						<td width="29%" >
+						<td width="17%" >
 							<div style="text-align: right; font-weight: bold;">
 								<span
 									class="hasTip"
@@ -248,7 +248,7 @@ $i=0;
 			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
 			<table class="adminform">
 				<tr class="row0">
-					<td width="29%"><div style="text-align: right; font-weight: bold;">
+					<td width="17%"><div style="text-align: right; font-weight: bold;">
 						<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
 					</td>
 					<td width="30%">

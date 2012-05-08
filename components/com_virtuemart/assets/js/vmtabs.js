@@ -1,4 +1,4 @@
-function tabs(pages) {
+function vm2tabs(pages) {
 
 	pages.addClass("dyn-tabs");
 	pages.first().show();
@@ -27,6 +27,6 @@ function tabs(pages) {
 
 jQuery(document).ready(function() {
 
-	tabs(jQuery("#ui-tabs .tabs"));
+	vm2tabs(jQuery("#ui-tabs .tabs"));
 
 });

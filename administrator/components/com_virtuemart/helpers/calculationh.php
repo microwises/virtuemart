@@ -220,28 +220,28 @@ class calculationHelper {
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 *
 	 */
-	public function getProductPrices($productId, $catIds=0, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
+	public function getProductPrices($product, $catIds=0, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
 
 
 		$costPrice = 0;
 
 		//We already have the productobject, no need for extra sql
-		if (is_object($productId)) {
-			$costPrice = isset($productId->product_price)? $productId->product_price:0;
-			$this->productCurrency = isset($productId->product_currency)? $productId->product_currency:0;
-			$override = isset($productId->override)? $productId->override:0;
-			$product_override_price = isset($productId->product_override_price)? $productId->product_override_price:0;
-			$this->product_tax_id = isset($productId->product_tax_id)? $productId->product_tax_id:0;
-			$this->product_discount_id = isset($productId->product_discount_id)? $productId->product_discount_id:0;
-			$this->productVendorId = isset($productId->virtuemart_vendor_id)? $productId->virtuemart_vendor_id:1;
+		if (is_object($product)) {
+			$costPrice = isset($product->product_price)? $product->product_price:0;
+			$this->productCurrency = isset($product->product_currency)? $product->product_currency:0;
+			$override = isset($product->override)? $product->override:0;
+			$product_override_price = isset($product->product_override_price)? $product->product_override_price:0;
+			$this->product_tax_id = isset($product->product_tax_id)? $product->product_tax_id:0;
+			$this->product_discount_id = isset($product->product_discount_id)? $product->product_discount_id:0;
+			$this->productVendorId = isset($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
 			if (empty($this->productVendorId)) {
 				$this->productVendorId = 1;
 			}
-			$this->_cats = $productId->categories;
+			$this->_cats = $product->categories;
 		} //Use it as productId
 		else {
 			vmSetStartTime('getProductCalcs');
-			$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
+/*			$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
 			$row = $this->_db->loadAssoc();
 			if ($row) {
 				if (!empty($row['product_price'])) {
@@ -269,8 +269,8 @@ class calculationHelper {
 				$this->_cats = $this->_db->loadResultArray();
 			} else {
 				$this->_cats = $catIds;
-			}
-			vmTime('getProductPrices no object given query time','getProductCalcs');
+			}*/
+			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
 		}
 
 		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){

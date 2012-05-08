@@ -6,7 +6,7 @@
   zoom: 1;
   *display: inline;
 }
-.tabs select{ width:200px;}
+.tabs select{ width:300px;}
 .chzn-container .chzn-drop {
   background: #fff;
   border: 1px solid #aaa;

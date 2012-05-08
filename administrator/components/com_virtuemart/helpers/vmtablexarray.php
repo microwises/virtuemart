@@ -181,14 +181,14 @@ class VmTableXarray extends VmTable {
         }
 
         // We make another database object list with the values that we want to insert into the database
-        $newArray = null;
+        $newArray = array();
 	if(!empty($this->_svalue)){
             if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
             foreach($this->_svalue as $value) $newArray[] = array($pkey=>$this->_pvalue, $skey=>$value);
 	}
 
         // Inserts and Updates
-        if(!empty($newArray)){
+        if(count($newArray)>0){
             $myOrdering = 1;
 
             foreach ($newArray as $newValue) {
@@ -220,9 +220,10 @@ class VmTableXarray extends VmTable {
             // There are zero new rows, so the user asked for all the rows to be deleted
             $q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `' . $pkey.'` = "'. $this->_pvalue .'" ';
             $this->_db->setQuery($q);
-            if(!$this->_db->Query()){
+
+            if(!$this->_db->query()){
                 $returnCode = false;
-                vmError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+                vmError(get_class( $this ).':: store '.$this->_db->getErrorMsg());
             }
         }
 

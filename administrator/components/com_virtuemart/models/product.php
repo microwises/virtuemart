@@ -1077,12 +1077,12 @@ class VirtueMartModelProduct extends VmModel {
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
 		}
 
-		if(isset($data['virtuemart_manufacturer_id'])){
+		if(isset($data['virtuemart_shoppergroup_id'])){
 			$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 		}
 
 		// Update manufacturer link
-		if(isset($data['virtuemart_shoppergroup_id'])){
+		if(isset($data['virtuemart_manufacturer_id'])){
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
@@ -1096,6 +1096,10 @@ class VirtueMartModelProduct extends VmModel {
 			// 			vmdebug('product_price '.$data['product_price']);
 		}
 		if(isset($data['product_price'])){
+			if($isChild){
+				unset($data['product_override_price']);
+				unset($data['override']);
+			}
 			$data = $this->updateXrefAndChildTables($data, 'product_prices');
 		}
 
@@ -1603,7 +1607,7 @@ public function getUncategorizedChildren($selected){
 		$q .= ' AND p.`published`="1"';
 	}
 
-	$q .= ' ORDER BY ordering DESC';
+	$q .= 'GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
 	$this->_db->setQuery($q);
 	$res = $this->_db->loadAssocList() ;
 	$err = $this->_db->getErrorMsg();
