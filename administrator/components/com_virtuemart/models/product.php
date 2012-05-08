@@ -1077,12 +1077,12 @@ class VirtueMartModelProduct extends VmModel {
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
 		}
 
-		if(!empty($data['virtuemart_manufacturer_id'])){
+		if(isset($data['virtuemart_manufacturer_id'])){
 			$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 		}
 
 		// Update manufacturer link
-		if(!empty($data['virtuemart_shoppergroup_id'])){
+		if(isset($data['virtuemart_shoppergroup_id'])){
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
@@ -1095,7 +1095,10 @@ class VirtueMartModelProduct extends VmModel {
 			unset($data['use_desired_price']);
 			// 			vmdebug('product_price '.$data['product_price']);
 		}
-		$data = $this->updateXrefAndChildTables($data, 'product_prices');
+		if(isset($data['product_price'])){
+			$data = $this->updateXrefAndChildTables($data, 'product_prices');
+		}
+
 
 		if(!empty($data['childs'])){
 			foreach($data['childs'] as $productId => $child){

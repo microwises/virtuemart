@@ -653,20 +653,20 @@ class VirtueMartModelCustomfields extends VmModel {
 			} else if ($group->field_type == 'E'){
 				$group->display ='';
 
-				foreach ($group->options as $productCustom) {
+				foreach ($group->options as $k=>$productCustom) {
 					if ((float)$productCustom->custom_price ) {
 						$price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
 					} else  {
 						$price = ($productCustom->custom_price==='') ? '' : $free ;
 					}
 					$productCustom->text =  $productCustom->custom_value.' '.$price;
-
+					$productCustom->virtuemart_customfield_id = $k;
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
 					$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductVariantFE',array($productCustom,&$row,&$group));
 
-					$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_customfield_id.']" /> ';
+					$group->display .= '<input type="hidden" value="'.$k.'" name="customPrice['.$row.']['.$k.']" /> ';
 					if (!empty($currency->_priceConfig['variantModification'][0]) and $price!=='') {
 						$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 					}
