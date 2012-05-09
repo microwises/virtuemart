@@ -567,6 +567,20 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
+			vmdebug('$product->shoppergroups',$product->shoppergroups);
+			if (!empty($product->shoppergroups) and $front) {
+				if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+				$usermodel = VmModel::getModel('user');
+				$currentVMuser = $usermodel->getUser();
+				$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
+
+				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids);
+				$commonShpgrps = array_intersect($virtuemart_shoppergroup_ids,$product->shoppergroups);
+				if(empty($commonShpgrps)){
+					$product = new stdClass();
+					return $this->fillVoidProduct($front);
+				}
+			}
 
 			$ppTable = $this->getTable('product_prices');
 			$ppTable->load($this->_id);
@@ -1071,20 +1085,14 @@ class VirtueMartModelProduct extends VmModel {
 		// 	 	$dispatcher = JDispatcher::getInstance();
 		// 	 	$error = $dispatcher->trigger('plgVmOnStoreProduct', array('product',$data,$product_data->virtuemart_product_id));
 
-// 		vmdebug('save_customfields',$data['save_customfields']);
-		if (isset($data['save_customfields']) ){
-			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
+		//We may need to change this, the reason it is not in the other list of commands for parents
+		if(!$isChild){
+			if (isset($data['save_customfields']) ){
+				if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+				VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
+			}
 		}
 
-		if(isset($data['virtuemart_shoppergroup_id'])){
-			$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
-		}
-
-		// Update manufacturer link
-		if(isset($data['virtuemart_manufacturer_id'])){
-			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
-		}
 
 // 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
 		if(!$isChild and isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
@@ -1113,6 +1121,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if(!$isChild){
+
+			$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
+
+			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 
 			if(!empty($data['categories']) && count($data['categories'])>0){
 				$data['virtuemart_category_id'] = $data['categories'];
