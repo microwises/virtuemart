@@ -67,12 +67,12 @@ class klarna_payments {
     private $splitAddress;
     private $klarna_bday;
 
-    function __construct($cData, $cart) {
-	$this->shipTo = KlarnaHandler::getShipToAddress($cart);
+    function __construct($cData, $shipTo) {
+	$this->shipTo = $shipTo;
 
 	$this->country = $cData['country_code'];
 	$this->country_code_3 = $cData['country_code_3'];
-	$this->currency = $cData['country_code_3'];
+	$this->currency = $cData['currency_code'];
 	$this->virtuemart_currency_id = $cData['virtuemart_currency_id'];
 	//$this->currency = $vendor_currency;
 	// Get EID and Secret
@@ -278,16 +278,15 @@ class klarna_payments {
 	}
 
 	/* Should contain the shipment Fee */
-	/* this price is in vendor currency==> should be converted to shopper currency */
-	$totalSum = $cart->pricesUnformatted['salesPrice'];
-	if ($totalSum <= 0) {
+	$billTotal=KlarnaHandler::convertPrice($cart->pricesUnformatted['billTotal'], $this->virtuemart_currency_id );
+	if ($billTotal <= 0) {
 	    return null;
 	}
 	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=0";
 
 	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 
-	$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
+	$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $billTotal, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
 	$kCheckout->addSetupValue('eid', $this->eid);
 	if (strtolower($this->country) == 'de') {
@@ -297,7 +296,7 @@ class klarna_payments {
 	}
 	$kCheckout->addMultipleSetupValues(array("web_root" => $this->web_root, "path_js" => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/", "path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/', "path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
 
-	if ($totalSum > 0) {
+	if ($billTotal > 0) {
 	    $pclasses = $kCheckout->aPClasses;
 	    if (empty($pclasses)) {
 		$this->enabled = false;
@@ -314,7 +313,7 @@ class klarna_payments {
 		}
 	    }
 
-	    if ($totalSum < $minimum) {
+	    if ($billTotal < $minimum) {
 		$this->enabled = false;
 	    }
 	    if (!class_exists('VirtueMartModelCurrency'))
@@ -400,6 +399,10 @@ class klarna_payments {
 
     public function getTermsLink() {
 	return 'https://static.klarna.com/external/html/' . KLARNA_SPECIAL_CAMPAIGN . '_' . strtolower($this->country) . '.html';
+    }
+    function displayPclass($pid, $totalSum){
+	$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
+	return $kCheckout->renderPClass($pid);
     }
 
 }

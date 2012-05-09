@@ -263,6 +263,7 @@ class VirtueMartModelConfig extends JModel {
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used
 		$config = VmConfig::loadConfig();
+		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 		$config->setParams($data);
 
 		$confData = array();

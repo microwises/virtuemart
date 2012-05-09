@@ -1,5 +1,21 @@
 <?php
 defined('_JEXEC') or die();
+/**
+*
+* @version $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
+* @package VirtueMart
+* @subpackage Klarna
+* @author Valérie Isaksen
+* @copyright Copyright (C) 2009-11 by the authors of the VirtueMart Team listed at /administrator/com_virtuemart/copyright.php - All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+*
+* http://virtuemart.net
+*/
 $code2 = $viewData['setup']['countryCode'];
 $sType = $viewData['sType'];
 // missing house_extension,ysalary,companyName
@@ -139,6 +155,7 @@ $sType = $viewData['sType'];
 <div class="klarna_box_bottom_content">
 <?php if ($code2 != 'se') { ?>
 	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
+   <?php if ($sType=='invoice'){ ?>
 	<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE'); ?></div>
 	<input type="radio" name="invoiceType" value="private"
 	       checked="checked" class="Klarna_radio"/>
@@ -150,9 +167,10 @@ $sType = $viewData['sType'];
 	<div class="klarna_box_bottom_radio_title" style="float: none">
 		<label for="company"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
 	</div>
+	<?php } ?>
 	<div class="klarna_box_bottom_title"
 	     id="invoice_perOrg_title"><?php echo JText::_('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?></div>
-	<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER'); ?>" type="text"
+	<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_'.  strtoupper($code2)); ?>" type="text"
 	       name="<?php echo $viewData['input']['socialNumber']; ?>"
 	       value="<?php echo @$viewData['value']['socialNumber']; ?>"
 	       class="Klarna_fullwidth"/>
@@ -188,7 +206,7 @@ $sType = $viewData['sType'];
 	</div>
 		<?php } ?>
 <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
-<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_' . $code2); ?>" type="text"
+<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text"
        name="klarna_phone" value="<?php echo @$viewData['value']['phoneNumber']; ?>"
        class="Klarna_fullwidth"/>
 	<?php
@@ -266,7 +284,7 @@ $sType = $viewData['sType'];
        class="Klarna_fullwidth"/> <br/> <br/>
 <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
 <input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
-       name="klarna_phoneNumber" value="<?php echo @$viewData['value']['phoneNumber']; ?>"
+       name="klarna_phone" value="<?php echo @$viewData['value']['phoneNumber']; ?>"
        class="Klarna_fullwidth"/> <br/> <br/>
 <div class="klarna_box_bottom_address" style="display: none">
 	<div class="klarna_box_bottom_address_title"><?php echo JText::_('VMPAYMENT_KLARNA_DELIVERY_ADDRESS'); ?></div>

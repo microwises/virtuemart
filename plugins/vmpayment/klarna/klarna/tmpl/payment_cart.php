@@ -1,4 +1,5 @@
-<?php  defined('_JEXEC') or die();
+<?php
+defined('_JEXEC') or die();
 /**
 *
 * @version $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
@@ -16,10 +17,18 @@
 * http://virtuemart.net
 */
 ?>
-<!-- KLARNA BOX -->
-<div class="klarna_box_login">
-<a href="https://www.klarna.com" target="_blank"><img src="<?php echo JURI::root() . VMKLARNAPLUGINWEBROOT ?>/klarna/assets/images/logo/logo_small.png" /></a>
-<br />
-  <a href="<?php echo $viewData['editpayment_link']  ?>"><?php echo JText::_('VMPAYMENT_KLARNA_SWE_EDIT_PAYMENT') ?> </a>
+
+<?php
+$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo' . $viewData['logo'] . '"/>';
+?>
+
+
+<div class="klarna_info">
+    <span style="">
+	<a href="http://www.klarna.com/"><?php echo $logo ?></a><br /><?php echo $viewData['description'] ?>
+    </span>
 </div>
-<!-- END KLARNA BOX LOGIN -->
+
+<div class="clear"></div>
+
+

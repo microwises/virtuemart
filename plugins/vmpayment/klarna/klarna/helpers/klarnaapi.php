@@ -2,8 +2,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
-
 /**
  * The Klarna API class. This class handles all the API functions send by the GUI.
  *
@@ -28,7 +26,6 @@ class KlarnaAPI {
      * @var array
      */
     protected $aInputValues = array();
-
 
     /**
      * The county code
@@ -182,7 +179,6 @@ class KlarnaAPI {
 	$this->aSetupSettings['spec_name'] = 'klarna_SpecCamp';
 
 	// $this->aSetupSettings['web_root'] = "/";
-
 	//$this->setPaths();
 //$this->country=$this->getCountry(); //??????
 	// Fetch PClasses in case type is invoice
@@ -190,15 +186,12 @@ class KlarnaAPI {
 	if (($this->sType == 'part' || $this->sType == 'spec') && $this->oKlarna != null) {
 	    $this->fetchPClasses($a_iSum, $a_iFlag, $aTypes);
 	}
-
-
     }
 
     // public function setPaths() {
-
-	// $this->aSetupSettings['path_css'] = $this->aSetupSettings['web_root'].VMKLARNAPLUGINWEBROOT. '/klarna/assets/css/';
-	// $this->aSetupSettings['path_js'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/js/';
-	// $this->aSetupSettings['path_img'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/images/';
+    // $this->aSetupSettings['path_css'] = $this->aSetupSettings['web_root'].VMKLARNAPLUGINWEBROOT. '/klarna/assets/css/';
+    // $this->aSetupSettings['path_js'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/js/';
+    // $this->aSetupSettings['path_img'] = $this->aSetupSettings['web_root'] .VMKLARNAPLUGINWEBROOT. '/klarna/assets/images/';
     // }
 
     /**
@@ -224,10 +217,10 @@ class KlarnaAPI {
 	}
     }
 
-
     public function getSetupValues() {
 	return $this->aSetupSettings;
     }
+
     /**
      * Add/Overwrite input values.
      *
@@ -324,10 +317,10 @@ class KlarnaAPI {
 	    $sFilename = $a_sHTMLFile;
 	} else {
 	    if ($this->sType != "spec") {
-		$sFilename = ($this->sPath != null ? $this->sPath : "") . "/klarna/tmpl/" . $this->sType ."_". strtolower($this->sCountryCode). ".html";
+		$sFilename = ($this->sPath != null ? $this->sPath : "") . "/klarna/tmpl/" . $this->sType . "_" . strtolower($this->sCountryCode) . ".html";
 	    } else {
 		$this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
-		$sFilename = ($this->sPath != null ? $this->sPath : "") . '/klarna/tmpl/' .   $this->sType ."_".strtolower($this->sCountryCode). ".html";
+		$sFilename = ($this->sPath != null ? $this->sPath : "") . '/klarna/tmpl/' . $this->sType . "_" . strtolower($this->sCountryCode) . ".html";
 	    }
 	}
 
@@ -491,7 +484,7 @@ class KlarnaAPI {
 	}
 
 	if ($this->oKlarna == null) {
-	    throw new KlarnaApiException('Error in ' . __METHOD__ .  ': Klarna instance not set');
+	    throw new KlarnaApiException('Error in ' . __METHOD__ . ': Klarna instance not set');
 	}
 	$this->iKlarnaCountry = $country;
 	$this->iKlarnaCurrency = $this->oKlarna->getCurrencyForCountry($country);
@@ -598,7 +591,7 @@ class KlarnaAPI {
 		return false;
 	    }
 	} else if ($sType == "lang") {
-	    return JText::_('VMPAYMENT_KLARNA_'.strtoupper($sName)); //$this->fetchFromLanguagePack($sName);
+	    return JText::_('VMPAYMENT_KLARNA_' . strtoupper($sName)); //$this->fetchFromLanguagePack($sName);
 	} else if ($sType == "setup") {
 	    if ($sName == "pclasses") {
 		return $this->renderPClasses();
@@ -614,11 +607,11 @@ class KlarnaAPI {
 
 	    if ($sName == 'additional_information') {
 		$key = @$this->aSetupSettings['additional_information'];
-		$key ='VMPAYMENT_KLARNA_'.strtoupper($key);
+		$key = 'VMPAYMENT_KLARNA_' . strtoupper($key);
 		$lang = JFactory::getLanguage();
 		if ($lang->hasKey($key)) {
-		$frmt = @JText::_( $key); //$this->fetchFromLanguagePack($key);
-		return @$this->translateInputFields($frmt);
+		    $frmt = @JText::_($key); //$this->fetchFromLanguagePack($key);
+		    return @$this->translateInputFields($frmt);
 		} else {
 		    return '';
 		}
@@ -627,7 +620,7 @@ class KlarnaAPI {
 	    return @$this->aSetupSettings[$sName];
 	} else if ($sType == "value") {
 	    return (@$this->aInputValues[$sName]);
-	}   else {
+	} else {
 	    throw new KlarnaApiException('Error in ' . __METHOD__ . ': Invalid field name (' . $sType . ') found in HTML code!');
 	    return false;
 	}
@@ -643,17 +636,37 @@ class KlarnaAPI {
 
 	foreach ($this->aPClasses as $sPClassId => $aPClassData) {
 	    $value = $this->getPresentableValuta($aPClassData['monthlyCost']);
-	    $pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH') ;
+	    $pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH');
 	    $sString .= '<li ' . ($aPClassData['default'] ? 'id="click"' : "") . '>
                 <div>' . $aPClassData['pclass']->getDescription() .
 		    ($aPClassData['monthlyCost'] > 0 ?
 			    " - $value $pm" : '') .
 		    ($aPClassData['default'] ?
-			    '<img src="' . VMKLARNAPLUGINWEBASSETS.'/images/share/ok.gif" border="0" alt="Chosen" />' :
+			    '<img src="' . VMKLARNAPLUGINWEBASSETS . '/images/share/ok.gif" border="0" alt="Chosen" />' :
 			    '') .
 		    '</div>
                 <span style="display: none">' . $sPClassId . '</span>
                 </li>';
+	}
+
+	return $sString;
+    }
+
+    /**
+     * Redender the PClasses to HTML
+     *
+     * @return string
+     */
+    public function renderPClass($pid) {
+	$sString = "";
+
+	foreach ($this->aPClasses as $sPClassId => $aPClassData) {
+	    if ($aPClassData['pclass']->getId() == $pid) {
+		$value = $this->getPresentableValuta($aPClassData['monthlyCost']);
+		$pm = JText::_('VMPAYMENT_KLARNA_PER_MONTH');
+		$sString .= $aPClassData['pclass']->getDescription() . ($aPClassData['monthlyCost'] > 0 ? " - $value $pm" : '');
+		return $sString;
+	    }
 	}
 
 	return $sString;
@@ -665,7 +678,7 @@ class KlarnaAPI {
      * @param    integer    $iSum    The sum to present
      * @return    string
      */
-    /*private*/ function getPresentableValuta($iSum) {
+    /* private */ function getPresentableValuta($iSum) {
 	$sBefore = "";
 	$sAfter = "";
 
@@ -702,7 +715,7 @@ class KlarnaAPI {
 		$this->addSetupValue('currency_prefix', '&#8364;');
 		$this->addSetupValue('currency_suffix', '');
 		break;
-		default:
+	    default:
 		$this->addSetupValue('currency_suffix', '');
 		$this->addSetupValue('currency_prefix', '');
 		break;
@@ -731,7 +744,7 @@ class KlarnaAPI {
 	    $sPath = $this->sPath;
 
 	if ($this->languagePack == null) {
-	   $this->languagePack = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
+	    $this->languagePack = new KlarnaLanguagePack(JPATH_VMKLARNAPLUGIN . '/klarna/language/klarna_language.xml');
 	}
 
 	return $this->languagePack->fetch($sText, $sISO);

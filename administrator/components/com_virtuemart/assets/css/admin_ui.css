@@ -157,6 +157,7 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
 /* Icones */
 .print_32, .icon-32-print {background: url(../images/icon_32/printer.png) no-repeat transparent; display: block;height: 32px;margin: auto;text-align: center;width: 32px;}
 .invoice_32, .invoice-32-print {background: url(../images/icon_32/invoice.png) no-repeat transparent; display: block;height: 32px;margin: auto;text-align: center;width: 32px;}
+.invoicenew_32, .invoice-32-print {background: url(../images/icon_32/invoicenew.png) no-repeat transparent; display: block;height: 32px;margin: auto;text-align: center;width: 32px;}
 
 #limit {width:60px;}
 

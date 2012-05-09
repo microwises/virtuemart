@@ -48,7 +48,7 @@ class VirtuemartViewConfig extends VmView {
 		$this->addStandardEditViewCommands();
 
 		$config = VmConfig::loadConfig();
-
+		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 		$this->assignRef('config', $config);
 
 		$mainframe = JFactory::getApplication();

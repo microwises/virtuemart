@@ -945,7 +945,16 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		}
 
 	}
-
+/*
+	 * @author Valerie
+	 */
+	function InvoiceNumberReserved($invoice_number) {
+	   if (($pos=strpos ($invoice_number, 'reservedByPayment_'))=== false ) {
+	       return false;
+	   } else {
+	        return true;
+	   }
+	}
 	/**
 	 * TODO this should work with userfields
 	 * Lists titles for people
