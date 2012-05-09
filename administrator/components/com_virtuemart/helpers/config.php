@@ -539,7 +539,7 @@ class VmConfig {
 	 */
 	function get($key, $default='',$allow_load=true)
 	{
-$test=self::$_jpConfig;
+
 		$value = '';
 		if ($key) {
 
