@@ -216,7 +216,7 @@ $sType = $viewData['sType'];
 		$klarna_class = "klarna_left";
 	} elseif ($code2 == 'nl') {
 		$klarna_box_street = "40%";
-		$klarna_box_house = "40%";
+		$klarna_box_house = "38%";
 		$klarna_box_ext = "20%";
 		$klarna_class = "klarna_left";
 	} else {
@@ -279,11 +279,11 @@ $sType = $viewData['sType'];
 	       class="Klarna_fullwidth"/>
 </div>
 <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_EMAIL'); ?></div>
-<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
+<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_EMAIL'); ?>" type="text"
        name="klarna_emailAddress" value="<?php echo @$viewData['value']['emailAddress']; ?>"
        class="Klarna_fullwidth"/> <br/> <br/>
 <div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
-<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER_SE'); ?>" type="text"
+<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text"
        name="klarna_phone" value="<?php echo @$viewData['value']['phoneNumber']; ?>"
        class="Klarna_fullwidth"/> <br/> <br/>
 <div class="klarna_box_bottom_address" style="display: none">

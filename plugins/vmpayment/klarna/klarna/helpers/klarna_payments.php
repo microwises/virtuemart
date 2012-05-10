@@ -238,7 +238,7 @@ class klarna_payments {
 	$display_fee = $currency->priceDisplay($klarna_invoice_fee);
 
 	//$title = str_replace('(+XX)', '(+' . $sFee . ')', $kCheckout->fetchFromLanguagePack('INVOICE_TITLE', $lang, JPATH_VMKLARNAPLUGIN ));
-	$title = JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE', $display_fee);
+	$title = JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_fee);
 
 	if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
 	    $kCheckout->addSetupValue('red_baloon_content', $klarnaError);

@@ -684,11 +684,17 @@ class KlarnaAPI {
 
 	switch ($this->sCountryCode) {
 	    case 'se':
-	    case 'no':
-	    case 'dk':
 		$sAfter = " kr";
 		break;
+	    case 'no':
+		$sAfter = " NOK";
+		break;
+	    case 'dk':
+		$sAfter = " DKK";
+		break;
 	    case 'fi';
+		$sBefore = "EUR";
+		break;
 	    case 'de';
 	    case 'nl';
 		$sBefore = "&#8364;";

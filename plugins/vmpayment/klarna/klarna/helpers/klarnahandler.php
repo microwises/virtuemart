@@ -329,8 +329,8 @@ class KlarnaHandler {
 	foreach ($order['items'] as $item) {
 	    $item_price = self::convertPrice($item->product_final_price, $cData['currency_code']);
 	    $item_price = (double) (round($item_price, 2));
-	    $item_tax_percent = (double) (round(self::getTaxPercent($item->product_item_price + $item->product_tax, $item->product_item_price), 2) );
-	    $item_discount = self::convertPrice($item->product_subtotal_discount, $cData['currency_code']);
+	    $item_tax_percent = (double) (round(self::getTaxPercent($item->product_item_price + ($item->product_tax/$item->product_quantity), $item->product_item_price), 2) );
+	    $item_discount = self::convertPrice($item->product_subtotal_discount/$item->product_quantity, $cData['currency_code']);
 	    $item_discount = (double) (abs(round($item_discount, 2)) );
 	    //vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
 	    $klarna->addArticle($item->product_quantity, utf8_decode($item->order_item_sku), utf8_decode(strip_tags($item->order_item_name)), $item_price, (double) $item_tax_percent, $item_discount, KlarnaFlags::INC_VAT);
@@ -367,8 +367,8 @@ class KlarnaHandler {
 			    $shipTo->zip,
 			    utf8_decode($shipTo->city),
 			    utf8_decode($cData['country']),
-			    $shipTo->address_2,
-			    $shipTo->house_no
+			     $shipTo->house_no,
+			    $shipTo->address_2
 	    );
 	} catch (Exception $e) {
 	    VmInfo($e->getMessage());
