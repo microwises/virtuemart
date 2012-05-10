@@ -684,7 +684,7 @@ class VmTable extends JTable{
 			if($ok){
 				if(!$langTable->check()){
 					$ok = false;
-					$msg .= ' check';
+					// $msg .= ' check';
 					vmdebug('Check returned false '.get_class($langTable).' '.$this->_tbl.' '.$langTable->_db->getErrorMsg());
 				}
 			}
@@ -692,7 +692,7 @@ class VmTable extends JTable{
 			if($ok){
 				if(!$langTable->store()){
 					$ok = false;
-					$msg .= ' store';
+					// $msg .= ' store';
 					vmdebug('Problem in store '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
 				}
 			}
