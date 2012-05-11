@@ -451,10 +451,10 @@ abstract class vmPlugin extends JPlugin {
 	$app = JFactory::getApplication();
 	// get the template and default paths for the layout
 	if (JVM_VERSION === 2) {
-	    $templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plugins' . DS . $pluginName . DS . $layout . '.php';
+	    $templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
 	    $defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
 	} else {
-	    $templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plugins' . DS . $pluginName . DS . $layout . '.php';
+	    $templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
 	    $defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName  . DS . 'tmpl' . DS . $layout . '.php';
 	}
 

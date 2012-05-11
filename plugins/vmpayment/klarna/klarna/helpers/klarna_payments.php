@@ -231,7 +231,7 @@ class klarna_payments {
 	    $kCheckout->addSetupValue('agb_link', $link);
 	}
 
-	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
+	//$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 	$symbol = KlarnaHandler::getCurrencySymbolForCountry($method, $this->country);
 
 	$currency = CurrencyDisplay::getInstance();
@@ -284,7 +284,7 @@ class klarna_payments {
 	}
 	$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=0";
 
-	$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
+	//$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
 
 	$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $billTotal, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
 	$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
@@ -345,7 +345,6 @@ class klarna_payments {
 	// Create the html for the register.
 	$fields = array();
 	$fields[] = array('title' => "", 'field' => $kCheckout->retrieveLayout($aParams, $aValues));
-
 
 	return array('id' => 'klarna_partPayment', 'module' => $title, 'fields' => $fields);
     }

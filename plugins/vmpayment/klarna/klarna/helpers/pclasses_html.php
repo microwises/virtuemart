@@ -26,8 +26,6 @@ defined('JPATH_BASE') or die();
     $jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
 
 	$total = 0;
-	$handler = new KlarnaHandler() ;
-
 	if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 	$model = VmModel::getModel('paymentmethod');
 	$payment = $model->getPayment();
@@ -35,7 +33,7 @@ defined('JPATH_BASE') or die();
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
 	$data = $parameters->getParamByName('data');
 
-	vmdebug('pclasses',$data);
+	//vmdebug('pclasses',$data);
 	$eid_array = KlarnaHandler::getEidSecretArray($data);
 	foreach ($eid_array as $country => $eid_data) {
 	    try {

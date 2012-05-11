@@ -184,7 +184,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!isset($address['virtuemart_country_id'])) {
 	    return null;
 	}
-
 	return $address['virtuemart_country_id'];
     }
 
@@ -204,7 +203,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 	    }
 	}
-
 
 	return shopFunctions::getCountryByID($virtuemart_country_id, $fld);
     }
@@ -596,7 +594,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	return true;
     }
 
-    function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
+    function plgVmGetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
@@ -720,45 +718,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
     function plgVmOnPaymentNotification() {
 
-	if (!class_exists('VirtueMartModelOrders'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
-
-	$payment_methodid = JRequest::getInt('payment_methodid');
-	$invNo = JRequest::getInt('invNo');
-	$country = JRequest::getInt('country');
-	KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
-	$vendorId = 0;
-	if (!($payment = $this->getDataByOrderId($virtuemart_order_id))) {
-	    return;
-	}
-
-	$method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
-	if (!$this->selectedThisElement($method->payment_element)) {
-	    return false;
-	}
-	$invNo = JRequest::getInt('invNo');
-	$country = JRequest::getInt('country');
-	$order_status = KlarnaHandler::checkOrderStatus($payment_methodid, $invNo, $country);
-
-	$order['customer_notified'] = 1;
-
-	if ($order_status == 0) {
-	    $order['order_status'] = $method->status_success;
-	    $order['comments'] = JText::sprintf('VMPAYMENT_KLARNA_PAYMENT_STATUS_CONFIRMED', $order_number);
-	} else {
-	    $order['order_status'] = $method->status_canceled;
-	}
-
-	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $order['order_status'], 'message');
-
-	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-	//// remove vmcart
-	$this->emptyCart($paypal_data['custom']);
-	//die();
     }
 
     /*
      * @author Patrick Kohl
+     * @deprecated
      */
 
     function plgVmOnSelfCallFE($type, $name, &$render) {
@@ -809,8 +773,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	// fetches PClasses From XML file
 	$call = jrequest::getWord('call');
-	// 	require (JPATH_VMKLARNAPLUGIN . '/klarna/helpers/selfcall.php');
-	// 	$SelfCall = new KlarnaSelfCall;
 	$this->$call();
 	// 	jexit();
     }
@@ -821,7 +783,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', true);
 	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 	$jlang->load('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, null, true);
-	$handler = new KlarnaHandler();
 	// call klarna server for pClasses
 	//$methodid = jrequest::getInt('methodid');
 	if (!class_exists('VmModel'))
@@ -833,7 +794,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
 	$data = $parameters->getParamByName('data');
 	// echo "<pre>";print_r($data);
-	$json = $handler->fetchPClasses($data);
+	$json = KlarnaHandler::fetchPClasses($data);
 	ob_start();
 	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
 	$json['pclasses'] = ob_get_clean();
@@ -1093,9 +1054,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	if (!JFile::exists($filename)) {
 	    $filecontents = "<?php defined('_JEXEC') or die();
 	define('VMKLARNA_SHIPTO_SAME_AS_BILLTO', '1'); ?>";
-
 	    $result = JFile::write($filename, $filecontents);
-
 	    if (!$result) {
 		VmInfo(JText::sprintf('VMPAYMENT_KLARNA_CANT_WRITE_CONFIG', $filename, $result));
 	    }
@@ -1103,38 +1062,56 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	$method = $this->getPluginMethod(JRequest::getInt('virtuemart_paymentmethod_id'));
 
-	// we have to chek that the foolowing Shopper fields are there
-	$vm_shopperfields = array("first_name", "last_name", "address_1", "city", "zip", "company", "phone_1");
+	// we have to chek that the following Shopper fields are there
+	$required_shopperfields_vm = array("first_name", "last_name", "address_1", "city", "zip", "company", "phone_1", "virtuemart_country_id");
 
-	$shopperfields_country = array(
+	$required_shopperfields_byfields = array(
 	    "socialNumber" => array("SWE", "DNK", "NOR", "FIN"),
 	    "year_salary" => array("DNK"),
-	    "birthday" => array("DEU", "NLD"),
-	    "house_no" => array("NLD")
+	    "address_2", "birthday" => array("DEU", "NLD"),
+	    "house_no" => array("NLD"),
+	    "email" => array("SWE")
+	);
+	$required_shopperfields_bycountry = array(
+	    "SWE" => array("socialNumber", "email"),
+	    "DNK" => array("socialNumber", "year_salary"),
+	    "NOR" => array("socialNumber"),
+	    "FIN" => array("socialNumber"),
+	    "NLD" => array("birthday", "address_2", "house_no"),
+	    "DEU" => array("birthday", "address_2")
 	);
 
+
+
 	$userFieldsModel = VmModel::getModel('UserFields');
-	$userFields = $userFieldsModel->getUserFields();
-
+	$switches['published'] = true;
+	$userFields = $userFieldsModel->getUserFields('', $switches);
+	// TEST that all Vm shopperfields are there
 	foreach ($userFields as $userField) {
-	    $field = $userField->name;
-	    if (array_key_exists($userField->name, $vm_shopperfields)) {
-		$vm_shopperfields_error[$userField->name] = 1;
-	    }
-
-	    if (array_key_exists($userField->name, $shopperfields_country)) {
-		foreach ($shopperfields_country[$userField->name] as $country) {
-		    $field = 'klarna_active_' . strtolower($country);
-		    if ($method->$field) {
-			$shopperfields_country[$userField->name]["found"] = 1;
-		    }
-		}
+	    $fields_name_vm[] = $userField->name;
+	}
+	$result = array_intersect($fields_name_vm, $required_shopperfields_vm);
+	$vm_required_not_found = array_diff($required_shopperfields_vm, $result);
+	if (count($vm_required_not_found)) {
+	    VmError(JText::sprintf('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_NOT_FOUND', implode(", ", $vm_required_not_found)));
+	} else {
+	    VmInfo(JText::_('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_OK'));
+	}
+	$klarna_required_not_found = array();
+	// TEST that all required Klarna shopper fields are there, if not create them
+	foreach ($required_shopperfields_bycountry as $key => $shopperfield_country) {
+	    $active = 'klarna_active_' . strtolower($key);
+	    if ($method->$active) {
+		$resultByCountry = array_intersect($fields_name_vm, $shopperfield_country);
+		$klarna_required_country_not_found = array_diff($shopperfield_country, $resultByCountry);
+		$klarna_required_not_found = array_merge($klarna_required_country_not_found, $klarna_required_not_found);
 	    }
 	}
-	foreach ($shopperfields_country as $key => $shopperfield_country) {
-	    if (!isset($shopperfield_country["found"])) {
-		// create shooperfield
-	    }
+	$klarna_required_not_found = array_unique($klarna_required_not_found, SORT_STRING);
+	if (count($klarna_required_not_found)) {
+	    VmError(JText::sprintf('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_NOT_FOUND', implode(", ", $klarna_required_not_found)));
+	} else {
+	    VmInfo(JText::_('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_OK'));
 	}
 	vmDebug('plgVmOnStoreInstallPaymentPluginTable', $create_shopperfield, $vm_shopperfields_error);
 	/*
@@ -1564,7 +1541,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
      * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
      * @author Valerie Isaksen
      */
-    function plgVmonShowOrderPrintPayment($order_number, $method_id) {
+    function plgVmOnShowOrderPrintPayment($order_number, $method_id) {
 	return $this->onShowOrderPrint($order_number, $method_id);
     }
 
