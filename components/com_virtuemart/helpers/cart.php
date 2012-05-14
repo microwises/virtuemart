@@ -921,53 +921,6 @@ class VirtueMartCart {
 		$usersModel = VmModel::getModel('user');
 		return $usersModel->validateUserData($type, $obj);
 
-/*		if (!class_exists('VirtueMartModelUserfields'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
-		$userFieldsModel = VmModel::getModel('userfields');
-
-		if ($type == 'BT') {
-		    $fieldtype = 'account';
-		}else {
-		    $fieldtype = 'shipment';
-		}
-
-		$neededFields = $userFieldsModel->getUserFields(
-		$fieldtype
-		, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
-		, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
-
-		$redirectMsg = false;
-
-		$i = 0 ;
-
-		foreach ($neededFields as $field) {
-
-			if($field->required && empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id'){
-				$redirectMsg = JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title) );
-				$i++;
-				//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
-				if($i>2 && $type=='BT'){
-					$redirectMsg = JText::_('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
-				}
-			}
-
-			if ($obj !== null && is_array($this->{$type})) {
-				$this->{$type}[$field->name] = $obj->{$field->name};
-			}
-
-			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
-			if ($field->name == 'virtuemart_state_id') {
-				if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
-				if(!empty($this->{$type}['virtuemart_country_id']) && !empty($this->{$type}['virtuemart_state_id']) ){
-					if (!$msg = VirtueMartModelState::testStateCountry($this->{$type}['virtuemart_country_id'], $this->{$type}['virtuemart_state_id'])) {
-						$redirectMsg = $msg;
-					}
-				}
-
-			}
-		}*/
-
-		return $redirectMsg;
 	}
 
 	/**

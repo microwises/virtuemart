@@ -216,7 +216,7 @@ class GenericTableUpdater extends JModel{
 			if(VmConfig::get('dblayoutstrict',true)){
 				if($table=='products'){
 					$fields['product_s_desc'] = 'varchar('.VmConfig::get('dbpsdescsize',2000).') '.$linedefault;
-					$fields['product_desc'] = 'varchar('.VmConfig::get('dbpdescsize',18500).') '.$linedefault;
+					$fields['product_desc'] = 'varchar('.VmConfig::get('dbpdescsize',18400).') '.$linedefault;
 
 					$key = array_search('product_desc', $translatableFields);
 					unset($translatableFields[$key]);
@@ -255,8 +255,12 @@ class GenericTableUpdater extends JModel{
 			foreach($translatableFields as $k => $name){
 				if(strpos($name,'name') !==false ){
 					$fields[$name] = 'char('.VmConfig::get('dbnamesize',180).') '.$linedefault;
-				} else if(strpos($name,'meta')!==false ){
-					$fields[$name] = 'char('.VmConfig::get('dbmetasize',192).') '.$linedefault;
+				} else if(strpos($name,'metadesc')!==false ){
+					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
+				} else if(strpos($name,'metatitle')!==false ){
+					$fields[$name] = 'char('.VmConfig::get('dbmetasize',100).') '.$linedefault;
+				} else if(strpos($name,'metakey')!==false ){
+					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
 				} else if(strpos($name,'slug')!==false ){
 					$fields[$name] = 'char('.VmConfig::get('dbslugsize',192).') '.$linedefault;
 					$slug = true;
@@ -455,9 +459,9 @@ class GenericTableUpdater extends JModel{
 
 		$this->_db->setQuery($q);
 		if(!$this->_db->query()){
-			$this->_app->enqueueMessage('createTable ERROR :'.$this->_db->getErrorMsg() );
+			vmError('createTable ERROR :'.$this->_db->getErrorMsg() );
 		} else {
-			$this->_app->enqueueMessage('created table '.$tablename);
+			vmInfo('created table '.$tablename);
 		}
 // 		$this->_app->enqueueMessage($q);
 	}
