@@ -127,7 +127,6 @@ if($this->userDetails->virtuemart_user_id!=0) {
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
-<input type="hidden" name="task" value="" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 

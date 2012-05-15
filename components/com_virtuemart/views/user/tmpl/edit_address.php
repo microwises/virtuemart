@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 
+//why do we have this?
 if ($this->fTask === 'savecartuser') {
     $rtask = 'registercartuser';
 } else {
@@ -62,7 +63,7 @@ echo shopFunctionsF::getLoginForm(false);
 
         var elem = jQuery('#userForm');
 
-	return myValidator(f, '<?php echo $rtask ?>');
+	return myValidator(f, '<?php echo $this->fTask //was using before rtask ?>');
 
     }
 
@@ -143,6 +144,7 @@ if ($this->userDetails->JUser->get('id')) {
 <input type="hidden" name="view" value="user" />
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?   ?>" />
+<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
 <?php if(!empty($this->virtuemart_userinfo_id)){
 	echo '<input type="hidden" name="shipto_virtuemart_userinfo_id" value="'.(int)$this->virtuemart_userinfo_id.'" />';

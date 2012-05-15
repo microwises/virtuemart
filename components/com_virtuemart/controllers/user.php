@@ -49,7 +49,7 @@ class VirtueMartControllerUser extends JController
 
 		$view->setLayout('edit_address');
 
-		$ftask ='saveUser';
+		$ftask ='saveAddressST';
 		$view->assignRef('fTask', $ftask);
 		// Display it all
 		$view->display();
@@ -145,9 +145,17 @@ class VirtueMartControllerUser extends JController
 	function saveUser(){
 
 		$msg = $this->saveData(false,true);
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user'), $msg );
+		$layout = JRequest::getWord('layout','edit');
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
 	}
 
+	function saveAddressST(){
+
+		$msg = $this->saveData(false,true);
+		$layout = 'edit';// JRequest::getWord('layout','edit');
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
+
+	}
 
 	/**
 	 * Save the user info. The saveData function dont use the userModel store function for anonymous shoppers, because it would register them.
