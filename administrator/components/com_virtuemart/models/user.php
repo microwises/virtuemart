@@ -907,7 +907,7 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			if(!$this->validateUserData('ST',(array)$data)){
+			if(!$this->validateUserData('ST',(array)$dataST)){
 				return false;
 			}
 			$dataST['address_type'] = 'ST';
@@ -983,7 +983,6 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 		}
-
 		return $return;
 	}
 

@@ -50,7 +50,8 @@ class VirtueMartControllerVendor extends JController
 
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
-		$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
 		$vendorUser = JFactory::getUser($userId);
 
