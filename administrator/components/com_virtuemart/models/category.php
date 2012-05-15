@@ -576,7 +576,7 @@ class VirtueMartModelCategory extends VmModel {
 		if ($this->_cleanCache === true) {
 			$cache = JFactory::getCache();
 			$cache->clean('_virtuemart');
-			$this->_cleanCache === false;
+			$this->_cleanCache = false;
 		}
 		//jexit();
 		return $data['virtuemart_category_id'] ;

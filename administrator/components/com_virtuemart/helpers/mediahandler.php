@@ -91,7 +91,7 @@ class VmMediaHandler {
 			}else {
 				$relUrl = $safePath;
 				$choosed = true;
-				$this->file_is_forSale==1;
+				$this->file_is_forSale=1;
 			}
 
 		}
