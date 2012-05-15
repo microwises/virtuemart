@@ -1,21 +1,21 @@
 <?php
 defined('_JEXEC') or die();
 /**
-*
-* @version $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
-* @package VirtueMart
-* @subpackage Klarna
-* @author Valérie Isaksen
-* @copyright Copyright (C) 2009-11 by the authors of the VirtueMart Team listed at /administrator/com_virtuemart/copyright.php - All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
-*
-* http://virtuemart.net
-*/
+ *
+ * @version    $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
+ * @package    VirtueMart
+ * @subpackage Klarna
+ * @author     Valérie Isaksen
+ * @copyright  Copyright (C) 2009-11 by the authors of the VirtueMart Team listed at /administrator/com_virtuemart/copyright.php - All rights reserved.
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *             VirtueMart is free software. This version may have been modified pursuant
+ *             to the GNU General Public License, and as distributed it includes or
+ *             is derivative of works licensed under the GNU General Public License or
+ *             other free or open source software licenses.
+ *             See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ *
+ * http://virtuemart.net
+ */
 $code2 = $viewData['setup']['countryCode'];
 $sType = $viewData['sType'];
 // missing house_extension,ysalary,companyName
@@ -116,7 +116,8 @@ $sType = $viewData['sType'];
 			?>
 			<!-- Part/invoice payment External js -->
 			<a href="javascript:ShowKlarnaPopup('<?php echo $viewData['setup']['eid']; ?>', '<?php echo $popupTotal; ?>','<?php echo $sType; ?>')">
-				<?php echo JText::_('VMPAYMENT_KLARNA_KLARNA_ACCOUNT_AGREEMENT'); ?> </a>
+				<?php echo JText::_('VMPAYMENT_KLARNA_KLARNA_ACCOUNT_AGREEMENT'); ?>
+			</a>
 			<!-- payment External js END -->
 			<?php } ?>
 		</div>
@@ -141,7 +142,22 @@ $sType = $viewData['sType'];
 <div class="klarna_box_bottom_left">
 	<div class="klarna_box_bottom_content">
 		<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_' . $sType . '_PAYMENT'); ?></div>
-		<ol id="paymentPlan"><?php echo $this->renderPClasses(); ?>
+		<ol id="paymentPlan">
+			<?php
+			if (!empty($viewData['pClasses'])) {
+				foreach ($viewData['pClasses'] as $pClass) {
+					?>
+					<li <?php echo $pClass['class'] ?> >
+						<div> <?php echo  $pClass['string'] ?>
+						</div>
+						<span style="display: none"> <?php echo $pClass['classId'] ?> </span>
+					</li>
+					<?php
+				}
+			}
+			?>
+
+
 		</ol>
 		<input type="hidden" name="klarna_paymentPlan"
 		       value="<?php echo @$viewData['value']['paymentPlan']; ?>" class="paymentPlan"/>
@@ -155,22 +171,22 @@ $sType = $viewData['sType'];
 <div class="klarna_box_bottom_content">
 <?php if ($code2 != 'se') { ?>
 	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
-   <?php if ($sType=='invoice'){ ?>
-	<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE'); ?></div>
-	<input type="radio" name="invoiceType" value="private"
-	       checked="checked" class="Klarna_radio"/>
-	<div class="klarna_box_bottom_radio_title" style="float: left">
-		<label for="private"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE_PRIVATE'); ?></label>
-	</div>
-	<input type="radio" name="<?php echo $viewData['input']['invoiceType']; ?>" value="company"
-	       class="Klarna_radio"/>
-	<div class="klarna_box_bottom_radio_title" style="float: none">
-		<label for="company"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
-	</div>
-	<?php } ?>
+		<?php if ($sType == 'invoice') { ?>
+		<div class="klarna_box_bottom_title"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE'); ?></div>
+		<input type="radio" name="invoiceType" value="private"
+		       checked="checked" class="Klarna_radio"/>
+		<div class="klarna_box_bottom_radio_title" style="float: left">
+			<label for="private"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE_PRIVATE'); ?></label>
+		</div>
+		<input type="radio" name="<?php echo $viewData['input']['invoiceType']; ?>" value="company"
+		       class="Klarna_radio"/>
+		<div class="klarna_box_bottom_radio_title" style="float: none">
+			<label for="company"><?php echo JText::_('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
+		</div>
+			<?php } ?>
 	<div class="klarna_box_bottom_title"
 	     id="invoice_perOrg_title"><?php echo JText::_('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?></div>
-	<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_'.  strtoupper($code2)); ?>" type="text"
+	<input alt="<?php echo JText::_('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_' . strtoupper($code2)); ?>" type="text"
 	       name="<?php echo $viewData['input']['socialNumber']; ?>"
 	       value="<?php echo @$viewData['value']['socialNumber']; ?>"
 	       class="Klarna_fullwidth"/>
@@ -212,16 +228,16 @@ $sType = $viewData['sType'];
 	<?php
 	if ($code2 == 'de') {
 		$klarna_box_street = "60%";
-		$klarna_box_house = "40%";
-		$klarna_class = "klarna_left";
+		$klarna_box_house  = "40%";
+		$klarna_class      = "klarna_left";
 	} elseif ($code2 == 'nl') {
 		$klarna_box_street = "40%";
-		$klarna_box_house = "38%";
-		$klarna_box_ext = "20%";
-		$klarna_class = "klarna_left";
+		$klarna_box_house  = "38%";
+		$klarna_box_ext    = "20%";
+		$klarna_class      = "klarna_left";
 	} else {
 		$klarna_box_street = "100%";
-		$klarna_class = "klarna_right";
+		$klarna_class      = "klarna_right";
 	}
 	?>
 <div class="klarna_box_bottom_input_combo">
@@ -371,7 +387,7 @@ if ($code2 == 'de' || $code2 == 'nl') {
 	<?php
 }
 if ($code2 == 'de') {
-	$url = $viewData['setup']['agb_link'] . '&tmpl=component';
+	$url      = $viewData['setup']['agb_link'] . '&tmpl=component';
 	$document = JFactory::getDocument();
 	$document->addScriptDeclaration("
 	jQuery(document).ready(function($) {

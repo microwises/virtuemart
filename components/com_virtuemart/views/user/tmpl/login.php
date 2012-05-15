@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Layout for the shopping cart
+* Layout for the login
 *
 * @package	VirtueMart
-* @subpackage Cart
+* @subpackage User
 * @author Max Milbers, George Kostopoulos
 *
 * @link http://www.virtuemart.net
@@ -53,15 +53,15 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
     $html = '';
     JPluginHelper::importPlugin('vmpayment');
     $dispatcher = JDispatcher::getInstance();
-    $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html));
+    $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html, $this->from_cart));
 
     if (is_array($html)) {
-	foreach ($html as $login) {
-	    echo $login.'<br />';
-	}
+		foreach ($html as $login) {
+		    echo $login.'<br />';
+		}
     }
     else {
-	echo $html;
+		echo $html;
     }
 
     //end plugins section
@@ -76,15 +76,15 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 
 	    <form action="<?php echo JRoute::_( 'index.php', true, 0); ?>" method="post" name="com-login" >
 
-	    	<div class="width30 floatleft" id="com-form-order">
+	    	<div class="width30 floatleft" id="com-form-order-number">
 	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
-	    		<input type="text" id="order_number " name="order_number" class="inputbox" size="18" alt="order_number " />
+	    		<input type="text" id="order_number " name="order_number" class="inputbox" size="18" alt="order_number" />
 	    	</div>
-	    	<div class="width30 floatleft" id="com-form-order">
+	    	<div class="width30 floatleft" id="com-form-order-pass">
 	    		<label for="order_pass"><?php echo JText::_('COM_VIRTUEMART_ORDER_PASS') ?></label><br />
 	    		<input type="text" id="order_pass" name="order_pass" class="inputbox" size="18" alt="order_pass" value="p_"/>
 	    	</div>
-	    	<div class="width30 floatleft" id="com-form-order">
+	    	<div class="width30 floatleft" id="com-form-order-submit">
 	    		<input type="submit" name="Submitbuton" class="button" value="<?php echo JText::_('COM_VIRTUEMART_ORDER_BUTTON_VIEW') ?>" />
 	    	</div>
 	    	<div class="clr"></div>

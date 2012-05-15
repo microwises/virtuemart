@@ -55,14 +55,14 @@ abstract class vmPSPlugin extends vmPlugin {
 				if ($params = $xml->document->params) {
 					foreach ($params as $param) {
 						if ($param->_name = "params") {
-			    if ($children = $param->_children) {
-			    	foreach ($children as $child) {
-			    		if (isset($child->_attributes['name'])) {
-			    			$data[$child->_attributes['name']] = array('', 'char');
-			    			$result = true;
-			    		}
-			    	}
-			    }
+						    if ($children = $param->_children) {
+						        foreach ($children as $child) {
+						            if (isset($child->_attributes['name'])) {
+						                $data[$child->_attributes['name']] = array('', 'char');
+						                $result = true;
+						            }
+						        }
+						    }
 						}
 					}
 				}
@@ -357,7 +357,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$plugin_name = $this->_psType . '_name';
-		return $order_plugin->$plugin_name;
+		return $order->$plugin_name;
 	}
 
 	/**

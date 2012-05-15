@@ -57,14 +57,13 @@ class KlarnaVm2API extends KlarnaAPI {
 	if ($this->sType != "spec") {
 	    $this->aSetupSettings['conditionsLink'] = $aTemplateData['conditions'];
 	}
-	//$tmplLayout = $this->sType . "_" . strtolower($this->sCountryCode);
-	$tmplLayout = 'payment_form' ;
-	return vmPlugin::renderByLayout($tmplLayout, array('checkout' => $this->oKlarna->checkoutHTML(),
+
+	return   array('checkout' => $this->oKlarna->checkoutHTML(),
 		    'input' => $this->aInputParameters,
 		    'value' => $this->aInputValues,
 		    'setup' => $this->aSetupSettings,
 		    'sType' => $this->sType
-			), 'klarna', 'payment');
+			) ;
     }
 
 }

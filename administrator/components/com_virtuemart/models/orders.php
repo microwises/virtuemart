@@ -988,7 +988,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		return $data;
 	}
 
-
+/*
+ * returns true if an invoice number has been created
+ * returns false if an invoice number have not been created  due to some configuration parameters
+ */
 	function createInvoiceNumber($orderDetails, &$invoiceNumber){
 
 		$orderDetails = (array)$orderDetails;
@@ -1012,6 +1015,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$data['virtuemart_vendor_id'] = $orderDetails['virtuemart_vendor_id'];
 
 			JPluginHelper::importPlugin('vmshopper');
+			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			// plugin returns invoice number, 0 if it does not want an invoice number to be created by Vm
 			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',array($orderDetails,&$data));
@@ -1022,22 +1026,22 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			    // check the default configuration
 			    $orderstatusForInvoice = VmConfig::get('inv_os','C');
 			    $pdfInvoice = VmConfig::get('pdf_invoice', 0); // backwards compatible
-			    $create_invoice=JRequest::getInt('create_invoice', 0);
+			    $force_create_invoice=JRequest::getInt('create_invoice', 0);
 			    // florian : added if pdf invoice are enabled
-			    if ( ($orderDetails['order_status'] == $orderstatusForInvoice)  or $pdfInvoice  or $create_invoice ){
-				$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
-				$db->setQuery($q);
+			    if ( ($orderDetails['order_status'] == $orderstatusForInvoice)  or $pdfInvoice  or $force_create_invoice ){
+					$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
+					$db->setQuery($q);
 
-				$count = $db->loadResult()+1;
+					$count = $db->loadResult()+1;
 
-				if(empty($data['invoice_number'])) {
-					//$variable_fixed=sprintf("%05s",$num_rows);
-					$date = date("Y-m-d");
-// 					$date = JFactory::getDate()->toMySQL();
-					$data['invoice_number'] = str_replace('-', '', substr($date,2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
-				}
+					if(empty($data['invoice_number'])) {
+						//$variable_fixed=sprintf("%05s",$num_rows);
+						$date = date("Y-m-d");
+	// 					$date = JFactory::getDate()->toMySQL();
+						$data['invoice_number'] = str_replace('-', '', substr($date,2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
+					}
 			    } else {
-				return false;
+					return false;
 			    }
 			}
 
@@ -1045,12 +1049,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$table = $this->getTable('invoices');
 
 			$table->bindChecknStore($data);
-			if (ShopFunctions::InvoiceNumberReserved($data['invoice_number'])) {
-		            return false;
-			}
 			$invoiceNumber= array($table->invoice_number,$table->created_on);
 		} elseif (ShopFunctions::InvoiceNumberReserved($result['invoice_number']) ) {
-		    return false;
+		    return true;
 		} else {
 			$invoiceNumber = array($result['invoice_number'],$result['created_on']);
 		}
@@ -1058,12 +1059,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	}
 
 	/*
-	 * @author Valerie
+	 * @author Valérie Isaksen
 	 */
 	function getInvoiceNumber($virtuemart_order_id){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT invoice_number FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$virtuemart_order_id.'" ';
+		$q = 'SELECT `invoice_number` FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$virtuemart_order_id.'" ';
 		$db->setQuery($q);
 		return $db->loadresult();
 	}

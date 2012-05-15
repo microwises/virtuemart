@@ -123,7 +123,7 @@ class klarna_productPrice {
 		}
 
 		$pp_price = $currency->priceDisplay($pclass['monthlyCost'], $countryCurrencyId);
-		$sTableHtml .= vmPlugin::renderByLayout('pp_box_template', array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price, 'country' => $country), $payment_element, 'payment');
+		$sTableHtml .= $this->renderByLayout('pp_box_template', array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price, 'country' => $country), $payment_element, 'payment');
 		// $sTableHtml .= $kCheckout->retrieveHTML(null, array('pp_title' => html_entity_decode($pp_title), 'pp_price' => $pp_price), JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/pp_box_template.html');
 	    }
 	    $cd = CurrencyDisplay::getInstance($fromCurrency);
@@ -133,7 +133,7 @@ class klarna_productPrice {
 	    $aInputValues['eid'] = $this->cData['eid'];
 	    $aInputValues['country'] = KlarnaCountry::getCode($country);
 	    //$aInputValues['nlBanner'] = (($country == KlarnaCountry::NL) ? '<div class="nlBanner"><img src="' . VMKLARNAPLUGINWEBASSETS . '/images/account/' . $notice . '" /></div>' : "");
-	    return vmPlugin::renderByLayout('productprice_layout', $aInputValues, $payment_element, 'payment');
+	    return  $aInputValues ;
 	    // return $kCheckout->retrieveHTML($aInputValues, null, JPATH_VMKLARNAPLUGIN . '/klarna/tmpl/productprice_layout.html');
 	}
     }

@@ -119,12 +119,19 @@ class VirtuemartViewInvoice extends VmView {
 		if(empty($this->invoiceNumber)){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
+                if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
+	                vmInfo('  InvoiceNumber is Reserved by Payment ');
+                    return 0;
+                }
 			    $this->invoiceNumber = $invoiceNumberDate[0];
 			    $this->invoiceDate = $invoiceNumberDate[1];
 			    if(!$this->invoiceNumber or empty($this->invoiceNumber)){
-				    vmError('Cant create pdf, createInvoiceNumber failed');;
+				    vmError('Cant create pdf, createInvoiceNumber failed');
 				    return 0;
 			    }
+			} else {
+				// Could OR should not create Invoice Number, createInvoiceNumber failed
+				return 0;
 			}
 		}
 
@@ -174,7 +181,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('orderstatuses', $orderstatuses);
 
 		$_itemStatusUpdateFields = array();
-		$_itemAttributesUpdateFields = array();
+		//$_itemAttributesUpdateFields = array();
 		foreach($orderDetails['items'] as $_item) {
 // 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] =  $_item->order_status;
@@ -193,15 +200,6 @@ class VirtuemartViewInvoice extends VmView {
 		    JPluginHelper::importPlugin('vmpayment');
 		    $dispatcher = JDispatcher::getInstance();
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
-			if(is_array($returnValues)){
-				foreach($returnValues as $val){
-					if($val==false and $layout != 'mail'){
-						// don't send the invoice
-						$app = JFactory::getApplication();
-						$app->redirect('index.php?option=com_virtuemart&view=orders','Klarna is doing the invoice');
-					}
-				}
-			}
 		}
 
 		$virtuemart_vendor_id=1;
@@ -282,8 +280,8 @@ class VirtuemartViewInvoice extends VmView {
 	// FE public function renderMailLayout($doVendor=false)
 	function renderMailLayout ($doVendor, $recipient) {
 
-		$this->doVendor=$doVendor;
-		$this->fromPdf=false;
+		$this->dovendor=$dovendor;
+		$this->frompdf=false;
 		$this->uselayout = 'mail';
 		$this->display();
 

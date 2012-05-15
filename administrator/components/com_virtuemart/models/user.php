@@ -1249,7 +1249,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 			$_JUser = JUser::getInstance($userId);
 			if (!$_JUser->delete()) {
-				vmError($jUser->getError());
+				vmError($_JUser->getError());
 				return false;
 			}
 		}

@@ -25,7 +25,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 JPluginHelper::importPlugin('vmpayment');
 JPluginHelper::importPlugin('vmshopper');
 JPluginHelper::importPlugin('vmshipment');
-$tt=$this;
+
 ?>
 
 <form name='adminForm' id="adminForm">
