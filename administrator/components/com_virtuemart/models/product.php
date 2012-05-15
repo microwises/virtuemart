@@ -567,14 +567,14 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
-			vmdebug('$product->shoppergroups',$product->shoppergroups);
+
 			if (!empty($product->shoppergroups) and $front) {
 				if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 				$usermodel = VmModel::getModel('user');
 				$currentVMuser = $usermodel->getUser();
 				$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
 
-				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids);
+// 				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids);
 				$commonShpgrps = array_intersect($virtuemart_shoppergroup_ids,$product->shoppergroups);
 				if(empty($commonShpgrps)){
 					$product = new stdClass();

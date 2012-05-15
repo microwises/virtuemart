@@ -36,6 +36,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * setMainTable defines the maintable of the model
 	 * @author Max Milbers
 	 */
+// 	function __construct($modelName ='product') {
 	function __construct($modelName ='product') {
 		parent::__construct('virtuemart_customfield_id');
 		$this->setMainTable('product_customfields');
@@ -54,8 +55,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->data->load($this->_id);
 
 		return $this;
-
 	}
+
 	// **************************************************
 	// Custom FIELDS
 	//
@@ -893,7 +894,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			 */
 			public function customFieldDisplay($product, $variantmods,$html,$trigger){
 
-				vmdebug('customFieldDisplay $variantmods',$variantmods);
+				//vmdebug('customFieldDisplay $variantmods',$variantmods);
 				$row = 0;
 				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				foreach ($variantmods as $selected=>$variant){
@@ -906,7 +907,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 								$product = self::addParam($product);
 								//vmdebug('CustomsFieldCartDisplay $productCustom',$productCustom);
-								vmdebug('customFieldDisplay $product->param selected '.$selected,$product->param);
+// 								vmdebug('customFieldDisplay $product->param selected '.$selected,$product->param);
 								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 								JPluginHelper::importPlugin('vmcustom');
 								$dispatcher = JDispatcher::getInstance();

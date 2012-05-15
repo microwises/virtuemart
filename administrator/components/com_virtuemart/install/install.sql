@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_meta` char(254) NOT NULL DEFAULT '',
   `file_mimetype` char(64) NOT NULL DEFAULT '',
   `file_type` char(32) NOT NULL DEFAULT '',
-  `file_url` text,
+  `file_url` varchar(16000) NOT NULL DEFAULT '',
   `file_url_thumb` char(254) NOT NULL DEFAULT '',
   `file_is_product_image` tinyint(1) NOT NULL DEFAULT '0',
   `file_is_downloadable` tinyint(1) NOT NULL DEFAULT '0',

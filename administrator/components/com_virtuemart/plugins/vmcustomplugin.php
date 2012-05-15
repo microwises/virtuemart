@@ -104,7 +104,11 @@ abstract class vmCustomPlugin extends vmPlugin {
 
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
+    	//Why do we have this?
     	if (empty($field->custom_element)) return 0 ;
+
+    	//Why do we have this, when bindParameterable could already doing it
+    	//And why we do it here, when we do it later again?
     	foreach($this->_varsToPushParam as $k => $v){
     		if(!isset($this->params->$k)){
     			$this->params->$k = $field->$k;
