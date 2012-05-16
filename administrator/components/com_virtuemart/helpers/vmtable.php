@@ -94,7 +94,11 @@ class VmTable extends JTable{
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
 
-		$this->_langTag = VMLANG;//VmConfig::get('vmlang');
+		if(!defined('VMLANG')){
+			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig();
+		}
+		$this->_langTag = VMLANG;
 		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 	}
 

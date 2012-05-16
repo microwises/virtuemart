@@ -1033,14 +1033,23 @@ class VirtueMartCart {
 			$prefix = 'shipto_';
 
 		} else { // BT
-			if(!empty($data['agreed'])){
-				$this->tosAccepted = $data['agreed'];
-			} else if (!empty($data->agreed)){
-				$this->tosAccepted = $data->agreed;
-			}
+			if(is_array($data)){
+				if(!empty($data['agreed'])){
+					$this->tosAccepted = $data['agreed'];
+				}
 
-			if(empty($data['email'])){
-				$address['email'] = JFactory::getUser()->email;
+				if(empty($data['email'])){
+					$address['email'] = JFactory::getUser()->email;
+				}
+
+			} else {
+				if(!empty($data->agreed)){
+					$this->tosAccepted = $data->agreed;
+				}
+
+				if(empty($data->email)){
+					$address['email'] = JFactory::getUser()->email;
+				}
 			}
 		}
 

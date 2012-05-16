@@ -211,6 +211,7 @@ echo VmHTML::selectList('coupons_default_expire',$this->config->get('coupons_def
 				?>
 			</td>
 </tr>
+<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
 				<label for="weight_unit_default"><?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT') ?></label>
@@ -247,27 +248,7 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 				<table class="admintable">
-				    <tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?>
-							</label> </span>
-						</td>
-						<td><fieldset class="checkboxes">
 
-
-
-
-						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
-				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
-				 						'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
-						//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
-						);
-						echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
-							</fieldset></td>
-					</tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -277,9 +258,6 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 						</td>
 						<td><fieldset class="checkboxes">
 
-
-
-
 						<?php
 						$showReviewFor = array(	'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
 											'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
@@ -287,6 +265,25 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 						); //showReviewFor
 						echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
 
+							</fieldset></td>
+					</tr>
+
+				    <tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?>
+							</label> </span>
+						</td>
+						<td><fieldset class="checkboxes">
+
+						<?php
+						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
+				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
+				 						'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
+						//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
+						);
+						echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
 							</fieldset></td>
 					</tr>
 

@@ -70,7 +70,8 @@ class VirtueMartModelShopperGroup extends VmModel {
      * Retireve a list of shopper groups from the database.
      *
      * @author Markus Öhler
-     * @param string $noLimit True if no record count limit is used, false otherwise
+     * @param boolean $onlyPublished
+     * @param boolean $noLimit True if no record count limit is used, false otherwise
      * @return object List of shopper group objects
      */
     function getShopperGroups($onlyPublished=false, $noLimit = false) {
@@ -213,7 +214,7 @@ class VirtueMartModelShopperGroup extends VmModel {
     	}
 
     	$db->setQuery($q);
-    	return $db->loadAssoc();
+    	return $db->loadAssocList();
   	}
 
 }

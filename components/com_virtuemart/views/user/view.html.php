@@ -290,21 +290,29 @@ class VirtuemartViewUser extends VmView {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shoppergroup.php');
 
 	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
-
+	vmdebug('function shopper $_shoppergroup',$_shoppergroup);
 	if (!class_exists('Permissions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 	if (Permissions::getInstance()->check('admin,storeadmin')) {
-	    $this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['virtuemart_shoppergroup_id']);
-	    $this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
-	} else {
-	    $this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
 
+		$shoppergrps = array();
+		foreach($_shoppergroup as $group){
+			$shoppergrps[] = $group['virtuemart_shoppergroup_id'];
+		}
+	   $this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
+	   $this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
+	} else {
+		$this->_lists['shoppergroups'] = '';
+		foreach($_shoppergroup as $group){
+			$this->_lists['shoppergroups'] .= $group['shopper_group_name'].', ';
+		}
+		$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
 	    //I dont think that makes sense anymore
 	    // 			if(empty($this->_lists['shoppergroups'])){
 	    // 				$this->_lists['shoppergroups']='unregistered';
 	    // 			} else {
-	    $this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
+	   // $this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
 	    // 			}
 
 	    if (!empty($this->_userDetails->virtuemart_vendor_id)) {

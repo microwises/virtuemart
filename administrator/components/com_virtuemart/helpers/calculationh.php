@@ -238,6 +238,7 @@ class calculationHelper {
 				$this->productVendorId = 1;
 			}
 			$this->_cats = $product->categories;
+			$this->_product = $product;
 		} //Use it as productId
 		else {
 			vmSetStartTime('getProductCalcs');
