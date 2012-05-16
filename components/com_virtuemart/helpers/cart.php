@@ -997,7 +997,7 @@ class VirtueMartCart {
 // 		$prices = array();
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 
-		if (empty($product_prices)) return;
+		if (empty($product_prices)) return null;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 
@@ -1040,7 +1040,7 @@ class VirtueMartCart {
 			}
 
 			if(empty($data['email'])){
-				$address->email = JFactory::getUser()->email;
+				$address['email'] = JFactory::getUser()->email;
 			}
 		}
 
@@ -1156,11 +1156,11 @@ class VirtueMartCart {
 			    }
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
-				$cart->automaticSelectedPayment=true;
+				$this->automaticSelectedPayment=true;
 				$this->setCartIntoSession();
 				return true;
 			} else {
-				$cart->automaticSelectedPayment=false;
+				$this->automaticSelectedPayment=false;
 				$this->setCartIntoSession();
 				return false;
 			}
@@ -1295,6 +1295,7 @@ class VirtueMartCart {
 			$_addressST = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'ST');
 
 		} else {
+			$_addressBT = array();
 			$_addressBT[0]->address_type_name = '<a href="index.php'
 			.'?option=com_virtuemart'
 			.'&view=user'

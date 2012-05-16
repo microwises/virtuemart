@@ -90,7 +90,7 @@ $session = JFactory::getSession();
 	</td>
 </tr>
 
-</tr>
+<tr>
 	<td>
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_REWRITE_ORDER_NUMBER'); ?>
 	</td>
@@ -98,7 +98,7 @@ $session = JFactory::getSession();
 		<?php echo VmHTML::checkbox('reWriteOrderNumber', $session->get('reWriteOrderNumber', 1, 'vm')); ?>
 	</td>
 </tr>
-</tr>
+<tr>
 	<td>
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_USER_ORDER_ID'); ?>
 	</td>

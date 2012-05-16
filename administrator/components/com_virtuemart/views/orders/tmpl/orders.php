@@ -105,7 +105,7 @@ if (count($this->orderslist) > 0) {
 	<?php echo JHTML::_('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, true); ?>
 			    <input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][current_order_status]" value="<?php echo $order->order_status; ?>" />
 			    <br />
-			    <textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" value="" cols="5" rows="5"/></textarea>
+			    <textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" value="" cols="5" rows="5"></textarea>
 	<?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 			</td>
 			<!-- Update -->

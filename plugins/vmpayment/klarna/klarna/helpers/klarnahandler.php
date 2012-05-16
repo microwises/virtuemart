@@ -270,14 +270,14 @@ class KlarnaHandler {
 			$bill_number  = $splitAddress[1];
 			switch ($bt['title']) {
 				case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MR'):
-					$this->klarna_gender = KlarnaFlags::MALE;
+					//$this->klarna_gender = KlarnaFlags::MALE;
 					break;
 				case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MISS'):
 				case JText::_('COM_VIRTUEMART_SHOPPER_FIELD_TITLE_MRS'):
-					$this->klarna_gender = KlarnaFlags::FEMALE;
+					//$this->klarna_gender = KlarnaFlags::FEMALE;
 					break;
 				default:
-					$this->klarna_gender = NULL;
+					//$this->klarna_gender = NULL;
 					break;
 			}
 			if (strtolower($bill_country) == "nl") {
@@ -320,8 +320,8 @@ class KlarnaHandler {
 		$country = shopFunctions::getCountrybyID($shipTo->virtuemart_country_id, 'country_3_code');
 		$cData   = self::countryData($method, $country);
 
-		$total_price_excl_vat = self::convertPrice($order['details']['BT']->order_subtotal, $cData['currency_code']);
-		$total_price_incl_vat = self::convertPrice($order['details']['BT']->order_subtotal + $order['details']['BT']->order_tax, $cData['currency_code'], $order['details']['BT']->order_currency);
+		//$total_price_excl_vat = self::convertPrice($order['details']['BT']->order_subtotal, $cData['currency_code']);
+		//$total_price_incl_vat = self::convertPrice($order['details']['BT']->order_subtotal + $order['details']['BT']->order_tax, $cData['currency_code'], $order['details']['BT']->order_currency);
 
 		$mode = KlarnaHandler::getKlarnaMode($method);
 		$ssl  = KlarnaHandler::getKlarnaSSL($mode);
@@ -471,7 +471,7 @@ class KlarnaHandler {
 				// country is CODE 3==> converting to 2 letter country
 				//$country = self::convertCountryCode($method, $country);
 				$lang    = self::getLanguageForCountry($method, $country);
-				$flagImg = JURI::root(true) . '/administrator/components/com_virtuemart/assets/images/flag/' . strtolower($value) . '.png';
+				$flagImg = JURI::root(true) . '/administrator/components/com_virtuemart/assets/images/flag/' . strtolower($lang) . '.png';
 				$flag    = "<img src='" . $flagImg . "' />";
 				try {
 					$settings = self::getCountryData($method, $country);
@@ -524,7 +524,7 @@ class KlarnaHandler {
 		}
 		//$_SESSION['klarna_error'] = addslashes($message);
 		$app = JFactory::getApplication();
-		$app->enqueueMessage($html);
+		$app->enqueueMessage($message);
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
@@ -599,21 +599,7 @@ class KlarnaHandler {
 		return $defpos;
 	}
 
-	/**
-	 *
-	 * @global <type> $vmLogger
-	 * @param  <type> $invNo
-	 * @param  <type> $estoreOrderNo
-	 */
-	public static function updateOrderNo($invNo, $estoreOrderNo) {
-		$settings = self::countryData($method, $_SESSION['auth']['country']);
-		$klarna   = new Klarna_virtuemart();
-		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?
-			Klarna::LIVE : Klarna::BETA), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), true);
-		// Update Ordernumber
-		$klarna->updateOrderno($invNo, $estoreOrderNo);
-		unset($klarna);
-	}
+
 
 	/**
 	 * gets Eid and Secret for activated countries.
@@ -759,8 +745,8 @@ class KlarnaHandler {
 		}
 		$virtuemart_vendor_id = 1;
 		$model                = VmModel::getModel('vendor');
-		$vendorAdress         = $model->getVendorAdressBT($virtuemart_vendor_id);
-		$vendor_country       = ShopFunctions::getCountryByID($vendorAdress->virtuemart_country_id, $fld);
+		$vendorAddress         = $model->getVendorAdressBT($virtuemart_vendor_id);
+		$vendor_country       = ShopFunctions::getCountryByID($vendorAddress->virtuemart_country_id, $fld);
 		return $vendor_country;
 	}
 

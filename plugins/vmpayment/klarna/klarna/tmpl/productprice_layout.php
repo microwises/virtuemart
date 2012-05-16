@@ -30,7 +30,20 @@ jQuery(function(){
 	});
 });
 ");
+$js = '<script type="text/javascript">jQuery(document).find(".product_price").width("25%");</script>';
+$js .= '<style>';
+$js .= 'div.klarna_PPBox{z-index: 200 !important;}';
+$js .= 'div.cbContainer{z-index: 10000 !important;}';
+$js .= 'div.klarna_PPBox_bottomMid{overflow: visible !important;}';
+$js .= '</style>';
+//$html .= '<br>';
+if ($viewData['country'] == 'nl') {
+	$js .= '<style>.klarna_PPBox_topMid{width: 81%;}</style>';
+}
+$document = JFactory::getDocument();
+//$document->addScriptDeclaration($js);
 ?>
+
 <?php
 if ($viewData['country']== "nl") {
 	$country_width="klarna_PPBox_topMid_nl";
@@ -45,7 +58,7 @@ if ($viewData['country']== "nl") {
         <div class="klarna_PPBox_top">
             <span class="klarna_PPBox_topRight"></span>
             <span class="klarna_PPBox_topMid  <?php echo $country_width ?>">
-                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label> <?php echo $viewData['defaultMonth'] ?> </label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $this->settings['asterisk'] ?></p>
+                <p><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_FROMTEXT'); ?><label> <?php echo $viewData['defaultMonth'] ?> </label><?php echo JText::_('VMPAYMENT_KLARNA_PPBOX_MONTHTEXT'); ?><?php echo $viewData['asterisk']; ?></p>
             </span>
             <span class="klarna_PPBox_topLeft"></span>
         </div>
@@ -59,7 +72,16 @@ if ($viewData['country']== "nl") {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php echo $viewData['monthTable'] ?>
+						<?php foreach ($viewData['monthTable'] as $monthTable) { ?>
+							<tr>
+								<td style = 'text-align: left' >
+								<?php echo $monthTable['pp_title'] ?>
+								</td>
+								<td class='klarna_PPBox_pricetag' >
+								<?php echo   $monthTable['pp_price']   ?>
+								</td>
+							</tr>
+						<?php } ?>
                     </tbody>
                 </table>
                 <div class="klarna_PPBox_bottomMid_readMore">

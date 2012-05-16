@@ -130,11 +130,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart();
 
 		foreach ($this->methods as $method) {
-			$cData        = KlarnaHandler::getcData($method, $this->getCartAddress($cart, $type, false));
-			$productPrice = new klarna_productPrice($cData);
-			if ($productDisplay = $productPrice->showProductPrice($product, $method->payment_element)) {
-				$productDisplayHtml = $this->renderByLayout('productprice_layout', $productDisplay, $payment_element, 'payment');
-				$productDisplay[]   = $productDisplayHtml;
+			$cData = KlarnaHandler::getcData($method, $this->getCartAddress($cart, $type, false));
+			if ($cData) {
+				$productPrice = new klarna_productPrice($cData);
+				if ($productViewData = $productPrice->showProductPrice($product)) {
+					$productDisplayHtml = $this->renderByLayout('productprice_layout', $productViewData, $method->payment_element, 'payment');
+					$productDisplay[]   = $productDisplayHtml;
+				}
 			}
 		}
 		return true;
@@ -566,6 +568,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return false;
 		}
 		$ch = curl_init($klarna_invoice_pdf);
+		$timeout=10;
 		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -1133,7 +1136,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		} else {
 			VmInfo(JText::_('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_OK'));
 		}
-		vmDebug('plgVmOnStoreInstallPaymentPluginTable', $create_shopperfield);
+		//vmDebug('plgVmOnStoreInstallPaymentPluginTable', $create_shopperfield);
 		/*
 	   * TODO: create all required shopperfields
 	   *
@@ -1219,17 +1222,17 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				return false;
 			}
 			//This example only works for GA_GIVEN.
-			foreach ($swedish_addresses as $index => $addr) {
-				if ($addr->isCompany) {
-					$klarnaData['company_name'] = $addr->getCompanyName();
+			foreach ($swedish_addresses as   $address) {
+				if ($address->isCompany) {
+					$klarnaData['company_name'] = $address->getCompanyName();
 				} else {
-					$klarnaData['first_name'] = $addr->getFirstName();
-					$klarnaData['last_name']  = $addr->getLastName();
+					$klarnaData['first_name'] = $address->getFirstName();
+					$klarnaData['last_name']  = $address->getLastName();
 				}
-				$klarnaData['street']  = $addr->getStreet();
-				$klarnaData['zip']     = $addr->getZipCode();
-				$klarnaData['city']    = $addr->getCity();
-				$klarnaData['country'] = $addr->getCountryCode();
+				$klarnaData['street']  = $address->getStreet();
+				$klarnaData['zip']     = $address->getZipCode();
+				$klarnaData['city']    = $address->getCity();
+				$klarnaData['country'] = $address->getCountryCode();
 				$countryId             = $klarnaData['virtuemart_country_id'] = shopFunctions::getCountryIDByName($klarnaData['country']);
 			}
 			foreach ($klarnaData as $key => $value) {
@@ -1288,7 +1291,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		//$settings = KlarnaHandler::getCountryData($method, $cart_country2);
 
 		try {
-			$addr = new KlarnaAddr(
+			$address = new KlarnaAddr(
 				$klarnaData['email'],
 				$klarnaData['phone'],
 				"", //mobile
@@ -1324,7 +1327,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	}
 
 	/*
-* plgVmonSelectedCalculatePricePayment
+* plgVmOnSelectedCalculatePricePayment
 * Calculate the price (value, tax_id) of the selected method
 * It is called by the calculator
 * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
@@ -1525,10 +1528,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		foreach ($this->methods as $method) {
 			$cData = KlarnaHandler::getcData($method, $this->getCartAddress($cart, $type, false));
-			if ($nb = (int)$this->checkCountryCondition($method, $cData['country_code_3'], $cart)) {
-				$nbMethod = $nbMethod + $nb;
+			if ($cData) {
+				if ($nb = (int)$this->checkCountryCondition($method, $cData['country_code_3'], $cart)) {
+					$nbMethod = $nbMethod + $nb;
+				}
 			}
 		}
+		$paymentCounter=$paymentCounter+$nbMethod;
 		if ($nbMethod == 0) {
 			return NULL;
 		} else {

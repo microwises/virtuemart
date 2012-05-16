@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >
+    <name>VMPAYMENT_MONEYBOOKERS</name>
+    <creationDate>April 2012</creationDate>
+    <author>Skrill Holdings Limited</author>
+    <authorUrl>http://www.skrill.com</authorUrl>
+    <copyright>Copyright (C) 2012 Skrill.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>2.0.6</version>
+    <description><![CDATA[<a href="http://www.skrill.com" target="_blank">Moneybookers</a> is a popular
+	payment provider authorised by the Financial Services Authority of the United Kingdom (FSA). ]]>
+    </description>
+
+    <files>
+	<filename plugin="moneybookers">moneybookers.php</filename>
+    </files>
+    <languages>
+	<language tag="en-GB">en-GB.plg_vmpayment_moneybookers.ini</language>
+	<language tag="en-US">en-GB.plg_vmpayment_moneybookers.ini</language>
+    </languages>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+	<param type="vmjpluginwarning" />
+	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_TITLE" level="level1" />
+	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_WARNING" />
+
+	<param type="spacer" default="" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_MONEYBOOKERS_LOGOS"
+             	description="VMPAYMENT_MONEYBOOKERS_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/payment"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"  exclude="^_" />
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_SETTINGS" level="level1" />
+	<param type="text" name="pay_to_email"  size="50" label="VMPAYMENT_PAY_TO_EMAIL"
+             default="username@email.com" description="VMPAYMENT_PAY_TO_EMAIL_DESC" />
+	<param type="text" name="secret_word"  size="50" label="VMPAYMENT_SECRET_WORD"
+             default="" description="VMPAYMENT_SECRET_WORD_DESC" />
+	<param type="text" name="logo_url"  size="50" label="VMPAYMENT_LOGOURL"
+             default="" description="VMPAYMENT_LOGOURL_DESC" />
+             
+        <param type="radio" name="hide_login" label="VMPAYMENT_HIDELOGIN"
+             default="0" description="VMPAYMENT_LOGOURL_DESC">
+            <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+        </param>
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_RESTRICTIONS" level="level1" />
+	     <!-- BY DEFAULT Moneybookers currency= vendor currency -->
+	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_MONEYBOOKERS_CURRENCY" description="VMPAYMENT_MONEYBOOKERS_CURRENCY_DESC" />
+	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_MONEYBOOKERS_COUNTRIES" description="VMPAYMENT_MONEYBOOKERS_COUNTRIES_DESC"/>
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUSES" level="level1" />
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_STATUS_PENDING" description="VMPAYMENT_STATUS_PENDING_DESC" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_STATUS_SUCCESS" description="VMPAYMENT_STATUS_SUCCESS_DESC" />
+	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_STATUS_FAILED" description="VMPAYMENT_STATUS_FAILED_DESC" />
+	<param type="spacer" default="" level="level1" />
+    </params>
+</install>

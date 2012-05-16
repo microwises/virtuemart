@@ -86,7 +86,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 <?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->price_display->get('show_prices')); ?>
 		    </td>
 		</tr>
-
+	    </table>
 		<table class="admintable">
 		    <tr>
 			<th></th>
@@ -107,6 +107,7 @@ echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'di
 echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
 ?>
 		</table>
+
 	</fieldset>
     </div>
 

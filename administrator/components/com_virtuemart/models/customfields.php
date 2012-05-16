@@ -346,7 +346,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	/**
-	 * Formating admin display by roles
+	 * Formatting admin display by roles
 	 * input Types for product only !
 	 * $field->is_cart_attribute if can have a price
 	 */

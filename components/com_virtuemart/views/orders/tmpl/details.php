@@ -25,7 +25,7 @@ if($this->print){
 		<body onload="javascript:print();">
 		<div><img src="<?php  echo JURI::root() . $this-> vendor->images[0]->file_url ?>"></div>
 		<h2><?php  echo $this->vendor->vendor_store_name; ?></h2>
-		<?php  $this->vendor->vendor_name .' - '.$this->vendor->vendor_phone ?>
+		<?php  echo $this->vendor->vendor_name .' - '.$this->vendor->vendor_phone ?>
 		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
 		<div class='spaceStyle'>
 		<?php

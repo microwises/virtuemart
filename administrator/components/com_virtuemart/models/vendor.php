@@ -119,7 +119,7 @@ class VirtueMartModelVendor extends VmModel {
 	 * @param int $virtuemart_vendor_id
 	 * @return int $virtuemart_user_id
 	 */
-	function getUserIdByVendorId($vendorId) {
+	static function getUserIdByVendorId($vendorId) {
 		//this function is used static, needs its own db
 
 		if (empty($vendorId)) return;

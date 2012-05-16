@@ -73,7 +73,7 @@ class VirtuemartViewVendor extends VmView {
 			$this->assignRef('vendor', $vendor);
 
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			$userId = VirtueMartModelVendor::$model->getUserIdByVendorId($virtuemart_vendor_id);
+			$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
 			$usermodel = VmModel::getModel('user');
 

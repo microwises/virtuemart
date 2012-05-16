@@ -1416,4 +1416,4 @@ class VadsCurrency {
 }
 
 
-?>
+// No closing tag

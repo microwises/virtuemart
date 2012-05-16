@@ -72,7 +72,7 @@ class KlarnaAjax {
 
             if ($sType != "part" && $sType != "invoice" && $sType != "spec")
             {
-                throw new KlarnaApiException("Invalid paramters");
+                throw new KlarnaApiException("Invalid parameters");
             }
 
             $this->api->setCountry ($sCountry);
@@ -113,7 +113,7 @@ class KlarnaAjax {
         else {
             throw new KlarnaApiException("Invalid sub-action");
         }
-    }
+	    return;
 
     public function getAddress () {
         $aSessionCalls = array();

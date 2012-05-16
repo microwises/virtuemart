@@ -102,7 +102,7 @@ class VirtuemartViewInvoice extends VmView {
 					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
 						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
 							echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return 0;
+							return ;
 						}
 					}
 				}
@@ -112,19 +112,34 @@ class VirtuemartViewInvoice extends VmView {
 
 		if(empty($orderDetails['details'])){
 			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
-			return;
+			return 0;
 		}
 		$this->assignRef('orderDetails', $orderDetails);
 
 		if(empty($this->invoiceNumber)){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
+                if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
+	                if (!JFactory::getApplication()->isSite() ){
+	                    vmInfo('  InvoiceNumber is Reserved by Payment ');
+	                }
+	                if  ($this->uselayout!='mail') {
+                        return ;
+	                }
+                }
 			    $this->invoiceNumber = $invoiceNumberDate[0];
 			    $this->invoiceDate = $invoiceNumberDate[1];
 			    if(!$this->invoiceNumber or empty($this->invoiceNumber)){
 				    vmError('Cant create pdf, createInvoiceNumber failed');
-				    return 0;
+				    if  ($this->uselayout!='mail') {
+					    return ;
+				    }
 			    }
+			} else {
+				// Could OR should not create Invoice Number, createInvoiceNumber failed
+				if  ($this->uselayout!='mail') {
+					return ;
+				}
 			}
 		}
 
@@ -220,7 +235,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('headFooter', $headFooter);
 
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$userId = VirtueMartModelVendor::$vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
+		$userId =  VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
 		$usermodel = VmModel::getModel('user');
 // 		$usermodel->setId($userId);
@@ -283,8 +298,8 @@ class VirtuemartViewInvoice extends VmView {
 	// FE public function renderMailLayout($doVendor=false)
 	function renderMailLayout ($doVendor, $recipient) {
 
-		$this->doVendor=$doVendor;
-		$this->fromPdf=false;
+		$this->dovendor=$doVendor;
+		$this->frompdf=false;
 		$this->uselayout = 'mail';
 		$this->display();
 

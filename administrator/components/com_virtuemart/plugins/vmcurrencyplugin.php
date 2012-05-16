@@ -3,7 +3,7 @@
 /**
  * Abstract plugin class for currency converters
  *
- * @version $Id: vmuserfieldplugin.php 4634 2011-11-09 21:07:44Z Milbo $
+ * @version $Id: vmucurrencyplugin.php 4634 2011-11-09 21:07:44Z Milbo $
  * @package VirtueMart
  * @subpackage vmplugins
  * @copyright Copyright (C) 2011-2011 VirtueMart Team - All rights reserved.

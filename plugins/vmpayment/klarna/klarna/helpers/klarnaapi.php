@@ -604,7 +604,6 @@ class KlarnaAPI {
 			}
 			else {
 				throw new KlarnaApiException('Error in ' . __METHOD__ . ': Invalid inputfield value (' . $sName . ') found in HTML code!');
-				return false;
 			}
 		} else {
 			if ($sType == "lang") {
@@ -641,7 +640,7 @@ class KlarnaAPI {
 						return (@$this->aInputValues[$sName]);
 					} else {
 						throw new KlarnaApiException('Error in ' . __METHOD__ . ': Invalid field name (' . $sType . ') found in HTML code!');
-						return false;
+
 					}
 				}
 			}

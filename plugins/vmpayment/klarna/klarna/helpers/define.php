@@ -37,4 +37,4 @@ if (!defined('VMKLARNA_PC_TYPE'))
     define('VMKLARNA_PC_TYPE', 'json');
 if (!defined('VMKLARNA_CONFIG_FILE'))
   define('VMKLARNA_CONFIG_FILE',JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna.cfg');
-?>
+// No closing tag

@@ -224,7 +224,7 @@
 
 		<?php
 		foreach($this->cart->cartData['DBTaxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
+			<tr class="sectiontableentry<?php echo $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 
                                    <?php if ( VmConfig::get('show_tax')) { ?>
@@ -240,7 +240,7 @@
 		<?php
 
 		foreach($this->cart->cartData['taxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
+			<tr class="sectiontableentry<?php echo $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo $this->currencyDisplay->createPriceDiv($rule['virtuemart_calc_id'].'Diff','', $this->cart->pricesUnformatted[$rule['virtuemart_calc_id'].'Diff'],false); ?> </td>
@@ -253,7 +253,7 @@
 		}
 
 		foreach($this->cart->cartData['DATaxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
+			<tr class="sectiontableentry<?php echo $i ?>">
 				<td colspan="4" align="right"><?php echo   $rule['calc_name'] ?> </td>
 
                                      <?php if ( VmConfig::get('show_tax')) { ?>

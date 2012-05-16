@@ -35,12 +35,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <tr>
     <td width="30%">
 		<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER'); ?><br />
-		<b><?php echo $this->orderDetails['details']['BT']->order_number ?></b>
+		<strong><?php echo $this->orderDetails['details']['BT']->order_number ?></strong>
 
 	</td>
     <td width="30%">
 		<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_PASSWORD'); ?><br />
-		<b><?php echo $this->orderDetails['details']['BT']->order_pass ?></b>
+		<strong><?php echo $this->orderDetails['details']['BT']->order_pass ?></strong>
 	</td>
     <td width="40%">
     	<p>
