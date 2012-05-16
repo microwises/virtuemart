@@ -208,7 +208,7 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
+	public function renderShopperGroupList($shopperGroupId=0, $multiple = true) {
 		$shopperModel = self::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(false, true);
 		$attrs = '';

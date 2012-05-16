@@ -308,12 +308,6 @@ class VirtuemartViewUser extends VmView {
 			$this->_lists['shoppergroups'] .= $group['shopper_group_name'].', ';
 		}
 		$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
-	    //I dont think that makes sense anymore
-	    // 			if(empty($this->_lists['shoppergroups'])){
-	    // 				$this->_lists['shoppergroups']='unregistered';
-	    // 			} else {
-	   // $this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
-	    // 			}
 
 	    if (!empty($this->_userDetails->virtuemart_vendor_id)) {
 		$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
