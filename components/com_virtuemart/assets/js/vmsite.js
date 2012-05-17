@@ -36,10 +36,28 @@
 			});
 			if (byAjax.length >0) {
 				$.getJSON('index.php?option=com_virtuemart&view=state&format=json&virtuemart_country_id=' + byAjax,
-					function(result){
+						function(result){
+						
+						// Max Bitte Testen
+						var virtuemart_state_id = $('#virtuemart_state_id');
+						var status = virtuemart_state_id.attr('required');
+						
+						if(status == 'required') {
+							if( result[byAjax].length > 0 ) {
+								virtuemart_state_id.attr('required','required');
+							} else {
+								virtuemart_state_id.removeAttr('required');
+							}
+						}
+						
+						// ENDE
+
 						$.each(result, function(key, value) {
-							if (value.length >0) opt.data( 'd'+key, value );
-							else opt.data( 'd'+key, 0 );
+							if (value.length >0) {
+								opt.data( 'd'+key, value );	
+							} else { 
+								opt.data( 'd'+key, 0 );		
+							}
 						});
 						methods.addToList(opt,optValues,dest);
 						if ( typeof  ids !== "undefined") {
