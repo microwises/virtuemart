@@ -67,7 +67,7 @@ class VirtuemartViewCurrency extends VmView {
 			$this->SetViewTitle();
 			$this->addStandardDefaultViewCommands();
 
-			$this->addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewLists($model,0,'ASC');
 
 			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));
 			$this->assignRef('currencies',	$currencies);

@@ -81,7 +81,7 @@ if ($this->address_type == 'BT') {
     </h2>
 
 
-    <form method="post" id="adminForm" name="userForm" class="form-validate">
+    <form method="post" id="userForm" name="userForm" class="form-validate">
     <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">-->
 	<div class="control-buttons">
 	    <?php

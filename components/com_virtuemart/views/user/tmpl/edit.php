@@ -40,11 +40,6 @@ label.invalid {
 function myValidator(f, t)
 {
 	f.task.value=t;
-
-	if (f.task.value=='cancel') {
-		//f.submit();
-		return true;
-	}
 	if (document.formvalidator.isValid(f)) {
 		f.submit();
 		return true;
@@ -64,9 +59,9 @@ function myValidator(f, t)
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-<button class="button" type="button" onclick="document.adminForm.submit()" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
+<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
 <?php // Loading Templates in Tabs
 if($this->userDetails->virtuemart_user_id!=0) {
