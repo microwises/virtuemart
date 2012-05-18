@@ -73,17 +73,19 @@ class VirtueMartModelWaitingList extends VmModel {
 		$waiting_users = $db->loadObjectList();
 
 		/* Load the product details */
-		$q = "SELECT product_name FROM #__virtuemart_products WHERE virtuemart_product_id = ".$virtuemart_product_id;
+		$q = "SELECT product_name FROM `#__virtuemart_products_".VMLANG."` WHERE virtuemart_product_id = ".$virtuemart_product_id;
 		$db->setQuery($q);
 		$vars['productName'] = $db->loadResult();
 
 		/*TODO old URL here Now get the url information */
-		$vars['url'] = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&virtuemart_product_id='.$virtuemart_product_id.'&option=com_virtuemart');
+		$vars['url'] = JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id;
+
 
 		foreach ($waiting_users as $key => $waiting_user) {
 			$vars['user'] = $waiting_user;
-			if (shopFunctionsF::renderMail('waitinglist', $waiting_user->notify_email, $vars)) {
-				$this->update($waiting_user->notify_email, $virtuemart_product_id);
+			if (shopFunctionsF::renderMail('productdetails', $waiting_user->notify_email, $vars)) {
+				$db->setQuery('UPDATE #__virtuemart_waitingusers SET notified=1 WHERE virtuemart_waitinguser_id='.$waiting_user->virtuemart_waitinguser_id);
+				$db->query();
 			}
 		}
 		return true;

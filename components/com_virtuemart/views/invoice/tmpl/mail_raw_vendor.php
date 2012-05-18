@@ -21,8 +21,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-//	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
-	echo str_replace("<br />", "\n",  JText::sprintf('COM_VIRTUEMART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->currency->priceDisplay($this->orderDetails['details']['BT']['order_total']),$this->orderDetails['details']['BT']['order_number'] ));
+echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_RAW', $this->productName,$this->url);
+
 
 if(!empty($this->orderDetails['details']['BT']->customer_note)) {
 	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION', $this->orderDetails['details']['BT']->customer_note);
