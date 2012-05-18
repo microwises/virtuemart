@@ -321,10 +321,15 @@ class VmController extends JController{
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
+	/**
+	 * This function just overwrites the standard joomla function, using our standard class VmModel
+	 * for this
+	 * @see JController::getModel()
+	 */
 	function getModel($model=null){
 		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-// 		return VmView::getModel($model);
-		return ShopFunctions::getModel($model);
+
+		return VmModel::getModel($model);
 	}
 
 }

@@ -1275,7 +1275,7 @@ class VirtueMartModelUser extends VmModel {
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
 			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'',$this->_getOrdering());
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'GROUP BY vmu.virtuemart_user_id',$this->_getOrdering());
 
 	}
 

@@ -120,7 +120,7 @@ class ShopFunctions {
 	 */
 	public function renderCreditCardList($ccId, $multiple = false) {
 
-		$model = self::getModel('creditcard');
+		$model = VmModel::getModel('creditcard');
 		$creditcards = $model->getCreditCards();
 
 		$attrs = '';
@@ -209,7 +209,7 @@ class ShopFunctions {
 	 * @return string HTML select option list
 	 */
 	public function renderShopperGroupList($shopperGroupId=0, $multiple = true) {
-		$shopperModel = self::getModel('shoppergroup');
+		$shopperModel = VmModel::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(false, true);
 		$attrs = '';
 		$name = 'shopper_group_name';
@@ -239,7 +239,7 @@ class ShopFunctions {
 	 * @return string HTML containing the <select />
 	 */
 	public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '', $required = 0) {
-		$countryModel = self::getModel('country');
+		$countryModel = VmModel::getModel('country');
 		$countries = $countryModel->getCountries(true, true, false);
 		$attrs = array();
 		$name = 'country_name';
@@ -636,7 +636,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$virtuemart_vendor_id = 1;
 
 // 		vmSetStartTime('getCategories');
-		$categoryModel = self::getModel('category');
+		$categoryModel = VmModel::getModel('category');
 		$level++;
 
 		$categoryModel->_noLimit = true;
@@ -687,7 +687,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	public function countProductsByCategory( $categoryId = 0 )
 	{
-		$categoryModel = self::getModel('category');
+		$categoryModel = VmModel::getModel('category');
 		return $categoryModel->countProducts($categoryId);
 	}
 
@@ -864,7 +864,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null )
 	{
-		$categoryModel = self::getModel('category');
+		$categoryModel = VmModel::getModel('category');
 
 		$categories = $categoryModel->getCategories($onlyPublished, $parentId);
 
@@ -873,52 +873,6 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 			$categories[$index] = $cat;
 		}
 		return JHTML::_('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
-	}
-
-	/**
-	 * Return model instance. This is a DRY solution!
-	 * This is only called within this class
-	 *
-	 * @author jseros
-	 * @access private
-	 *
-	 * @param string $name Model name
-	 * @return JModel Instance any model
-	 */
-	public function getModel($name = null){
-
-// 		if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
-// 		return VmView::getModel($name);
-		if (!$name) $name = JRequest::getCmd('view');
-		$name = strtolower($name);
-		$className = ucfirst($name);
-
-// 		retrieving model
-		if( !class_exists('VirtueMartModel'.$className) ){
-
-			$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
-
-			if( file_exists($modelPath) ){
-				require( $modelPath );
-			}
-			else{
-				JError::raiseWarning( 0, 'Model '. $name .' not found.' );
-				echo 'Model '. $name .' not found.';die;
-				return false;
-			}
-		}
-
-		$className = 'VirtueMartModel'.$className;
-// 		instancing the object
-		$model = new $className();
-
-		if(empty($model)){
-			JError::raiseWarning( 0, 'Model '. $name .' not created.' );
-			echo 'Model '. $name .' not created.';
-		}else {
-			return $model;
-		}
-
 	}
 
 	/**

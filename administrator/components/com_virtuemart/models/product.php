@@ -175,7 +175,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication() ;
 
-		$groupBy = 'group by p.`virtuemart_product_id`';
+		$groupBy = 'group by p.`virtuemart_product_id` ';
 
 		//administrative variables to organize the joining of tables
 		$joinCategory 	= false ;
@@ -268,9 +268,13 @@ class VirtueMartModelProduct extends VmModel {
 			$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
 
 			if(is_array($virtuemart_shoppergroup_ids)){
+				$sgrgroups = array();
 				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
-					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' (s.`virtuemart_shoppergroup_id`) IS NULL )';
+					$sgrgroups[] = 's.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" ';
 				}
+				$sgrgroups[] = 's.`virtuemart_shoppergroup_id` IS NULL ';
+				$where[] = " ( ".implode(' OR ', $sgrgroups )." ) ";
+
 				$joinShopper = true;
 			}
 		}
@@ -351,7 +355,7 @@ class VirtueMartModelProduct extends VmModel {
 		//Group case from the modules
 		if($group){
 
-			$groupBy = 'group by p.`virtuemart_product_id`';
+			$groupBy = 'group by p.`virtuemart_product_id` ';
 			switch ($group) {
 				case 'featured':
 					$where[] = 'p.`product_special`="1" ';
@@ -555,12 +559,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			$product = $this->getTable('products');
 			$product->load($this->_id,0,0,$joinIds);
-			//$product = $this->fillVoidProduct($product,$front);
-			/*   			if($onlyPublished){
-			if(empty($product->published)){
-			return false;
-			}
-			}*/
 
 			$xrefTable = $this->getTable('product_medias');
 			$product->virtuemart_media_id = $xrefTable->load((int)$this->_id);
