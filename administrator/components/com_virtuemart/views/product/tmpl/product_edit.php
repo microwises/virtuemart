@@ -20,16 +20,11 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
-/* Load some behaviour */
-// JHTML::_('behavior.calendar');
-
 $document = JFactory::getDocument();
 
-//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
-//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
 vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
-//print_r(JRequest::get('GET'));
+
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminForm">
 
@@ -44,7 +39,6 @@ $tabarray['custom'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB';
 //$tabarray['emails'] = 'COM_VIRTUEMART_PRODUCT_FORM_EMAILS_TAB';
 // $tabarray['customer'] = 'COM_VIRTUEMART_PRODUCT_FORM_CUSTOMER_TAB';
 
- 
 
 AdminUIHelper::buildTabs ( $tabarray, $this->product->virtuemart_product_id );
 // Loading Templates in Tabs END ?>

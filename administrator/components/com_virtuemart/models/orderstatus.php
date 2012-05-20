@@ -65,7 +65,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	}
 	/**
 	 * Return the order status names
-	 * 
+	 *
 	 * @author Kohl Patrick
 	 * @access public
 	 *
@@ -76,7 +76,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	{
 		$q = 'SELECT `order_status_name`,`order_status_code` FROM `#__virtuemart_orderstates` order by `ordering` ';
 		$this->_db->setQuery($q);
-		return $this->_db->loadAssocList(`order_status_code`);
+		return $this->_db->loadAssocList('order_status_code');
 
 	}
 

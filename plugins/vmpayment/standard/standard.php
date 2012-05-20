@@ -117,7 +117,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$this->storePSPluginInternalData($dbValues);
 
 	$html = '<table class="vmorder-done">' . "\n";
-	$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name'], "vmorder-done-payinfo");
+	$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name'], 'class="vmorder-done-payinfo"');
 	if (!empty($payment_info)) {
 	    $lang = JFactory::getLanguage();
 	    if ($lang->hasKey($method->payment_info)) {
@@ -125,7 +125,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    } else {
 		$payment_info = $method->payment_info;
 	    }
-		$html .= $this->getHtmlRow('STANDARD_PAYMENTINFO', $payment_info, "vmorder-done-payinfo");
+		$html .= $this->getHtmlRow('STANDARD_PAYMENTINFO', $payment_info, 'class="vmorder-done-payinfo"');
 	}
 	if (!class_exists('VirtueMartModelCurrency'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');

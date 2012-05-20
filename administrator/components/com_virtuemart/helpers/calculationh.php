@@ -319,8 +319,8 @@ class calculationHelper {
 
 		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
 		if(!empty($this->rules['VatTax'])){
-			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['basePriceWithTax'], true));
-// 			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
+			$price = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
+			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true));
 		}
 
 		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
@@ -339,7 +339,7 @@ class calculationHelper {
 		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
 
 		if(!empty($this->rules['VatTax'])){
-			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice, true),'salesPrice');
+			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice),'salesPrice');
 			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
 		}
 
@@ -817,16 +817,24 @@ class calculationHelper {
 			}
 
 			$hitsDeliveryArea = true;
-			if (!empty($this->_deliveryCountry) && !empty($this->allrules[$this->productVendorId][$entrypoint][$i]['countries']) && empty($this->allrules[$this->productVendorId][$entrypoint][$i]['states'])) {
-				$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$this->productVendorId][$entrypoint][$i]['countries'], $this->_deliveryCountry);
-			} else if (!empty($this->_deliveryState) && !empty($this->allrules[$this->productVendorId][$entrypoint][$i]['states'])) {
-				$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$this->productVendorId][$entrypoint][$i]['states'], $this->_deliveryState);
+			if(!empty($this->allrules[$this->productVendorId][$entrypoint][$i]['states'])){
+				if (!empty($this->_deliveryState)){
+					$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$this->productVendorId][$entrypoint][$i]['states'], $this->_deliveryState);
+				} else {
+					$hitsDeliveryArea = false;
+				}
+			} else if(!empty($this->allrules[$this->productVendorId][$entrypoint][$i]['countries'])){
+				if (!empty($this->_deliveryCountry)){
+					$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$this->productVendorId][$entrypoint][$i]['countries'], $this->_deliveryCountry);
+				} else {
+					$hitsDeliveryArea = false;
+				}
 			}
 
-			$hitsAmount = true;
-			if (!empty($this->_amount)) {
+// 			$hitsAmount = true;
+// 			if (!empty($this->_amount)) {
 				//Test
-			}
+// 			}
 			if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
 				if ($this->_debug)
 				echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
