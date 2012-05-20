@@ -88,9 +88,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$row,&$html,$productCustom) {
+	function plgVmOnViewCartModule( $product,$row,&$html) {
 
-		return $this->plgVmOnViewCart($item,$row,$html,$productCustom);
+		return $this->plgVmOnViewCart($item,$row,$html);
     }
 
 	/**
@@ -98,14 +98,14 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function plgVmOnViewCart($product,$row,&$html) {
-		if (empty($item->productCustom->custom_element) or $item->productCustom->custom_element != $this->_name) return '';
+		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 
 		foreach($plgParam as $k => $item){
 
 			if(!empty($item['comment']) ){
 				$this->getVmPluginMethod($k);
-				$html .='<span>'.JText::_($productCustom->custom_title).' '.$item['comment'].'</span>';
+				$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$item['comment'].'</span>';
 			}
 		 }
 
