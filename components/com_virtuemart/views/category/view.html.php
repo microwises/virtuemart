@@ -149,6 +149,8 @@ class VirtuemartViewCategory extends VmView {
 
 		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
+		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
+		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $category->category_name =$products[0]->mf_name ;
 
 	    $pagination = $productModel->getPagination($perRow);
 	    $this->assignRef('vmPagination', $pagination);
