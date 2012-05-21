@@ -331,6 +331,6 @@ class VirtueMartModelCalc extends VmModel {
 
 	function getDADiscounts() {
 
-		return self::getRule(array('DATax','DATaxBill'));;
+		return self::getRule(array('DATax','DATaxBill'));
 	}
 }

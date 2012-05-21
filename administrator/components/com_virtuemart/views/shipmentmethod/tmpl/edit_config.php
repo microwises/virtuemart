@@ -26,9 +26,7 @@ if ($this->shipment->shipment_name) {
 } else {
     echo JText::_('COM_VIRTUEMART_SELECT_SHIPPING_METHOD');
 }
-?>
-
-<?php /*
+ /*
   <script type="text/javascript">
   function check() {
   if (document.adminForm.type[0].checked == true || document.adminForm.type[1].checked == true) {
@@ -49,4 +47,3 @@ if ($this->shipment->shipment_name) {
   }
   check();
   </script> */
-?>

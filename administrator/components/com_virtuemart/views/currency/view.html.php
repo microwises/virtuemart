@@ -41,7 +41,6 @@ class VirtuemartViewCurrency extends VmView {
 		$model = VmModel::getModel();
 
 
-		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {

@@ -31,4 +31,3 @@ AdminUIHelper::buildTabs ( array (	'controlpanel' 	=> 	'COM_VIRTUEMART_CONTROL_P
 									 ) );
 
 AdminUIHelper::endAdminArea ();
-?>

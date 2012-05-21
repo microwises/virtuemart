@@ -25,9 +25,6 @@ require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 
 class Migrator extends VmModel{
 
-	//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!
-
-	private $_test = false;
 	private $_stop = false;
 
 	public function __construct(){
@@ -1473,7 +1470,7 @@ class Migrator extends VmModel{
 
 		$orderstatusModel = VmModel::getModel('Orderstatus');
 		$oldtonewOrderstates = array();
-		//$alreadyKnownIds = $this->getMigrationProgress('orderstates');
+		$alreadyKnownIds = $this->getMigrationProgress('orderstates');
 		$i = 0;
 		foreach($oldOrderStatus as $status){
 			if(!array_key_exists($status['order_status_id'],$alreadyKnownIds)){
@@ -1761,7 +1758,8 @@ class Migrator extends VmModel{
 	 */
 	private function showVmDiff(){
 
-		//$product = $productModel->getProduct(0);
+		$productModel = VmModel::getModel('product');
+		$product = $productModel->getProduct(0);
 
 		$productK = array();
 		$attribsImage = get_object_vars($product);

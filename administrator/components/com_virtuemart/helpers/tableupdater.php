@@ -26,8 +26,6 @@ if(!class_exists('JModel')) require(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'ap
 
 class GenericTableUpdater extends JModel{
 
-	private $_reCreatePrimary = false;
-
 	public function __construct(){
 
 // 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');

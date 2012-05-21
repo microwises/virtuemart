@@ -220,9 +220,9 @@ class VmTable extends JTable{
 			$this->modified_by = $user->id;
 		}
 
-		if(isset($data->locked_on)){
+		if(isset($this->locked_on)){
 			//Check if user is allowed to store, then disable or prevent storing
-			$data->locked_on = 0;
+			$this->locked_on = 0;
 		}
 	}
 
@@ -253,7 +253,7 @@ class VmTable extends JTable{
 		else if(empty($oid)){
 			if(!empty($this->_xParams)){
 				foreach($this->_varsToPushParam as $key=>$v){
-					if(!isset($obj->$key)){
+					if(!isset($this->$key)){
 						$this->$key = $v[0];
 					}
 				}
@@ -339,7 +339,7 @@ class VmTable extends JTable{
 			}
 		} else {
 			if(empty($xParams)){
-				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$his->_tbl,$obj);
+				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$this->_tbl,$obj);
 			}
 		}
 
@@ -569,7 +569,7 @@ class VmTable extends JTable{
 						if($authVendorId!=$virtuemart_vendor_id){
 							//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
 							vmWarn('Stop try to hack this store, you got logged');
-							vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
+							vmdebug('Hacking attempt stopped, logged vendor '.$authVendorId.' but data belongs to '.$virtuemart_vendor_id);
 							return false;
 						} else {
 							return true;

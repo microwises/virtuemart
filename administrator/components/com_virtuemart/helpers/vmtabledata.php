@@ -38,8 +38,6 @@ class VmTableData extends VmTable {
 
 		$this->storeParams();
 
-		$id = 0;
-
 		$tblKey = $this->_tbl_key;
 		$pKey = $this->_pkey;
 

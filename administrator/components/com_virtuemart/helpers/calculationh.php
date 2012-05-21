@@ -209,7 +209,7 @@ class calculationHelper {
 	 *
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
-	 * @param int $productId 	The Id of the product
+	 * @param int $product 	    The product
 	 * @param int $catIds 		When the category is already determined, then it makes sense to pass it, if not the function does it for you
 	 * @return int $prices		An array of the prices
 	 * 							'basePrice'  		basePrice calculated in the shopcurrency

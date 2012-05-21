@@ -39,7 +39,7 @@ class VmElementVmCategories extends VmElements {
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
         JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
         $categorylist = ShopFunctions::categoryListTree(array($this->value));
-        $class = '';
+
         $html = '<select class="inputbox"   name="' . $this->name . '" >';
         $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;

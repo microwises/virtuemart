@@ -1080,7 +1080,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 // 		vmdebug('notifyCustomer', $newOrderData);
 		if (isset($newOrderData['customer_notified']) && $newOrderData['customer_notified']==0) {
-		    return true;;
+		    return true;
 		}
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 

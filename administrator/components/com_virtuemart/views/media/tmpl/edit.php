@@ -43,4 +43,4 @@ echo '</fieldset>';
 echo '</form>';
 
 AdminUIHelper::imitateTabs('end');
-AdminUIHelper::endAdminArea(); ?>
+AdminUIHelper::endAdminArea();

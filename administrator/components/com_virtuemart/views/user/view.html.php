@@ -34,9 +34,6 @@ class VirtuemartViewUser extends VmView {
 
 	function display($tpl = null) {
 
-		$option = JRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
-
 		// Load the helper(s)
 		$this->loadHelper('html');
 

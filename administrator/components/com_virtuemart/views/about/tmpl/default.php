@@ -24,4 +24,3 @@ include(JPATH_VM_ADMINISTRATOR.DS.'COPYRIGHT.php');
 
 AdminUIHelper::endAdminArea();
 
-?>

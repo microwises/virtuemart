@@ -308,7 +308,7 @@ class VirtueMartModelConfig extends JModel {
 			$exists = JFolder::exists($safePath);
 
 			if(!$exists){
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath);
 			} else {
 				$length = strlen($safePath);
 				if(strrpos($safePath,DS)!=($length-1)){
@@ -372,8 +372,8 @@ class VirtueMartModelConfig extends JModel {
 	public function remove() {
 
 		$table = $this->getTable('configs');
-
-		if (!$table->delete(1)) {
+		$id = 1;
+		if (!$table->delete($id)) {
 			vmError(get_class( $this ).'::remove '.$id.' '.$table->getError(),'Cannot delete config');
 			return false;
 		}

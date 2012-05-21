@@ -31,10 +31,6 @@ class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
 
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getWord('option');
-// 		$lists = array();
-
 		//Load helpers
 
 		$this->loadHelper('currencydisplay');
