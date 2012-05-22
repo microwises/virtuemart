@@ -73,6 +73,7 @@ class VirtuemartControllerUser extends VmController {
 	}
 	function cancel(){
 
+		$lastTask = JRequest::getWord('last_task');
 		if ($lastTask == 'edit_shop') $this->setRedirect('index.php?option=com_virtuemart');
 		else $this->setRedirect('index.php?option=com_virtuemart&view=user');
 	}

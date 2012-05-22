@@ -85,7 +85,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	       		}
        		}
        		else {
-				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$categoryId.' '.$table->getError());
        			return false;
        		}
     	}

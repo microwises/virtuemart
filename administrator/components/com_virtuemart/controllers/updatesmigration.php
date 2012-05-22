@@ -70,7 +70,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function liveUpdate(){
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', 'Akeeba release system');
 	}
 
 	/**

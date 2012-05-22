@@ -548,7 +548,7 @@ class VmTable extends JTable{
 
 				if($this->check('admin,storeadmin') ){
 					if(empty($this->virtuemart_vendor_id) and !isset($this->user_is_vendor)){
-						vmError('Multivendor id missing for '.$this->_tbl_key).', set it to mainvendor';
+						vmError('Multivendor id missing for '.$this->_tbl_key.', set it to mainvendor');
 						$this->virtuemart_vendor_id = 1;
 					}
 					return true;
